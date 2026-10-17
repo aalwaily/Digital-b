@@ -1,0 +1,50 @@
+{
+  "12-week-reset": {
+    "pages": 13,
+    "samplePages": 4,
+    "bytes": 112141,
+    "sampleBytes": 89684
+  },
+  "weeknight-table": {
+    "pages": 11,
+    "samplePages": 3,
+    "bytes": 106280,
+    "sampleBytes": 87747
+  },
+  "floor-and-form": {
+    "pages": 11,
+    "samplePages": 3,
+    "bytes": 104795,
+    "sampleBytes": 87738
+  },
+  "the-quiet-budget": {
+    "pages": 11,
+    "samplePages": 3,
+    "bytes": 105290,
+    "sampleBytes": 87990
+  },
+  "habit-ledger": {
+    "pages": 10,
+    "samplePages": 3,
+    "bytes": 104660,
+    "sampleBytes": 88485
+  },
+  "first-client": {
+    "pages": 10,
+    "samplePages": 3,
+    "bytes": 103191,
+    "sampleBytes": 86847
+  },
+  "exam-room-method": {
+    "pages": 10,
+    "samplePages": 3,
+    "bytes": 102572,
+    "sampleBytes": 87142
+  },
+  "steady-mind": {
+    "pages": 10,
+    "samplePages": 3,
+    "bytes": 102811,
+    "sampleBytes": 86666
+  }
+}
