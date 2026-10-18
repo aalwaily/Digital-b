@@ -32,6 +32,11 @@ export const faqs: FaqItem[] = [
       "No. Guides on weight, food, exercise, and stress are educational. They include disclaimers, red flags, and pointers toward licensed care. They are not a diagnosis, a diet prescription, or therapy. If you are in crisis in the United States, call or text 988.",
   },
   {
+    question: "Can I pay with Apple Pay?",
+    answer:
+      "Apple Pay through PayPal is an extra option on the same PayPal account. That button appears only in Safari on a Mac or on an iPhone or iPad that has a card in Wallet, and only when the store is served over HTTPS on a domain registered with PayPal. Other browsers keep Pay with PayPal. Stripe, Moyasar, and demo checkout are unchanged. The receipt is issued only after PayPal captures the order and the amount matches the price on the site. Sandbox support is limited. To turn it on, the owner enables Apple Pay in the PayPal business account (Account settings > Payment methods > Apple Pay). That requires a live business account eligible for Apple Pay via PayPal, with Advanced Credit and Debit Card Payments approved. They register the production domain in PayPal's Apple Pay domain settings, download the domain association file, and paste its contents into APPLE_PAY_DOMAIN_ASSOCIATION. Moyasar has its own Apple Pay, which uses MOYASAR_APPLE_PAY_DOMAIN_ASSOCIATION. Both files would be served from /.well-known/apple-developer-merchantid-domain-association, so the owner sets only one of them. If both are set and they differ, that address does not serve a file until one is removed.",
+  },
+  {
     question: "Why does checkout say it is a demo?",
     answer:
       "If Stripe, PayPal, and Moyasar are not configured, the store completes a simulated order so you can see delivery end to end. No payment form is shown and no charge is made. When the owner adds any of those keys, checkout uses them and the demo path turns off unless they explicitly leave it enabled.",
@@ -39,7 +44,7 @@ export const faqs: FaqItem[] = [
   {
     question: "Can I pay with mada, Apple Pay, or STC Pay?",
     answer:
-      "When Moyasar is connected, checkout offers mada, Visa, Mastercard, Apple Pay, and STC Pay (مدى، فيزا، ماستركارد، Apple Pay، STC Pay). Prices in the catalog are US dollars. The charge is converted to Saudi riyals at the store's USD to SAR rate, 3.75 unless the owner sets another rate, and that riyal amount is shown before you pay. Card details are entered on Moyasar's form, not on this site. Apple Pay also needs the store's domain registered with Moyasar, and STC Pay has to be enabled on the Moyasar account.",
+      "When Moyasar is connected, checkout offers mada, Visa, Mastercard, Apple Pay, and STC Pay (مدى، فيزا، ماستركارد، Apple Pay، STC Pay). Prices in the catalog are US dollars. The charge is converted to Saudi riyals at the store's USD to SAR rate, 3.75 unless the owner sets another rate, and that riyal amount is shown before you pay. Card details are entered on Moyasar's form, not on this site. Apple Pay also needs the store's domain registered with Moyasar. The owner pastes Moyasar's domain file into MOYASAR_APPLE_PAY_DOMAIN_ASSOCIATION and leaves APPLE_PAY_DOMAIN_ASSOCIATION empty, because both would be published at the same address. STC Pay has to be enabled on the Moyasar account.",
   },
   {
     question: "Can I share a file with a friend?",

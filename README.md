@@ -2,7 +2,7 @@
 
 Vellum Press is a small storefront for practical PDF guides: health, home training, money, habits, freelance work, study, and stress. Customers pay once, download the files, and keep them. There is no membership and no account.
 
-The shop runs without payment keys. Checkout is labeled as a demo and still produces a signed download link. Add Stripe keys to charge cards, PayPal keys to offer PayPal, or Moyasar keys to offer mada, Visa, Mastercard, Apple Pay, and STC Pay in Saudi riyals.
+The shop runs without payment keys. Checkout is labeled as a demo and still produces a signed download link. Add Stripe keys to charge cards, PayPal keys to offer PayPal and Apple Pay on Safari, or Moyasar keys to offer mada, Visa, Mastercard, Apple Pay, and STC Pay in Saudi riyals. Each button appears only when that provider's keys are set.
 
 ![Vellum Press home page](docs/screenshots/home.png)
 
@@ -66,11 +66,12 @@ Copy `.env.example` to `.env.local` when you want to override the defaults. The 
 | `PAYPAL_CLIENT_SECRET` | For PayPal | Secret from the same REST app. Never commit it. |
 | `PAYPAL_ENV` | No | `sandbox` (default) or `live`. Any value other than `live` uses the sandbox API. |
 | `PAYPAL_WEBHOOK_ID` | No | Webhook id for `POST /api/paypal/webhook`. Downloads are issued on the return URL, not by the webhook. |
+| `APPLE_PAY_DOMAIN_ASSOCIATION` | For PayPal Apple Pay | Raw contents of PayPal's Apple Pay domain association file. |
 | `MOYASAR_PUBLISHABLE_KEY` | For Moyasar | Publishable key (`pk_test_` or `pk_live_`) for the Moyasar payment form. Both this and the secret are required before the Moyasar option appears. |
 | `MOYASAR_SECRET_KEY` | For Moyasar | Secret key (`sk_test_` or `sk_live_`) used only on the server to fetch and verify payments. Never commit it. Must be the same mode as the publishable key. |
 | `MOYASAR_WEBHOOK_SECRET` | No | Shared secret you choose in the Moyasar webhook settings. `POST /api/moyasar/webhook` checks it. Downloads are issued on the callback, not by the webhook. |
 | `USD_TO_SAR_RATE` | No | USD to SAR rate for Moyasar charges. Default `3.75` (the official peg). Amounts are converted to halalas on the server. |
-| `MOYASAR_APPLE_PAY_DOMAIN_ASSOCIATION` | For Apple Pay | Body of the domain association file from the Moyasar dashboard. Served at `/.well-known/apple-developer-merchantid-domain-association`. |
+| `MOYASAR_APPLE_PAY_DOMAIN_ASSOCIATION` | For Moyasar Apple Pay | Body of the domain association file from the Moyasar dashboard. |
 | `ALLOW_DEMO_CHECKOUT` | No | Set to `true` only if demo checkout should stay available after Stripe, PayPal, or Moyasar is connected. Leave unset on a live store. |
 | `CONTACT_WEBHOOK_URL` | No | JSON endpoint that receives contact-form posts. |
 | `NEWSLETTER_WEBHOOK_URL` | No | JSON endpoint that receives newsletter signups. |
@@ -89,6 +90,10 @@ Prices are read from `data/products.ts` on the server. The browser cannot set th
 
 `POST /api/paypal/webhook` verifies the transmission with `PAYPAL_WEBHOOK_ID` when that variable is set. It acknowledges the event and does not release files. Point the webhook at `https://YOUR_DOMAIN/api/paypal/webhook`.
 
+**Apple Pay through PayPal** uses the same PayPal account and the same Orders v2 capture check. It appears only when PayPal is configured, and only when the browser can pay with Apple Pay. Checkout loads the PayPal JS SDK with `components=applepay` from `GET /api/paypal/config`. That route returns `PAYPAL_CLIENT_ID` and the sandbox or live SDK URL. It does not return `PAYPAL_CLIENT_SECRET`. You do not need `NEXT_PUBLIC_PAYPAL_CLIENT_ID`. The button is rendered only when `ApplePaySession.canMakePayments()` is true and `paypal.Applepay().config()` reports `isEligible`. Pay with PayPal, Stripe, Moyasar, and demo checkout stay as they are.
+
+The sheet total is the catalog price. `POST /api/paypal/applepay/order` ignores any amount in the request and creates an order with no PayPal redirect `payment_source` (Apple Pay confirms that order in the browser). `paypal.Applepay().confirmOrder()` sends the Apple Pay token to PayPal. `POST /api/paypal/applepay/capture` then captures on the server and signs the 14-day receipt only when the order status is `COMPLETED` and the captured currency and amount match the catalog total. Cancel and a failed confirm leave the cart in place and do not issue a link.
+
 ### PayPal setup
 
 1. Open the [PayPal Developer Dashboard](https://developer.paypal.com/dashboard/applications) and create a REST app. Use the sandbox app while testing, and a live app when you are ready to charge real PayPal accounts.
@@ -96,9 +101,45 @@ Prices are read from `data/products.ts` on the server. The browser cannot set th
 3. In the Vercel project, set `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET`, and `PAYPAL_ENV` (`sandbox` or `live`). Set `NEXT_PUBLIC_SITE_URL` to the https origin PayPal will redirect back to.
 4. Optional: in the same app, add a webhook for `https://YOUR_DOMAIN/api/paypal/webhook` and set `PAYPAL_WEBHOOK_ID` to the webhook id PayPal shows. Checkout works without it.
 
-**Moyasar mode**: `POST /api/moyasar/session` recomputes the cart from `data/products.ts`, including bundle prices, and ignores any amount sent by the browser. It converts the USD subtotal to SAR halalas with `USD_TO_SAR_RATE` (default 3.75) and returns the publishable key plus that amount. The checkout page then mounts [Moyasar's payment form](https://docs.moyasar.com/guides/card-payments/basic-integration) (`moyasar-payment-form` 2.3.0) with methods `creditcard` (mada, Visa, Mastercard), `applepay`, and `stcpay`. Card data is entered in that form and sent to Moyasar, not to this server. After payment, Moyasar redirects to `GET /api/moyasar/callback` with the payment id. The callback fetches `GET https://api.moyasar.com/v1/payments/:id` with the secret key and signs a download token only when status is `paid`, the currency is `SAR`, the amount matches the server-computed halalas, the payment is not refunded, and the payment's callback URL is the signed checkout state for this cart. Anything else returns the buyer to `/checkout?moyasar=failed` and does not issue a link. The SAR amount is shown on the checkout page before the form is used.
+### Apple Pay through PayPal
+
+Apple Pay charged through PayPal uses the same PayPal business account. It is not a separate processor, and it is separate from Moyasar's Apple Pay button. Sandbox support is limited: a sandbox business account often cannot complete a real Apple Pay sheet, and PayPal does not treat sandbox as a substitute for a live domain registration. Plan to verify the button on the production domain.
+
+The PayPal Apple Pay button appears only when PayPal keys are set and all of these are true:
+
+- the browser is Safari (macOS) or Safari on iOS
+- the device has a card in Wallet (`ApplePaySession.canMakePayments()`)
+- PayPal reports the merchant as eligible (`paypal.Applepay().config().isEligible`)
+- the page is HTTPS on a domain registered in PayPal's Apple Pay settings
+
+Other browsers keep Pay with PayPal, Stripe when it is configured, and Moyasar when it is configured.
+
+1. Use a live PayPal business account that is eligible for Apple Pay via PayPal. Advanced Credit and Debit Card Payments has to be approved on that account. A standard sandbox app is not enough for production.
+2. Enable Apple Pay under Account settings > Payment methods > Apple Pay. In the [PayPal Developer Dashboard](https://developer.paypal.com/dashboard/applications), switch to Live, open the live REST app, and confirm Apple Pay is enabled under Features (Accept payments > Advanced Credit and Debit Card Payments > Apple Pay).
+3. Set `PAYPAL_ENV=live` and set `PAYPAL_CLIENT_ID` and `PAYPAL_CLIENT_SECRET` from that live app. Set `NEXT_PUBLIC_SITE_URL` to the https origin buyers use, with no trailing path.
+4. Register that production domain in PayPal's Apple Pay domain settings. In the live app, open Apple Pay and choose Manage, then Add Domain. Register each host that serves checkout. `www` and the apex are different domains. The host you register must be the host Apple will request. A redirect to another host fails registration.
+5. Download the domain association file PayPal shows for that domain. Paste the file contents into `APPLE_PAY_DOMAIN_ASSOCIATION`. Do not wrap the value in quotes and do not commit the file. This app reads the variable on each request.
+6. Confirm `https://YOUR_DOMAIN/.well-known/apple-developer-merchantid-domain-association` returns HTTP 200 with the file body, `Content-Type: application/octet-stream`, and no redirect. PayPal and Apple reject a 3xx and reject an HTML page.
+7. Open checkout in Safari on a Mac or iPhone that has a card in Wallet. The Apple Pay button sits beside Pay with PayPal.
+
+`GET /api/paypal/config` is the only place the PayPal client id is sent to the browser, inside the PayPal SDK script URL. Never put `PAYPAL_CLIENT_SECRET` in `NEXT_PUBLIC_PAYPAL_CLIENT_ID` or any other public variable.
+
+**Moyasar mode**: `POST /api/moyasar/session` recomputes the cart from `data/products.ts`, including bundle prices, and ignores any amount sent by the browser. It converts the USD subtotal to SAR halalas with `USD_TO_SAR_RATE` (default 3.75) and returns the publishable key plus that amount. The checkout page then mounts [Moyasar's payment form](https://docs.moyasar.com/guides/card-payments/basic-integration) (`moyasar-payment-form` 2.3.0) with methods `creditcard` (mada, Visa, Mastercard), `applepay`, and `stcpay`. The Moyasar option is hidden until both Moyasar keys are set. Card data is entered in that form and sent to Moyasar, not to this server. After payment, Moyasar redirects to `GET /api/moyasar/callback` with the payment id. The callback fetches `GET https://api.moyasar.com/v1/payments/:id` with the secret key and signs a download token only when status is `paid`, the currency is `SAR`, the amount matches the server-computed halalas, the payment is not refunded, and the payment's callback URL is the signed checkout state for this cart. Anything else returns the buyer to `/checkout?moyasar=failed` and does not issue a link. The SAR amount is shown on the checkout page before the form is used.
 
 `POST /api/moyasar/webhook` checks the `secret_token` field against `MOYASAR_WEBHOOK_SECRET` when that variable is set, and for `payment_paid` it fetches the payment again. It acknowledges the event and does not release files. Point the webhook at `https://YOUR_DOMAIN/api/moyasar/webhook`.
+
+### One Apple Pay domain file
+
+PayPal and Moyasar each give you a domain association file, and Apple looks up only one URL:
+
+`https://YOUR_DOMAIN/.well-known/apple-developer-merchantid-domain-association`
+
+That route serves whichever variable is set:
+
+- `APPLE_PAY_DOMAIN_ASSOCIATION` for PayPal's file
+- `MOYASAR_APPLE_PAY_DOMAIN_ASSOCIATION` for Moyasar's file
+
+The response is the raw file with status 200, `Content-Type: application/octet-stream`, and no redirect. If only one variable is set, that file is served. If both are set to the same bytes, that file is served. If both are set and the bytes differ, the route returns 409 and serves neither file, because Apple cannot verify two different files at one path. Pick the provider whose Apple Pay you are registering and leave the other variable empty. PayPal's file will not satisfy Moyasar's domain check, and Moyasar's file will not satisfy PayPal's.
 
 ### Moyasar setup
 
@@ -107,7 +148,7 @@ Prices are read from `data/products.ts` on the server. The browser cannot set th
 3. Leave `USD_TO_SAR_RATE` at `3.75` unless you have a reason to charge a different riyal rate. The catalog stays in US dollars. Checkout shows the converted SAR total before the customer pays.
 4. Use Moyasar's [test cards](https://docs.moyasar.com/guides/card-payments/test-cards). A name of at least two words, any future expiry, and any 3-digit CVC are accepted. Examples that return `paid`: mada `4201320111111010`, Visa `4111111111111111` and `4111114005765430`. Other numbers in that table simulate declines. Random card numbers fail in test mode.
 5. Optional webhook: in Moyasar, open Settings → Webhooks, add `https://YOUR_DOMAIN/api/moyasar/webhook`, choose POST, set a secret token, and subscribe to `payment_paid`. Put that same token in `MOYASAR_WEBHOOK_SECRET`. Checkout works without the webhook.
-6. Apple Pay on the web needs [Moyasar domain registration](https://docs.moyasar.com/guides/apple-pay/web-registration). Register the exact hostname the payment starts from (a Vercel subdomain must be registered as that subdomain, not the parent domain). Download the association file and set `MOYASAR_APPLE_PAY_DOMAIN_ASSOCIATION` to its contents, with no `.txt` extension. This app serves it at `/.well-known/apple-developer-merchantid-domain-association`. In the dashboard, click Validate, then Register. Apple Pay only appears on supported Apple devices over HTTPS. The form asks Moyasar to start the session at `https://api.moyasar.com/v1/applepay/initiate`, so you do not need a separate Apple Developer merchant certificate for this web flow.
+6. Apple Pay on the web needs [Moyasar domain registration](https://docs.moyasar.com/guides/apple-pay/web-registration). Register the exact hostname the payment starts from (a Vercel subdomain must be registered as that subdomain, not the parent domain). Download the association file and set `MOYASAR_APPLE_PAY_DOMAIN_ASSOCIATION` to its contents, with no `.txt` extension. Leave `APPLE_PAY_DOMAIN_ASSOCIATION` empty unless you are registering PayPal's file instead. See "One Apple Pay domain file" above. In the dashboard, click Validate, then Register. Apple Pay inside the Moyasar form only appears on supported Apple devices over HTTPS. The form asks Moyasar to start the session at `https://api.moyasar.com/v1/applepay/initiate`, so you do not need a separate Apple Developer merchant certificate for this web flow.
 7. STC Pay has to be enabled on the Moyasar account. Ask Moyasar (care@moyasar.com) if the STC Pay button does not appear. The form still offers the card methods without it.
 8. Going live needs a live Moyasar account. Moyasar activates live payments after you provide a commercial registration or a freelance document. Then replace the keys with `pk_live_` and `sk_live_`, keep the site on HTTPS, and register the production domain for Apple Pay again.
 
@@ -144,8 +185,10 @@ The script uses ReportLab and the SIL Open Font License Liberation fonts in `scr
 2. Set `NEXT_PUBLIC_SITE_URL` to the production origin, and set `DOWNLOAD_SECRET`.
 3. Add `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET` when you want card charges.
 4. Add `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET`, and `PAYPAL_ENV` when you want PayPal. See the PayPal setup steps above.
-5. Add `MOYASAR_PUBLISHABLE_KEY` and `MOYASAR_SECRET_KEY` when you want mada, cards, Apple Pay, or STC Pay. See the Moyasar setup steps above, including the Apple Pay domain file.
-6. Deploy. `npm run build` is the build command. No database is required.
+5. For Apple Pay through PayPal, set `PAYPAL_ENV=live`, enable Apple Pay on the live business account, register the production domain, and set `APPLE_PAY_DOMAIN_ASSOCIATION`. See the Apple Pay through PayPal steps above.
+6. Add `MOYASAR_PUBLISHABLE_KEY` and `MOYASAR_SECRET_KEY` when you want mada, cards, Apple Pay, or STC Pay. See the Moyasar setup steps above.
+7. Put only one Apple Pay domain file in the environment. `APPLE_PAY_DOMAIN_ASSOCIATION` and `MOYASAR_APPLE_PAY_DOMAIN_ASSOCIATION` share one URL. If both are set to different files, that URL returns 409.
+8. Deploy. `npm run build` is the build command. No database is required.
 
 The success URL is built from `NEXT_PUBLIC_SITE_URL` in production, so set that before the first real payment.
 
@@ -168,6 +211,7 @@ Then:
 
 - set `NEXT_PUBLIC_SITE_URL` and `DOWNLOAD_SECRET`
 - add Stripe keys and a webhook, PayPal REST app credentials, Moyasar keys, or any combination
+- for Apple Pay, register the domain with the provider you use and set only that provider's domain file (`APPLE_PAY_DOMAIN_ASSOCIATION` or `MOYASAR_APPLE_PAY_DOMAIN_ASSOCIATION`)
 - leave `ALLOW_DEMO_CHECKOUT` unset
 - point `CONTACT_WEBHOOK_URL` and `NEWSLETTER_WEBHOOK_URL` at your inbox tool (a Zapier, Make, or Formspark endpoint is enough)
 - remove or replace the sample testimonials and sample reviews when you have real ones

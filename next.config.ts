@@ -2,14 +2,6 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
-  async rewrites() {
-    return [
-      {
-        source: "/.well-known/apple-developer-merchantid-domain-association",
-        destination: "/api/moyasar/apple-domain",
-      },
-    ];
-  },
   async headers() {
     return [
       {

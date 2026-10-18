@@ -1,5 +1,6 @@
 "use client";
 
+import { ApplePayButton } from "@/components/apple-pay-button";
 import { useCart } from "@/components/cart-provider";
 import { MoyasarForm } from "@/components/moyasar-form";
 import { Price } from "@/components/price";
@@ -40,6 +41,7 @@ export function CheckoutView({
 
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [status, setStatus] = useState("");
   const [pending, setPending] = useState(false);
   const [moyasarConfig, setMoyasarConfig] = useState<MoyasarFormConfig | null>(null);
   const providerRef = useRef<"card" | "paypal" | "moyasar">(
@@ -65,6 +67,7 @@ export function CheckoutView({
     const provider = choice === "paypal" && paypalEnabled ? "paypal" : choice === "moyasar" && moyasarEnabled ? "moyasar" : "card";
     setPending(true);
     setError("");
+    setStatus("");
     if (provider !== "moyasar") setMoyasarConfig(null);
     try {
       const response = await fetch(
@@ -181,7 +184,39 @@ export function CheckoutView({
             {error}
           </p>
         ) : null}
-        <div className="flex flex-wrap gap-3">
+        {status ? (
+          <p role="status" className="text-sm text-muted-foreground">
+            {status}
+          </p>
+        ) : null}
+        <div className="flex flex-wrap items-center gap-3">
+          {paypalEnabled && summary ? (
+            <ApplePayButton
+              email={email}
+              slugs={summary.lines.map((line) => line.slug)}
+              amount={summary.subtotal}
+              items={summary.lines.map((line) => ({ label: line.title, amount: line.price }))}
+              disabled={pending}
+              onBusy={(busy) => {
+                setPending(busy);
+                if (busy) setMoyasarConfig(null);
+              }}
+              onPaid={(token) => {
+                summary.lines.forEach((line) => cart.remove(line.slug));
+                router.push(`/orders/${encodeURIComponent(token)}?paid=1`);
+              }}
+              onError={(message) => {
+                setStatus("");
+                setError(message);
+                setPending(false);
+              }}
+              onCancel={() => {
+                setError("");
+                setStatus("Apple Pay was canceled. Nothing was charged.");
+                setPending(false);
+              }}
+            />
+          ) : null}
           {stripeEnabled || (!paypalEnabled && !moyasarEnabled) ? (
             <Button
               type="submit"
@@ -277,24 +312,22 @@ export function CheckoutView({
 }
 
 function checkoutNotice(stripeEnabled: boolean, paypalEnabled: boolean, moyasarEnabled: boolean) {
-  if (!moyasarEnabled) {
-    if (stripeEnabled && paypalEnabled) {
-      return "Pay with a card on Stripe, or pay with PayPal. Vellum Press never sees your card number or your PayPal password. The receipt is issued only after the payment is confirmed.";
-    }
-    if (stripeEnabled) {
-      return "You will continue to Stripe's hosted payment page. Vellum Press never sees your card number.";
-    }
-    if (paypalEnabled) {
-      return "You will continue to PayPal to approve this payment. Vellum Press never sees your PayPal password. The receipt is issued only after PayPal confirms the capture.";
-    }
-    return "Demo checkout. Stripe, PayPal, and Moyasar are not configured, so this order is simulated. You will not be charged, and a real payment form is not shown.";
-  }
   const options = [
     stripeEnabled ? "a card on Stripe" : "",
     paypalEnabled ? "PayPal" : "",
-    "mada, Visa, Mastercard, Apple Pay, or STC Pay through Moyasar, charged in SAR",
+    paypalEnabled ? "Apple Pay through PayPal on Safari" : "",
+    moyasarEnabled ? "mada, Visa, Mastercard, Apple Pay, or STC Pay through Moyasar, charged in SAR" : "",
   ].filter(Boolean);
-  return `Pay with ${joinOptions(options)}. Vellum Press never sees your card number. The receipt is issued only after the payment is confirmed.`;
+  if (options.length === 0) {
+    return "Demo checkout. Stripe, PayPal, and Moyasar are not configured, so this order is simulated. You will not be charged, and a real payment form is not shown.";
+  }
+  if (options.length === 1 && stripeEnabled) {
+    return "You will continue to Stripe's hosted payment page. Vellum Press never sees your card number.";
+  }
+  if (options.length === 2 && paypalEnabled && !stripeEnabled && !moyasarEnabled) {
+    return "You will continue to PayPal to approve this payment, or you can use Apple Pay on Safari. Vellum Press never sees your PayPal password. The receipt is issued only after PayPal confirms the capture.";
+  }
+  return `Pay with ${joinOptions(options)}. Vellum Press never sees your card number or your PayPal password. The receipt is issued only after the payment is confirmed.`;
 }
 
 function joinOptions(options: string[]) {

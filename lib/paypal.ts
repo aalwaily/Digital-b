@@ -183,14 +183,18 @@ export function readPayPalCheckoutState(token: string, secret: string, now = Mat
   }
 }
 
-export function buildPayPalOrderBody(input: {
+type PayPalPurchaseUnitRequest = PayPalOrderRequest["purchase_units"][number];
+
+export type ApplePayOrderRequest = {
+  intent: "CAPTURE";
+  purchase_units: PayPalOrderRequest["purchase_units"];
+};
+
+function buildPurchaseUnit(input: {
   lines: PayPalLine[];
   subtotal: number;
   customId: string;
-  returnUrl: string;
-  cancelUrl: string;
-  brandName: string;
-}): PayPalOrderRequest {
+}): PayPalPurchaseUnitRequest {
   if (input.lines.length === 0) throw new Error("PayPal order has no lines.");
   if (!input.customId) throw new Error("PayPal order is missing its binding.");
   const itemCents = input.lines.map((line) => amountToCents(line.price));
@@ -205,31 +209,51 @@ export function buildPayPalOrderBody(input: {
     .join(", ")
     .slice(0, 127);
   return {
-    intent: "CAPTURE",
-    purchase_units: [
-      {
-        custom_id: input.customId,
-        description,
-        amount: {
-          currency_code: "USD",
-          value,
-          breakdown: {
-            item_total: { currency_code: "USD", value },
-          },
-        },
-        items: input.lines.map((line, index) => {
-          const cents = itemCents[index];
-          if (cents === undefined) throw new Error("Missing item price.");
-          return {
-            name: line.title.slice(0, 127),
-            sku: line.slug.slice(0, 127),
-            quantity: "1" as const,
-            category: "DIGITAL_GOODS" as const,
-            unit_amount: { currency_code: "USD" as const, value: formatUsdCents(cents) },
-          };
-        }),
+    custom_id: input.customId,
+    description,
+    amount: {
+      currency_code: "USD",
+      value,
+      breakdown: {
+        item_total: { currency_code: "USD", value },
       },
-    ],
+    },
+    items: input.lines.map((line, index) => {
+      const cents = itemCents[index];
+      if (cents === undefined) throw new Error("Missing item price.");
+      return {
+        name: line.title.slice(0, 127),
+        sku: line.slug.slice(0, 127),
+        quantity: "1" as const,
+        category: "DIGITAL_GOODS" as const,
+        unit_amount: { currency_code: "USD" as const, value: formatUsdCents(cents) },
+      };
+    }),
+  };
+}
+
+export function buildApplePayOrderBody(input: {
+  lines: PayPalLine[];
+  subtotal: number;
+  customId: string;
+}): ApplePayOrderRequest {
+  return {
+    intent: "CAPTURE",
+    purchase_units: [buildPurchaseUnit(input)],
+  };
+}
+
+export function buildPayPalOrderBody(input: {
+  lines: PayPalLine[];
+  subtotal: number;
+  customId: string;
+  returnUrl: string;
+  cancelUrl: string;
+  brandName: string;
+}): PayPalOrderRequest {
+  return {
+    intent: "CAPTURE",
+    purchase_units: [buildPurchaseUnit(input)],
     payment_source: {
       paypal: {
         experience_context: {
@@ -379,7 +403,7 @@ async function paypalRequest(path: string, init: RequestInit) {
   });
 }
 
-export async function createPayPalOrder(order: PayPalOrderRequest) {
+export async function createPayPalOrder(order: PayPalOrderRequest | ApplePayOrderRequest) {
   const response = await paypalRequest("/v2/checkout/orders", {
     method: "POST",
     headers: { Prefer: "return=representation" },

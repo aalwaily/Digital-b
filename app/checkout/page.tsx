@@ -16,7 +16,7 @@ export default function CheckoutPage() {
     <div className="mx-auto max-w-6xl px-5 py-12">
       <h1 className="font-serif text-4xl">Checkout</h1>
       <p className="mt-2 max-w-xl text-muted-foreground">
-        Digital goods only. Pay with a card, PayPal, or Moyasar (mada, Apple Pay, and STC Pay) when they are connected. You will get a receipt page with the PDFs as soon as the payment is confirmed.
+        Digital goods only. Pay with Stripe, PayPal, Apple Pay on Safari, or Moyasar (mada, Apple Pay, and STC Pay) when they are connected. You will get a receipt page with the PDFs as soon as the payment is confirmed.
       </p>
       <div className="mt-8">
         <Suspense fallback={<p className="text-sm text-muted-foreground">Loading checkout…</p>}>

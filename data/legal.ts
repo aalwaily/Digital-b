@@ -30,7 +30,7 @@ export const legalPages: LegalPage[] = [
       {
         heading: "What we collect",
         paragraphs: [
-          "Checkout asks for an email address so we can build your receipt and download link. If you pay with Stripe, Stripe collects the card on Stripe's pages. If you pay with PayPal, PayPal collects that payment on PayPal's pages. If you pay with Moyasar, the card, mada, Apple Pay, or STC Pay details are entered in Moyasar's payment form and sent to Moyasar. We do not receive your full card number, your PayPal password, or your STC Pay OTP.",
+          "Checkout asks for an email address so we can build your receipt and download link. If you pay with Stripe, Stripe collects the card on Stripe's pages. If you pay with PayPal, PayPal collects that payment on PayPal's pages. If you pay with Apple Pay through PayPal, Apple shows the payment sheet and PayPal processes the charge. If you pay with Moyasar, the card, mada, Apple Pay, or STC Pay details are entered in Moyasar's payment form and sent to Moyasar. We do not receive your full card number, your Apple Pay token, your PayPal password, or your STC Pay OTP.",
           "The contact form collects your name, email, topic, and message. The newsletter form collects an email address and your consent to hear about new guides.",
           "The cart and the theme preference are stored in your browser (local storage). They are not sent to us until you choose to check out.",
         ],
@@ -59,7 +59,7 @@ export const legalPages: LegalPage[] = [
       {
         heading: "Processors",
         paragraphs: [
-          "Stripe, Inc. processes live card payments under its own privacy policy when Stripe keys are configured. PayPal processes PayPal payments under its own privacy policy when PayPal keys are configured. Moyasar Financial Company processes mada, card, Apple Pay, and STC Pay payments under its own privacy policy when Moyasar keys are configured. In demo mode no payment processor is contacted.",
+          "Stripe, Inc. processes live card payments under its own privacy policy when Stripe keys are configured. PayPal processes PayPal payments, including Apple Pay charged through PayPal, under its own privacy policy when PayPal keys are configured. Moyasar Financial Company processes mada, card, Apple Pay, and STC Pay payments under its own privacy policy when Moyasar keys are configured. In demo mode no payment processor is contacted.",
           "If you deploy this store, your host (for example Vercel) will also process technical logs such as IP address and user agent as part of running the site. Review that host's policy.",
         ],
       },
@@ -122,7 +122,7 @@ export const legalPages: LegalPage[] = [
         heading: "Prices and checkout",
         paragraphs: [
           "Prices in the catalog are in US dollars and are shown before you pay. We may change prices of future purchases at any time. A confirmed order keeps the price you paid.",
-          "If Stripe is configured, you can pay on Stripe Checkout in US dollars. If PayPal is configured, you can pay with PayPal in US dollars. If Moyasar is configured, you can pay with mada, Visa, Mastercard, Apple Pay, or STC Pay. That charge is in Saudi riyals, converted on our server from the catalog total at the published USD to SAR rate, and the riyal amount is shown before you pay. If none of these are configured, checkout is a labeled demo: no payment is collected and the download is issued so the flow can be reviewed. Do not present demo orders as real sales.",
+          "If Stripe is configured, you can pay on Stripe Checkout in US dollars. If PayPal is configured, you can pay with PayPal in US dollars, and on Safari Apple Pay can appear when this device can make an Apple Pay payment and the domain is registered with PayPal. If Moyasar is configured, you can pay with mada, Visa, Mastercard, Apple Pay, or STC Pay. That charge is in Saudi riyals, converted on our server from the catalog total at the published USD to SAR rate, and the riyal amount is shown before you pay. If none of these are configured, checkout is a labeled demo: no payment is collected and the download is issued so the flow can be reviewed. Do not present demo orders as real sales.",
           "You must provide an email address you can access. The download link is tied to that address and to the products in the order.",
         ],
       },
@@ -182,7 +182,7 @@ export const legalPages: LegalPage[] = [
       {
         heading: "How the refund is paid",
         paragraphs: [
-          "If you paid with Stripe, we refund the charge to the original card. Stripe's timing to your bank can take several business days after we issue it. If you paid with PayPal, we refund the PayPal payment back to the PayPal account used at checkout. If you paid with Moyasar, we refund through Moyasar to the original mada, card, Apple Pay, or STC Pay method, in the riyal amount that was charged. We refund the amount you paid for the items you return, not an arbitrary portion, unless we agree otherwise in writing.",
+          "If you paid with Stripe, we refund the charge to the original card. Stripe's timing to your bank can take several business days after we issue it. If you paid with PayPal, we refund the PayPal payment back to the PayPal account used at checkout. If you paid with Apple Pay through PayPal, the refund goes back to that card. If you paid with Moyasar, we refund through Moyasar to the original mada, card, Apple Pay, or STC Pay method, in the riyal amount that was charged. We refund the amount you paid for the items you return, not an arbitrary portion, unless we agree otherwise in writing.",
           "Demo orders do not collect a payment. There is nothing to reverse. The receipt page marks those orders as demos.",
         ],
       },
