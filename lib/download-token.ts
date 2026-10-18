@@ -17,7 +17,7 @@ export type DownloadPayload = {
   demo: boolean;
 };
 
-function secret() {
+export function signingSecret() {
   const value = process.env.DOWNLOAD_SECRET;
   if (value && value.length >= 16) return value;
   if (process.env.NODE_ENV === "production") {
@@ -58,7 +58,7 @@ export function signDownloadToken(
     exp: input.exp ?? now + downloadLinkDays() * 86400,
   };
   const body = Buffer.from(JSON.stringify(payload)).toString("base64url");
-  const sig = createHmac("sha256", secret()).update(body).digest("base64url");
+  const sig = createHmac("sha256", signingSecret()).update(body).digest("base64url");
   return `${body}~${sig}`;
 }
 
@@ -67,7 +67,7 @@ export function verifyDownloadToken(token: string): DownloadPayload | null {
   if (separator <= 0) return null;
   const body = token.slice(0, separator);
   const sig = token.slice(separator + 1);
-  const expected = createHmac("sha256", secret()).update(body).digest("base64url");
+  const expected = createHmac("sha256", signingSecret()).update(body).digest("base64url");
   if (!safeEqual(sig, expected)) return null;
   try {
     const payload = JSON.parse(Buffer.from(body, "base64url").toString("utf8")) as DownloadPayload;

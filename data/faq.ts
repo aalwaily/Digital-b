@@ -19,7 +19,7 @@ export const faqs: FaqItem[] = [
   {
     question: "What is the refund policy?",
     answer:
-      "You can request a refund within 30 days of purchase by emailing the support address with your order id and the email you used at checkout. If the payment went through Stripe, the refund goes back to the original payment method. Demo orders do not charge a card, so there is nothing to refund. Read the refund policy for the full terms.",
+      "You can request a refund within 30 days of purchase by emailing the support address with your order id and the email you used at checkout. If the payment went through Stripe or PayPal, the refund goes back to the original payment method. Demo orders do not charge anything, so there is nothing to refund. Read the refund policy for the full terms.",
   },
   {
     question: "Which devices open the PDFs?",
@@ -34,7 +34,7 @@ export const faqs: FaqItem[] = [
   {
     question: "Why does checkout say it is a demo?",
     answer:
-      "If Stripe keys are not configured, the store completes a simulated order so you can see delivery end to end. No card form is shown and no charge is made. When the owner adds Stripe keys, checkout redirects to Stripe and the demo path turns off unless they explicitly leave it enabled.",
+      "If neither Stripe nor PayPal is configured, the store completes a simulated order so you can see delivery end to end. No payment form is shown and no charge is made. When the owner adds Stripe or PayPal keys, checkout uses those and the demo path turns off unless they explicitly leave it enabled.",
   },
   {
     question: "Can I share a file with a friend?",

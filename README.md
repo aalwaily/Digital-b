@@ -2,7 +2,7 @@
 
 Vellum Press is a small storefront for practical PDF guides: health, home training, money, habits, freelance work, study, and stress. Customers pay once, download the files, and keep them. There is no membership and no account.
 
-The shop runs without Stripe keys. Checkout is labeled as a demo and still produces a signed download link. Add Stripe keys when you are ready to charge cards.
+The shop runs without payment keys. Checkout is labeled as a demo and still produces a signed download link. Add Stripe keys to charge cards, or PayPal keys to offer PayPal, or both.
 
 ![Vellum Press home page](docs/screenshots/home.png)
 
@@ -59,10 +59,14 @@ Copy `.env.example` to `.env.local` when you want to override the defaults. The 
 | `NEXT_PUBLIC_SITE_URL` | For production | Canonical URLs, sitemap, Open Graph. Example: `https://guides.example.com` |
 | `DOWNLOAD_SECRET` | Required in production | HMAC secret for download links. Use a long random string (16+ characters). |
 | `DOWNLOAD_LINK_DAYS` | No | Lifetime of a download link. Default 14. |
-| `STRIPE_SECRET_KEY` | For live charges | Secret key from the Stripe dashboard. When this is empty, checkout stays in demo mode. |
+| `STRIPE_SECRET_KEY` | For card charges | Secret key from the Stripe dashboard. |
 | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | No | Unused by hosted Checkout. Kept for a future Stripe.js form. |
 | `STRIPE_WEBHOOK_SECRET` | For webhooks | Signing secret for `POST /api/stripe/webhook`. |
-| `ALLOW_DEMO_CHECKOUT` | No | Set to `true` only if demo checkout should stay available after Stripe is connected. Leave unset on a live store. |
+| `PAYPAL_CLIENT_ID` | For PayPal | Client ID from a PayPal REST app. Both this and the secret are required before the PayPal button appears. |
+| `PAYPAL_CLIENT_SECRET` | For PayPal | Secret from the same REST app. Never commit it. |
+| `PAYPAL_ENV` | No | `sandbox` (default) or `live`. Any value other than `live` uses the sandbox API. |
+| `PAYPAL_WEBHOOK_ID` | No | Webhook id for `POST /api/paypal/webhook`. Downloads are issued on the return URL, not by the webhook. |
+| `ALLOW_DEMO_CHECKOUT` | No | Set to `true` only if demo checkout should stay available after Stripe or PayPal is connected. Leave unset on a live store. |
 | `CONTACT_WEBHOOK_URL` | No | JSON endpoint that receives contact-form posts. |
 | `NEWSLETTER_WEBHOOK_URL` | No | JSON endpoint that receives newsletter signups. |
 
@@ -70,11 +74,22 @@ Copy `.env.example` to `.env.local` when you want to override the defaults. The 
 
 Prices are read from `data/products.ts` on the server. The browser cannot set the amount.
 
-**Demo mode** (no `STRIPE_SECRET_KEY`): the checkout page says no card will be charged. Confirming the order signs a download token and opens the receipt. The receipt is stamped as a demo.
+**Demo mode** (no `STRIPE_SECRET_KEY` and no PayPal client id/secret): the checkout page says no payment will be collected. Confirming the order signs a download token and opens the receipt. The receipt is stamped as a demo. If only one of Stripe or PayPal is configured, that option is shown alone. If both are configured, checkout offers a card button and a Pay with PayPal button. If neither is configured, demo mode stays.
 
 **Stripe mode**: `POST /api/checkout` creates a Checkout Session with `price_data` in USD and redirects the buyer to Stripe. You do not have to pre-create Products in the dashboard. Success returns to `/checkout/success?session_id=...`. The server retrieves the session, checks `payment_status === "paid"`, recomputes the files from the catalog, and signs the same kind of token. Cancel returns to `/checkout?canceled=1`. The cart in the browser is unchanged until payment is confirmed.
 
 `POST /api/stripe/webhook` verifies `STRIPE_WEBHOOK_SECRET` and acknowledges `checkout.session.completed`. Fulfillment already happens on the success page, which is enough for a single digital delivery. Use the webhook later if you email files from a worker. In the Stripe dashboard, point the endpoint at `https://YOUR_DOMAIN/api/stripe/webhook` and subscribe to `checkout.session.completed`.
+
+**PayPal mode**: `POST /api/paypal/checkout` recomputes the cart from `data/products.ts` (bundle prices included; the browser total is ignored) and creates a PayPal Orders v2 order with `intent: CAPTURE`. The buyer is redirected to PayPal to approve it. Cancel returns to `/cart?canceled=1`. Approval returns to `GET /api/paypal/return`, which captures the order, requires status `COMPLETED`, and checks that the captured currency is USD and the captured amount matches the catalog total. Only then does it sign a download token with the usual 14-day expiry and redirect to the receipt. Private PDFs are not sent before that check. A mismatch or a failed capture sends the buyer back to checkout with an explanation and does not issue a link.
+
+`POST /api/paypal/webhook` verifies the transmission with `PAYPAL_WEBHOOK_ID` when that variable is set. It acknowledges the event and does not release files. Point the webhook at `https://YOUR_DOMAIN/api/paypal/webhook`.
+
+### PayPal setup
+
+1. Open the [PayPal Developer Dashboard](https://developer.paypal.com/dashboard/applications) and create a REST app. Use the sandbox app while testing, and a live app when you are ready to charge real PayPal accounts.
+2. Copy that app's Client ID and Secret.
+3. In the Vercel project, set `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET`, and `PAYPAL_ENV` (`sandbox` or `live`). Set `NEXT_PUBLIC_SITE_URL` to the https origin PayPal will redirect back to.
+4. Optional: in the same app, add a webhook for `https://YOUR_DOMAIN/api/paypal/webhook` and set `PAYPAL_WEBHOOK_ID` to the webhook id PayPal shows. Checkout works without it.
 
 Download links look like `/orders/<token>` and `/api/download/<token>/<slug>`. The token is `base64url(payload)~hmac`. The payload holds the order id, email, line items, file slugs, and expiry. The API checks the signature, the expiry, and that the file belongs to the order, then streams the PDF from `private/pdfs/`. Anyone with the link can download until it expires, so the receipt should be treated like a secret.
 
@@ -107,8 +122,9 @@ The script uses ReportLab and the SIL Open Font License Liberation fonts in `scr
 
 1. Import the repository.
 2. Set `NEXT_PUBLIC_SITE_URL` to the production origin, and set `DOWNLOAD_SECRET`.
-3. Add `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET` when you want live charges.
-4. Deploy. `npm run build` is the build command. No database is required.
+3. Add `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET` when you want card charges.
+4. Add `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET`, and `PAYPAL_ENV` when you want PayPal. See the PayPal setup steps above.
+5. Deploy. `npm run build` is the build command. No database is required.
 
 The success URL is built from `NEXT_PUBLIC_SITE_URL` in production, so set that before the first real payment.
 
@@ -130,7 +146,7 @@ Have a lawyer read `data/legal.ts` before you rely on it. The pages are a practi
 Then:
 
 - set `NEXT_PUBLIC_SITE_URL` and `DOWNLOAD_SECRET`
-- add Stripe keys and a webhook
+- add Stripe keys and a webhook, PayPal REST app credentials, or both
 - leave `ALLOW_DEMO_CHECKOUT` unset
 - point `CONTACT_WEBHOOK_URL` and `NEWSLETTER_WEBHOOK_URL` at your inbox tool (a Zapier, Make, or Formspark endpoint is enough)
 - remove or replace the sample testimonials and sample reviews when you have real ones

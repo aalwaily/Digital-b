@@ -1,6 +1,5 @@
-import { quote, CatalogError } from "@/lib/catalog";
+import { parseCheckoutInput } from "@/lib/checkout-input";
 import { signDownloadToken, newOrderId } from "@/lib/download-token";
-import { isEmail } from "@/lib/email";
 import { demoCheckoutAllowed, getStripe, isStripeConfigured } from "@/lib/payments";
 import { getRequestOrigin } from "@/lib/site-url";
 import { NextResponse } from "next/server";
@@ -8,39 +7,23 @@ import { NextResponse } from "next/server";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-type Body = {
-  slugs?: unknown;
-  email?: unknown;
-  confirmDemo?: unknown;
-};
-
 export async function POST(request: Request) {
-  let body: Body;
+  let body: unknown;
   try {
-    body = (await request.json()) as Body;
+    body = await request.json();
   } catch {
     return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   }
 
-  if (!Array.isArray(body.slugs) || body.slugs.some((slug) => typeof slug !== "string")) {
-    return NextResponse.json({ error: "Choose at least one guide." }, { status: 400 });
-  }
-  const email = typeof body.email === "string" ? body.email.trim() : "";
-  if (!isEmail(email)) {
-    return NextResponse.json({ error: "Enter a valid email address." }, { status: 400 });
-  }
+  const parsed = parseCheckoutInput(body);
+  if (!parsed.ok) return NextResponse.json({ error: parsed.error }, { status: 400 });
+  const { email, priced, confirmDemo } = parsed.value;
 
-  let priced;
-  try {
-    priced = quote(body.slugs);
-  } catch (error) {
-    const message = error instanceof CatalogError ? error.message : "Could not price this order.";
-    return NextResponse.json({ error: message }, { status: 400 });
-  }
-
-  const stripe = getStripe();
-  if (!stripe || !isStripeConfigured()) {
-    if (body.confirmDemo !== true || !demoCheckoutAllowed()) {
+  if (!isStripeConfigured()) {
+    if (!demoCheckoutAllowed()) {
+      return NextResponse.json({ error: "Card checkout is not available." }, { status: 400 });
+    }
+    if (!confirmDemo) {
       return NextResponse.json(
         { demo: true, error: "Demo checkout has to be confirmed on the checkout page." },
         { status: 400 },
@@ -54,6 +37,11 @@ export async function POST(request: Request) {
       demo: true,
     });
     return NextResponse.json({ demo: true, token });
+  }
+
+  const stripe = getStripe();
+  if (!stripe) {
+    return NextResponse.json({ error: "Card checkout is not available." }, { status: 400 });
   }
 
   const origin = getRequestOrigin(request);

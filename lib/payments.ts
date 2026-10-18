@@ -10,7 +10,13 @@ export function getStripe() {
   return new Stripe(key);
 }
 
+export function isPayPalConfigured() {
+  const id = process.env.PAYPAL_CLIENT_ID?.trim();
+  const secret = process.env.PAYPAL_CLIENT_SECRET?.trim();
+  return Boolean(id && secret);
+}
+
 export function demoCheckoutAllowed() {
-  if (!isStripeConfigured()) return true;
+  if (!isStripeConfigured() && !isPayPalConfigured()) return true;
   return process.env.ALLOW_DEMO_CHECKOUT === "true";
 }

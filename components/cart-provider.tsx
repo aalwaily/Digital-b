@@ -46,7 +46,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const remove = useCallback((slug: string) => {
-    setSlugs((current) => current.filter((item) => item !== slug));
+    setSlugs((current) => (current.includes(slug) ? current.filter((item) => item !== slug) : current));
   }, []);
 
   const clear = useCallback(() => setSlugs([]), []);

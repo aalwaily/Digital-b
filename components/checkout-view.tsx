@@ -10,14 +10,22 @@ import { overlapWarnings, quote, CatalogError } from "@/lib/catalog";
 import { formatMoney } from "@/lib/money";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
-export function CheckoutView({ stripeEnabled }: { stripeEnabled: boolean }) {
+export function CheckoutView({
+  stripeEnabled,
+  paypalEnabled,
+}: {
+  stripeEnabled: boolean;
+  paypalEnabled: boolean;
+}) {
   const params = useSearchParams();
   const router = useRouter();
   const cart = useCart();
   const buy = params.get("buy");
   const canceled = params.get("canceled") === "1";
+  const paypalFailed = params.get("paypal") === "failed";
+  const liveCheckout = stripeEnabled || paypalEnabled;
   const slugs = useMemo(() => {
     if (buy) return [buy];
     return cart.slugs;
@@ -26,6 +34,7 @@ export function CheckoutView({ stripeEnabled }: { stripeEnabled: boolean }) {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
+  const providerRef = useRef<"card" | "paypal">(stripeEnabled || !paypalEnabled ? "card" : "paypal");
 
   let summary: ReturnType<typeof quote> | null = null;
   let catalogError = "";
@@ -36,19 +45,23 @@ export function CheckoutView({ stripeEnabled }: { stripeEnabled: boolean }) {
   }
   const warnings = summary ? overlapWarnings(slugs) : [];
 
-  async function placeOrder(event: React.FormEvent) {
+  async function placeOrder(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!summary) return;
+    const submitter = (event.nativeEvent as SubmitEvent).submitter;
+    const buttonValue = submitter instanceof HTMLButtonElement ? submitter.value : "";
+    const choice = buttonValue === "paypal" || buttonValue === "card" ? buttonValue : providerRef.current;
+    const provider = choice === "paypal" && paypalEnabled ? "paypal" : "card";
     setPending(true);
     setError("");
     try {
-      const response = await fetch("/api/checkout", {
+      const response = await fetch(provider === "paypal" ? "/api/paypal/checkout" : "/api/checkout", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
           slugs: summary.lines.map((line) => line.slug),
           email,
-          confirmDemo: !stripeEnabled,
+          confirmDemo: provider === "card" && !stripeEnabled,
         }),
       });
       const data = (await response.json()) as { error?: string; url?: string; token?: string; demo?: boolean };
@@ -98,14 +111,18 @@ export function CheckoutView({ stripeEnabled }: { stripeEnabled: boolean }) {
             Checkout was canceled. Nothing was charged. Your cart is still here if you came from it.
           </p>
         ) : null}
+        {paypalFailed ? (
+          <p role="alert" className="rounded-xl border border-destructive/40 bg-card px-4 py-3 text-sm">
+            PayPal could not confirm this payment, so the downloads were not released. If PayPal shows a completed
+            payment, email support with the time of the charge and we will match it.
+          </p>
+        ) : null}
         <div
           className={`rounded-xl px-4 py-3 text-sm leading-relaxed ${
-            stripeEnabled ? "bg-secondary" : "border border-copper/50 bg-card"
+            liveCheckout ? "bg-secondary" : "border border-copper/50 bg-card"
           }`}
         >
-          {stripeEnabled
-            ? "You will continue to Stripe's hosted payment page. Vellum Press never sees your card number."
-            : "Demo checkout. Stripe keys are not set, so this order is simulated. You will not be charged, and a real card form is not shown."}
+          {checkoutNotice(stripeEnabled, paypalEnabled)}
         </div>
         {warnings.map((warning) => (
           <p key={warning} role="status" className="rounded-xl border border-copper/40 px-4 py-3 text-sm">
@@ -133,9 +150,37 @@ export function CheckoutView({ stripeEnabled }: { stripeEnabled: boolean }) {
             {error}
           </p>
         ) : null}
-        <Button type="submit" disabled={pending} className="h-11 px-5">
-          {pending ? "Working…" : stripeEnabled ? "Continue to Stripe" : "Place demo order"}
-        </Button>
+        <div className="flex flex-wrap gap-3">
+          {stripeEnabled || !paypalEnabled ? (
+            <Button
+              type="submit"
+              name="provider"
+              value="card"
+              disabled={pending}
+              className="h-11 px-5"
+              onClick={() => {
+                providerRef.current = "card";
+              }}
+            >
+              {pending ? "Working…" : stripeEnabled ? "Continue to Stripe" : "Place demo order"}
+            </Button>
+          ) : null}
+          {paypalEnabled ? (
+            <Button
+              type="submit"
+              name="provider"
+              value="paypal"
+              variant={stripeEnabled ? "outline" : "default"}
+              disabled={pending}
+              className="h-11 px-5"
+              onClick={() => {
+                providerRef.current = "paypal";
+              }}
+            >
+              {pending ? "Working…" : "Pay with PayPal"}
+            </Button>
+          ) : null}
+        </div>
       </form>
       <aside className="order-1 h-fit rounded-2xl border bg-card p-5 lg:order-2 lg:sticky lg:top-28">
         <h2 className="font-serif text-xl">Your order</h2>
@@ -167,4 +212,17 @@ export function CheckoutView({ stripeEnabled }: { stripeEnabled: boolean }) {
       </aside>
     </div>
   );
+}
+
+function checkoutNotice(stripeEnabled: boolean, paypalEnabled: boolean) {
+  if (stripeEnabled && paypalEnabled) {
+    return "Pay with a card on Stripe, or pay with PayPal. Vellum Press never sees your card number or your PayPal password. The receipt is issued only after the payment is confirmed.";
+  }
+  if (stripeEnabled) {
+    return "You will continue to Stripe's hosted payment page. Vellum Press never sees your card number.";
+  }
+  if (paypalEnabled) {
+    return "You will continue to PayPal to approve this payment. Vellum Press never sees your PayPal password. The receipt is issued only after PayPal confirms the capture.";
+  }
+  return "Demo checkout. Stripe and PayPal are not configured, so this order is simulated. You will not be charged, and a real payment form is not shown.";
 }
