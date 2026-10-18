@@ -98,3 +98,27 @@ export function readApplePayDomainAssociation(value: string | undefined | null) 
   if (new TextEncoder().encode(stripped).length > MAX_ASSOCIATION_BYTES) return null;
   return stripped;
 }
+
+export type ApplePayDomainFile =
+  | { ok: true; body: string; source: "paypal" | "moyasar" | "both" }
+  | { ok: false; reason: "missing" | "conflict" };
+
+/**
+ * Apple allows one association file at the well-known path.
+ * Serve PayPal's file or Moyasar's file when only one is set.
+ * If both are set they must be the same bytes; otherwise the owner has to pick one.
+ */
+export function resolveApplePayDomainAssociation(
+  paypalValue: string | undefined | null,
+  moyasarValue: string | undefined | null,
+): ApplePayDomainFile {
+  const paypal = readApplePayDomainAssociation(paypalValue);
+  const moyasar = readApplePayDomainAssociation(moyasarValue);
+  if (paypal && moyasar) {
+    if (paypal === moyasar) return { ok: true, body: paypal, source: "both" };
+    return { ok: false, reason: "conflict" };
+  }
+  if (paypal) return { ok: true, body: paypal, source: "paypal" };
+  if (moyasar) return { ok: true, body: moyasar, source: "moyasar" };
+  return { ok: false, reason: "missing" };
+}

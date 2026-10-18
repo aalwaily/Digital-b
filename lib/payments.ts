@@ -1,4 +1,5 @@
 import Stripe from "stripe";
+import { isMoyasarConfigured } from "@/lib/moyasar";
 
 export function isStripeConfigured() {
   return Boolean(process.env.STRIPE_SECRET_KEY);
@@ -17,6 +18,6 @@ export function isPayPalConfigured() {
 }
 
 export function demoCheckoutAllowed() {
-  if (!isStripeConfigured() && !isPayPalConfigured()) return true;
+  if (!isStripeConfigured() && !isPayPalConfigured() && !isMoyasarConfigured()) return true;
   return process.env.ALLOW_DEMO_CHECKOUT === "true";
 }

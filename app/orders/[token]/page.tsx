@@ -51,7 +51,7 @@ export default async function OrderPage({
       {query.paid === "1" && !payload.demo ? <ClearPurchased slugs={payload.items.map((item) => item.slug)} /> : null}
       {showDemo ? (
         <p className="mt-4 rounded-xl border border-copper/50 bg-card px-4 py-3 text-sm">
-          Demo order. No payment was collected. This receipt exists so you can try the download flow before Stripe or PayPal is connected.
+          Demo order. No payment was collected. This receipt exists so you can try the download flow before Stripe, PayPal, or Moyasar is connected.
         </p>
       ) : (
         <p className="mt-4 rounded-xl bg-secondary px-4 py-3 text-sm">Payment confirmed. Thank you.</p>

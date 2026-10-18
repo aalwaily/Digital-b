@@ -1,4 +1,5 @@
 import { GET as associationGET } from "@/app/.well-known/apple-developer-merchantid-domain-association/route";
+import { GET as moyasarAssociationGET } from "@/app/api/moyasar/apple-domain/route";
 import { POST as capturePOST } from "@/app/api/paypal/applepay/capture/route";
 import { POST as orderPOST } from "@/app/api/paypal/applepay/order/route";
 import { GET as configGET } from "@/app/api/paypal/config/route";
@@ -13,8 +14,10 @@ import {
   isPayPalApplePaySdkUrl,
   paypalApplePaySdkUrl,
   readApplePayDomainAssociation,
+  resolveApplePayDomainAssociation,
   shouldShowApplePayButton,
 } from "@/lib/apple-pay";
+import { APPLE_PAY_DOMAIN_CONFLICT_MESSAGE } from "@/lib/apple-pay-domain";
 import { formatUsdCents, paypalOrderBinding, signPayPalCheckoutState, type PayPalOrder } from "@/lib/paypal";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -106,21 +109,65 @@ describe("Apple Pay domain association", () => {
     expect(readApplePayDomainAssociation("x".repeat(64 * 1024 + 1))).toBeNull();
   });
 
-  it("serves the env value with status 200 and no redirect", async () => {
-    await withEnv("APPLE_PAY_DOMAIN_ASSOCIATION", "PAYPAL-DOMAIN-FILE", async () => {
-      const response = await associationGET();
-      expect(response.status).toBe(200);
-      expect(response.headers.get("location")).toBeNull();
-      expect(response.headers.get("content-type")).toBe(APPLE_PAY_DOMAIN_ASSOCIATION_CONTENT_TYPE);
-      expect(await response.text()).toBe("PAYPAL-DOMAIN-FILE");
+  it("serves whichever domain file is set, and refuses two different files", async () => {
+    expect(resolveApplePayDomainAssociation("PAYPAL-FILE", undefined)).toEqual({
+      ok: true,
+      body: "PAYPAL-FILE",
+      source: "paypal",
+    });
+    expect(resolveApplePayDomainAssociation("  ", "MOYASAR-FILE")).toEqual({
+      ok: true,
+      body: "MOYASAR-FILE",
+      source: "moyasar",
+    });
+    expect(resolveApplePayDomainAssociation("SAME-FILE", "SAME-FILE")).toEqual({
+      ok: true,
+      body: "SAME-FILE",
+      source: "both",
+    });
+    expect(resolveApplePayDomainAssociation("PAYPAL-FILE", "MOYASAR-FILE")).toEqual({
+      ok: false,
+      reason: "conflict",
+    });
+
+    await withEnv("MOYASAR_APPLE_PAY_DOMAIN_ASSOCIATION", undefined, async () => {
+      await withEnv("APPLE_PAY_DOMAIN_ASSOCIATION", "PAYPAL-DOMAIN-FILE", async () => {
+        const response = await associationGET();
+        expect(response.status).toBe(200);
+        expect(response.headers.get("location")).toBeNull();
+        expect(response.headers.get("content-type")).toBe(APPLE_PAY_DOMAIN_ASSOCIATION_CONTENT_TYPE);
+        expect(await response.text()).toBe("PAYPAL-DOMAIN-FILE");
+      });
+    });
+
+    await withEnv("APPLE_PAY_DOMAIN_ASSOCIATION", undefined, async () => {
+      await withEnv("MOYASAR_APPLE_PAY_DOMAIN_ASSOCIATION", "MOYASAR-DOMAIN-FILE", async () => {
+        const response = await associationGET();
+        expect(response.status).toBe(200);
+        expect(response.headers.get("location")).toBeNull();
+        expect(await response.text()).toBe("MOYASAR-DOMAIN-FILE");
+        const alias = await moyasarAssociationGET();
+        expect(await alias.text()).toBe("MOYASAR-DOMAIN-FILE");
+      });
+    });
+
+    await withEnv("APPLE_PAY_DOMAIN_ASSOCIATION", "PAYPAL-FILE", async () => {
+      await withEnv("MOYASAR_APPLE_PAY_DOMAIN_ASSOCIATION", "MOYASAR-FILE", async () => {
+        const response = await associationGET();
+        expect(response.status).toBe(409);
+        expect(response.headers.get("location")).toBeNull();
+        expect(await response.text()).toBe(APPLE_PAY_DOMAIN_CONFLICT_MESSAGE);
+      });
     });
   });
 
-  it("returns 404 when the association file is not configured", async () => {
+  it("returns 404 when neither association file is configured", async () => {
     await withEnv("APPLE_PAY_DOMAIN_ASSOCIATION", undefined, async () => {
-      const response = await associationGET();
-      expect(response.status).toBe(404);
-      expect(response.headers.get("location")).toBeNull();
+      await withEnv("MOYASAR_APPLE_PAY_DOMAIN_ASSOCIATION", undefined, async () => {
+        const response = await associationGET();
+        expect(response.status).toBe(404);
+        expect(response.headers.get("location")).toBeNull();
+      });
     });
   });
 });
