@@ -209,7 +209,7 @@ Next.js on Netlify needs the [Next.js runtime](https://docs.netlify.com/framewor
 
 ## Before you take real payments
 
-The contact and support address in `data/site.ts` is `aali444m@gmail.com`. Mailto links and the contact page use it.
+The contact and support address in `data/site.ts` is `glarz.com@gmail.com`. Mailto links and the contact page use it.
 
 These business details are still placeholders. Replace them before you rely on the legal pages:
 

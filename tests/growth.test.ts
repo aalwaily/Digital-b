@@ -41,8 +41,8 @@ afterEach(() => {
 
 describe("contact address", () => {
   it("uses the owner inbox instead of example addresses", () => {
-    expect(site.email).toBe("aali444m@gmail.com");
-    expect(site.supportEmail).toBe("aali444m@gmail.com");
+    expect(site.email).toBe("glarz.com@gmail.com");
+    expect(site.supportEmail).toBe("glarz.com@gmail.com");
     expect(site.email.includes(".example")).toBe(false);
     expect(site.legalName).toBe("Vellum Press");
     expect(site.location).toBe("Portland, Oregon");
