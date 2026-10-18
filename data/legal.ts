@@ -24,21 +24,21 @@ export const legalPages: LegalPage[] = [
         heading: "Who we are",
         paragraphs: [
           `${site.legalName} ("we") publishes digital PDF guides. You can reach us at ${site.email}. We are based in ${site.location}.`,
-          "This policy describes the demo store and the same store after Stripe, PayPal, or Moyasar is connected. It does not cover third-party sites we link to.",
+          "This policy describes the store when payments are processed by PayPal, and the labeled demo used when PayPal is not connected. It does not cover third-party sites we link to.",
         ],
       },
       {
         heading: "What we collect",
         paragraphs: [
-          "Checkout asks for an email address so we can build your receipt and download link. If you pay with Stripe, Stripe collects the card on Stripe's pages. If you pay with PayPal, PayPal collects that payment on PayPal's pages. If you pay with Apple Pay through PayPal, Apple shows the payment sheet and PayPal processes the charge. If you pay with Moyasar, the card, mada, Apple Pay, or STC Pay details are entered in Moyasar's payment form and sent to Moyasar. We do not receive your full card number, your Apple Pay token, your PayPal password, or your STC Pay OTP.",
-          "The contact form collects your name, email, topic, and message. The newsletter form collects an email address and your consent to hear about new guides.",
+          "Checkout asks for an email address so we can build your receipt and download link. Payments are processed by PayPal. A card or a PayPal balance is entered on PayPal's pages. When Apple Pay is available, Apple shows the payment sheet and PayPal processes the charge. We do not receive your full card number, your Apple Pay token, or your PayPal password.",
+          "The contact form collects your name, email, topic, and message. The newsletter form collects an email address and your consent to hear about new guides. The free-sample form collects an email address in exchange for the sample PDF.",
           "The cart and the theme preference are stored in your browser (local storage). They are not sent to us until you choose to check out.",
         ],
       },
       {
         heading: "What we do not do",
         paragraphs: [
-          "We do not sell personal information. We do not run third-party advertising trackers on this site. We do not ask you to create a password.",
+          "We do not sell personal information. We do not ask you to create a password. Google Analytics, the Meta Pixel, and the TikTok Pixel are not loaded unless the store owner sets the matching public id. When one of those ids is set, that provider's script loads, and a completed purchase can send an order id, total, and product names from the receipt page. When the ids are unset, those scripts are not included.",
           "We do not use the health, money, or stress content you might type into a worksheet. Those worksheets live in the PDF on your device.",
         ],
       },
@@ -46,7 +46,7 @@ export const legalPages: LegalPage[] = [
         heading: "Why we use the information",
         paragraphs: [
           "We use your email to deliver downloads, send a receipt, respond to support and refund requests, and, if you opted in, to send occasional notes about new guides. You can unsubscribe from those notes by replying to one.",
-          "If a webhook URL is configured by the owner, form submissions are forwarded to that endpoint so they can reach an inbox. If it is not configured, the form is validated and nothing is emailed. The form tells you which of those happened.",
+          "If a contact webhook URL is configured, contact-form submissions are forwarded to that endpoint. If it is not, the contact form is validated and nothing is emailed, and the form says so. Newsletter signups and free-sample requests are forwarded when a newsletter webhook URL is set. Otherwise they are written to the server log, and the form still confirms that the address was recorded.",
         ],
       },
       {
@@ -59,14 +59,14 @@ export const legalPages: LegalPage[] = [
       {
         heading: "Processors",
         paragraphs: [
-          "Stripe, Inc. processes live card payments under its own privacy policy when Stripe keys are configured. PayPal processes PayPal payments, including Apple Pay charged through PayPal, under its own privacy policy when PayPal keys are configured. Moyasar Financial Company processes mada, card, Apple Pay, and STC Pay payments under its own privacy policy when Moyasar keys are configured. In demo mode no payment processor is contacted.",
+          "PayPal processes payments for this store, including cards, a PayPal balance, and Apple Pay where it is available, under PayPal's own privacy policy. In demo mode, when PayPal is not configured, no payment processor is contacted. Stripe and Moyasar are not offered unless the owner explicitly enables them. If they are enabled, those companies process that payment under their own privacy policies.",
           "If you deploy this store, your host (for example Vercel) will also process technical logs such as IP address and user agent as part of running the site. Review that host's policy.",
         ],
       },
       {
         heading: "How long we keep it",
         paragraphs: [
-          "This template does not include a database. Live Stripe payments are retained by Stripe according to Stripe's retention and your dashboard settings. PayPal payments are retained by PayPal. Moyasar payments are retained by Moyasar. Webhook forwards, if you add them, are retained by whatever service receives them.",
+          "This store does not include a database of orders. PayPal retains PayPal payments according to PayPal's own retention. Newsletter and free-sample addresses are sent to the configured webhook, or, when no webhook is set, written to the server log. Webhook forwards are retained by whatever service receives them.",
           "Download tokens expire on their own. They are not a permanent archive of your library. Save the PDFs.",
         ],
       },
@@ -122,7 +122,7 @@ export const legalPages: LegalPage[] = [
         heading: "Prices and checkout",
         paragraphs: [
           "Prices in the catalog are in US dollars and are shown before you pay. We may change prices of future purchases at any time. A confirmed order keeps the price you paid.",
-          "If Stripe is configured, you can pay on Stripe Checkout in US dollars. If PayPal is configured, you can pay with PayPal in US dollars, and on Safari Apple Pay can appear when this device can make an Apple Pay payment and the domain is registered with PayPal. If Moyasar is configured, you can pay with mada, Visa, Mastercard, Apple Pay, or STC Pay. That charge is in Saudi riyals, converted on our server from the catalog total at the published USD to SAR rate, and the riyal amount is shown before you pay. If none of these are configured, checkout is a labeled demo: no payment is collected and the download is issued so the flow can be reviewed. Do not present demo orders as real sales.",
+          "Payments are processed by PayPal in US dollars. You can pay with a card or your PayPal balance. On Safari, Apple Pay can appear when this device can make an Apple Pay payment and the domain is registered with PayPal. We do not see your card number or your PayPal password. If PayPal is not configured, checkout is a labeled demo: no payment is collected and the download is issued so the flow can be reviewed. Do not present demo orders as real sales.",
           "You must provide an email address you can access. The download link is tied to that address and to the products in the order.",
         ],
       },
@@ -182,7 +182,7 @@ export const legalPages: LegalPage[] = [
       {
         heading: "How the refund is paid",
         paragraphs: [
-          "If you paid with Stripe, we refund the charge to the original card. Stripe's timing to your bank can take several business days after we issue it. If you paid with PayPal, we refund the PayPal payment back to the PayPal account used at checkout. If you paid with Apple Pay through PayPal, the refund goes back to that card. If you paid with Moyasar, we refund through Moyasar to the original mada, card, Apple Pay, or STC Pay method, in the riyal amount that was charged. We refund the amount you paid for the items you return, not an arbitrary portion, unless we agree otherwise in writing.",
+          "Payments are processed by PayPal, so a refund is issued through PayPal to the original method: the card, the PayPal balance, or Apple Pay. PayPal's timing to a card can take several business days after we issue the refund. We refund the amount you paid for the items you return, not an arbitrary portion, unless we agree otherwise in writing.",
           "Demo orders do not collect a payment. There is nothing to reverse. The receipt page marks those orders as demos.",
         ],
       },
@@ -223,7 +223,7 @@ export const legalPages: LegalPage[] = [
       {
         heading: "Instant delivery",
         paragraphs: [
-          "There is no shipping. After a successful Stripe, PayPal, or Moyasar payment, or after you confirm a demo order, you land on a receipt page with a download button for each full PDF you bought. A bundle lists each included guide.",
+          "There is no shipping. After PayPal confirms the payment, or after you confirm a demo order, you land on a receipt page with a download button for each full PDF you bought. A bundle lists each included guide.",
           "Free samples are separate, shorter PDFs. They are available on the product page before you buy and are not a substitute for the full guide.",
         ],
       },
@@ -250,8 +250,8 @@ export const legalPages: LegalPage[] = [
       {
         heading: "Failed payments and demo mode",
         paragraphs: [
-          "If you cancel Stripe Checkout, you are not charged and no full guide is delivered. Your browser cart remains so you can try again. If you cancel PayPal, you return to the cart with the same result: nothing is charged and the files stay locked. If a Moyasar payment fails or is abandoned, you return to checkout, nothing is delivered, and the cart remains.",
-          "Demo mode is labeled on the checkout page. It exists so the store works before Stripe, PayPal, or Moyasar keys are added. A demo receipt is not proof of payment.",
+          "If you cancel PayPal, you return to the cart. Nothing is charged and the files stay locked. If Apple Pay is canceled, you stay on checkout with the same result.",
+          "Demo mode is labeled on the checkout page. It is what you see when PayPal is not configured. A demo receipt is not proof of payment.",
         ],
       },
       {

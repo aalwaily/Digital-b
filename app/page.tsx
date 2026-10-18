@@ -11,12 +11,21 @@ import { posts } from "@/data/blog";
 import { site } from "@/data/site";
 import { testimonials } from "@/data/testimonials";
 import { pageCountFor } from "@/lib/catalog";
+import { pageMetadata } from "@/lib/page-meta";
 import { organizationSchema, websiteSchema } from "@/lib/schema";
 import { getSiteUrl } from "@/lib/site-url";
+import type { Metadata } from "next";
 import { Download, LockKeyhole, Printer, RefreshCcw, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 
 const featuredGuides = products.filter((product) => product.featured && product.kind === "guide").slice(0, 4);
+
+export const metadata: Metadata = pageMetadata({
+  title: `${site.name} · Practical PDF guides`,
+  description: site.description,
+  path: "/",
+  absoluteTitle: true,
+});
 
 export default function HomePage() {
   const bundle = getProduct("health-fitness-bundle");
@@ -91,7 +100,7 @@ export default function HomePage() {
             { icon: LockKeyhole, title: "Signed links", text: "Full files stay off the public web." },
             { icon: Printer, title: "Print what you use", text: "Letter-size pages, checklists, tables." },
             { icon: RefreshCcw, title: "30-day refunds", text: "Email support if it is not the right guide." },
-            { icon: ShieldCheck, title: "Card, PayPal, mada, or demo", text: "Stripe, PayPal, Apple Pay, or Moyasar. Demo is labeled." },
+            { icon: ShieldCheck, title: "PayPal checkout", text: "Cards and PayPal balance. Apple Pay where available." },
           ].map((item) => (
             <div key={item.title} className="flex gap-3">
               <item.icon className="mt-0.5 size-5 shrink-0 text-copper" aria-hidden />
@@ -163,7 +172,7 @@ export default function HomePage() {
             {
               step: "02",
               title: "Check out",
-              text: "Pay with Stripe, PayPal, Apple Pay on Safari, or Moyasar (mada, cards, Apple Pay, and STC Pay in SAR) when those keys are set. Otherwise a labeled demo completes the order.",
+              text: "Payments are processed by PayPal. Pay with a card or your PayPal balance, or with Apple Pay where it is available. If PayPal is not connected, a labeled demo completes the order.",
             },
             {
               step: "03",

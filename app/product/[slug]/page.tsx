@@ -4,9 +4,12 @@ import { Price } from "@/components/price";
 import { ProductCard } from "@/components/product-card";
 import { ProductGallery } from "@/components/product-gallery";
 import { PurchaseActions } from "@/components/purchase-actions";
+import { SampleRequest } from "@/components/sample-request";
+import { ShareProduct } from "@/components/share-product";
 import { getCategory, getProduct, isBundle, products } from "@/data/products";
 import { reviewsFor } from "@/data/reviews";
 import { pageCountFor, relatedProducts, samplePageCount } from "@/lib/catalog";
+import { pageMetadata } from "@/lib/page-meta";
 import { breadcrumbSchema, faqSchema, productSchema } from "@/lib/schema";
 import { getSiteUrl } from "@/lib/site-url";
 import type { Metadata } from "next";
@@ -23,16 +26,11 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const { slug } = await params;
   const product = getProduct(slug);
   if (!product) return { title: "Guide" };
-  return {
+  return pageMetadata({
     title: product.title,
     description: product.shortDescription,
-    alternates: { canonical: `/product/${product.slug}` },
-    openGraph: {
-      title: product.title,
-      description: product.shortDescription,
-      type: "website",
-    },
-  };
+    path: `/product/${product.slug}`,
+  });
 }
 
 export default async function ProductPage({ params }: { params: Promise<Params> }) {
@@ -72,23 +70,17 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           <div className="mt-6">
             <PurchaseActions slug={product.slug} />
           </div>
-          <div className="mt-4 space-y-2">
-            {sampleTargets.map((sampleSlug) => {
-              const sampleProduct = getProduct(sampleSlug);
-              const samplePages = samplePageCount(sampleSlug);
-              return (
-                <a
-                  key={sampleSlug}
-                  href={`/samples/${sampleSlug}-sample.pdf`}
-                  className="block text-sm underline underline-offset-4"
-                  download
-                >
-                  Download free sample{sampleProduct && isBundle(product) ? `: ${sampleProduct.title}` : ""}
-                  {samplePages ? ` (${samplePages} pages)` : ""}
-                </a>
-              );
-            })}
+          <div className="mt-4">
+            <SampleRequest
+              slug={product.slug}
+              samples={sampleTargets.flatMap((sampleSlug) => {
+                const sampleProduct = getProduct(sampleSlug);
+                if (!sampleProduct) return [];
+                return [{ slug: sampleSlug, title: sampleProduct.title, pages: samplePageCount(sampleSlug) }];
+              })}
+            />
           </div>
+          <ShareProduct title={product.title} url={`${siteUrl}/product/${product.slug}`} />
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
             Personal use. Print a copy for yourself. Do not redistribute the file.
           </p>

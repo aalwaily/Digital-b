@@ -1,6 +1,7 @@
 import { parseCheckoutInput } from "@/lib/checkout-input";
 import { signingSecret } from "@/lib/download-token";
-import { buildMoyasarFormConfig, isMoyasarConfigured, moyasarKeys, signMoyasarCheckoutState } from "@/lib/moyasar";
+import { buildMoyasarFormConfig, moyasarKeys, signMoyasarCheckoutState } from "@/lib/moyasar";
+import { isMoyasarEnabled } from "@/lib/payments";
 import { getRequestOrigin } from "@/lib/site-url";
 import { site } from "@/data/site";
 import { NextResponse } from "next/server";
@@ -9,7 +10,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
-  if (!isMoyasarConfigured()) {
+  if (!isMoyasarEnabled()) {
     return NextResponse.json({ error: "Moyasar is not configured." }, { status: 501 });
   }
 

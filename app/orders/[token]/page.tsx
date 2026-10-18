@@ -1,7 +1,9 @@
 import { ClearPurchased } from "@/components/clear-purchased";
 import { Cover } from "@/components/cover";
 import { OrderTools } from "@/components/order-tools";
+import { PurchaseEvent } from "@/components/purchase-event";
 import { LinkButton } from "@/components/link-button";
+import { analyticsEnabled, readAnalytics } from "@/lib/analytics";
 import { verifyDownloadToken } from "@/lib/download-token";
 import { privatePdfPath } from "@/lib/files";
 import { formatMoney } from "@/lib/money";
@@ -10,6 +12,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Your downloads",
+  description: "Receipt and PDF downloads for a Vellum Press order.",
   robots: { index: false, follow: false },
 };
 
@@ -40,6 +43,8 @@ export default async function OrderPage({
 
   const expires = new Intl.DateTimeFormat("en-US", { dateStyle: "long" }).format(new Date(payload.exp * 1000));
   const showDemo = payload.demo || query.demo === "1";
+  const analytics = readAnalytics();
+  const orderValue = payload.items.reduce((total, item) => total + item.price, 0);
 
   return (
     <div className="mx-auto max-w-3xl px-5 py-12">
@@ -49,9 +54,18 @@ export default async function OrderPage({
         Order {payload.orderId} for {payload.email}. Save the PDFs. This link expires on {expires}.
       </p>
       {query.paid === "1" && !payload.demo ? <ClearPurchased slugs={payload.items.map((item) => item.slug)} /> : null}
+      {!showDemo && analyticsEnabled(analytics) ? (
+        <PurchaseEvent
+          orderId={payload.orderId}
+          value={orderValue}
+          currency="USD"
+          items={payload.items.map((item) => ({ slug: item.slug, title: item.title, price: item.price }))}
+          analytics={analytics}
+        />
+      ) : null}
       {showDemo ? (
         <p className="mt-4 rounded-xl border border-copper/50 bg-card px-4 py-3 text-sm">
-          Demo order. No payment was collected. This receipt exists so you can try the download flow before Stripe, PayPal, or Moyasar is connected.
+          Demo order. No payment was collected. PayPal is not configured, so this receipt is for trying the download flow.
         </p>
       ) : (
         <p className="mt-4 rounded-xl bg-secondary px-4 py-3 text-sm">Payment confirmed. Thank you.</p>

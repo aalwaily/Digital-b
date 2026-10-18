@@ -1,12 +1,13 @@
 import { ContactForm } from "@/components/contact-form";
 import { site } from "@/data/site";
+import { pageMetadata } from "@/lib/page-meta";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Contact",
-  description: `Write to ${site.name} about an order, a refund, or a licensing question.`,
-  alternates: { canonical: "/contact" },
-};
+  description: `Write to ${site.name} at ${site.email} about an order, a refund, or a licensing question.`,
+  path: "/contact",
+});
 
 export default function ContactPage() {
   return (

@@ -93,7 +93,9 @@ export function CartView({ canceled = false }: { canceled?: boolean }) {
               <dd className="price">{formatMoney(summary.subtotal)}</dd>
             </div>
           </dl>
-          <p className="mt-3 text-xs text-muted-foreground">Digital delivery. No tax calculated in this demo.</p>
+          <p className="mt-3 text-xs text-muted-foreground">
+            Digital delivery. Prices in USD. Payments are processed by PayPal.
+          </p>
           <Link href="/checkout" className={buttonVariants({ className: "mt-4 flex h-11 w-full" })}>
             Checkout
           </Link>

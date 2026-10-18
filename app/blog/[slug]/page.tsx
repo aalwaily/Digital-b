@@ -1,6 +1,10 @@
+import { JsonLd } from "@/components/json-ld";
 import { posts, getPost } from "@/data/blog";
 import { getProduct } from "@/data/products";
 import { LinkButton } from "@/components/link-button";
+import { pageMetadata } from "@/lib/page-meta";
+import { articleSchema } from "@/lib/schema";
+import { getSiteUrl } from "@/lib/site-url";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -12,17 +16,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const post = getPost(slug);
   if (!post) return { title: "Journal" };
-  return {
+  return pageMetadata({
     title: post.title,
     description: post.description,
-    alternates: { canonical: `/blog/${post.slug}` },
-    openGraph: {
-      type: "article",
-      title: post.title,
-      description: post.description,
-      publishedTime: post.date,
-    },
-  };
+    path: `/blog/${post.slug}`,
+    type: "article",
+    publishedTime: post.date,
+  });
 }
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -33,6 +33,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
   return (
     <article className="mx-auto max-w-3xl px-5 py-12">
+      <JsonLd data={articleSchema(post, getSiteUrl())} />
       <p className="text-xs tracking-[0.16em] text-copper uppercase">{post.category}</p>
       <h1 className="mt-2 font-serif text-4xl md:text-5xl">{post.title}</h1>
       <p className="mt-3 text-sm text-muted-foreground">

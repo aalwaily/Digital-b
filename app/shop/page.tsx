@@ -1,12 +1,13 @@
 import { ShopBrowser } from "@/components/shop-browser";
+import { pageMetadata } from "@/lib/page-meta";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Shop",
   description: "Browse Vellum Press PDF guides and bundles. Filter by category, search, and sort.",
-  alternates: { canonical: "/shop" },
-};
+  path: "/shop",
+});
 
 export default function ShopPage() {
   return (

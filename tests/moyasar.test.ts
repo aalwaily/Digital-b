@@ -1,5 +1,5 @@
 import { quote } from "@/lib/catalog";
-import { demoCheckoutAllowed } from "@/lib/payments";
+import { demoCheckoutAllowed, isMoyasarEnabled } from "@/lib/payments";
 import { verifyDownloadToken } from "@/lib/download-token";
 import { MoyasarAmountError, usdToHalalas, readUsdToSarRate, formatSarHalalas } from "@/lib/moyasar-amount";
 import {
@@ -25,6 +25,7 @@ const ENV_KEYS = [
   "DOWNLOAD_SECRET",
   "MOYASAR_APPLE_PAY_DOMAIN_ASSOCIATION",
   "ALLOW_DEMO_CHECKOUT",
+  "ENABLE_MOYASAR",
 ] as const;
 
 const saved: Partial<Record<(typeof ENV_KEYS)[number], string | undefined>> = {};
@@ -35,6 +36,7 @@ beforeEach(() => {
   process.env.DOWNLOAD_SECRET = SECRET;
   process.env.MOYASAR_PUBLISHABLE_KEY = "pk_test_publishablekey";
   process.env.MOYASAR_SECRET_KEY = "sk_test_secretkey";
+  process.env.ENABLE_MOYASAR = "true";
 });
 
 afterEach(() => {
@@ -335,8 +337,9 @@ describe("Moyasar routes", () => {
     expect(await accepted.json()).toEqual({ received: true });
   });
 
-  it("hides Moyasar unless the publishable and secret keys are a matching pair", () => {
+  it("hides Moyasar unless the flag is on and the keys are a matching pair", () => {
     expect(isMoyasarConfigured()).toBe(true);
+    expect(isMoyasarEnabled()).toBe(true);
     const stripe = process.env.STRIPE_SECRET_KEY;
     const paypalId = process.env.PAYPAL_CLIENT_ID;
     const paypalSecret = process.env.PAYPAL_CLIENT_SECRET;
@@ -345,12 +348,18 @@ describe("Moyasar routes", () => {
     delete process.env.PAYPAL_CLIENT_SECRET;
     delete process.env.ALLOW_DEMO_CHECKOUT;
     expect(demoCheckoutAllowed()).toBe(false);
+    delete process.env.ENABLE_MOYASAR;
+    expect(isMoyasarEnabled()).toBe(false);
+    expect(demoCheckoutAllowed()).toBe(true);
+    process.env.ENABLE_MOYASAR = "true";
     process.env.MOYASAR_SECRET_KEY = "sk_live_secretkey";
     expect(isMoyasarConfigured()).toBe(false);
+    expect(isMoyasarEnabled()).toBe(false);
     expect(demoCheckoutAllowed()).toBe(true);
     process.env.MOYASAR_PUBLISHABLE_KEY = "";
     process.env.MOYASAR_SECRET_KEY = "";
     expect(isMoyasarConfigured()).toBe(false);
+    expect(isMoyasarEnabled()).toBe(false);
     if (stripe === undefined) delete process.env.STRIPE_SECRET_KEY;
     else process.env.STRIPE_SECRET_KEY = stripe;
     if (paypalId === undefined) delete process.env.PAYPAL_CLIENT_ID;

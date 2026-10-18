@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Cart",
+  description: "Review the Vellum Press guides in your cart before PayPal checkout.",
   robots: { index: false, follow: false },
 };
 

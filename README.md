@@ -2,7 +2,9 @@
 
 Vellum Press is a small storefront for practical PDF guides: health, home training, money, habits, freelance work, study, and stress. Customers pay once, download the files, and keep them. There is no membership and no account.
 
-The shop runs without payment keys. Checkout is labeled as a demo and still produces a signed download link. Add Stripe keys to charge cards, PayPal keys to offer PayPal and Apple Pay on Safari, or Moyasar keys to offer mada, Visa, Mastercard, Apple Pay, and STC Pay in Saudi riyals. Each button appears only when that provider's keys are set.
+Customers pay through PayPal. Checkout shows Pay with PayPal, and the Apple Pay button when Safari on this device is eligible. PayPal accepts a card or a PayPal balance. If PayPal keys are not set, checkout stays a labeled demo and still produces a signed download link.
+
+Stripe and Moyasar stay in the repository and stay off the checkout page unless you set `ENABLE_STRIPE=true` or `ENABLE_MOYASAR=true` and add that provider's keys. Demo checkout also stays off once PayPal, or an enabled provider, can take payment, unless `ALLOW_DEMO_CHECKOUT=true`.
 
 ![Vellum Press home page](docs/screenshots/home.png)
 
@@ -59,7 +61,8 @@ Copy `.env.example` to `.env.local` when you want to override the defaults. The 
 | `NEXT_PUBLIC_SITE_URL` | For production | Canonical URLs, sitemap, Open Graph. Example: `https://guides.example.com` |
 | `DOWNLOAD_SECRET` | Required in production | HMAC secret for download links. Use a long random string (16+ characters). |
 | `DOWNLOAD_LINK_DAYS` | No | Lifetime of a download link. Default 14. |
-| `STRIPE_SECRET_KEY` | For card charges | Secret key from the Stripe dashboard. |
+| `ENABLE_STRIPE` | No | Set to exactly `true` to show Stripe. Off by default, even if `STRIPE_SECRET_KEY` is set. |
+| `STRIPE_SECRET_KEY` | For Stripe charges | Secret key from the Stripe dashboard. Hidden until `ENABLE_STRIPE=true`. |
 | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | No | Unused by hosted Checkout. Kept for a future Stripe.js form. |
 | `STRIPE_WEBHOOK_SECRET` | For webhooks | Signing secret for `POST /api/stripe/webhook`. |
 | `PAYPAL_CLIENT_ID` | For PayPal | Client ID from a PayPal REST app. Both this and the secret are required before the PayPal button appears. |
@@ -67,22 +70,28 @@ Copy `.env.example` to `.env.local` when you want to override the defaults. The 
 | `PAYPAL_ENV` | No | `sandbox` (default) or `live`. Any value other than `live` uses the sandbox API. |
 | `PAYPAL_WEBHOOK_ID` | No | Webhook id for `POST /api/paypal/webhook`. Downloads are issued on the return URL, not by the webhook. |
 | `APPLE_PAY_DOMAIN_ASSOCIATION` | For PayPal Apple Pay | Raw contents of PayPal's Apple Pay domain association file. |
-| `MOYASAR_PUBLISHABLE_KEY` | For Moyasar | Publishable key (`pk_test_` or `pk_live_`) for the Moyasar payment form. Both this and the secret are required before the Moyasar option appears. |
+| `ENABLE_MOYASAR` | No | Set to exactly `true` to show Moyasar. Off by default, even if the Moyasar keys are set. |
+| `MOYASAR_PUBLISHABLE_KEY` | For Moyasar | Publishable key (`pk_test_` or `pk_live_`) for the Moyasar payment form. Hidden until `ENABLE_MOYASAR=true` and the secret matches the same mode. |
 | `MOYASAR_SECRET_KEY` | For Moyasar | Secret key (`sk_test_` or `sk_live_`) used only on the server to fetch and verify payments. Never commit it. Must be the same mode as the publishable key. |
 | `MOYASAR_WEBHOOK_SECRET` | No | Shared secret you choose in the Moyasar webhook settings. `POST /api/moyasar/webhook` checks it. Downloads are issued on the callback, not by the webhook. |
 | `USD_TO_SAR_RATE` | No | USD to SAR rate for Moyasar charges. Default `3.75` (the official peg). Amounts are converted to halalas on the server. |
 | `MOYASAR_APPLE_PAY_DOMAIN_ASSOCIATION` | For Moyasar Apple Pay | Body of the domain association file from the Moyasar dashboard. |
-| `ALLOW_DEMO_CHECKOUT` | No | Set to `true` only if demo checkout should stay available after Stripe, PayPal, or Moyasar is connected. Leave unset on a live store. |
+| `ALLOW_DEMO_CHECKOUT` | No | Set to `true` only if demo checkout should stay available after PayPal is connected or an enabled provider is on. Leave unset on a live store. |
 | `CONTACT_WEBHOOK_URL` | No | JSON endpoint that receives contact-form posts. |
-| `NEWSLETTER_WEBHOOK_URL` | No | JSON endpoint that receives newsletter signups. |
+| `NEWSLETTER_WEBHOOK_URL` | No | JSON endpoint for newsletter signups and free-sample requests. If unset, those addresses are written to the server log. |
+| `NEXT_PUBLIC_GA_ID` | No | Google Analytics 4 id (`G-…`). The snippet loads only when this is set and well formed. |
+| `NEXT_PUBLIC_META_PIXEL_ID` | No | Meta Pixel id (digits only). Loads only when set. |
+| `NEXT_PUBLIC_TIKTOK_PIXEL_ID` | No | TikTok Pixel id. Loads only when set. |
 
 ## Checkout and delivery
 
 Prices are read from `data/products.ts` on the server. The browser cannot set the amount.
 
-**Demo mode** (no Stripe secret, no PayPal client id/secret, and no Moyasar key pair): the checkout page says no payment will be collected. Confirming the order signs a download token and opens the receipt. The receipt is stamped as a demo. Each configured provider gets its own button. If none are configured, demo mode stays.
+**What customers see.** PayPal is the checkout. The page says payments are processed by PayPal, covering cards, a PayPal balance, and Apple Pay where the browser can offer it. Stripe and Moyasar buttons render only when their `ENABLE_` flag is exactly `true` and their keys are valid.
 
-**Stripe mode**: `POST /api/checkout` creates a Checkout Session with `price_data` in USD and redirects the buyer to Stripe. You do not have to pre-create Products in the dashboard. Success returns to `/checkout/success?session_id=...`. The server retrieves the session, checks `payment_status === "paid"`, recomputes the files from the catalog, and signs the same kind of token. Cancel returns to `/checkout?canceled=1`. The cart in the browser is unchanged until payment is confirmed.
+**Demo mode** (PayPal is not configured, and Stripe and Moyasar are not enabled): the checkout page says no payment will be collected. Confirming the order signs a download token and opens the receipt. The receipt is stamped as a demo. Keys for Stripe or Moyasar do not turn the demo off by themselves.
+
+**Stripe mode** (only when `ENABLE_STRIPE=true` and `STRIPE_SECRET_KEY` is set): `POST /api/checkout` creates a Checkout Session with `price_data` in USD and redirects the buyer to Stripe. You do not have to pre-create Products in the dashboard. Success returns to `/checkout/success?session_id=...`. The server retrieves the session, checks `payment_status === "paid"`, recomputes the files from the catalog, and signs the same kind of token. Cancel returns to `/checkout?canceled=1`. The cart in the browser is unchanged until payment is confirmed. With the flag unset, that route will not open a Stripe session.
 
 `POST /api/stripe/webhook` verifies `STRIPE_WEBHOOK_SECRET` and acknowledges `checkout.session.completed`. Fulfillment already happens on the success page, which is enough for a single digital delivery. Use the webhook later if you email files from a worker. In the Stripe dashboard, point the endpoint at `https://YOUR_DOMAIN/api/stripe/webhook` and subscribe to `checkout.session.completed`.
 
@@ -92,7 +101,7 @@ Prices are read from `data/products.ts` on the server. The browser cannot set th
 
 **Apple Pay through PayPal** uses the same PayPal account and the same Orders v2 capture check. It appears only when PayPal is configured, and only when the browser can pay with Apple Pay. Checkout loads the PayPal JS SDK with `components=applepay` from `GET /api/paypal/config`. That route returns `PAYPAL_CLIENT_ID` and the sandbox or live SDK URL. It does not return `PAYPAL_CLIENT_SECRET`. You do not need `NEXT_PUBLIC_PAYPAL_CLIENT_ID`. The button is rendered only when `ApplePaySession.canMakePayments()` is true and `paypal.Applepay().config()` reports `isEligible`. Pay with PayPal, Stripe, Moyasar, and demo checkout stay as they are.
 
-The sheet total is the catalog price. `POST /api/paypal/applepay/order` ignores any amount in the request and creates an order with no PayPal redirect `payment_source` (Apple Pay confirms that order in the browser). `paypal.Applepay().confirmOrder()` sends the Apple Pay token to PayPal. `POST /api/paypal/applepay/capture` then captures on the server and signs the 14-day receipt only when the order status is `COMPLETED` and the captured currency and amount match the catalog total. Cancel and a failed confirm leave the cart in place and do not issue a link.
+The sheet total is the catalog price. `POST /api/paypal/applepay/order` ignores any amount in the request and creates an order with no PayPal redirect `payment_source` (Apple Pay confirms that order in the browser). `paypal.Applepay().confirmOrder()` sends the Apple Pay token to PayPal. `POST /api/paypal/applepay/capture` then captures on the server and signs the 14-day receipt only when the order status is `COMPLETED` and the captured currency and amount match the catalog total. Cancel and a failed confirm leave the cart in place and do not issue a link. Stripe and Moyasar stay hidden unless their flags are on.
 
 ### PayPal setup
 
@@ -112,7 +121,7 @@ The PayPal Apple Pay button appears only when PayPal keys are set and all of the
 - PayPal reports the merchant as eligible (`paypal.Applepay().config().isEligible`)
 - the page is HTTPS on a domain registered in PayPal's Apple Pay settings
 
-Other browsers keep Pay with PayPal, Stripe when it is configured, and Moyasar when it is configured.
+Other browsers keep Pay with PayPal. Stripe and Moyasar appear only when their flags are on.
 
 1. Use a live PayPal business account that is eligible for Apple Pay via PayPal. Advanced Credit and Debit Card Payments has to be approved on that account. A standard sandbox app is not enough for production.
 2. Enable Apple Pay under Account settings > Payment methods > Apple Pay. In the [PayPal Developer Dashboard](https://developer.paypal.com/dashboard/applications), switch to Live, open the live REST app, and confirm Apple Pay is enabled under Features (Accept payments > Advanced Credit and Debit Card Payments > Apple Pay).
@@ -124,7 +133,7 @@ Other browsers keep Pay with PayPal, Stripe when it is configured, and Moyasar w
 
 `GET /api/paypal/config` is the only place the PayPal client id is sent to the browser, inside the PayPal SDK script URL. Never put `PAYPAL_CLIENT_SECRET` in `NEXT_PUBLIC_PAYPAL_CLIENT_ID` or any other public variable.
 
-**Moyasar mode**: `POST /api/moyasar/session` recomputes the cart from `data/products.ts`, including bundle prices, and ignores any amount sent by the browser. It converts the USD subtotal to SAR halalas with `USD_TO_SAR_RATE` (default 3.75) and returns the publishable key plus that amount. The checkout page then mounts [Moyasar's payment form](https://docs.moyasar.com/guides/card-payments/basic-integration) (`moyasar-payment-form` 2.3.0) with methods `creditcard` (mada, Visa, Mastercard), `applepay`, and `stcpay`. The Moyasar option is hidden until both Moyasar keys are set. Card data is entered in that form and sent to Moyasar, not to this server. After payment, Moyasar redirects to `GET /api/moyasar/callback` with the payment id. The callback fetches `GET https://api.moyasar.com/v1/payments/:id` with the secret key and signs a download token only when status is `paid`, the currency is `SAR`, the amount matches the server-computed halalas, the payment is not refunded, and the payment's callback URL is the signed checkout state for this cart. Anything else returns the buyer to `/checkout?moyasar=failed` and does not issue a link. The SAR amount is shown on the checkout page before the form is used.
+**Moyasar mode** (only when `ENABLE_MOYASAR=true` and the publishable and secret keys are a matching pair): `POST /api/moyasar/session` recomputes the cart from `data/products.ts`, including bundle prices, and ignores any amount sent by the browser. It converts the USD subtotal to SAR halalas with `USD_TO_SAR_RATE` (default 3.75) and returns the publishable key plus that amount. The checkout page then mounts [Moyasar's payment form](https://docs.moyasar.com/guides/card-payments/basic-integration) (`moyasar-payment-form` 2.3.0) with methods `creditcard` (mada, Visa, Mastercard), `applepay`, and `stcpay`. The Moyasar option is hidden until both Moyasar keys are set. Card data is entered in that form and sent to Moyasar, not to this server. After payment, Moyasar redirects to `GET /api/moyasar/callback` with the payment id. The callback fetches `GET https://api.moyasar.com/v1/payments/:id` with the secret key and signs a download token only when status is `paid`, the currency is `SAR`, the amount matches the server-computed halalas, the payment is not refunded, and the payment's callback URL is the signed checkout state for this cart. Anything else returns the buyer to `/checkout?moyasar=failed` and does not issue a link. The SAR amount is shown on the checkout page before the form is used.
 
 `POST /api/moyasar/webhook` checks the `secret_token` field against `MOYASAR_WEBHOOK_SECRET` when that variable is set, and for `payment_paid` it fetches the payment again. It acknowledges the event and does not release files. Point the webhook at `https://YOUR_DOMAIN/api/moyasar/webhook`.
 
@@ -156,7 +165,9 @@ Download links look like `/orders/<token>` and `/api/download/<token>/<slug>`. T
 
 The cart is stored in `localStorage` under `vellum-cart-v1`.
 
-Contact and newsletter forms validate input. If the matching webhook URL is unset, they tell the sender that the message was validated and not emailed. A hidden company field is a honeypot.
+Contact and newsletter forms validate input. A hidden company field is a honeypot. If `CONTACT_WEBHOOK_URL` is unset, the contact form says the message was validated and not emailed. Newsletter signups and free-sample requests are posted to `NEWSLETTER_WEBHOOK_URL` when that variable is set. Otherwise the server logs the address and the form still confirms the signup. The free sample on a product page asks for an email, then shows the sample PDF.
+
+Optional analytics load only when set: `NEXT_PUBLIC_GA_ID`, `NEXT_PUBLIC_META_PIXEL_ID`, and `NEXT_PUBLIC_TIKTOK_PIXEL_ID`. A real receipt (not a demo) sends a purchase event to whichever of those scripts loaded. Public pages have titles, descriptions, canonical URLs, Open Graph images, and JSON-LD for products, the organization, FAQs, and articles. `/sitemap.xml` and `/robots.txt` list the public pages and keep the cart, checkout, orders, and API out of the index. Product pages include copy-link and share actions.
 
 ## Add or edit a guide
 
@@ -183,10 +194,10 @@ The script uses ReportLab and the SIL Open Font License Liberation fonts in `scr
 
 1. Import the repository.
 2. Set `NEXT_PUBLIC_SITE_URL` to the production origin, and set `DOWNLOAD_SECRET`.
-3. Add `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET` when you want card charges.
-4. Add `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET`, and `PAYPAL_ENV` when you want PayPal. See the PayPal setup steps above.
-5. For Apple Pay through PayPal, set `PAYPAL_ENV=live`, enable Apple Pay on the live business account, register the production domain, and set `APPLE_PAY_DOMAIN_ASSOCIATION`. See the Apple Pay through PayPal steps above.
-6. Add `MOYASAR_PUBLISHABLE_KEY` and `MOYASAR_SECRET_KEY` when you want mada, cards, Apple Pay, or STC Pay. See the Moyasar setup steps above.
+3. Add `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET`, and `PAYPAL_ENV` for the checkout customers see. See the PayPal setup steps above.
+4. For Apple Pay through PayPal, set `PAYPAL_ENV=live`, enable Apple Pay on the live business account, register the production domain, and set `APPLE_PAY_DOMAIN_ASSOCIATION`. See the Apple Pay through PayPal steps above.
+5. Leave `ENABLE_STRIPE` and `ENABLE_MOYASAR` unset. Set `ENABLE_STRIPE=true` plus `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET` only if you also want Stripe. Set `ENABLE_MOYASAR=true` plus the Moyasar keys only if you also want mada, cards, Apple Pay, or STC Pay through Moyasar.
+6. Optional: set `NEXT_PUBLIC_GA_ID`, `NEXT_PUBLIC_META_PIXEL_ID`, or `NEXT_PUBLIC_TIKTOK_PIXEL_ID`. Blank values add no script.
 7. Put only one Apple Pay domain file in the environment. `APPLE_PAY_DOMAIN_ASSOCIATION` and `MOYASAR_APPLE_PAY_DOMAIN_ASSOCIATION` share one URL. If both are set to different files, that URL returns 409.
 8. Deploy. `npm run build` is the build command. No database is required.
 
@@ -198,11 +209,13 @@ Next.js on Netlify needs the [Next.js runtime](https://docs.netlify.com/framewor
 
 ## Before you take real payments
 
-Replace the placeholder business in `data/site.ts`:
+The contact and support address in `data/site.ts` is `aali444m@gmail.com`. Mailto links and the contact page use it.
 
-- legal name (`Vellum Press` is the working name)
-- `hello@vellumpress.example` and `support@vellumpress.example`
-- location and the governing law used by the legal pages (currently Oregon)
+These business details are still placeholders. Replace them before you rely on the legal pages:
+
+- legal name (`legalName` is still `Vellum Press`)
+- location (`location` is still `Portland, Oregon`, and there is no street address)
+- governing law (`jurisdiction` is still `the State of Oregon, United States`)
 - the refund window if 30 days is not your policy
 
 Have a lawyer read `data/legal.ts` before you rely on it. The pages are a practical starting point for a US digital-goods shop, not a law-firm opinion.
@@ -210,7 +223,8 @@ Have a lawyer read `data/legal.ts` before you rely on it. The pages are a practi
 Then:
 
 - set `NEXT_PUBLIC_SITE_URL` and `DOWNLOAD_SECRET`
-- add Stripe keys and a webhook, PayPal REST app credentials, Moyasar keys, or any combination
+- add PayPal REST app credentials so checkout leaves demo mode
+- leave `ENABLE_STRIPE` and `ENABLE_MOYASAR` unset unless you intend to show those processors too
 - for Apple Pay, register the domain with the provider you use and set only that provider's domain file (`APPLE_PAY_DOMAIN_ASSOCIATION` or `MOYASAR_APPLE_PAY_DOMAIN_ASSOCIATION`)
 - leave `ALLOW_DEMO_CHECKOUT` unset
 - point `CONTACT_WEBHOOK_URL` and `NEWSLETTER_WEBHOOK_URL` at your inbox tool (a Zapier, Make, or Formspark endpoint is enough)

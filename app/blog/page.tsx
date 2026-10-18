@@ -1,12 +1,13 @@
 import { posts } from "@/data/blog";
+import { pageMetadata } from "@/lib/page-meta";
 import type { Metadata } from "next";
 import Link from "next/link";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Journal",
   description: "Notes on meal prep, budgeting, studying, and starting a side hustle beside a job.",
-  alternates: { canonical: "/blog" },
-};
+  path: "/blog",
+});
 
 export default function BlogPage() {
   return (

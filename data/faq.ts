@@ -19,7 +19,7 @@ export const faqs: FaqItem[] = [
   {
     question: "What is the refund policy?",
     answer:
-      "You can request a refund within 30 days of purchase by emailing the support address with your order id and the email you used at checkout. If the payment went through Stripe, PayPal, or Moyasar, the refund goes back to the original payment method. Demo orders do not charge anything, so there is nothing to refund. Read the refund policy for the full terms.",
+      "You can request a refund within 30 days of purchase by emailing the support address with your order id and the email you used at checkout. Payments are processed by PayPal, so the refund goes back through PayPal to the original method: the card, the PayPal balance, or Apple Pay. Demo orders do not charge anything, so there is nothing to refund. Read the refund policy for the full terms.",
   },
   {
     question: "Which devices open the PDFs?",
@@ -32,19 +32,19 @@ export const faqs: FaqItem[] = [
       "No. Guides on weight, food, exercise, and stress are educational. They include disclaimers, red flags, and pointers toward licensed care. They are not a diagnosis, a diet prescription, or therapy. If you are in crisis in the United States, call or text 988.",
   },
   {
+    question: "How can I pay?",
+    answer:
+      "Payments are processed by PayPal. You can pay with a card or your PayPal balance. Apple Pay appears on Safari on a Mac, iPhone, or iPad that has a card in Wallet, when the store is served over HTTPS on a domain registered with PayPal. Other browsers still offer the card and PayPal balance checkout. The receipt is issued only after PayPal confirms the payment and the amount matches the price on the site.",
+  },
+  {
     question: "Can I pay with Apple Pay?",
     answer:
-      "Apple Pay through PayPal is an extra option on the same PayPal account. That button appears only in Safari on a Mac or on an iPhone or iPad that has a card in Wallet, and only when the store is served over HTTPS on a domain registered with PayPal. Other browsers keep Pay with PayPal. Stripe, Moyasar, and demo checkout are unchanged. The receipt is issued only after PayPal captures the order and the amount matches the price on the site. Sandbox support is limited. To turn it on, the owner enables Apple Pay in the PayPal business account (Account settings > Payment methods > Apple Pay). That requires a live business account eligible for Apple Pay via PayPal, with Advanced Credit and Debit Card Payments approved. They register the production domain in PayPal's Apple Pay domain settings, download the domain association file, and paste its contents into APPLE_PAY_DOMAIN_ASSOCIATION. Moyasar has its own Apple Pay, which uses MOYASAR_APPLE_PAY_DOMAIN_ASSOCIATION. Both files would be served from /.well-known/apple-developer-merchantid-domain-association, so the owner sets only one of them. If both are set and they differ, that address does not serve a file until one is removed.",
+      "Yes, where Apple Pay is available. The Apple Pay button is processed by PayPal and appears in Safari when this device has a card in Wallet and the store's domain is registered for Apple Pay. If you do not see it, pay with a card or your PayPal balance on the PayPal page. Vellum Press never sees your card number or your PayPal password.",
   },
   {
     question: "Why does checkout say it is a demo?",
     answer:
-      "If Stripe, PayPal, and Moyasar are not configured, the store completes a simulated order so you can see delivery end to end. No payment form is shown and no charge is made. When the owner adds any of those keys, checkout uses them and the demo path turns off unless they explicitly leave it enabled.",
-  },
-  {
-    question: "Can I pay with mada, Apple Pay, or STC Pay?",
-    answer:
-      "When Moyasar is connected, checkout offers mada, Visa, Mastercard, Apple Pay, and STC Pay (مدى، فيزا، ماستركارد، Apple Pay، STC Pay). Prices in the catalog are US dollars. The charge is converted to Saudi riyals at the store's USD to SAR rate, 3.75 unless the owner sets another rate, and that riyal amount is shown before you pay. Card details are entered on Moyasar's form, not on this site. Apple Pay also needs the store's domain registered with Moyasar. The owner pastes Moyasar's domain file into MOYASAR_APPLE_PAY_DOMAIN_ASSOCIATION and leaves APPLE_PAY_DOMAIN_ASSOCIATION empty, because both would be published at the same address. STC Pay has to be enabled on the Moyasar account.",
+      "That label appears when PayPal is not configured. No payment form is shown and no charge is made. The demo still opens a download receipt so delivery can be reviewed. Once PayPal is connected, checkout charges through PayPal and the demo path turns off.",
   },
   {
     question: "Can I share a file with a friend?",

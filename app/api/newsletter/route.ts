@@ -1,4 +1,5 @@
 import { isEmail } from "@/lib/email";
+import { recordLead } from "@/lib/leads";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
@@ -14,19 +15,13 @@ export async function POST(request: Request) {
   } catch {
     return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   }
-  if (company) return NextResponse.json({ ok: true, delivered: false });
+  if (company) return NextResponse.json({ ok: true, stored: "ignored" });
   if (!isEmail(email)) {
     return NextResponse.json({ error: "Enter a valid email address." }, { status: 400 });
   }
-  const webhook = process.env.NEWSLETTER_WEBHOOK_URL;
-  if (!webhook) return NextResponse.json({ ok: true, delivered: false });
-  const forwarded = await fetch(webhook, {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({ type: "newsletter", email }),
-  });
-  if (!forwarded.ok) {
-    return NextResponse.json({ error: "The signup could not be delivered." }, { status: 502 });
+  const recorded = await recordLead({ type: "newsletter", email });
+  if (!recorded.ok) {
+    return NextResponse.json({ error: recorded.error }, { status: 502 });
   }
-  return NextResponse.json({ ok: true, delivered: true });
+  return NextResponse.json({ ok: true, stored: recorded.stored });
 }
