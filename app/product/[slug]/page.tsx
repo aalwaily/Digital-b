@@ -7,7 +7,6 @@ import { PurchaseActions } from "@/components/purchase-actions";
 import { SampleRequest } from "@/components/sample-request";
 import { ShareProduct } from "@/components/share-product";
 import { getCategory, getProduct, isBundle, products } from "@/data/products";
-import { reviewsFor } from "@/data/reviews";
 import { site } from "@/data/site";
 import { pageCountFor, relatedProducts, samplePageCount } from "@/lib/catalog";
 import { pageMetadata } from "@/lib/page-meta";
@@ -40,7 +39,6 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
   if (!product) notFound();
   const category = getCategory(product.category);
   const related = relatedProducts(product.slug);
-  const reviews = reviewsFor(product.slug);
   const pages = pageCountFor(product);
   const siteUrl = getSiteUrl();
   const sampleTargets = isBundle(product) ? product.includes : [product.slug];
@@ -144,36 +142,6 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
         <div className="mt-4">
           <FaqList items={product.faqs} />
         </div>
-      </section>
-
-      <section className="mt-14">
-        <div className="max-w-2xl">
-          <p className="text-xs tracking-[0.16em] text-copper uppercase">Sample reviews</p>
-          <h2 className="mt-2 font-serif text-3xl">Reviews</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            These reviews are sample content for the template. They are not from verified buyers.
-          </p>
-        </div>
-        {reviews.length === 0 ? (
-          <p className="mt-6 text-sm text-muted-foreground">No sample reviews for this guide yet.</p>
-        ) : (
-          <div className="mt-6 grid gap-4 md:grid-cols-2">
-            {reviews.map((review) => (
-              <article key={review.id} className="rounded-2xl border bg-card p-5">
-                <div className="flex items-center justify-between gap-3">
-                  <p className="text-sm">
-                    <span className="sr-only">{review.rating} out of 5 stars.</span>
-                    <span aria-hidden>{ "★".repeat(review.rating) }{ "☆".repeat(5 - review.rating) }</span>
-                  </p>
-                  <span className="rounded-full bg-secondary px-2 py-0.5 text-xs tracking-wide uppercase">Sample</span>
-                </div>
-                <h3 className="mt-3 font-serif text-xl">{review.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{review.body}</p>
-                <p className="mt-3 text-xs text-muted-foreground">{review.name}</p>
-              </article>
-            ))}
-          </div>
-        )}
       </section>
 
       {!isBundle(product) && related.length ? (

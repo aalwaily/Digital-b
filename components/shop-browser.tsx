@@ -1,11 +1,8 @@
-"use client";
-
 import { ProductCard } from "@/components/product-card";
 import { Input } from "@/components/ui/input";
-import { categories } from "@/data/products";
-import { searchProducts } from "@/lib/catalog";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { categories, type Product } from "@/data/products";
+import Link from "next/link";
+import type { ReactNode } from "react";
 
 const sorts = [
   { id: "featured", label: "Featured" },
@@ -15,61 +12,23 @@ const sorts = [
   { id: "title", label: "Title A–Z" },
 ];
 
-export function ShopBrowser() {
-  const params = useSearchParams();
-  const router = useRouter();
-  const queryParam = params.get("q") ?? "";
-  const category = params.get("category") ?? "all";
-  const sort = params.get("sort") ?? "featured";
-  const [query, setQuery] = useState(queryParam);
-
-  useEffect(() => {
-    if (document.activeElement?.id === "shop-search") return;
-    setQuery(queryParam);
-  }, [queryParam]);
-
-  useEffect(() => {
-    if (query === queryParam) return;
-    const handle = window.setTimeout(() => {
-      const search = new URLSearchParams(window.location.search);
-      if (query) search.set("q", query);
-      else search.delete("q");
-      const suffix = search.toString();
-      const next = suffix ? `/shop?${suffix}` : "/shop";
-      const current = `${window.location.pathname}${window.location.search}`;
-      if (next !== current) router.replace(next, { scroll: false });
-    }, 160);
-    return () => window.clearTimeout(handle);
-  }, [query, queryParam, router]);
-
-  const results = useMemo(
-    () => searchProducts({ query, category, sort }),
-    [query, category, sort],
-  );
-
-  function update(next: { q?: string; category?: string; sort?: string }) {
-    const search = new URLSearchParams(window.location.search);
-    const merged = {
-      q: next.q ?? query,
-      category: next.category ?? category,
-      sort: next.sort ?? sort,
-    };
-    if (next.q !== undefined) setQuery(next.q);
-    if (merged.q) search.set("q", merged.q);
-    else search.delete("q");
-    if (merged.category && merged.category !== "all") search.set("category", merged.category);
-    else search.delete("category");
-    if (merged.sort && merged.sort !== "featured") search.set("sort", merged.sort);
-    else search.delete("sort");
-    const suffix = search.toString();
-    router.replace(suffix ? `/shop?${suffix}` : "/shop", { scroll: false });
-  }
-
+export function ShopBrowser({
+  query,
+  category,
+  sort,
+  results,
+}: {
+  query: string;
+  category: string;
+  sort: string;
+  results: Product[];
+}) {
   const activeCategory = categories.find((item) => item.slug === category);
 
   return (
     <div>
-      <div className="flex flex-col gap-3 md:flex-row md:items-end">
+      <form action="/shop" method="get" className="flex flex-col gap-3 md:flex-row md:items-end">
+        {category !== "all" ? <input type="hidden" name="category" value={category} /> : null}
         <div className="flex-1">
           <label htmlFor="shop-search" className="text-sm font-medium">
             Search
@@ -77,8 +36,8 @@ export function ShopBrowser() {
           <Input
             id="shop-search"
             type="search"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
+            name="q"
+            defaultValue={query}
             placeholder="Search guides, bundles, topics"
             className="mt-1 h-11"
           />
@@ -89,8 +48,8 @@ export function ShopBrowser() {
           </label>
           <select
             id="shop-sort"
-            value={sort}
-            onChange={(event) => update({ sort: event.target.value })}
+            name="sort"
+            defaultValue={sort}
             className="mt-1 h-11 w-full rounded-lg border border-input bg-transparent px-3 text-sm md:w-56"
           >
             {sorts.map((option) => (
@@ -100,22 +59,28 @@ export function ShopBrowser() {
             ))}
           </select>
         </div>
-      </div>
+        <button
+          type="submit"
+          className="h-11 rounded-lg bg-foreground px-4 text-sm text-background"
+        >
+          Apply
+        </button>
+      </form>
 
       <div className="mt-5 w-full min-w-0 overflow-x-auto pb-1">
         <div className="flex w-max gap-2" role="toolbar" aria-label="Categories">
-        <FilterButton pressed={category === "all"} onClick={() => update({ category: "all" })}>
-          All
-        </FilterButton>
-        {categories.map((item) => (
-          <FilterButton
-            key={item.slug}
-            pressed={category === item.slug}
-            onClick={() => update({ category: item.slug })}
-          >
-            {item.name}
-          </FilterButton>
-        ))}
+          <FilterLink href={shopHref({ q: query, category: "all", sort })} pressed={category === "all"}>
+            All
+          </FilterLink>
+          {categories.map((item) => (
+            <FilterLink
+              key={item.slug}
+              href={shopHref({ q: query, category: item.slug, sort })}
+              pressed={category === item.slug}
+            >
+              {item.name}
+            </FilterLink>
+          ))}
         </div>
       </div>
 
@@ -129,13 +94,9 @@ export function ShopBrowser() {
           <p className="mt-2 text-sm text-muted-foreground">
             Try another word, or clear the filters and browse the full library.
           </p>
-          <button
-            type="button"
-            className="mt-4 text-sm underline underline-offset-4"
-            onClick={() => update({ q: "", category: "all", sort: "featured" })}
-          >
+          <Link href="/shop" className="mt-4 inline-block text-sm underline underline-offset-4">
             Clear filters
-          </button>
+          </Link>
         </div>
       ) : (
         <div className="mt-8 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
@@ -148,25 +109,33 @@ export function ShopBrowser() {
   );
 }
 
-function FilterButton({
+function shopHref({ q, category, sort }: { q: string; category: string; sort: string }) {
+  const search = new URLSearchParams();
+  if (q) search.set("q", q);
+  if (category && category !== "all") search.set("category", category);
+  if (sort && sort !== "featured") search.set("sort", sort);
+  const suffix = search.toString();
+  return suffix ? `/shop?${suffix}` : "/shop";
+}
+
+function FilterLink({
+  href,
   pressed,
-  onClick,
   children,
 }: {
+  href: string;
   pressed: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
-    <button
-      type="button"
-      aria-pressed={pressed}
-      onClick={onClick}
-      className={`h-10 shrink-0 rounded-full px-3 text-sm ${
+    <Link
+      href={href}
+      aria-current={pressed ? "page" : undefined}
+      className={`inline-flex h-10 shrink-0 items-center rounded-full px-3 text-sm ${
         pressed ? "bg-foreground text-background" : "bg-card ring-1 ring-border"
       }`}
     >
       {children}
-    </button>
+    </Link>
   );
 }

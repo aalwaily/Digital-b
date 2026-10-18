@@ -1,13 +1,20 @@
 export const site = {
   name: "Vellum Press",
+  // TODO(owner): Confirm the legal business identity before relying on these pages.
+  // The owner must confirm all of the following with the Ministry of Commerce / a Saudi lawyer or accountant:
+  // - the registered legal name (legalName stays "Vellum Press" until the owner provides another)
+  // - the commercial registration (CR) number, or the approved alternative for selling online in Saudi Arabia
+  // - VAT / zakat status with ZATCA
+  // - a street address, if the store is required to show one
+  // This file is not a commercial registration and it is not legal advice.
   legalName: "Vellum Press",
   tagline: "Practical guides for a well-lived life.",
   description:
     "Digital PDF guides on health, home training, money, work, study, and calm. Pay once, download instantly, and keep the file.",
   email: "glarz.com@gmail.com",
   supportEmail: "glarz.com@gmail.com",
-  location: "Portland, Oregon",
-  jurisdiction: "the State of Oregon, United States",
+  location: "Dammam, Saudi Arabia",
+  jurisdiction: "the Kingdom of Saudi Arabia",
   downloadDays: 14,
   responseTime: "two business days",
 } as const;

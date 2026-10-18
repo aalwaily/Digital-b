@@ -90,9 +90,11 @@ describe("schema and sample labels", () => {
     });
   });
 
-  it("marks testimonials and reviews as samples", () => {
-    expect(testimonials.every((item) => item.sample)).toBe(true);
-    expect(reviews.every((item) => item.sample)).toBe(true);
+  it("does not publish fabricated reviews, stars, or testimonials", () => {
+    expect(reviews).toEqual([]);
+    expect(testimonials).toEqual([]);
+    const schema = JSON.stringify(productSchema(guides[0], "https://example.com"));
+    expect(schema).not.toMatch(/aggregateRating|reviewCount|ratingValue/);
   });
 });
 

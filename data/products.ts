@@ -12,7 +12,7 @@ export const categories = [
   {
     slug: "finance",
     name: "Personal finance",
-    description: "A calmer way to see spending, saving, and debt without a spreadsheet hobby.",
+    description: "A calmer way to see spending, saving, debt, and months when income is uneven.",
   },
   {
     slug: "productivity",
@@ -22,7 +22,7 @@ export const categories = [
   {
     slug: "career",
     name: "Freelance & work",
-    description: "How to turn a skill into a paid offer while you still have a job.",
+    description: "Freelance offers, Saudi freelance-document basics, and CVs a screener can read.",
   },
   {
     slug: "learning",
@@ -606,6 +606,211 @@ export const products: Product[] = [
     ],
   },
   {
+    kind: "guide",
+    slug: "saudi-freelancer-starter-kit",
+    title: "Saudi Freelancer Starter Kit",
+    subtitle: "English edition: the freelance document, pricing, proposals, and invoices",
+    category: "career",
+    price: 17,
+    shortDescription:
+      "How to use the official freelance platform, price work in SAR, and send a proposal and an invoice. Not legal advice.",
+    description: [
+      "The Saudi Freelancer Starter Kit is an English field guide for someone in Saudi Arabia who wants to sell a service. It walks through the Freelance Work Document on the official platform (freelance.sa), then pricing, a thirty-day plan, outreach, a proposal page, and an invoice page you can print.",
+      "Rules change. The guide is dated October 2026 and tells you to read the screen on the official platform, and to ask a Saudi lawyer or accountant before you sign, register for VAT, or treat a template as a contract. It does not promise clients or income.",
+      "This edition is English. The PDF fonts and layout do not shape Arabic right-to-left text, so Arabic headings are not in the file.",
+    ],
+    included: [
+      "A checklist for the Freelance Work Document on the official platform, with a verify-the-rules box",
+      "A SAR pricing worksheet: floor, target, and walk-away",
+      "A thirty-day plan that fits beside a job",
+      "Outreach scripts you edit, plus a proposal page",
+      "A printable invoice page with a VAT line you use only if you are registered",
+      "Questions to take to an accountant about VAT, zakat, and e-invoicing",
+    ],
+    contents: [
+      "How to use this guide",
+      "What the freelance document is",
+      "Before you open the portal",
+      "On the official platform",
+      "Price the work in riyals",
+      "Thirty days beside a job",
+      "Where clients actually come from",
+      "Messages you can edit",
+      "Proposal page",
+      "Scope, deposits, and contracts",
+      "Invoice page",
+      "VAT, zakat, and your accountant",
+      "Records and a simple pipeline",
+      "A worked example",
+      "Field pages",
+      "Thirty-day log",
+    ],
+    pageCount: 16,
+    featured: true,
+    published: "2026-10-18",
+    cover: {
+      bg: "#1B3A34",
+      fg: "#F6F1E7",
+      accent: "#E2B15C",
+      motif: "mark",
+      titleLines: ["Saudi", "Freelancer"],
+      eyebrow: "Freelance & work",
+      deck: "Document, price, invoice",
+    },
+    faqs: [
+      {
+        question: "Does this file get me the freelance document?",
+        answer:
+          "No. You apply on the official platform, freelance.sa (منصة العمل الحر). The PDF tells you what to read there and what the document is not. Eligibility is decided by the portal, not by this guide.",
+      },
+      {
+        question: "Is the proposal a contract I can send as legal advice?",
+        answer:
+          "No. The proposal page is a scope and price sheet you fill in. The contract chapter is a list of points to take to a qualified person. It is not a substitute for a lawyer, and it is not written for every activity or every city.",
+      },
+      {
+        question: "Is the invoice a ZATCA e-invoice?",
+        answer:
+          "No. It is a paper or PDF bill with the fields a client needs to pay you. If you are registered for VAT, you still have to follow ZATCA's e-invoicing rules. Confirm the current rate and thresholds on zatca.gov.sa.",
+      },
+    ],
+  },
+  {
+    kind: "guide",
+    slug: "irregular-income-budget",
+    title: "Irregular-Income Budget + Invoice Sheets",
+    subtitle: "A budget for months that are not the same size, plus invoice pages",
+    category: "finance",
+    price: 15,
+    shortDescription:
+      "Plan from a low month, park surplus, track invoices, and review the month on paper. Not financial advice.",
+    description: [
+      "Irregular-Income Budget + Invoice Sheets is for freelancers, commission, and other lumpy pay. You plan from a low month you can document, move surplus from a high month into a buffer, and keep bills separate from spending money.",
+      "The PDF includes the worksheets: a six-month income log, a bill calendar, sinking funds, a debt order you choose, an invoice, and a payment tracker. There is no spreadsheet file. Print the pages or fill them on screen.",
+      "This is general education. It is not tax, credit, or investment advice, and it does not promise that you will save a particular amount or get out of debt.",
+    ],
+    included: [
+      "A low-month baseline instead of an average that hides the thin months",
+      "A buffer rule for moving surplus without inventing a new lifestyle",
+      "Sinking-fund and debt worksheets",
+      "A monthly review you can finish in an hour",
+      "A blank invoice and a payment tracker",
+      "A plain-language note on what this PDF will not decide for you",
+    ],
+    contents: [
+      "How to use this guide",
+      "Why the average month lies",
+      "The low-month baseline",
+      "Bills, buffer, and spending",
+      "Sinking funds",
+      "Debt in one order",
+      "The monthly hour",
+      "Invoices and getting paid",
+      "Invoice page",
+      "When the numbers do not fit",
+      "A high month, written down",
+      "A worked example",
+      "Field pages",
+      "Thirty-day log",
+    ],
+    pageCount: 15,
+    featured: true,
+    published: "2026-10-18",
+    cover: {
+      bg: "#3B2A22",
+      fg: "#F8F3EA",
+      accent: "#E7A15A",
+      motif: "ledger",
+      titleLines: ["Irregular", "Income"],
+      eyebrow: "Personal finance",
+      deck: "Budget and invoice sheets",
+    },
+    faqs: [
+      {
+        question: "Do I get a Google Sheet or an Excel file?",
+        answer:
+          "No. The worksheets and the invoice are pages in the PDF, with room to write. Print them or fill the PDF. The Quiet Budget is the companion if you want the one-evening snapshot without the invoice pages.",
+      },
+      {
+        question: "What if I only have one month of records?",
+        answer:
+          "Use that month as the baseline and mark it as thin evidence. Do not invent the other months. After two more real months, rewrite the baseline.",
+      },
+      {
+        question: "Will this tell me which debt to pay off first?",
+        answer:
+          "It explains avalanche and snowball and gives you a page to pick one. It does not know your rates, and it is not a recommendation to open a new loan. If you cannot pay minimums, contact the lender and a nonprofit counselor.",
+      },
+    ],
+  },
+  {
+    kind: "guide",
+    slug: "gulf-ats-cv-kit",
+    title: "Saudi & Gulf Job-Search and ATS CV Kit",
+    subtitle: "A single-column CV, a cover letter, and a LinkedIn draft for Gulf applications",
+    category: "career",
+    price: 12,
+    shortDescription:
+      "Structure a CV a screener can read, with Gulf notes, a cover letter, and interview prep. No job promises.",
+    description: [
+      "The Saudi & Gulf Job-Search and ATS CV Kit shows how to build a single-column CV with ordinary headings, dates a form can read, and bullets you can prove. It includes a cover-letter page, LinkedIn headline and About prompts, and a short interview worksheet.",
+      "Gulf notes cover language (send the language the posting asked for), Gregorian dates, why a photo and a text box often get dropped, and the limits of this PDF: it cannot change Saudization rules or an iqama profession.",
+      "Nothing here promises an interview, a visa, or a job. If a posting says who may apply, believe the posting.",
+    ],
+    included: [
+      "An ATS structure: one column, standard headings, no tables or icons in the CV itself",
+      "A bilingual note: two files when the employer needs Arabic and English, not mixed scripts in one parser",
+      "A cover-letter page and LinkedIn headline and About prompts",
+      "An achievement worksheet that does not ask you to invent a percentage",
+      "Interview prompts and an application tracker",
+      "Gulf notes on dates, photos, Saudization, and iqama limits",
+    ],
+    contents: [
+      "How to use this guide",
+      "What a screener actually receives",
+      "One column, plain headings",
+      "Dates, language, and two files",
+      "Bullets you can prove",
+      "Gulf notes",
+      "Cover letter page",
+      "LinkedIn headline and About",
+      "Interview prep",
+      "Application tracker",
+      "Before you submit",
+      "A worked example",
+      "Field pages",
+      "Thirty-day log",
+    ],
+    pageCount: 15,
+    published: "2026-10-18",
+    cover: {
+      bg: "#1E2F44",
+      fg: "#F4F1EA",
+      accent: "#7EB8B0",
+      motif: "path",
+      titleLines: ["Gulf Job", "Search"],
+      eyebrow: "Freelance & work",
+      deck: "ATS CV and applications",
+    },
+    faqs: [
+      {
+        question: "Will this CV get me an interview?",
+        answer:
+          "No. A clear CV is easier to read. Hiring depends on the role, the employer, and your record. The guide says so, and it does not include a success rate.",
+      },
+      {
+        question: "Should I put a photo and my iqama number on the CV?",
+        answer:
+          "Follow the posting. Many applicant systems drop images and text in the header. Do not put an identity number or passport number on a file you upload to a general portal. If a form asks for a number in its own field, use that field.",
+      },
+      {
+        question: "Is there an editable Word file?",
+        answer:
+          "This edition is a PDF with fill-in pages and a structure you copy into your own document. It is not a locked template, and it is not a promise that every employer portal will parse every file the same way.",
+      },
+    ],
+  },
+  {
     kind: "bundle",
     slug: "health-fitness-bundle",
     title: "Health & Fitness Bundle",
@@ -722,6 +927,66 @@ export const products: Product[] = [
         question: "How much do I save?",
         answer:
           "The three guides are $73 together. The bundle is $58.",
+      },
+    ],
+  },
+  {
+    kind: "bundle",
+    slug: "gulf-work-bundle",
+    title: "Gulf Work Bundle",
+    subtitle: "Freelance starter kit, irregular-income sheets, and the Gulf CV kit",
+    category: "bundles",
+    price: 36,
+    compareAtPrice: 44,
+    includes: ["saudi-freelancer-starter-kit", "irregular-income-budget", "gulf-ats-cv-kit"],
+    shortDescription:
+      "The Saudi freelance kit, the variable-income budget, and the Gulf CV kit, in one checkout.",
+    description: [
+      "Gulf Work Bundle is the practical set for looking for work and for selling a service: the freelance-document guide, the irregular-income budget with invoice pages, and the ATS CV kit.",
+      "You receive three separate PDFs. Read the CV kit if you are applying for a job. Read the freelance kit if you are selling a service. Use the budget when the money does not arrive on the same day each month.",
+      "These guides are education. They are not legal, tax, or career advice, and they do not promise a client, a visa, or a job. All sales are final.",
+    ],
+    included: [
+      "Saudi Freelancer Starter Kit, full PDF",
+      "Irregular-Income Budget + Invoice Sheets, full PDF",
+      "Saudi & Gulf Job-Search and ATS CV Kit, full PDF",
+      "A free sample of each guide before you buy",
+      "One receipt link that downloads all three files",
+    ],
+    contents: [
+      "Saudi Freelancer Starter Kit, complete guide",
+      "Irregular-Income Budget + Invoice Sheets, complete guide",
+      "Saudi & Gulf Job-Search and ATS CV Kit, complete guide",
+      "Samples available on each product page",
+      "Personal license for each file",
+    ],
+    pageCount: 46,
+    featured: true,
+    published: "2026-10-18",
+    cover: {
+      bg: "#1A2420",
+      fg: "#F6F1E8",
+      accent: "#D7A15A",
+      motif: "bundle",
+      titleLines: ["Gulf", "Work"],
+      eyebrow: "Bundle · save $8",
+      deck: "Freelance, budget, CV",
+    },
+    faqs: [
+      {
+        question: "Do I get one file or three?",
+        answer:
+          "Three full PDFs. The receipt lists each guide so you can save the one you need.",
+      },
+      {
+        question: "Does this include The Quiet Budget or First Client?",
+        answer:
+          "No. Those stay in the Work & Money Bundle. This bundle is the Saudi freelance kit, the irregular-income sheets, and the Gulf CV kit.",
+      },
+      {
+        question: "How much do I save?",
+        answer:
+          "The three guides are $44 together. The bundle is $36.",
       },
     ],
   },

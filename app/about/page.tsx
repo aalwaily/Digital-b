@@ -59,7 +59,7 @@ export default function AboutPage() {
         </div>
       </dl>
       <p className="mt-6 rounded-xl border bg-card p-4 text-sm leading-relaxed text-muted-foreground">
-        The contact address is {site.email}. The legal name, location, and governing law on this page are still placeholders in the site settings.
+        The contact address is {site.email}. The press is based in {site.location}. The name on the site is {site.legalName} until the owner confirms the registered legal name and commercial registration. A lawyer should review the legal pages before you treat them as finished.
       </p>
       <p className="mt-8">
         <Link href="/shop" className="text-sm underline underline-offset-4">

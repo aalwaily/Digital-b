@@ -10,7 +10,7 @@ export type LegalPage = {
   sections: LegalSection[];
 };
 
-const note = `These terms are written for ${site.legalName}, a small publisher of digital guides based in ${site.location}. They are a practical starting point, not a law-firm opinion. Replace the business identity in data/site.ts and have a lawyer review them before you take live payments. Governing law is set to ${site.jurisdiction}.`;
+const note = `These pages are written for ${site.legalName}, a small publisher of digital guides based in ${site.location}. They are a practical starting point, not a law-firm opinion. The owner must still confirm the registered legal name and the commercial registration (or other license) that covers online sales. Governing law is set to ${site.jurisdiction}. Have a lawyer review these pages before you rely on them.`;
 
 export const legalPages: LegalPage[] = [
   {

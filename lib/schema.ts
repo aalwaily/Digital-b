@@ -113,9 +113,8 @@ export function organizationSchema(siteUrl: string) {
     email: site.email,
     address: {
       "@type": "PostalAddress",
-      addressLocality: "Portland",
-      addressRegion: "OR",
-      addressCountry: "US",
+      addressLocality: "Dammam",
+      addressCountry: "SA",
     },
   };
 }
