@@ -32,6 +32,11 @@ export const faqs: FaqItem[] = [
       "No. Guides on weight, food, exercise, and stress are educational. They include disclaimers, red flags, and pointers toward licensed care. They are not a diagnosis, a diet prescription, or therapy. If you are in crisis in the United States, call or text 988.",
   },
   {
+    question: "Can I pay with Apple Pay?",
+    answer:
+      "Apple Pay is an extra option on the same PayPal account. The button appears only in Safari on a Mac or on an iPhone or iPad that has a card in Wallet, and only when the store is served over HTTPS on a domain registered with PayPal. Other browsers keep Pay with PayPal, and card checkout is unchanged. The receipt is issued only after PayPal captures the order and the amount matches the price on the site. Sandbox support is limited, so a test Apple Pay payment may not be available. To turn it on, the owner enables Apple Pay in the PayPal business account (Account settings > Payment methods > Apple Pay). That requires a live business account eligible for Apple Pay via PayPal, with Advanced Credit and Debit Card Payments approved. They register the production domain in PayPal's Apple Pay domain settings, download the domain association file, and paste its contents into the APPLE_PAY_DOMAIN_ASSOCIATION environment variable. The store serves that file at /.well-known/apple-developer-merchantid-domain-association with no redirect.",
+  },
+  {
     question: "Why does checkout say it is a demo?",
     answer:
       "If neither Stripe nor PayPal is configured, the store completes a simulated order so you can see delivery end to end. No payment form is shown and no charge is made. When the owner adds Stripe or PayPal keys, checkout uses those and the demo path turns off unless they explicitly leave it enabled.",

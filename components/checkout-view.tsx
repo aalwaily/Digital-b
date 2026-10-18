@@ -1,5 +1,6 @@
 "use client";
 
+import { ApplePayButton } from "@/components/apple-pay-button";
 import { useCart } from "@/components/cart-provider";
 import { Price } from "@/components/price";
 import { Button } from "@/components/ui/button";
@@ -33,6 +34,7 @@ export function CheckoutView({
 
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [status, setStatus] = useState("");
   const [pending, setPending] = useState(false);
   const providerRef = useRef<"card" | "paypal">(stripeEnabled || !paypalEnabled ? "card" : "paypal");
 
@@ -54,6 +56,7 @@ export function CheckoutView({
     const provider = choice === "paypal" && paypalEnabled ? "paypal" : "card";
     setPending(true);
     setError("");
+    setStatus("");
     try {
       const response = await fetch(provider === "paypal" ? "/api/paypal/checkout" : "/api/checkout", {
         method: "POST",
@@ -150,7 +153,36 @@ export function CheckoutView({
             {error}
           </p>
         ) : null}
-        <div className="flex flex-wrap gap-3">
+        {status ? (
+          <p role="status" className="text-sm text-muted-foreground">
+            {status}
+          </p>
+        ) : null}
+        <div className="flex flex-wrap items-center gap-3">
+          {paypalEnabled && summary ? (
+            <ApplePayButton
+              email={email}
+              slugs={summary.lines.map((line) => line.slug)}
+              amount={summary.subtotal}
+              items={summary.lines.map((line) => ({ label: line.title, amount: line.price }))}
+              disabled={pending}
+              onBusy={setPending}
+              onPaid={(token) => {
+                summary.lines.forEach((line) => cart.remove(line.slug));
+                router.push(`/orders/${encodeURIComponent(token)}?paid=1`);
+              }}
+              onError={(message) => {
+                setStatus("");
+                setError(message);
+                setPending(false);
+              }}
+              onCancel={() => {
+                setError("");
+                setStatus("Apple Pay was canceled. Nothing was charged.");
+                setPending(false);
+              }}
+            />
+          ) : null}
           {stripeEnabled || !paypalEnabled ? (
             <Button
               type="submit"
