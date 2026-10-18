@@ -45,7 +45,7 @@ export const legalPages: LegalPage[] = [
       {
         heading: "Why we use the information",
         paragraphs: [
-          "We use your email to deliver downloads, send a receipt, respond to support and refund requests, and, if you opted in, to send occasional notes about new guides. You can unsubscribe from those notes by replying to one.",
+          "We use your email to deliver downloads, send a receipt, respond to support requests (including a request to re-send a file that is corrupted, missing, or whose download link failed), and, if you opted in, to send occasional notes about new guides. You can unsubscribe from those notes by replying to one.",
           "If a contact webhook URL is configured, contact-form submissions are forwarded to that endpoint. If it is not, the contact form is validated and nothing is emailed, and the form says so. Newsletter signups and free-sample requests are forwarded when a newsletter webhook URL is set. Otherwise they are written to the server log, and the form still confirms that the address was recorded.",
         ],
       },
@@ -79,7 +79,7 @@ export const legalPages: LegalPage[] = [
       {
         heading: "Your choices",
         paragraphs: [
-          `Email ${site.supportEmail} to ask what a given address was used for, to request deletion of a newsletter signup or a contact message we still have, or to opt out of non-essential notes. We may keep a record of a purchase where we need it for tax, fraud prevention, or a refund dispute.`,
+          `Email ${site.supportEmail} to ask what a given address was used for, to request deletion of a newsletter signup or a contact message we still have, or to opt out of non-essential notes. We may keep a record of a purchase where we need it for tax, fraud prevention, or a payment-network dispute.`,
           "You can clear the cart and theme preference in your browser settings.",
         ],
       },
@@ -124,6 +124,7 @@ export const legalPages: LegalPage[] = [
           "Prices in the catalog are in US dollars and are shown before you pay. We may change prices of future purchases at any time. A confirmed order keeps the price you paid.",
           "Payments are processed by PayPal in US dollars. You can pay with a card or your PayPal balance. On Safari, Apple Pay can appear when this device can make an Apple Pay payment and the domain is registered with PayPal. We do not see your card number or your PayPal password. If PayPal is not configured, checkout is a labeled demo: no payment is collected and the download is issued so the flow can be reviewed. Do not present demo orders as real sales.",
           "You must provide an email address you can access. The download link is tied to that address and to the products in the order.",
+          "All sales are final. A completed purchase of a digital PDF is not refundable. See the all-sales-final policy for the replacement we offer when a file is corrupted, missing, or the download link fails.",
         ],
       },
       {
@@ -160,55 +161,48 @@ export const legalPages: LegalPage[] = [
       {
         heading: "Contact",
         paragraphs: [
-          `Questions about these terms: ${site.email}. Support and refunds: ${site.supportEmail}.`,
+          `Questions about these terms: ${site.email}. Download problems: ${site.supportEmail}.`,
         ],
       },
     ],
   },
   {
     slug: "refunds",
-    title: "Refund policy",
-    description: `How to request a refund within ${site.refundDays} days of buying a ${site.name} guide.`,
+    title: "All sales are final",
+    description: `Digital PDF purchases from ${site.name} are final. There are no refunds. If a file is corrupted, missing, or the download link fails, email ${site.email} and we will re-send a working copy.`,
     updated: "2026-10-18",
     sections: [
       { heading: "Read this first", paragraphs: [note] },
       {
-        heading: "The window",
+        heading: "No refunds",
         paragraphs: [
-          `You may request a refund within ${site.refundDays} days of the purchase. Write to ${site.supportEmail} from the email you used at checkout. Include the order id from your receipt page and the name of the guide.`,
-          "We would rather refund a guide that was not right for you than argue about a PDF. Ask plainly.",
+          "Every guide and bundle on this store is a digital download. All sales are final. We do not offer refunds, returns, or exchanges, and we do not return the price you paid.",
+          "A change of mind, a result you hoped for (a grade, a client, a habit, or a mood), or deciding the guide was not the right fit does not entitle you to the price back. The products are education, not outcomes. Checkout states this before you pay.",
         ],
       },
       {
-        heading: "How the refund is paid",
+        heading: "A working copy, not a refund",
         paragraphs: [
-          "Payments are processed by PayPal, so a refund is issued through PayPal to the original method: the card, the PayPal balance, or Apple Pay. PayPal's timing to a card can take several business days after we issue the refund. We refund the amount you paid for the items you return, not an arbitrary portion, unless we agree otherwise in writing.",
-          "Demo orders do not collect a payment. There is nothing to reverse. The receipt page marks those orders as demos.",
-        ],
-      },
-      {
-        heading: "After a refund",
-        paragraphs: [
-          "Once a refund is issued, your license to those files ends. Delete your copies. Do not keep distributing a file you have been refunded for. We may refuse a repeat pattern of buying, downloading, and refunding.",
-        ],
-      },
-      {
-        heading: "What we may decline",
-        paragraphs: [
-          "We may decline a refund request made after the window, or a request tied to abuse of the license, such as posting the file publicly. If we decline, we will say why.",
-          "A guide not matching a result you hoped for, such as a grade or a client, is not by itself outside the refund window. You can still ask within the window. It is also not a promise that the guide failed. The products are education, not outcomes.",
+          `If a file is corrupted, missing, or the download link fails, email ${site.email} from the address you used at checkout. Include the order id from your receipt and the name of the guide. We will re-send a working copy or a fresh download link.`,
+          "That replacement is the file you already bought. It is not a refund, and it does not change the price you paid. Demo orders do not collect a payment, so there is nothing to reverse. The receipt page marks those orders as demos.",
         ],
       },
       {
         heading: "Bundles",
         paragraphs: [
-          "A bundle is one purchase. If you want to return it, ask within the window and we will refund the bundle price. We do not split a bundle into partial retail refunds after you have kept one of the files, unless we agree to that in the reply.",
+          "A bundle is one purchase of several PDFs at a single price. The sale is final, the same as a single guide. If one file in the bundle is corrupted, missing, or will not download, we will re-send that file. We do not split a bundle or return part of the price.",
+        ],
+      },
+      {
+        heading: "Your license stays",
+        paragraphs: [
+          "Because the sale is final, the personal license described in the terms continues after delivery. You still may not resell, share, upload, or distribute the files. Re-sending a working copy does not add seats or a new license.",
         ],
       },
       {
         heading: "Chargebacks",
         paragraphs: [
-          "If you do not recognize a charge, email us before opening a dispute with your bank so we can look at the order. A chargeback does not expand the license, and we will answer the payment network with the order record.",
+          `If you do not recognize a charge, email ${site.email} before opening a dispute with your bank or PayPal so we can look at the order. A chargeback does not expand the license, and we will answer the payment network with the order record. Opening a dispute is not a refund from this store.`,
         ],
       },
     ],
@@ -257,7 +251,7 @@ export const legalPages: LegalPage[] = [
       {
         heading: "Outages",
         paragraphs: [
-          "If a download fails because of a problem on our side, email support and we will reissue the link even if you are inside the original window. Keep the error text if you have it.",
+          `If a file is corrupted, missing, or the download link fails, email ${site.supportEmail} and we will re-send a working copy. Keep the error text if you have it. Replacing the file does not refund the purchase. All sales are final.`,
         ],
       },
     ],

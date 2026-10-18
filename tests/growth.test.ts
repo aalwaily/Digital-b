@@ -3,10 +3,14 @@ import { POST as samplePost } from "@/app/api/sample/route";
 import robots from "@/app/robots";
 import sitemap from "@/app/sitemap";
 import { posts } from "@/data/blog";
-import { site } from "@/data/site";
+import { faqs } from "@/data/faq";
+import { getLegalPage } from "@/data/legal";
+import { legalNav, site } from "@/data/site";
 import { readAnalytics } from "@/lib/analytics";
 import { demoCheckoutAllowed, isMoyasarEnabled, isStripeEnabled } from "@/lib/payments";
-import { articleSchema } from "@/lib/schema";
+import { articleSchema, faqSchema } from "@/lib/schema";
+import fs from "node:fs";
+import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const ENV_KEYS = [
@@ -101,6 +105,58 @@ describe("analytics ids", () => {
     ).toEqual({ gaId: null, metaPixelId: null, tiktokPixelId: null });
   });
 });
+
+describe("all sales final", () => {
+  it("states the policy in the FAQ, legal page, nav label, and sitemap", () => {
+    const policy = getLegalPage("refunds");
+    expect(policy?.title).toBe("All sales are final");
+    expect(policy?.description).toContain(site.email);
+    expect(policy?.description.toLowerCase()).toContain("no refunds");
+    const policyText = policy?.sections.map((section) => section.paragraphs.join(" ")).join("\n") ?? "";
+    expect(policyText).toContain("All sales are final");
+    expect(policyText).toContain(site.email);
+    expect(policyText.toLowerCase()).toContain("corrupted, missing, or the download link fails");
+
+    const refundFaq = faqs.find((item) => item.question === "Can I get a refund?");
+    expect(refundFaq?.answer).toContain("All sales are final");
+    expect(refundFaq?.answer).toContain(site.email);
+    const faqLd = JSON.stringify(faqSchema(faqs));
+    expect(faqLd).toContain("All sales are final");
+    expect(faqLd).not.toMatch(/30-day|30 day|money-back|refund window/i);
+
+    expect(legalNav.find((item) => item.href === "/legal/refunds")?.label).toBe("All sales final");
+    const urls = sitemap().map((entry) => entry.url);
+    expect(urls.some((url) => url.endsWith("/legal/refunds"))).toBe(true);
+  });
+
+  it("does not promise a refund window anywhere in customer-facing copy", () => {
+    const roots = ["app", "components", "data", "lib", "README.md"];
+    const banned = [/30-day/i, /30 day/i, /money-back/i, /money back/i, /refund window/i, /refundDays/];
+    const hits: string[] = [];
+    for (const root of roots) {
+      const full = path.join(process.cwd(), root);
+      const files = fs.statSync(full).isDirectory()
+        ? walk(full)
+        : [full];
+      for (const file of files) {
+        if (!/\.(tsx?|md|json)$/.test(file)) continue;
+        const text = fs.readFileSync(file, "utf8");
+        for (const pattern of banned) {
+          if (pattern.test(text)) hits.push(`${path.relative(process.cwd(), file)} matches ${pattern}`);
+        }
+      }
+    }
+    expect(hits).toEqual([]);
+  });
+});
+
+function walk(dir: string): string[] {
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) return walk(full);
+    return [full];
+  });
+}
 
 describe("search and article metadata", () => {
   it("lists public pages in the sitemap and keeps checkout out of the index", () => {

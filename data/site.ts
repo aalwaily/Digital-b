@@ -8,7 +8,6 @@ export const site = {
   supportEmail: "glarz.com@gmail.com",
   location: "Portland, Oregon",
   jurisdiction: "the State of Oregon, United States",
-  refundDays: 30,
   downloadDays: 14,
   responseTime: "two business days",
 } as const;
@@ -23,6 +22,6 @@ export const nav = [
 export const legalNav = [
   { href: "/legal/privacy", label: "Privacy" },
   { href: "/legal/terms", label: "Terms" },
-  { href: "/legal/refunds", label: "Refunds" },
+  { href: "/legal/refunds", label: "All sales final" },
   { href: "/legal/delivery", label: "Delivery" },
 ] as const;

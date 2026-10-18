@@ -79,7 +79,15 @@ describe("schema and sample labels", () => {
     const guide = guides[0];
     const schema = productSchema(guide, "https://example.com");
     expect(schema).not.toHaveProperty("aggregateRating");
-    expect(schema.offers).toMatchObject({ priceCurrency: "USD", price: guide.price.toFixed(2) });
+    expect(schema.offers).toMatchObject({
+      priceCurrency: "USD",
+      price: guide.price.toFixed(2),
+      hasMerchantReturnPolicy: {
+        "@type": "MerchantReturnPolicy",
+        returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted",
+        merchantReturnLink: "https://example.com/legal/refunds",
+      },
+    });
   });
 
   it("marks testimonials and reviews as samples", () => {

@@ -8,6 +8,7 @@ import { SampleRequest } from "@/components/sample-request";
 import { ShareProduct } from "@/components/share-product";
 import { getCategory, getProduct, isBundle, products } from "@/data/products";
 import { reviewsFor } from "@/data/reviews";
+import { site } from "@/data/site";
 import { pageCountFor, relatedProducts, samplePageCount } from "@/lib/catalog";
 import { pageMetadata } from "@/lib/page-meta";
 import { breadcrumbSchema, faqSchema, productSchema } from "@/lib/schema";
@@ -82,7 +83,15 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           </div>
           <ShareProduct title={product.title} url={`${siteUrl}/product/${product.slug}`} />
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-            Personal use. Print a copy for yourself. Do not redistribute the file.
+            Personal use. Print a copy for yourself. Do not redistribute the file.{" "}
+            <Link href="/legal/refunds" className="underline underline-offset-4">
+              All sales are final
+            </Link>
+            . If a file is corrupted, missing, or the download link fails, email{" "}
+            <a className="underline underline-offset-4" href={`mailto:${site.email}`}>
+              {site.email}
+            </a>{" "}
+            and we will re-send a working copy.
           </p>
         </div>
       </div>

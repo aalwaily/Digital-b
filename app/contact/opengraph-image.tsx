@@ -7,6 +7,6 @@ export const alt = "Contact Vellum Press";
 export default function Image() {
   return renderOgImage({
     title: "Contact",
-    deck: "Orders, refunds, and licensing",
+    deck: "Orders, downloads, and licensing",
   });
 }

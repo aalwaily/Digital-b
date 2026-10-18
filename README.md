@@ -211,12 +211,13 @@ Next.js on Netlify needs the [Next.js runtime](https://docs.netlify.com/framewor
 
 The contact and support address in `data/site.ts` is `glarz.com@gmail.com`. Mailto links and the contact page use it.
 
+Digital PDF sales are final. The store does not offer refunds. If a file is corrupted, missing, or the download link fails, the customer emails that address and receives a working copy. The policy lives at `/legal/refunds` (footer label: All sales final). Checkout states that all sales are final before payment.
+
 These business details are still placeholders. Replace them before you rely on the legal pages:
 
 - legal name (`legalName` is still `Vellum Press`)
 - location (`location` is still `Portland, Oregon`, and there is no street address)
 - governing law (`jurisdiction` is still `the State of Oregon, United States`)
-- the refund window if 30 days is not your policy
 
 Have a lawyer read `data/legal.ts` before you rely on it. The pages are a practical starting point for a US digital-goods shop, not a law-firm opinion.
 

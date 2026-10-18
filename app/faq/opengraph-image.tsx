@@ -7,6 +7,6 @@ export const alt = "Vellum Press frequently asked questions";
 export default function Image() {
   return renderOgImage({
     title: "Frequently asked questions",
-    deck: "Delivery, refunds, and PayPal checkout",
+    deck: "Delivery, all sales final, and PayPal checkout",
   });
 }
