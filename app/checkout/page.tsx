@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Checkout",
-  description: "Pay for Vellum Press PDF guides. Payments are processed by PayPal.",
+  description: "Pay for Vellum Press PDF guides. All sales are final. Payments are processed by PayPal.",
   robots: { index: false, follow: false },
 };
 

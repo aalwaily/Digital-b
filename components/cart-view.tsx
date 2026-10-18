@@ -94,7 +94,7 @@ export function CartView({ canceled = false }: { canceled?: boolean }) {
             </div>
           </dl>
           <p className="mt-3 text-xs text-muted-foreground">
-            Digital delivery. Prices in USD. Payments are processed by PayPal.
+            Digital delivery. All sales are final. Prices in USD. Payments are processed by PayPal.
           </p>
           <Link href="/checkout" className={buttonVariants({ className: "mt-4 flex h-11 w-full" })}>
             Checkout

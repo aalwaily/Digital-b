@@ -32,6 +32,11 @@ export function productSchema(product: Product, siteUrl: string) {
       availability: "https://schema.org/InStock",
       url: `${siteUrl}/product/${product.slug}`,
       seller: { "@type": "Organization", name: site.legalName },
+      hasMerchantReturnPolicy: {
+        "@type": "MerchantReturnPolicy",
+        returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted",
+        merchantReturnLink: `${siteUrl}/legal/refunds`,
+      },
     },
   };
 }

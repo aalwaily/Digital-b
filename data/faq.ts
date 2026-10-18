@@ -1,10 +1,12 @@
+import { site } from "@/data/site";
+
 export type FaqItem = { question: string; answer: string };
 
 export const faqs: FaqItem[] = [
   {
     question: "How do I receive a guide after I pay?",
     answer:
-      "Checkout returns you to a receipt page with a download button for each PDF. The link is signed and expires after the window set by the store, 14 days by default. Save the files to your own device. There is no physical shipment.",
+      "Checkout returns you to a receipt page with a download button for each PDF. The link is signed and expires after 14 days by default. Save the files to your own device. There is no physical shipment.",
   },
   {
     question: "Can I print the guides?",
@@ -14,12 +16,12 @@ export const faqs: FaqItem[] = [
   {
     question: "Do I need a subscription or an account?",
     answer:
-      "No. Each guide and bundle is a one-time purchase. You do not create an account. Keep the receipt link, or email support if you need a fresh link inside the refund window and can confirm the purchase email.",
+      `No. Each guide and bundle is a one-time purchase. You do not create an account. Keep the receipt link. If it expires, or a file is missing, email ${site.email} from the purchase address and include the order id. We can re-send a working copy.`,
   },
   {
-    question: "What is the refund policy?",
+    question: "Can I get a refund?",
     answer:
-      "You can request a refund within 30 days of purchase by emailing the support address with your order id and the email you used at checkout. Payments are processed by PayPal, so the refund goes back through PayPal to the original method: the card, the PayPal balance, or Apple Pay. Demo orders do not charge anything, so there is nothing to refund. Read the refund policy for the full terms.",
+      `No. All sales are final. Digital PDF guides and bundles are not refundable. If a file is corrupted, missing, or the download link fails, email ${site.email} with your order id and the email you used at checkout and we will re-send a working copy. That is a replacement of the file, not a return of the price you paid. Demo orders do not charge anything. Read the all-sales-final policy for the full terms.`,
   },
   {
     question: "Which devices open the PDFs?",

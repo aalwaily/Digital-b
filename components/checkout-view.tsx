@@ -190,6 +190,9 @@ export function CheckoutView({
             {status}
           </p>
         ) : null}
+        <p className="rounded-xl border bg-card px-4 py-3 text-sm leading-relaxed">
+          All sales are final. Digital downloads are not refundable.
+        </p>
         <div className="flex flex-wrap items-center gap-3">
           {paypalEnabled && summary ? (
             <ApplePayButton

@@ -15,7 +15,7 @@ import { pageMetadata } from "@/lib/page-meta";
 import { organizationSchema, websiteSchema } from "@/lib/schema";
 import { getSiteUrl } from "@/lib/site-url";
 import type { Metadata } from "next";
-import { Download, LockKeyhole, Printer, RefreshCcw, ShieldCheck } from "lucide-react";
+import { Download, LockKeyhole, Printer, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 
 const featuredGuides = products.filter((product) => product.featured && product.kind === "guide").slice(0, 4);
@@ -62,8 +62,8 @@ export default function HomePage() {
               <dd className="font-serif text-2xl">8</dd>
             </div>
             <div>
-              <dt className="text-muted-foreground">Refund window</dt>
-              <dd className="font-serif text-2xl">30 days</dd>
+              <dt className="text-muted-foreground">Delivery</dt>
+              <dd className="font-serif text-2xl">Instant</dd>
             </div>
             <div>
               <dt className="text-muted-foreground">Format</dt>
@@ -94,12 +94,11 @@ export default function HomePage() {
       </section>
 
       <section className="border-y bg-card/70">
-        <div className="mx-auto grid max-w-6xl gap-6 px-5 py-6 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="mx-auto grid max-w-6xl gap-6 px-5 py-6 sm:grid-cols-2 lg:grid-cols-4">
           {[
             { icon: Download, title: "Instant download", text: "The receipt page hands you the PDFs." },
             { icon: LockKeyhole, title: "Signed links", text: "Full files stay off the public web." },
             { icon: Printer, title: "Print what you use", text: "Letter-size pages, checklists, tables." },
-            { icon: RefreshCcw, title: "30-day refunds", text: "Email support if it is not the right guide." },
             { icon: ShieldCheck, title: "PayPal checkout", text: "Cards and PayPal balance. Apple Pay where available." },
           ].map((item) => (
             <div key={item.title} className="flex gap-3">

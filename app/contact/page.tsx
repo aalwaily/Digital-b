@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = pageMetadata({
   title: "Contact",
-  description: `Write to ${site.name} at ${site.email} about an order, a refund, or a licensing question.`,
+  description: `Write to ${site.name} at ${site.email} about an order, a missing download, or a licensing question.`,
   path: "/contact",
 });
 
@@ -16,11 +16,11 @@ export default function ContactPage() {
         <p className="text-xs tracking-[0.18em] text-copper uppercase">Support</p>
         <h1 className="mt-2 font-serif text-4xl md:text-5xl">Contact</h1>
         <p className="mt-4 text-muted-foreground">
-          For a missing download or a refund, include the order id from your receipt. We aim to reply within {site.responseTime}.
+          All sales are final. If a file is corrupted, missing, or the download link fails, include the order id from your receipt and we will re-send a working copy. We aim to reply within {site.responseTime}.
         </p>
         <dl className="mt-8 space-y-4 text-sm">
           <div>
-            <dt className="text-muted-foreground">Orders and refunds</dt>
+            <dt className="text-muted-foreground">Orders and downloads</dt>
             <dd>
               <a className="underline underline-offset-4" href={`mailto:${site.supportEmail}`}>
                 {site.supportEmail}

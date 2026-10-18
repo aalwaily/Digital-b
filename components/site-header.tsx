@@ -24,7 +24,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40 border-b bg-background/85 backdrop-blur-md">
       <div className="border-b border-border/70 bg-foreground text-background">
         <p className="mx-auto max-w-6xl px-5 py-2 text-center text-xs tracking-wide">
-          Instant PDF delivery · Personal license · 30-day refunds
+          Instant PDF delivery · Personal license · All sales final
         </p>
       </div>
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-5">

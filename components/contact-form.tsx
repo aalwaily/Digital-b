@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 
-const topics = ["Order help", "Refund", "Licensing", "Something else"];
+const topics = ["Order help", "Missing download", "Licensing", "Something else"];
 
 export function ContactForm() {
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");

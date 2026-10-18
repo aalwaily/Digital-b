@@ -4,11 +4,10 @@ export const site = {
   tagline: "Practical guides for a well-lived life.",
   description:
     "Digital PDF guides on health, home training, money, work, study, and calm. Pay once, download instantly, and keep the file.",
-  email: "aali444m@gmail.com",
-  supportEmail: "aali444m@gmail.com",
+  email: "glarz.com@gmail.com",
+  supportEmail: "glarz.com@gmail.com",
   location: "Portland, Oregon",
   jurisdiction: "the State of Oregon, United States",
-  refundDays: 30,
   downloadDays: 14,
   responseTime: "two business days",
 } as const;
@@ -23,6 +22,6 @@ export const nav = [
 export const legalNav = [
   { href: "/legal/privacy", label: "Privacy" },
   { href: "/legal/terms", label: "Terms" },
-  { href: "/legal/refunds", label: "Refunds" },
+  { href: "/legal/refunds", label: "All sales final" },
   { href: "/legal/delivery", label: "Delivery" },
 ] as const;

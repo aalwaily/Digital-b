@@ -7,7 +7,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = pageMetadata({
   title: "FAQ",
-  description: "Delivery, printing, refunds, PayPal checkout, licenses, and what the health guides are not.",
+  description: "Delivery, printing, all-sales-final policy, PayPal checkout, licenses, and what the health guides are not.",
   path: "/faq",
 });
 
