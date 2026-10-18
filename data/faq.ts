@@ -19,7 +19,7 @@ export const faqs: FaqItem[] = [
   {
     question: "What is the refund policy?",
     answer:
-      "You can request a refund within 30 days of purchase by emailing the support address with your order id and the email you used at checkout. If the payment went through Stripe or PayPal, the refund goes back to the original payment method. Demo orders do not charge anything, so there is nothing to refund. Read the refund policy for the full terms.",
+      "You can request a refund within 30 days of purchase by emailing the support address with your order id and the email you used at checkout. If the payment went through Stripe, PayPal, or Moyasar, the refund goes back to the original payment method. Demo orders do not charge anything, so there is nothing to refund. Read the refund policy for the full terms.",
   },
   {
     question: "Which devices open the PDFs?",
@@ -34,7 +34,12 @@ export const faqs: FaqItem[] = [
   {
     question: "Why does checkout say it is a demo?",
     answer:
-      "If neither Stripe nor PayPal is configured, the store completes a simulated order so you can see delivery end to end. No payment form is shown and no charge is made. When the owner adds Stripe or PayPal keys, checkout uses those and the demo path turns off unless they explicitly leave it enabled.",
+      "If Stripe, PayPal, and Moyasar are not configured, the store completes a simulated order so you can see delivery end to end. No payment form is shown and no charge is made. When the owner adds any of those keys, checkout uses them and the demo path turns off unless they explicitly leave it enabled.",
+  },
+  {
+    question: "Can I pay with mada, Apple Pay, or STC Pay?",
+    answer:
+      "When Moyasar is connected, checkout offers mada, Visa, Mastercard, Apple Pay, and STC Pay (مدى، فيزا، ماستركارد، Apple Pay، STC Pay). Prices in the catalog are US dollars. The charge is converted to Saudi riyals at the store's USD to SAR rate, 3.75 unless the owner sets another rate, and that riyal amount is shown before you pay. Card details are entered on Moyasar's form, not on this site. Apple Pay also needs the store's domain registered with Moyasar, and STC Pay has to be enabled on the Moyasar account.",
   },
   {
     question: "Can I share a file with a friend?",
