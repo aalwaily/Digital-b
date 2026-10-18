@@ -31,11 +31,7 @@ export function NewsletterForm({ inverted = false, stack = false }: { inverted?:
       }
       setStatus("done");
       setEmail("");
-      setMessage(
-        data.delivered
-          ? "You are on the list. We will write when a new guide is ready."
-          : "You are on the list for this demo. Connect NEWSLETTER_WEBHOOK_URL to deliver signups to an inbox.",
-      );
+      setMessage("You are on the list. We will write when a new guide is ready.");
     } catch {
       setStatus("error");
       setMessage("Network error. Try again in a moment.");

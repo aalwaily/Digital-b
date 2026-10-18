@@ -45,7 +45,7 @@ export function CheckoutView({
   const [pending, setPending] = useState(false);
   const [moyasarConfig, setMoyasarConfig] = useState<MoyasarFormConfig | null>(null);
   const providerRef = useRef<"card" | "paypal" | "moyasar">(
-    stripeEnabled || (!paypalEnabled && !moyasarEnabled) ? "card" : paypalEnabled ? "paypal" : "moyasar",
+    paypalEnabled ? "paypal" : stripeEnabled ? "card" : moyasarEnabled ? "moyasar" : "card",
   );
 
   let summary: ReturnType<typeof quote> | null = null;
@@ -64,7 +64,8 @@ export function CheckoutView({
     const buttonValue = submitter instanceof HTMLButtonElement ? submitter.value : "";
     const choice =
       buttonValue === "paypal" || buttonValue === "card" || buttonValue === "moyasar" ? buttonValue : providerRef.current;
-    const provider = choice === "paypal" && paypalEnabled ? "paypal" : choice === "moyasar" && moyasarEnabled ? "moyasar" : "card";
+    const provider =
+      choice === "paypal" && paypalEnabled ? "paypal" : choice === "moyasar" && moyasarEnabled ? "moyasar" : "card";
     setPending(true);
     setError("");
     setStatus("");
@@ -236,7 +237,6 @@ export function CheckoutView({
               type="submit"
               name="provider"
               value="paypal"
-              variant={stripeEnabled ? "outline" : "default"}
               disabled={pending}
               className="h-11 px-5"
               onClick={() => {
@@ -312,22 +312,21 @@ export function CheckoutView({
 }
 
 function checkoutNotice(stripeEnabled: boolean, paypalEnabled: boolean, moyasarEnabled: boolean) {
+  if (!stripeEnabled && !paypalEnabled && !moyasarEnabled) {
+    return "Demo checkout. PayPal is not configured, so this order is simulated. You will not be charged, and a real payment form is not shown.";
+  }
+  if (paypalEnabled && !stripeEnabled && !moyasarEnabled) {
+    return "Payments are processed by PayPal. You can pay with a card or your PayPal balance. Apple Pay appears on Safari when this device can make an Apple Pay payment. Vellum Press never sees your card number or your PayPal password. The receipt is issued only after PayPal confirms the capture.";
+  }
   const options = [
+    paypalEnabled ? "PayPal (cards, PayPal balance, and Apple Pay on Safari where available)" : "",
     stripeEnabled ? "a card on Stripe" : "",
-    paypalEnabled ? "PayPal" : "",
-    paypalEnabled ? "Apple Pay through PayPal on Safari" : "",
     moyasarEnabled ? "mada, Visa, Mastercard, Apple Pay, or STC Pay through Moyasar, charged in SAR" : "",
   ].filter(Boolean);
-  if (options.length === 0) {
-    return "Demo checkout. Stripe, PayPal, and Moyasar are not configured, so this order is simulated. You will not be charged, and a real payment form is not shown.";
-  }
   if (options.length === 1 && stripeEnabled) {
     return "You will continue to Stripe's hosted payment page. Vellum Press never sees your card number.";
   }
-  if (options.length === 2 && paypalEnabled && !stripeEnabled && !moyasarEnabled) {
-    return "You will continue to PayPal to approve this payment, or you can use Apple Pay on Safari. Vellum Press never sees your PayPal password. The receipt is issued only after PayPal confirms the capture.";
-  }
-  return `Pay with ${joinOptions(options)}. Vellum Press never sees your card number or your PayPal password. The receipt is issued only after the payment is confirmed.`;
+  return `Pay with ${joinOptions(options)}. Payments through PayPal are processed by PayPal. Vellum Press never sees your card number or your PayPal password. The receipt is issued only after the payment is confirmed.`;
 }
 
 function joinOptions(options: string[]) {

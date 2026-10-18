@@ -1,14 +1,15 @@
 import { FaqList } from "@/components/faq-list";
 import { JsonLd } from "@/components/json-ld";
 import { faqs } from "@/data/faq";
+import { pageMetadata } from "@/lib/page-meta";
 import { faqSchema } from "@/lib/schema";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "FAQ",
-  description: "Delivery, printing, refunds, licenses, and what the health guides are not.",
-  alternates: { canonical: "/faq" },
-};
+  description: "Delivery, printing, refunds, PayPal checkout, licenses, and what the health guides are not.",
+  path: "/faq",
+});
 
 export default function FaqPage() {
   return (

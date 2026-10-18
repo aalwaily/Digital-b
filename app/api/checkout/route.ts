@@ -1,6 +1,6 @@
 import { parseCheckoutInput } from "@/lib/checkout-input";
 import { signDownloadToken, newOrderId } from "@/lib/download-token";
-import { demoCheckoutAllowed, getStripe, isStripeConfigured } from "@/lib/payments";
+import { demoCheckoutAllowed, getStripe, isStripeEnabled } from "@/lib/payments";
 import { getRequestOrigin } from "@/lib/site-url";
 import { NextResponse } from "next/server";
 
@@ -19,7 +19,7 @@ export async function POST(request: Request) {
   if (!parsed.ok) return NextResponse.json({ error: parsed.error }, { status: 400 });
   const { email, priced, confirmDemo } = parsed.value;
 
-  if (!isStripeConfigured()) {
+  if (!isStripeEnabled()) {
     if (!demoCheckoutAllowed()) {
       return NextResponse.json({ error: "Card checkout is not available." }, { status: 400 });
     }

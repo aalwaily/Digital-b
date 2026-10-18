@@ -1,6 +1,7 @@
 import { NewsletterForm } from "@/components/newsletter-form";
 import { categories } from "@/data/products";
 import { legalNav, site } from "@/data/site";
+import { CreditCard, Smartphone, Wallet } from "lucide-react";
 import Link from "next/link";
 
 export function SiteFooter() {
@@ -16,6 +17,7 @@ export function SiteFooter() {
             </a>
             <span className="text-muted-foreground"> · {site.location}</span>
           </p>
+          <PaymentMarks />
         </div>
         <div className="lg:col-span-3">
           <p className="text-xs tracking-[0.16em] text-copper uppercase">Shop</p>
@@ -76,9 +78,35 @@ export function SiteFooter() {
       <div className="border-t">
         <p className="mx-auto flex max-w-6xl flex-col gap-2 px-5 py-4 text-xs text-muted-foreground sm:flex-row sm:justify-between">
           <span>© {new Date().getFullYear()} {site.legalName}. All rights reserved.</span>
-          <span>Prices in USD. Digital goods, delivered as PDF.</span>
+          <span>Prices in USD. Payments are processed by PayPal.</span>
         </p>
       </div>
     </footer>
+  );
+}
+
+function PaymentMarks() {
+  const marks = [
+    { icon: Wallet, label: "PayPal" },
+    { icon: CreditCard, label: "Cards" },
+    { icon: Smartphone, label: "Apple Pay" },
+  ];
+  return (
+    <div className="mt-5">
+      <ul className="flex flex-wrap gap-2" aria-label="Accepted payments">
+        {marks.map((mark) => (
+          <li
+            key={mark.label}
+            className="inline-flex items-center gap-1.5 rounded-md border bg-card px-2 py-1 text-[11px] font-medium tracking-wide"
+          >
+            <mark.icon className="size-3.5" aria-hidden />
+            {mark.label}
+          </li>
+        ))}
+      </ul>
+      <p className="mt-2 max-w-xs text-xs leading-relaxed text-muted-foreground">
+        Payments are processed by PayPal (cards and PayPal balance, Apple Pay where available).
+      </p>
+    </div>
   );
 }

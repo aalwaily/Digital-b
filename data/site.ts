@@ -4,8 +4,8 @@ export const site = {
   tagline: "Practical guides for a well-lived life.",
   description:
     "Digital PDF guides on health, home training, money, work, study, and calm. Pay once, download instantly, and keep the file.",
-  email: "hello@vellumpress.example",
-  supportEmail: "support@vellumpress.example",
+  email: "aali444m@gmail.com",
+  supportEmail: "aali444m@gmail.com",
   location: "Portland, Oregon",
   jurisdiction: "the State of Oregon, United States",
   refundDays: 30,

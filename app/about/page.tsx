@@ -1,12 +1,13 @@
 import { site } from "@/data/site";
+import { pageMetadata } from "@/lib/page-meta";
 import type { Metadata } from "next";
 import Link from "next/link";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "About",
-  description: "Vellum Press publishes practical PDF guides you buy once and keep.",
-  alternates: { canonical: "/about" },
-};
+  description: "Vellum Press publishes practical PDF guides you buy once and keep. Payments are processed by PayPal.",
+  path: "/about",
+});
 
 export default function AboutPage() {
   return (
@@ -27,7 +28,7 @@ export default function AboutPage() {
       <h2 className="mt-12 font-serif text-3xl">How a purchase works</h2>
       <ol className="mt-4 space-y-3 text-sm leading-relaxed">
         <li>1. You read the contents and a free sample.</li>
-        <li>2. You pay once with Stripe, PayPal, Apple Pay on Safari, or Moyasar (mada, cards, Apple Pay, or STC Pay) when the store is connected. Until then, checkout is clearly marked as a demo and does not charge you.</li>
+        <li>2. You pay once. Payments are processed by PayPal: a card, your PayPal balance, or Apple Pay where it is available. Until PayPal is connected, checkout is clearly marked as a demo and does not charge you.</li>
         <li>3. A signed receipt link lets you download the files. Save them. The link expires.</li>
       </ol>
       <h2 className="mt-12 font-serif text-3xl">Publisher details</h2>
@@ -58,7 +59,7 @@ export default function AboutPage() {
         </div>
       </dl>
       <p className="mt-6 rounded-xl border bg-card p-4 text-sm leading-relaxed text-muted-foreground">
-        Before you launch, replace the business name, location, emails, and governing law in <code>data/site.ts</code>. The addresses above are placeholders, including the <span className="whitespace-nowrap">.example</span> inbox.
+        The contact address is {site.email}. The legal name, location, and governing law on this page are still placeholders in the site settings.
       </p>
       <p className="mt-8">
         <Link href="/shop" className="text-sm underline underline-offset-4">

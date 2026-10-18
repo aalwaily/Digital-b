@@ -1,3 +1,4 @@
+import type { Post } from "@/data/blog";
 import type { Faq, Product } from "@/data/products";
 import { getCategory } from "@/data/products";
 import { site } from "@/data/site";
@@ -76,6 +77,25 @@ export function websiteSchema(siteUrl: string) {
       target: `${siteUrl}/shop?q={search_term_string}`,
       "query-input": "required name=search_term_string",
     },
+  };
+}
+
+export function articleSchema(post: Post, siteUrl: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.description,
+    datePublished: post.date,
+    author: { "@type": "Organization", name: site.legalName, url: siteUrl },
+    publisher: {
+      "@type": "Organization",
+      name: site.legalName,
+      url: siteUrl,
+      email: site.email,
+    },
+    image: [`${siteUrl}/blog/${post.slug}/opengraph-image`],
+    mainEntityOfPage: `${siteUrl}/blog/${post.slug}`,
   };
 }
 
