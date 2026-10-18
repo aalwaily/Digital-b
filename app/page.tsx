@@ -91,7 +91,7 @@ export default function HomePage() {
             { icon: LockKeyhole, title: "Signed links", text: "Full files stay off the public web." },
             { icon: Printer, title: "Print what you use", text: "Letter-size pages, checklists, tables." },
             { icon: RefreshCcw, title: "30-day refunds", text: "Email support if it is not the right guide." },
-            { icon: ShieldCheck, title: "Stripe or demo", text: "Live cards via Stripe. Demo is labeled." },
+            { icon: ShieldCheck, title: "Card, PayPal, or demo", text: "Pay with a card or PayPal. Demo is labeled." },
           ].map((item) => (
             <div key={item.title} className="flex gap-3">
               <item.icon className="mt-0.5 size-5 shrink-0 text-copper" aria-hidden />
@@ -163,7 +163,7 @@ export default function HomePage() {
             {
               step: "02",
               title: "Check out",
-              text: "Stripe handles the card when keys are set. Otherwise a labeled demo completes the order.",
+              text: "A card goes through Stripe, or you pay with PayPal, when those keys are set. Otherwise a labeled demo completes the order.",
             },
             {
               step: "03",

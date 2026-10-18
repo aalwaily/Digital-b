@@ -17,20 +17,20 @@ export const legalPages: LegalPage[] = [
     slug: "privacy",
     title: "Privacy policy",
     description: `How ${site.name} handles email addresses, checkout, and data stored in your browser.`,
-    updated: "2026-04-01",
+    updated: "2026-10-18",
     sections: [
       { heading: "Read this first", paragraphs: [note] },
       {
         heading: "Who we are",
         paragraphs: [
           `${site.legalName} ("we") publishes digital PDF guides. You can reach us at ${site.email}. We are based in ${site.location}.`,
-          "This policy describes the demo store and the same store after Stripe is connected. It does not cover third-party sites we link to.",
+          "This policy describes the demo store and the same store after Stripe or PayPal is connected. It does not cover third-party sites we link to.",
         ],
       },
       {
         heading: "What we collect",
         paragraphs: [
-          "Checkout asks for an email address so we can build your receipt and download link. If you pay with Stripe, Stripe collects payment details on Stripe's pages. We do not receive your full card number.",
+          "Checkout asks for an email address so we can build your receipt and download link. If you pay with Stripe, Stripe collects the card on Stripe's pages. If you pay with PayPal, PayPal collects that payment on PayPal's pages. We do not receive your full card number or your PayPal password.",
           "The contact form collects your name, email, topic, and message. The newsletter form collects an email address and your consent to hear about new guides.",
           "The cart and the theme preference are stored in your browser (local storage). They are not sent to us until you choose to check out.",
         ],
@@ -59,14 +59,14 @@ export const legalPages: LegalPage[] = [
       {
         heading: "Processors",
         paragraphs: [
-          "Stripe, Inc. processes live card payments under its own privacy policy when Stripe keys are configured. In demo mode no payment processor is contacted.",
+          "Stripe, Inc. processes live card payments under its own privacy policy when Stripe keys are configured. PayPal processes PayPal payments under its own privacy policy when PayPal keys are configured. In demo mode no payment processor is contacted.",
           "If you deploy this store, your host (for example Vercel) will also process technical logs such as IP address and user agent as part of running the site. Review that host's policy.",
         ],
       },
       {
         heading: "How long we keep it",
         paragraphs: [
-          "This template does not include a database. Live Stripe payments are retained by Stripe according to Stripe's retention and your dashboard settings. Webhook forwards, if you add them, are retained by whatever service receives them.",
+          "This template does not include a database. Live Stripe payments are retained by Stripe according to Stripe's retention and your dashboard settings. PayPal payments are retained by PayPal. Webhook forwards, if you add them, are retained by whatever service receives them.",
           "Download tokens expire on their own. They are not a permanent archive of your library. Save the PDFs.",
         ],
       },
@@ -95,7 +95,7 @@ export const legalPages: LegalPage[] = [
     slug: "terms",
     title: "Terms of service",
     description: `The license, the rules of purchase, and the limits of what a ${site.name} guide promises.`,
-    updated: "2026-04-01",
+    updated: "2026-10-18",
     sections: [
       { heading: "Read this first", paragraphs: [note] },
       {
@@ -122,7 +122,7 @@ export const legalPages: LegalPage[] = [
         heading: "Prices and checkout",
         paragraphs: [
           "Prices are in US dollars and are shown before you pay. We may change prices of future purchases at any time. A confirmed order keeps the price you paid.",
-          "If Stripe is configured, you pay on Stripe Checkout. If Stripe is not configured, checkout is a labeled demo: no card is charged and the download is issued so the flow can be reviewed. Do not present demo orders as real sales.",
+          "If Stripe is configured, you can pay on Stripe Checkout. If PayPal is configured, you can pay with PayPal. If neither is configured, checkout is a labeled demo: no payment is collected and the download is issued so the flow can be reviewed. Do not present demo orders as real sales.",
           "You must provide an email address you can access. The download link is tied to that address and to the products in the order.",
         ],
       },
@@ -169,7 +169,7 @@ export const legalPages: LegalPage[] = [
     slug: "refunds",
     title: "Refund policy",
     description: `How to request a refund within ${site.refundDays} days of buying a ${site.name} guide.`,
-    updated: "2026-04-01",
+    updated: "2026-10-18",
     sections: [
       { heading: "Read this first", paragraphs: [note] },
       {
@@ -182,8 +182,8 @@ export const legalPages: LegalPage[] = [
       {
         heading: "How the refund is paid",
         paragraphs: [
-          "If you paid with Stripe, we refund the charge to the original payment method. Stripe's timing to your bank can take several business days after we issue it. We refund the amount you paid for the items you return, not an arbitrary portion, unless we agree otherwise in writing.",
-          "Demo orders do not charge a card. There is no payment to reverse. The receipt page marks those orders as demos.",
+          "If you paid with Stripe, we refund the charge to the original card. Stripe's timing to your bank can take several business days after we issue it. If you paid with PayPal, we refund the PayPal payment back to the PayPal account used at checkout. We refund the amount you paid for the items you return, not an arbitrary portion, unless we agree otherwise in writing.",
+          "Demo orders do not collect a payment. There is nothing to reverse. The receipt page marks those orders as demos.",
         ],
       },
       {
@@ -217,13 +217,13 @@ export const legalPages: LegalPage[] = [
     slug: "delivery",
     title: "Digital delivery policy",
     description: "How PDF delivery, download links, and reprints of a lost file work.",
-    updated: "2026-04-01",
+    updated: "2026-10-18",
     sections: [
       { heading: "Read this first", paragraphs: [note] },
       {
         heading: "Instant delivery",
         paragraphs: [
-          "There is no shipping. After a successful Stripe payment, or after you confirm a demo order, you land on a receipt page with a download button for each full PDF you bought. A bundle lists each included guide.",
+          "There is no shipping. After a successful Stripe or PayPal payment, or after you confirm a demo order, you land on a receipt page with a download button for each full PDF you bought. A bundle lists each included guide.",
           "Free samples are separate, shorter PDFs. They are available on the product page before you buy and are not a substitute for the full guide.",
         ],
       },
@@ -250,8 +250,8 @@ export const legalPages: LegalPage[] = [
       {
         heading: "Failed payments and demo mode",
         paragraphs: [
-          "If you cancel Stripe Checkout, you are not charged and no full guide is delivered. Your browser cart remains so you can try again.",
-          "Demo mode is labeled on the checkout page. It exists so the store works before Stripe keys are added. A demo receipt is not proof of payment.",
+          "If you cancel Stripe Checkout, you are not charged and no full guide is delivered. Your browser cart remains so you can try again. If you cancel PayPal, you return to the cart with the same result: nothing is charged and the files stay locked.",
+          "Demo mode is labeled on the checkout page. It exists so the store works before Stripe or PayPal keys are added. A demo receipt is not proof of payment.",
         ],
       },
       {

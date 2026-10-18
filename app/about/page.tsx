@@ -27,7 +27,7 @@ export default function AboutPage() {
       <h2 className="mt-12 font-serif text-3xl">How a purchase works</h2>
       <ol className="mt-4 space-y-3 text-sm leading-relaxed">
         <li>1. You read the contents and a free sample.</li>
-        <li>2. You pay once. Stripe handles the card when the store is live. Until then, checkout is clearly marked as a demo and does not charge you.</li>
+        <li>2. You pay once with a card through Stripe or with PayPal when the store is connected. Until then, checkout is clearly marked as a demo and does not charge you.</li>
         <li>3. A signed receipt link lets you download the files. Save them. The link expires.</li>
       </ol>
       <h2 className="mt-12 font-serif text-3xl">Publisher details</h2>

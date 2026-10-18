@@ -1,3 +1,4 @@
+import { ClearPurchased } from "@/components/clear-purchased";
 import { Cover } from "@/components/cover";
 import { OrderTools } from "@/components/order-tools";
 import { LinkButton } from "@/components/link-button";
@@ -17,7 +18,7 @@ export default async function OrderPage({
   searchParams,
 }: {
   params: Promise<{ token: string }>;
-  searchParams: Promise<{ demo?: string }>;
+  searchParams: Promise<{ demo?: string; paid?: string }>;
 }) {
   const { token } = await params;
   const query = await searchParams;
@@ -47,9 +48,10 @@ export default async function OrderPage({
       <p className="mt-3 text-muted-foreground">
         Order {payload.orderId} for {payload.email}. Save the PDFs. This link expires on {expires}.
       </p>
+      {query.paid === "1" && !payload.demo ? <ClearPurchased slugs={payload.items.map((item) => item.slug)} /> : null}
       {showDemo ? (
         <p className="mt-4 rounded-xl border border-copper/50 bg-card px-4 py-3 text-sm">
-          Demo order. No payment was collected. This receipt exists so you can try the download flow before Stripe is connected.
+          Demo order. No payment was collected. This receipt exists so you can try the download flow before Stripe or PayPal is connected.
         </p>
       ) : (
         <p className="mt-4 rounded-xl bg-secondary px-4 py-3 text-sm">Payment confirmed. Thank you.</p>
