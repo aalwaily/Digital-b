@@ -26,14 +26,18 @@ Stripe and Moyasar stay in the repository and stay off the checkout page unless 
 | First Client | $32 | Freelance & work |
 | The Exam Room Method | $21 | Study skills |
 | Steady Mind | $18 | Mindfulness |
+| Saudi Freelancer Starter Kit | $17 | Freelance & work (English edition) |
+| Irregular-Income Budget + Invoice Sheets | $15 | Personal finance |
+| Saudi & Gulf Job-Search and ATS CV Kit | $12 | Freelance & work |
 | Health & Fitness Bundle | $59 (was $80) | Reset, Weeknight Table, and Floor & Form |
 | Work & Money Bundle | $58 (was $73) | Quiet Budget, Habit Ledger, and First Client |
+| Gulf Work Bundle | $36 (was $44) | Freelancer kit, irregular-income sheets, and the Gulf CV kit |
 
 Each guide has a free sample PDF in `public/samples/` and a full PDF in `private/pdfs/`. Full files are not served as public URLs. A purchase creates a signed link that expires after `DOWNLOAD_LINK_DAYS` (14 by default).
 
 Health, fitness, and stress guides include a plain-language disclaimer. They are education, not medical care or therapy. Finance and freelance guides say where a licensed professional has to take over.
 
-Testimonials on the home page, and the reviews on product pages, are marked **Sample**. They are layout content, not verified buyers. Do not turn them into structured rating data.
+There are no star ratings and no sample testimonials. Do not add quotations or an `aggregateRating` until they come from verified buyers.
 
 ## Run it locally
 
@@ -172,10 +176,10 @@ Optional analytics load only when set: `NEXT_PUBLIC_GA_ID`, `NEXT_PUBLIC_META_PI
 ## Add or edit a guide
 
 1. Add the product to `data/products.ts`. Guides use `kind: "guide"`. Bundles use `kind: "bundle"` and an `includes` array of guide slugs. Set `compareAtPrice` on a bundle to the sum of the included prices. The tests check that.
-2. Add the chapter text in `scripts/pdfgen/books_health.py` or `scripts/pdfgen/books_life.py`. Chapter titles should match the `contents` list on the product.
+2. Add the chapter text in `scripts/pdfgen/books_health.py`, `scripts/pdfgen/books_life.py`, or `scripts/pdfgen/books_gulf.py`. Chapter titles should match the `contents` list on the product.
 3. Give the cover the same colors and motif the site uses (`path`, `plate`, `form`, `ledger`, `grid`, `mark`, `bars`, `breath`, `bundle`).
 4. Regenerate the PDFs (below). `data/pdf-meta.json` picks up the page counts the site displays.
-5. Optional: add sample reviews in `data/reviews.ts` with `sample: true`, and a journal post in `data/blog.ts`.
+5. Optional: add a journal post in `data/blog.ts`. Add a review in `data/reviews.ts` only when it comes from a verified buyer. Do not invent stars, quotations, or an `aggregateRating`.
 
 Do not put full PDFs in `public/`. Samples belong in `public/samples/<slug>-sample.pdf`.
 
@@ -213,13 +217,14 @@ The contact and support address in `data/site.ts` is `glarz.com@gmail.com`. Mail
 
 Digital PDF sales are final. The store does not offer refunds. If a file is corrupted, missing, or the download link fails, the customer emails that address and receives a working copy. The policy lives at `/legal/refunds` (footer label: All sales final). Checkout states that all sales are final before payment.
 
-These business details are still placeholders. Replace them before you rely on the legal pages:
+These business details still need the owner. There is a TODO in `data/site.ts` with the same list:
 
-- legal name (`legalName` is still `Vellum Press`)
-- location (`location` is still `Portland, Oregon`, and there is no street address)
-- governing law (`jurisdiction` is still `the State of Oregon, United States`)
+- legal name (`legalName` is still `Vellum Press` until the owner provides the registered name)
+- commercial registration number, or the license that covers online sales in Saudi Arabia
+- VAT / zakat status
+- a street address, if the store must show one
 
-Have a lawyer read `data/legal.ts` before you rely on it. The pages are a practical starting point for a US digital-goods shop, not a law-firm opinion.
+Location is Dammam, Saudi Arabia. Governing law is the Kingdom of Saudi Arabia. Have a lawyer read `data/legal.ts` before you rely on it. The pages are a practical starting point, not a law-firm opinion.
 
 Then:
 
@@ -229,7 +234,7 @@ Then:
 - for Apple Pay, register the domain with the provider you use and set only that provider's domain file (`APPLE_PAY_DOMAIN_ASSOCIATION` or `MOYASAR_APPLE_PAY_DOMAIN_ASSOCIATION`)
 - leave `ALLOW_DEMO_CHECKOUT` unset
 - point `CONTACT_WEBHOOK_URL` and `NEWSLETTER_WEBHOOK_URL` at your inbox tool (a Zapier, Make, or Formspark endpoint is enough)
-- remove or replace the sample testimonials and sample reviews when you have real ones
+- add reviews only when they come from verified buyers
 - put your own domain on the host and confirm `/sitemap.xml` and `/robots.txt`
 
 ## Project map

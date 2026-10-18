@@ -17,6 +17,9 @@ def log_chapter(slug: str) -> dict:
         "first-client": ["Day", "Outreach", "Reply", "Money", "Hours", "Note"],
         "exam-room-method": ["Day", "Retrieved", "New questions", "Minutes", "Sleep", "Note"],
         "steady-mind": ["Day", "Practice", "Minutes", "Hard hour", "Helped?", "Note"],
+        "saudi-freelancer-starter-kit": ["Day", "Portal or client", "Sent?", "Reply", "SAR", "Note"],
+        "irregular-income-budget": ["Date", "In", "Buffer", "Bills", "Invoice", "Note"],
+        "gulf-ats-cv-kit": ["Day", "Employer", "Role", "File sent", "Follow-up", "Note"],
     }
     head = headers[slug]
     blocks = [
@@ -97,6 +100,24 @@ def example_chapter(slug: str) -> dict:
             "Notes became a claim and a question. The questions lived in a list on the left page. G peeked for two days, noticed that the score on a practice set did not move, and put the answers in another notebook. The weekly mix included topics from week 1 even when week 4 felt urgent.",
             "A practice test missed were mostly misreads and two missing facts. The facts became questions. The misreads became a first-five-minutes routine: read the stem, underline the verb, then look at choices. Sleep stayed at a fixed time the week of the exam. The morning was a short retrieval, not a new chapter.",
             "G passed. The guide will not claim the method was the only reason. It will claim that the hours stopped being highlights and became answers. A classmate who reread the same binder felt ready and froze on questions that required producing a rule from memory. Feeling ready is not the same test.",
+        ],
+        "saudi-freelancer-starter-kit": [
+            "This is a composite, not a client and not a testimonial. Call her N. She works in an office in Dammam and can design simple menus. She wanted weekend work. She did not yet have a sentence, a price, or a document.",
+            "She opened freelance.sa and checked the host before she signed in. She read the eligibility questions and answered them for her real situation. The activity she chose matched menu design, not a shop and not goods she would stock. She saved the document the portal issued, wrote the number and the expiry on the field page, and did not treat it as a commercial registration.",
+            "Her floor came from ten honest hours and the lowest monthly amount that made those hours worth it beside her job. She quoted in SAR, with two revision rounds, and a deposit before she started. The first five messages went to people she already knew. Two replied. One became a proposal. The deposit arrived in week four. The other reply stayed a compliment.",
+            "She set aside a percentage of the deposit and booked a conversation with an accountant before she added VAT to anything. The guide did not find the client. The portal, the sentence, and the five messages did. Nothing here is a promise that you will be approved or paid.",
+        ],
+        "irregular-income-budget": [
+            "This is a composite. Call him K. Some months a retainer arrives, and some months it does not. He had been budgeting the average, which made a thin month look like a personal failure.",
+            "He wrote six months of money in. The low month, not the average, became the baseline. Rent and the two minimums fit inside it. A grocery number fit. The streaming bundle did not, so he paused two services. Surplus from a larger month moved to a buffer account the day it arrived, under a rule he wrote before the deposit showed up.",
+            "He sent two invoices that had been living in a chat thread. One was paid in twelve days. The other needed a second, shorter message. The invoice page is why he could say the amount, the date, and what it was for without rewriting the story.",
+            "The monthly hour is the evening before the more reliable payment. He did not invest the buffer and he did not file a tax return from the worksheet. He stopped spending the bill money on dinner. That is the result the pages are for.",
+        ],
+        "gulf-ats-cv-kit": [
+            "This is a composite, not a placement. Call her L. She was applying for coordinator roles in the Eastern Province. Her old CV was two columns, with a photo, a skill-bar graphic, and a header that held her phone number.",
+            "She rebuilt one English file: contact line in the body, then experience, education, skills. Dates were Gregorian, month and year. Bullets named what she did. Where she had a number she could point to, she used it. Where she did not, she left the number off. She did not write a percentage to look busier.",
+            "A posting asked for Arabic. She made a second file instead of mixing scripts in the English one. She left the photo off unless the form asked for one in its own field. She did not put an identity number on the CV.",
+            "She tracked eight applications. Two employers wrote back. One interview used a story from her own shift, not a script memorized from a stranger. She did not get every role. The only claim is that the file was readable and the tracker showed what she had actually sent.",
         ],
         "steady-mind": [
             "H's hard hour was 4 p.m., between the last meeting and collecting a child. The log showed a tight jaw and a phone scroll, not a mysterious lack of mindfulness. Week 1 was a long exhale in the parked car, three times, before going inside. It did not make H calm. It made the next ten minutes less automatic.",
@@ -274,6 +295,106 @@ def field_chapter(slug: str) -> dict:
                 "Accommodations, if I need them, are requested early.",
             ),
         )
+    if slug == "saudi-freelancer-starter-kit":
+        return chapter(
+            "Field pages",
+            P("Print this. The portal answer and the price are useless if they stay in your head. Write what the official page said on the day you read it."),
+            H("Document record"),
+            T(
+                ["Field", "What the portal showed"],
+                [
+                    ["Date I checked freelance.sa", ""],
+                    ["Activity I selected", ""],
+                    ["Document number, if issued", ""],
+                    ["Expiry", ""],
+                    ["Fee shown on the page", ""],
+                    ["What the portal refused, if it did", ""],
+                ],
+                32,
+            ),
+            H("Offer and price"),
+            T(
+                ["Box", "Your words"],
+                [
+                    ["Who pays", ""],
+                    ["What they hold at the end", ""],
+                    ["Not included", ""],
+                    ["Hours, honestly", ""],
+                    ["Floor in SAR", ""],
+                    ["Target in SAR", ""],
+                    ["Deposit before I start", ""],
+                ],
+                28,
+            ),
+            C(
+                "I read the eligibility questions myself.",
+                "I did not treat the document as a commercial registration.",
+                "My employment contract was checked before I sent a message.",
+                "The invoice does not add VAT unless I am registered.",
+                "A lawyer or accountant question is written down.",
+            ),
+        )
+    if slug == "irregular-income-budget":
+        return chapter(
+            "Field pages",
+            P("Use the low month you can document. If a cell is a guess, write 'guess' beside it. A tidy fiction will not pay the rent."),
+            H("Six months of money in"),
+            T(
+                ["Month", "Money in", "Source", "Low month?"],
+                _rows(["1", "2", "3", "4", "5", "6"], 4),
+                32,
+            ),
+            H("Baseline and buffer"),
+            T(
+                ["Line", "Amount", "Currency"],
+                [
+                    ["Low-month baseline", "", ""],
+                    ["Fixed bills inside it", "", ""],
+                    ["Operating costs", "", ""],
+                    ["Chosen spending", "", ""],
+                    ["Buffer balance today", "", ""],
+                    ["Rule for a high month", "", ""],
+                ],
+                30,
+            ),
+            C(
+                "Minimums are covered from the baseline, or I have called the lender.",
+                "Bill money is not in the spending balance.",
+                "Surplus has a written destination.",
+                "The next monthly hour is on the calendar.",
+            ),
+        )
+    if slug == "gulf-ats-cv-kit":
+        return chapter(
+            "Field pages",
+            P("Draft the CV in this order. If a line needs a graphic to make sense, rewrite the line."),
+            H("CV skeleton"),
+            T(
+                ["Section", "What goes here", "Done?"],
+                [
+                    ["Contact, in the body", "Name, city, phone, email, LinkedIn", ""],
+                    ["Experience", "Employer, title, Gregorian dates, bullets", ""],
+                    ["Education", "School, credential, year", ""],
+                    ["Skills", "Tools and languages you can demonstrate", ""],
+                    ["Left off", "Photo, charts, ID number, header-only phone", ""],
+                ],
+                36,
+            ),
+            H("Bullet workshop"),
+            T(
+                ["Role", "What I did", "Result I can point to", "Number? only if true"],
+                _rows(["1", "2", "3", "4"], 4),
+                40,
+            ),
+            C(
+                "One column. No table inside the CV file.",
+                "The language matches the posting.",
+                "A second file exists if they asked for the other language.",
+                "I did not invent a metric.",
+                "The tracker has the date I sent it.",
+            ),
+        )
+
     return chapter(
         "Field pages",
         P("Use the log for seven days before you decide the practice 'does not work.' One calm morning is not a pattern. One bad practice is a reason to stop that practice, not a reason to quit noticing."),

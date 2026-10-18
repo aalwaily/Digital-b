@@ -60,6 +60,13 @@ DISCLAIMERS = {
         "more distressed, and contact a licensed clinician if worry, panic, or low mood is persistent. "
         "If you might hurt yourself, contact local emergency services. In the United States, call or text 988."
     ),
+    "jobs": (
+        "Work disclaimer. This guide is education about CVs, applications, and interviews. "
+        "It is not a promise of an interview, a job, a visa, or a salary. Hiring rules, "
+        "Saudization, iqama professions, and what an employer's screening software does "
+        "depend on that employer and on the country. Read the posting. Where a rule affects "
+        "your right to work, ask the employer or a qualified adviser. Do not invent numbers on a CV."
+    ),
     "general": (
         "A note on limits. This guide describes methods. It cannot see your course, your calendar, "
         "or your life. Use what fits. Leave what does not. Nothing here guarantees a grade, a streak, "

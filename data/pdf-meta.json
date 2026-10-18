@@ -46,5 +46,23 @@
     "samplePages": 3,
     "bytes": 102811,
     "sampleBytes": 86666
+  },
+  "saudi-freelancer-starter-kit": {
+    "pages": 16,
+    "samplePages": 4,
+    "bytes": 117380,
+    "sampleBytes": 89056
+  },
+  "irregular-income-budget": {
+    "pages": 15,
+    "samplePages": 3,
+    "bytes": 114869,
+    "sampleBytes": 88305
+  },
+  "gulf-ats-cv-kit": {
+    "pages": 15,
+    "samplePages": 3,
+    "bytes": 114916,
+    "sampleBytes": 88277
   }
 }

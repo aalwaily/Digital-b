@@ -6,10 +6,9 @@ import { Price } from "@/components/price";
 import { ProductCard } from "@/components/product-card";
 import { LinkButton } from "@/components/link-button";
 import { faqs } from "@/data/faq";
-import { getProduct, categories, products } from "@/data/products";
+import { getProduct, categories, guides, products } from "@/data/products";
 import { posts } from "@/data/blog";
 import { site } from "@/data/site";
-import { testimonials } from "@/data/testimonials";
 import { pageCountFor } from "@/lib/catalog";
 import { pageMetadata } from "@/lib/page-meta";
 import { organizationSchema, websiteSchema } from "@/lib/schema";
@@ -59,7 +58,7 @@ export default function HomePage() {
           <dl className="mt-10 grid grid-cols-3 gap-4 text-sm">
             <div>
               <dt className="text-muted-foreground">Guides</dt>
-              <dd className="font-serif text-2xl">8</dd>
+              <dd className="font-serif text-2xl">{guides.length}</dd>
             </div>
             <div>
               <dt className="text-muted-foreground">Delivery</dt>
@@ -184,27 +183,6 @@ export default function HomePage() {
               <h2 className="mt-2 font-serif text-2xl">{item.title}</h2>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.text}</p>
             </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-6xl px-5 py-16">
-        <div className="max-w-2xl">
-          <p className="text-xs tracking-[0.18em] text-copper uppercase">Sample testimonials</p>
-          <h2 className="mt-2 font-serif text-3xl">What the layout is standing in for</h2>
-          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-            These quotations are sample content so the page has a finished shape. They are not verified customer reviews.
-          </p>
-        </div>
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
-          {testimonials.map((item) => (
-            <figure key={item.id} className="rounded-2xl border bg-card p-5">
-              <span className="rounded-full bg-secondary px-2 py-0.5 text-xs tracking-wide uppercase">Sample</span>
-              <blockquote className="mt-4 font-serif text-xl leading-snug">“{item.quote}”</blockquote>
-              <figcaption className="mt-4 text-sm text-muted-foreground">
-                {item.name} · {item.detail}
-              </figcaption>
-            </figure>
           ))}
         </div>
       </section>

@@ -49,8 +49,8 @@ describe("contact address", () => {
     expect(site.supportEmail).toBe("glarz.com@gmail.com");
     expect(site.email.includes(".example")).toBe(false);
     expect(site.legalName).toBe("Vellum Press");
-    expect(site.location).toBe("Portland, Oregon");
-    expect(site.jurisdiction).toContain("Oregon");
+    expect(site.location).toBe("Dammam, Saudi Arabia");
+    expect(site.jurisdiction).toBe("the Kingdom of Saudi Arabia");
   });
 });
 
@@ -162,6 +162,11 @@ describe("search and article metadata", () => {
   it("lists public pages in the sitemap and keeps checkout out of the index", () => {
     const urls = sitemap().map((entry) => entry.url);
     expect(urls.some((url) => url.endsWith("/product/steady-mind"))).toBe(true);
+    expect(urls.some((url) => url.endsWith("/product/saudi-freelancer-starter-kit"))).toBe(true);
+    expect(urls.some((url) => url.endsWith("/product/irregular-income-budget"))).toBe(true);
+    expect(urls.some((url) => url.endsWith("/product/gulf-ats-cv-kit"))).toBe(true);
+    expect(urls.some((url) => url.endsWith("/product/gulf-work-bundle"))).toBe(true);
+    expect(urls.every((url) => url.startsWith("http://") || url.startsWith("https://"))).toBe(true);
     expect(urls.some((url) => url.endsWith("/blog/sunday-prep-that-holds"))).toBe(true);
     expect(urls.some((url) => url.endsWith("/legal/refunds"))).toBe(true);
     expect(urls.some((url) => url.endsWith("/checkout"))).toBe(false);
