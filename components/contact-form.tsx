@@ -88,7 +88,7 @@ export function ContactForm() {
         <Label htmlFor="message">{t.contact.message}</Label>
         <Textarea id="message" name="message" required minLength={10} maxLength={5000} className="min-h-36" />
       </div>
-      <div className="absolute -left-[9999px]" aria-hidden="true">
+      <div className="sr-only" aria-hidden="true">
         <label htmlFor="contact-company">{t.newsletter.company}</label>
         <input id="contact-company" name="company" tabIndex={-1} autoComplete="off" />
       </div>

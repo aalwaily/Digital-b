@@ -61,7 +61,7 @@ export function NewsletterForm({ inverted = false, stack = false }: { inverted?:
           {status === "loading" ? t.newsletter.joining : t.newsletter.button}
         </Button>
       </div>
-      <div className="absolute -left-[9999px]" aria-hidden="true">
+      <div className="sr-only" aria-hidden="true">
         <label htmlFor="company">{t.newsletter.company}</label>
         <input id="company" name="company" tabIndex={-1} autoComplete="off" />
       </div>

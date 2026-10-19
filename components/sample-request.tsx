@@ -98,7 +98,7 @@ export function SampleRequest({
           className="h-11"
         />
       </div>
-      <div className="absolute -left-[9999px]" aria-hidden="true">
+      <div className="sr-only" aria-hidden="true">
         <label htmlFor={`sample-company-${slug}`}>{t.newsletter.company}</label>
         <input id={`sample-company-${slug}`} name="company" tabIndex={-1} autoComplete="off" />
       </div>
