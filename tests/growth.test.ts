@@ -1,7 +1,7 @@
-import { POST as newsletterPost } from "@/app/api/newsletter/route";
-import { POST as samplePost } from "@/app/api/sample/route";
+import { POST as newsletterPost } from "@/app/(store)/api/newsletter/route";
+import { POST as samplePost } from "@/app/(store)/api/sample/route";
 import robots from "@/app/robots";
-import sitemap from "@/app/sitemap";
+import sitemap from "@/app/(store)/sitemap";
 import { posts } from "@/data/blog";
 import { faqs } from "@/data/faq";
 import { getLegalPage } from "@/data/legal";

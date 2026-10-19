@@ -1,4 +1,4 @@
-import { getSiteUrl } from "@/lib/site-url";
+import { CANONICAL_ORIGIN } from "@/lib/seo";
 import type { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
@@ -8,6 +8,7 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/cart", "/checkout", "/orders/", "/api/"],
     },
-    sitemap: `${getSiteUrl()}/sitemap.xml`,
+    sitemap: `${CANONICAL_ORIGIN}/sitemap.xml`,
+    host: CANONICAL_ORIGIN,
   };
 }

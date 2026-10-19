@@ -18,7 +18,7 @@ export function Cover({
       viewBox="0 0 600 800"
       className={cn("h-auto w-full", className)}
       role={decorative ? undefined : "img"}
-      aria-label={decorative ? undefined : `${product.title} cover`}
+      aria-label={decorative ? undefined : `${product.title} PDF cover`}
       aria-hidden={decorative || undefined}
     >
       <rect width="600" height="800" fill={bg} />
@@ -222,7 +222,7 @@ function Motif({ motif, accent, fg }: { motif: Product["cover"]["motif"]; accent
 export function ContentsPlate({ product }: { product: Product }) {
   const lines = product.contents.slice(0, 8);
   return (
-    <svg viewBox="0 0 600 800" className="h-auto w-full" role="img" aria-label={`Contents preview for ${product.title}`}>
+    <svg viewBox="0 0 600 800" className="h-auto w-full" role="img" aria-label={`${product.title} PDF contents preview`}>
       <rect width="600" height="800" fill="#F7F3EC" />
       <rect x="0" y="0" width="16" height="800" fill={product.cover.bg} />
       <text x="48" y="86" fill="#1C1915" fontFamily="var(--font-serif), Georgia, serif" fontSize="36">
@@ -247,7 +247,7 @@ export function ContentsPlate({ product }: { product: Product }) {
 
 export function WorksheetPlate({ product }: { product: Product }) {
   return (
-    <svg viewBox="0 0 600 800" className="h-auto w-full" role="img" aria-label={`Worksheet preview for ${product.title}`}>
+    <svg viewBox="0 0 600 800" className="h-auto w-full" role="img" aria-label={`${product.title} PDF worksheet preview`}>
       <rect width="600" height="800" fill="#F7F3EC" />
       <rect x="40" y="48" width="520" height="92" rx="12" fill={product.cover.bg} />
       <text x="64" y="92" fill={product.cover.fg} fontFamily="var(--font-serif), Georgia, serif" fontSize="28">
