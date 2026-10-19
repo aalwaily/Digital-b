@@ -50,6 +50,11 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
+              <Link href="/ar" className="hover:underline" hrefLang="ar" lang="ar">
+                العربية
+              </Link>
+            </li>
+            <li>
               <Link href="/faq" className="hover:underline">
                 FAQ
               </Link>

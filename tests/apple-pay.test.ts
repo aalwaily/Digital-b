@@ -1,8 +1,8 @@
-import { GET as associationGET } from "@/app/.well-known/apple-developer-merchantid-domain-association/route";
-import { GET as moyasarAssociationGET } from "@/app/api/moyasar/apple-domain/route";
-import { POST as capturePOST } from "@/app/api/paypal/applepay/capture/route";
-import { POST as orderPOST } from "@/app/api/paypal/applepay/order/route";
-import { GET as configGET } from "@/app/api/paypal/config/route";
+import { GET as associationGET } from "@/app/(store)/.well-known/apple-developer-merchantid-domain-association/route";
+import { GET as moyasarAssociationGET } from "@/app/(store)/api/moyasar/apple-domain/route";
+import { POST as capturePOST } from "@/app/(store)/api/paypal/applepay/capture/route";
+import { POST as orderPOST } from "@/app/(store)/api/paypal/applepay/order/route";
+import { GET as configGET } from "@/app/(store)/api/paypal/config/route";
 import { quote } from "@/lib/catalog";
 import { verifyDownloadToken } from "@/lib/download-token";
 import {

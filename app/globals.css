@@ -173,6 +173,12 @@
   --apple-pay-button-box-sizing: border-box;
 }
 
+html[lang="ar"] {
+  --font-sans: var(--font-cairo), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-cairo), ui-serif, Georgia, serif;
+  --font-heading: var(--font-cairo), ui-serif, Georgia, serif;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

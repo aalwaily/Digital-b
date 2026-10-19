@@ -248,7 +248,7 @@ describe("Moyasar webhook secret", () => {
 
 describe("Moyasar routes", () => {
   it("prepares a session from the catalog and ignores a client amount", async () => {
-    const { POST } = await import("@/app/api/moyasar/session/route");
+    const { POST } = await import("@/app/(store)/api/moyasar/session/route");
     const response = await POST(
       new Request("https://guides.example.com/api/moyasar/session", {
         method: "POST",
@@ -279,7 +279,7 @@ describe("Moyasar routes", () => {
       return new Response(JSON.stringify(payment), { status: 200 });
     });
     vi.stubGlobal("fetch", fetchMock);
-    const { GET } = await import("@/app/api/moyasar/callback/route");
+    const { GET } = await import("@/app/(store)/api/moyasar/callback/route");
     const response = await GET(
       new Request(
         `https://guides.example.com/api/moyasar/callback?id=${PAYMENT_ID}&state=${encodeURIComponent(state)}&status=paid`,
@@ -302,7 +302,7 @@ describe("Moyasar routes", () => {
       "fetch",
       vi.fn(async () => new Response(JSON.stringify(paidPayment({ callback_url: moyasarCallbackUrl(ORIGIN, state), status: "failed" })), { status: 200 })),
     );
-    const { GET } = await import("@/app/api/moyasar/callback/route");
+    const { GET } = await import("@/app/(store)/api/moyasar/callback/route");
     const response = await GET(
       new Request(`https://guides.example.com/api/moyasar/callback?id=${PAYMENT_ID}&state=${encodeURIComponent(state)}&status=paid`, {
         headers: { "x-forwarded-host": "guides.example.com", "x-forwarded-proto": "https" },
@@ -314,7 +314,7 @@ describe("Moyasar routes", () => {
 
   it("verifies the webhook secret and does not treat it as fulfillment", async () => {
     process.env.MOYASAR_WEBHOOK_SECRET = "hook-secret";
-    const { POST } = await import("@/app/api/moyasar/webhook/route");
+    const { POST } = await import("@/app/(store)/api/moyasar/webhook/route");
     const rejected = await POST(
       new Request("https://guides.example.com/api/moyasar/webhook", {
         method: "POST",

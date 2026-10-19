@@ -13,7 +13,7 @@ export function FaqList({ items }: { items: Faq[] }) {
     <Accordion multiple className="divide-y divide-border border-y">
       {items.map((item) => (
         <AccordionItem key={item.question} value={item.question}>
-          <AccordionTrigger className="py-4 text-left font-serif text-lg font-medium hover:no-underline">
+          <AccordionTrigger className="py-4 text-start font-serif text-lg font-medium hover:no-underline">
             {item.question}
           </AccordionTrigger>
           <AccordionContent className="max-w-3xl text-base leading-relaxed text-muted-foreground">

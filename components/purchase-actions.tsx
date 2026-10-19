@@ -6,7 +6,13 @@ import { Check, ShoppingBag } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export function PurchaseActions({ slug }: { slug: string }) {
+export function PurchaseActions({
+  slug,
+  labels,
+}: {
+  slug: string;
+  labels?: { add: string; inCart: string; buy: string };
+}) {
   const cart = useCart();
   const router = useRouter();
   const inCart = cart.has(slug);
@@ -22,7 +28,7 @@ export function PurchaseActions({ slug }: { slug: string }) {
         }}
       >
         {inCart || added ? <Check /> : <ShoppingBag />}
-        {inCart || added ? "In cart" : "Add to cart"}
+        {inCart || added ? (labels?.inCart ?? "In cart") : (labels?.add ?? "Add to cart")}
       </Button>
       <Button
         variant="outline"
@@ -31,7 +37,7 @@ export function PurchaseActions({ slug }: { slug: string }) {
           router.push(`/checkout?buy=${slug}`);
         }}
       >
-        Buy now
+        {labels?.buy ?? "Buy now"}
       </Button>
     </div>
   );

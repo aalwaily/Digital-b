@@ -62,7 +62,9 @@ Copy `.env.example` to `.env.local` when you want to override the defaults. The 
 
 | Variable | Required | Purpose |
 | --- | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | For production | Canonical URLs, sitemap, Open Graph. Example: `https://guides.example.com` |
+| `NEXT_PUBLIC_SITE_URL` | For production | Checkout return origin. Example: `https://getvellumpress.com`. SEO canonicals and the sitemap always use `https://getvellumpress.com`. |
+| `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | No | Google Search Console HTML-tag content value. |
+| `NEXT_PUBLIC_BING_SITE_VERIFICATION` | No | Bing Webmaster `msvalidate.01` content value. |
 | `DOWNLOAD_SECRET` | Required in production | HMAC secret for download links. Use a long random string (16+ characters). |
 | `DOWNLOAD_LINK_DAYS` | No | Lifetime of a download link. Default 14. |
 | `ENABLE_STRIPE` | No | Set to exactly `true` to show Stripe. Off by default, even if `STRIPE_SECRET_KEY` is set. |
@@ -171,7 +173,7 @@ The cart is stored in `localStorage` under `vellum-cart-v1`.
 
 Contact and newsletter forms validate input. A hidden company field is a honeypot. If `CONTACT_WEBHOOK_URL` is unset, the contact form says the message was validated and not emailed. Newsletter signups and free-sample requests are posted to `NEWSLETTER_WEBHOOK_URL` when that variable is set. Otherwise the server logs the address and the form still confirms the signup. The free sample on a product page asks for an email, then shows the sample PDF.
 
-Optional analytics load only when set: `NEXT_PUBLIC_GA_ID`, `NEXT_PUBLIC_META_PIXEL_ID`, and `NEXT_PUBLIC_TIKTOK_PIXEL_ID`. A real receipt (not a demo) sends a purchase event to whichever of those scripts loaded. Public pages have titles, descriptions, canonical URLs, Open Graph images, and JSON-LD for products, the organization, FAQs, and articles. `/sitemap.xml` and `/robots.txt` list the public pages and keep the cart, checkout, orders, and API out of the index. Product pages include copy-link and share actions.
+Optional analytics load only when set: `NEXT_PUBLIC_GA_ID`, `NEXT_PUBLIC_META_PIXEL_ID`, and `NEXT_PUBLIC_TIKTOK_PIXEL_ID`. A real receipt (not a demo) sends a purchase event to whichever of those scripts loaded. Public pages have buyer-intent titles and descriptions, canonical URLs on `https://getvellumpress.com`, hreflang for Arabic pages under `/ar`, Open Graph images, and JSON-LD for products, the organization, FAQs, and articles. `/sitemap.xml` and `/robots.txt` list products, bundles, journal posts, and Arabic pages, and keep the cart, checkout, orders, and API out of the index. Arabic pages state that the PDF is in English. Search Console and Bing verification meta tags render only when their env vars are set. Product pages include copy-link and share actions.
 
 ## Add or edit a guide
 

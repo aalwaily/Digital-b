@@ -10,30 +10,43 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { LanguageSwitcher } from "@/components/language-switcher";
 import { nav } from "@/data/site";
 import { Menu, ShoppingBag } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
+
+const arabicNav = [
+  { href: "/ar", label: "الرئيسية" },
+  { href: "/ar#guides", label: "المتجر" },
+  { href: "/ar/blog", label: "المدونة" },
+  { href: "/contact", label: "تواصل" },
+] as const;
 
 export function SiteHeader() {
   const cart = useCart();
+  const pathname = usePathname() || "/";
+  const isArabic = pathname === "/ar" || pathname.startsWith("/ar/");
+  const items = isArabic ? arabicNav : nav;
   const [open, setOpen] = useState(false);
   const count = cart.ready ? cart.slugs.length : 0;
 
   return (
     <header className="sticky top-0 z-40 border-b bg-background/85 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-5">
-        <Link href="/" className="mr-2 font-serif text-xl tracking-tight">
+        <Link href={isArabic ? "/ar" : "/"} className="me-2 font-serif text-xl tracking-tight">
           Vellum <span className="text-copper">Press</span>
         </Link>
         <nav className="hidden items-center gap-6 text-sm md:flex" aria-label="Primary">
-          {nav.map((item) => (
+          {items.map((item) => (
             <Link key={item.href} href={item.href} className="hover:text-copper">
               {item.label}
             </Link>
           ))}
         </nav>
-        <div className="ml-auto flex items-center gap-1">
+        <div className="ms-auto flex items-center gap-1">
+          <LanguageSwitcher />
           <ThemeToggle />
           <Link
             href="/cart"
@@ -58,7 +71,7 @@ export function SiteHeader() {
                 <SheetTitle className="font-serif text-xl">Vellum Press</SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col gap-1 px-4" aria-label="Mobile">
-                {nav.map((item) => (
+                {items.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
@@ -68,9 +81,11 @@ export function SiteHeader() {
                     {item.label}
                   </Link>
                 ))}
-                <Link href="/contact" onClick={() => setOpen(false)} className="rounded-lg px-2 py-3 text-lg hover:bg-muted">
-                  Contact
-                </Link>
+                {isArabic ? null : (
+                  <Link href="/contact" onClick={() => setOpen(false)} className="rounded-lg px-2 py-3 text-lg hover:bg-muted">
+                    Contact
+                  </Link>
+                )}
               </nav>
             </SheetContent>
           </Sheet>

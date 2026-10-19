@@ -8,18 +8,23 @@ export function jsonLdScript(data: unknown) {
   return JSON.stringify(data).replace(/</g, "\\u003c");
 }
 
-export function productSchema(product: Product, siteUrl: string) {
+export function productSchema(
+  product: Product,
+  siteUrl: string,
+  options?: { name?: string; description?: string; url?: string },
+) {
   const category = getCategory(product.category);
+  const url = options?.url ?? `${siteUrl}/product/${product.slug}`;
   return {
     "@context": "https://schema.org",
     "@type": "Product",
-    name: product.title,
-    description: product.shortDescription,
+    name: options?.name ?? product.title,
+    description: options?.description ?? product.shortDescription,
     sku: product.slug,
     category: category?.name,
     brand: { "@type": "Brand", name: site.name },
     image: [`${siteUrl}/product/${product.slug}/opengraph-image`],
-    url: `${siteUrl}/product/${product.slug}`,
+    url,
     additionalProperty: {
       "@type": "PropertyValue",
       name: "Page count",
@@ -30,7 +35,7 @@ export function productSchema(product: Product, siteUrl: string) {
       priceCurrency: "USD",
       price: product.price.toFixed(2),
       availability: "https://schema.org/InStock",
-      url: `${siteUrl}/product/${product.slug}`,
+      url,
       seller: { "@type": "Organization", name: site.legalName },
       hasMerchantReturnPolicy: {
         "@type": "MerchantReturnPolicy",
@@ -53,29 +58,34 @@ export function faqSchema(faqs: Faq[]) {
   };
 }
 
-export function breadcrumbSchema(siteUrl: string, product: Product) {
+export function breadcrumbList(items: { name: string; url: string }[]) {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
-      { "@type": "ListItem", position: 2, name: "Shop", item: `${siteUrl}/shop` },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: product.title,
-        item: `${siteUrl}/product/${product.slug}`,
-      },
-    ],
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: item.url,
+    })),
   };
 }
 
-export function websiteSchema(siteUrl: string) {
+export function breadcrumbSchema(siteUrl: string, product: Product) {
+  return breadcrumbList([
+    { name: "Home", url: siteUrl },
+    { name: "Shop", url: `${siteUrl}/shop` },
+    { name: product.title, url: `${siteUrl}/product/${product.slug}` },
+  ]);
+}
+
+export function websiteSchema(siteUrl: string, lang: "en" | "ar" = "en") {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: site.name,
     url: siteUrl,
+    inLanguage: lang === "ar" ? "ar" : "en",
     description: site.description,
     potentialAction: {
       "@type": "SearchAction",
@@ -85,22 +95,27 @@ export function websiteSchema(siteUrl: string) {
   };
 }
 
-export function articleSchema(post: Post, siteUrl: string) {
+export function articleSchema(post: Post, siteUrl: string, pageUrl?: string) {
+  const url = pageUrl ?? `${siteUrl}/blog/${post.slug}`;
   return {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: post.title,
-    description: post.description,
+    headline: post.seoTitle ?? post.title,
+    description: post.seoDescription ?? post.description,
     datePublished: post.date,
-    author: { "@type": "Organization", name: site.legalName, url: siteUrl },
+    dateModified: post.date,
+    inLanguage: post.lang === "ar" ? "ar" : "en",
+    author: { "@type": "Organization", name: "Vellum Press", url: siteUrl },
     publisher: {
       "@type": "Organization",
-      name: site.legalName,
+      name: "Vellum Press",
       url: siteUrl,
       email: site.email,
     },
-    image: [`${siteUrl}/blog/${post.slug}/opengraph-image`],
-    mainEntityOfPage: `${siteUrl}/blog/${post.slug}`,
+    image: [
+      post.lang === "ar" ? `${siteUrl}/blog/opengraph-image` : `${siteUrl}/blog/${post.slug}/opengraph-image`,
+    ],
+    mainEntityOfPage: url,
   };
 }
 
