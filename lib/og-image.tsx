@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { OG_ARABIC_FONT_FAMILY, ogArabicFonts, ogContainsArabic } from "@/lib/og-font";
+import { OgRtlText } from "@/lib/og-rtl";
 
 export const ogSize = { width: 1200, height: 630 };
 export const ogContentType = "image/png";
@@ -40,9 +41,7 @@ export function renderOgImage({
     );
   }
 
-  // Satori shapes Arabic and runs the bidi algorithm itself. CSS direction:rtl
-  // would reverse those runs a second time. Letter-spacing breaks joining.
-  const eyebrowTracking = ogContainsArabic(eyebrow) ? 0 : 6;
+  const arabicEyebrow = ogContainsArabic(eyebrow);
   return new ImageResponse(
     (
       <div
@@ -59,13 +58,13 @@ export function renderOgImage({
           fontFamily: OG_ARABIC_FONT_FAMILY,
         }}
       >
-        <div style={{ display: "flex", letterSpacing: eyebrowTracking, fontSize: 22, color: "#E4B15A" }}>{eyebrow}</div>
-        <div style={{ display: "flex", width: "100%", justifyContent: "flex-end", fontSize: titleSize, lineHeight: 1.15, textAlign: "right" }}>
-          {title}
-        </div>
-        <div style={{ display: "flex", width: "100%", justifyContent: "flex-end", fontSize: 28, lineHeight: 1.35, opacity: 0.9, textAlign: "right" }}>
-          {deck}
-        </div>
+        {arabicEyebrow ? (
+          <OgRtlText text={eyebrow} fontSize={22} color="#E4B15A" block={false} />
+        ) : (
+          <div style={{ display: "flex", letterSpacing: 6, fontSize: 22, color: "#E4B15A" }}>{eyebrow}</div>
+        )}
+        <OgRtlText text={title} fontSize={titleSize} lineHeight={1.15} />
+        <OgRtlText text={deck} fontSize={28} lineHeight={1.35} opacity={0.9} />
       </div>
     ),
     { ...ogSize, fonts: ogArabicFonts() },

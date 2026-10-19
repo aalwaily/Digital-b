@@ -2,6 +2,7 @@ import { getProduct } from "@/data/products";
 import { localizedProduct } from "@/lib/i18n/content";
 import { isLocale } from "@/lib/i18n/config";
 import { OG_ARABIC_FONT_FAMILY, ogArabicFonts, ogContainsArabic } from "@/lib/og-font";
+import { OgRtlText } from "@/lib/og-rtl";
 import { ImageResponse } from "next/og";
 
 export const size = { width: 1200, height: 630 };
@@ -65,13 +66,15 @@ export default async function Image({ params }: { params: Promise<{ slug: string
           }}
         >
           <div style={{ display: "flex", letterSpacing: 4, fontSize: 22, color: accent }}>VELLUM PRESS</div>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", width: "100%" }}>
-            <div style={{ display: "flex", fontSize: title.length > 28 ? 56 : 76, lineHeight: 1.15, textAlign: "right" }}>{title}</div>
-            <div style={{ display: "flex", marginTop: 18, fontSize: 28, lineHeight: 1.35, opacity: 0.85, textAlign: "right" }}>{deck}</div>
+          <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
+            <OgRtlText text={title} fontSize={title.length > 28 ? 56 : 76} lineHeight={1.15} />
+            <div style={{ display: "flex", marginTop: 18, width: "100%" }}>
+              <OgRtlText text={deck} fontSize={28} lineHeight={1.35} opacity={0.85} />
+            </div>
           </div>
-          <div style={{ display: "flex", justifyContent: "space-between", flexDirection: "row-reverse", width: "100%", fontSize: 28 }}>
-            <span>{price} · PDF</span>
-            <span style={{ color: accent }}>{download}</span>
+          <div style={{ display: "flex", justifyContent: "space-between", flexDirection: "row-reverse", alignItems: "center", width: "100%", fontSize: 28 }}>
+            <div style={{ display: "flex", direction: "ltr", unicodeBidi: "isolate" }}>{`${price} · PDF`}</div>
+            <OgRtlText text={download} fontSize={28} color={accent} block={false} />
           </div>
         </div>
       </div>
