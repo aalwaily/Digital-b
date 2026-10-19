@@ -2,6 +2,16 @@
 
 import { useI18n } from "@/components/locale-provider";
 import type { Product } from "@/data/products";
+import {
+  COVER_RIGHT,
+  COVER_WIDTH,
+  coverLatinPlacement,
+  coverRule,
+  coverSvgBidi,
+  coverTextPlacement,
+  mirrorX,
+  worksheetHeadingX,
+} from "@/lib/cover-layout";
 import { cn } from "cn";
 
 export function Cover({
@@ -17,10 +27,11 @@ export function Cover({
   const { bg, fg, accent, motif, titleLines, eyebrow, deck } = product.cover;
   const titleStart = titleLines.length > 2 ? 250 : 268;
   const rtl = locale === "ar";
-  const x = rtl ? 552 : 48;
-  const anchor = rtl ? "end" : "start";
   const family = rtl ? "var(--font-arabic-serif), serif" : "var(--font-serif), Georgia, serif";
   const sans = rtl ? "var(--font-arabic-sans), sans-serif" : "var(--font-sans), sans-serif";
+  const arabic = coverTextPlacement(rtl);
+  const rule = coverRule(rtl);
+  const en = { x: 48 };
 
   return (
     <svg
@@ -29,52 +40,51 @@ export function Cover({
       role={decorative ? undefined : "img"}
       aria-label={decorative ? undefined : `${product.title} PDF cover`}
       aria-hidden={decorative || undefined}
+      {...coverSvgBidi(rtl)}
     >
       <rect width="600" height="800" fill={bg} />
       <Motif motif={motif} accent={accent} fg={fg} />
       <text
-        x={x}
+        x={rtl ? COVER_RIGHT : 48}
+        textAnchor={rtl ? "end" : undefined}
+        direction="ltr"
+        unicodeBidi="isolate"
         y="78"
         fill={fg}
         fillOpacity="0.78"
         fontFamily={sans}
         fontSize="16"
         letterSpacing={rtl ? 0 : 5}
-        textAnchor={anchor}
-        direction="ltr"
-        unicodeBidi="isolate"
       >
         VELLUM PRESS
       </text>
-      <text x={x} y="168" fill={accent} fontFamily={sans} fontSize="18" letterSpacing={rtl ? 0 : 2.5} textAnchor={anchor}>
+      <text {...(rtl ? arabic : en)} y="168" fill={accent} fontFamily={sans} fontSize="18" letterSpacing={rtl ? 0 : 2.5}>
         {rtl ? eyebrow : eyebrow.toUpperCase()}
       </text>
       {titleLines.map((line, index) => (
         <text
           key={`${line}-${index}`}
-          x={x}
+          {...(rtl ? arabic : en)}
           y={titleStart + index * (rtl ? 70 : 78)}
           fill={fg}
           fontFamily={family}
           fontSize={rtl ? 54 : 72}
-          textAnchor={anchor}
         >
           {line}
         </text>
       ))}
       <text
-        x={x}
+        {...(rtl ? arabic : en)}
         y={titleStart + titleLines.length * (rtl ? 70 : 78) + 8}
         fill={fg}
         fillOpacity="0.82"
         fontFamily={sans}
         fontSize="22"
-        textAnchor={anchor}
       >
         {deck}
       </text>
-      <line x1={rtl ? 420 : 48} y1="720" x2={rtl ? 552 : 180} y2="720" stroke={accent} strokeWidth="3" />
-      <text x={x} y="752" fill={fg} fillOpacity="0.7" fontFamily={sans} fontSize="15" letterSpacing={rtl ? 0 : 1.5} textAnchor={anchor}>
+      <line x1={rule.x1} y1={rule.y1} x2={rule.x2} y2={rule.y2} stroke={accent} strokeWidth="3" />
+      <text {...(rtl ? arabic : en)} y="752" fill={fg} fillOpacity="0.7" fontFamily={sans} fontSize="15" letterSpacing={rtl ? 0 : 1.5}>
         {rtl ? "دليل رقمي" : "DIGITAL GUIDE"}
       </text>
     </svg>
@@ -217,22 +227,30 @@ export function ContentsPlate({ product }: { product: Product }) {
   const lines = product.contents.slice(0, 8);
   const family = rtl ? "var(--font-arabic-serif), serif" : "var(--font-serif), Georgia, serif";
   const sans = rtl ? "var(--font-arabic-sans), sans-serif" : "var(--font-sans), sans-serif";
+  const heading = rtl ? coverTextPlacement(true) : { x: 48 };
+  const title = rtl ? coverTextPlacement(true) : { x: 48 };
   return (
-    <svg viewBox="0 0 600 800" className="h-auto w-full" role="img" aria-label={`${product.title} PDF contents preview`}>
+    <svg viewBox="0 0 600 800" className="h-auto w-full" role="img" aria-label={`${product.title} PDF contents preview`} {...coverSvgBidi(rtl)}>
       <rect width="600" height="800" fill="#F7F3EC" />
-      <rect x={rtl ? 584 : 0} y="0" width="16" height="800" fill={product.cover.bg} />
-      <text x={rtl ? 552 : 48} y="86" fill="#1C1915" fontFamily={family} fontSize="36" textAnchor={rtl ? "end" : "start"}>
+      <rect x={rtl ? COVER_WIDTH - 16 : 0} y="0" width="16" height="800" fill={product.cover.bg} />
+      <text {...heading} y="86" fill="#1C1915" fontFamily={family} fontSize="36">
         {rtl ? "المحتويات" : "Contents"}
       </text>
-      <text x={rtl ? 552 : 48} y="122" fill="#6B645C" fontFamily={sans} fontSize="16" textAnchor={rtl ? "end" : "start"}>
+      <text {...title} y="122" fill="#6B645C" fontFamily={sans} fontSize="16">
         {product.title}
       </text>
       {lines.map((line, index) => (
         <g key={`${line}-${index}`}>
-          <text x={rtl ? 552 : 48} y={200 + index * 58} fill={product.cover.bg} fontFamily={sans} fontSize="16" textAnchor={rtl ? "end" : "start"}>
+          <text {...(rtl ? coverLatinPlacement(true) : { x: 48 })} y={200 + index * 58} fill={product.cover.bg} fontFamily={sans} fontSize="16">
             {String(index + 1).padStart(2, "0")}
           </text>
-          <text x={rtl ? 500 : 96} y={200 + index * 58} fill="#1C1915" fontFamily={family} fontSize={rtl ? 18 : 22} textAnchor={rtl ? "end" : "start"}>
+          <text
+            {...(rtl ? coverTextPlacement(true, 500) : { x: 96 })}
+            y={200 + index * 58}
+            fill="#1C1915"
+            fontFamily={family}
+            fontSize={rtl ? 18 : 22}
+          >
             {line.length > (rtl ? 28 : 34) ? `${line.slice(0, rtl ? 26 : 32)}…` : line}
           </text>
         </g>
@@ -247,20 +265,21 @@ export function WorksheetPlate({ product }: { product: Product }) {
   const headings = rtl ? ["خطة", "تم", "ملاحظة"] : ["PLAN", "DONE", "NOTE"];
   const family = rtl ? "var(--font-arabic-serif), serif" : "var(--font-serif), Georgia, serif";
   const sans = rtl ? "var(--font-arabic-sans), sans-serif" : "var(--font-sans), sans-serif";
+  const header = rtl ? coverTextPlacement(true, COVER_RIGHT - 16) : { x: 64 };
   return (
-    <svg viewBox="0 0 600 800" className="h-auto w-full" role="img" aria-label={`${product.title} PDF worksheet preview`}>
+    <svg viewBox="0 0 600 800" className="h-auto w-full" role="img" aria-label={`${product.title} PDF worksheet preview`} {...coverSvgBidi(rtl)}>
       <rect width="600" height="800" fill="#F7F3EC" />
       <rect x="40" y="48" width="520" height="92" rx="12" fill={product.cover.bg} />
-      <text x={rtl ? 536 : 64} y="92" fill={product.cover.fg} fontFamily={family} fontSize="28" textAnchor={rtl ? "end" : "start"}>
+      <text {...header} y="92" fill={product.cover.fg} fontFamily={family} fontSize="28">
         {rtl ? "مراجعة أسبوعية" : "Weekly check"}
       </text>
-      <text x={rtl ? 536 : 64} y="120" fill={product.cover.accent} fontFamily={sans} fontSize="14" textAnchor={rtl ? "end" : "start"}>
+      <text {...header} y="120" fill={product.cover.accent} fontFamily={sans} fontSize="14">
         {rtl ? `صفحة للطباعة · ${product.cover.eyebrow}` : `PRINTABLE PAGE · ${product.cover.eyebrow.toUpperCase()}`}
       </text>
       {headings.map((heading, index) => (
         <text
           key={heading}
-          x={64 + index * 170}
+          {...(rtl ? coverTextPlacement(true, worksheetHeadingX(index, true)) : { x: worksheetHeadingX(index, false) })}
           y="200"
           fill="#6B645C"
           fontFamily={sans}
@@ -273,9 +292,9 @@ export function WorksheetPlate({ product }: { product: Product }) {
       {Array.from({ length: 6 }).map((_, row) => (
         <g key={row}>
           <rect x="48" y={230 + row * 78} width="504" height="64" rx="8" fill="#fff" stroke="#E4DDD2" />
-          <rect x="68" y={252 + row * 78} width="18" height="18" rx="3" fill="none" stroke={product.cover.bg} strokeWidth="2" />
-          <rect x="220" y={256 + row * 78} width="120" height="8" rx="4" fill="#E4DDD2" />
-          <rect x="390" y={256 + row * 78} width="130" height="8" rx="4" fill="#E4DDD2" />
+          <rect x={mirrorX(68, 18, rtl)} y={252 + row * 78} width="18" height="18" rx="3" fill="none" stroke={product.cover.bg} strokeWidth="2" />
+          <rect x={mirrorX(220, 120, rtl)} y={256 + row * 78} width="120" height="8" rx="4" fill="#E4DDD2" />
+          <rect x={mirrorX(390, 130, rtl)} y={256 + row * 78} width="130" height="8" rx="4" fill="#E4DDD2" />
         </g>
       ))}
     </svg>
