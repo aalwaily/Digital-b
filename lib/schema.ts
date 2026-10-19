@@ -1,28 +1,32 @@
 import type { Post } from "@/data/blog";
 import type { Faq, Product } from "@/data/products";
-import { getCategory } from "@/data/products";
 import { site } from "@/data/site";
 import { pageCountFor } from "@/lib/catalog";
+import { localizeCategory, localizeProduct } from "@/lib/i18n/content";
+import { localePath, type Locale } from "@/lib/i18n/config";
 
 export function jsonLdScript(data: unknown) {
   return JSON.stringify(data).replace(/</g, "\\u003c");
 }
 
-export function productSchema(product: Product, siteUrl: string) {
-  const category = getCategory(product.category);
+export function productSchema(product: Product, siteUrl: string, locale: Locale = "en") {
+  const localized = localizeProduct(product, locale);
+  const category = localizeCategory(product.category, locale);
+  const path = localePath(locale, `/product/${product.slug}`);
   return {
     "@context": "https://schema.org",
     "@type": "Product",
-    name: product.title,
-    description: product.shortDescription,
+    name: localized.title,
+    description: localized.shortDescription,
     sku: product.slug,
     category: category?.name,
     brand: { "@type": "Brand", name: site.name },
-    image: [`${siteUrl}/product/${product.slug}/opengraph-image`],
-    url: `${siteUrl}/product/${product.slug}`,
+    image: [`${siteUrl}${path}/opengraph-image`],
+    url: `${siteUrl}${path}`,
+    inLanguage: locale,
     additionalProperty: {
       "@type": "PropertyValue",
-      name: "Page count",
+      name: locale === "ar" ? "عدد الصفحات" : "Page count",
       value: pageCountFor(product),
     },
     offers: {
@@ -30,12 +34,12 @@ export function productSchema(product: Product, siteUrl: string) {
       priceCurrency: "USD",
       price: product.price.toFixed(2),
       availability: "https://schema.org/InStock",
-      url: `${siteUrl}/product/${product.slug}`,
+      url: `${siteUrl}${path}`,
       seller: { "@type": "Organization", name: site.legalName },
       hasMerchantReturnPolicy: {
         "@type": "MerchantReturnPolicy",
         returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted",
-        merchantReturnLink: `${siteUrl}/legal/refunds`,
+        merchantReturnLink: `${siteUrl}${localePath(locale, "/legal/refunds")}`,
       },
     },
   };
@@ -53,44 +57,48 @@ export function faqSchema(faqs: Faq[]) {
   };
 }
 
-export function breadcrumbSchema(siteUrl: string, product: Product) {
+export function breadcrumbSchema(siteUrl: string, product: Product, locale: Locale = "en") {
+  const localized = localizeProduct(product, locale);
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
-      { "@type": "ListItem", position: 2, name: "Shop", item: `${siteUrl}/shop` },
+      { "@type": "ListItem", position: 1, name: locale === "ar" ? "الرئيسية" : "Home", item: `${siteUrl}${localePath(locale, "/")}` },
+      { "@type": "ListItem", position: 2, name: locale === "ar" ? "المتجر" : "Shop", item: `${siteUrl}${localePath(locale, "/shop")}` },
       {
         "@type": "ListItem",
         position: 3,
-        name: product.title,
-        item: `${siteUrl}/product/${product.slug}`,
+        name: localized.title,
+        item: `${siteUrl}${localePath(locale, `/product/${product.slug}`)}`,
       },
     ],
   };
 }
 
-export function websiteSchema(siteUrl: string) {
+export function websiteSchema(siteUrl: string, locale: Locale = "en") {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: site.name,
-    url: siteUrl,
+    url: `${siteUrl}${localePath(locale, "/")}`,
+    inLanguage: locale,
     description: site.description,
     potentialAction: {
       "@type": "SearchAction",
-      target: `${siteUrl}/shop?q={search_term_string}`,
+      target: `${siteUrl}${localePath(locale, "/shop")}?q={search_term_string}`,
       "query-input": "required name=search_term_string",
     },
   };
 }
 
-export function articleSchema(post: Post, siteUrl: string) {
+export function articleSchema(post: Post, siteUrl: string, locale: Locale = "en") {
+  const path = localePath(locale, `/blog/${post.slug}`);
   return {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: post.title,
     description: post.description,
+    inLanguage: locale,
     datePublished: post.date,
     author: { "@type": "Organization", name: site.legalName, url: siteUrl },
     publisher: {
@@ -99,8 +107,8 @@ export function articleSchema(post: Post, siteUrl: string) {
       url: siteUrl,
       email: site.email,
     },
-    image: [`${siteUrl}/blog/${post.slug}/opengraph-image`],
-    mainEntityOfPage: `${siteUrl}/blog/${post.slug}`,
+    image: [`${siteUrl}${path}/opengraph-image`],
+    mainEntityOfPage: `${siteUrl}${path}`,
   };
 }
 

@@ -2,14 +2,17 @@
 
 import { ApplePayButton } from "@/components/apple-pay-button";
 import { useCart } from "@/components/cart-provider";
+import { useI18n } from "@/components/locale-provider";
 import { MoyasarForm } from "@/components/moyasar-form";
 import { Price } from "@/components/price";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { getProduct } from "@/data/products";
-import { overlapWarnings, quote, CatalogError } from "@/lib/catalog";
-import { formatMoney } from "@/lib/money";
+import { overlapPairs, quote, CatalogError } from "@/lib/catalog";
+import { localizedProduct } from "@/lib/i18n/content";
+import { translateMessage } from "@/lib/i18n/messages";
+import { formatMoney, formatSarAmount } from "@/lib/money";
 import { formatSarHalalas, usdToHalalas, type MoyasarFormConfig } from "@/lib/moyasar-amount";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -29,6 +32,7 @@ export function CheckoutView({
   const params = useSearchParams();
   const router = useRouter();
   const cart = useCart();
+  const { t, href, locale } = useI18n();
   const buy = params.get("buy");
   const canceled = params.get("canceled") === "1";
   const paypalFailed = params.get("paypal") === "failed";
@@ -53,9 +57,9 @@ export function CheckoutView({
   try {
     if (slugs.length) summary = quote(slugs);
   } catch (reason) {
-    catalogError = reason instanceof CatalogError ? reason.message : "Could not read this order.";
+    catalogError = reason instanceof CatalogError ? translateMessage(locale, reason.message) : t.checkout.readError;
   }
-  const warnings = summary ? overlapWarnings(slugs) : [];
+  const warnings = summary ? overlapPairs(slugs) : [];
 
   async function placeOrder(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -90,7 +94,7 @@ export function CheckoutView({
         demo?: boolean;
       } & Partial<MoyasarFormConfig>;
       if (!response.ok) {
-        setError(data.error || "Checkout could not start.");
+        setError(translateMessage(locale, data.error || "Checkout could not start."));
         setPending(false);
         return;
       }
@@ -105,51 +109,49 @@ export function CheckoutView({
       }
       if (data.token) {
         summary.lines.forEach((line) => cart.remove(line.slug));
-        router.push(`/orders/${data.token}${data.demo ? "?demo=1" : ""}`);
+        router.push(href(`/orders/${data.token}${data.demo ? "?demo=1" : ""}`));
         return;
       }
-      setError("Checkout did not return a next step.");
+      setError(t.checkout.nextError);
       setPending(false);
     } catch {
-      setError("Network error. Try again.");
+      setError(t.checkout.network);
       setPending(false);
     }
   }
 
   if (!cart.ready && !buy) {
-    return <p className="text-sm text-muted-foreground">Loading checkout…</p>;
+    return <p className="text-sm text-muted-foreground">{t.checkout.loading}</p>;
   }
 
   if (!summary) {
     return (
       <div className="rounded-2xl border border-dashed p-8">
-        <h2 className="font-serif text-3xl">Nothing to check out</h2>
-        <p className="mt-2 text-muted-foreground">{catalogError || "Add a guide before paying."}</p>
-        <Link href="/shop" className="mt-4 inline-block text-sm underline underline-offset-4">
-          Return to the shop
+        <h2 className="font-serif text-3xl">{t.checkout.emptyTitle}</h2>
+        <p className="mt-2 text-muted-foreground">{catalogError || t.checkout.emptyFallback}</p>
+        <Link href={href("/shop")} className="mt-4 inline-flex min-h-11 items-center text-sm underline underline-offset-4">
+          {t.checkout.returnShop}
         </Link>
       </div>
     );
   }
 
   return (
-    <div className="grid gap-10 lg:grid-cols-[1fr_320px]">
-      <form onSubmit={placeOrder} className="order-2 space-y-6 lg:order-1">
+    <div className="grid min-w-0 gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,320px)]">
+      <form id="checkout-form" onSubmit={placeOrder} className="order-2 min-w-0 space-y-6 pb-28 lg:order-1 lg:pb-0">
         {canceled ? (
           <p role="status" className="rounded-xl border border-copper/40 bg-card px-4 py-3 text-sm">
-            Checkout was canceled. Nothing was charged. Your cart is still here if you came from it.
+            {t.checkout.canceled}
           </p>
         ) : null}
         {paypalFailed ? (
           <p role="alert" className="rounded-xl border border-destructive/40 bg-card px-4 py-3 text-sm">
-            PayPal could not confirm this payment, so the downloads were not released. If PayPal shows a completed
-            payment, email support with the time of the charge and we will match it.
+            {t.checkout.paypalFailed}
           </p>
         ) : null}
         {moyasarFailed ? (
           <p role="alert" className="rounded-xl border border-destructive/40 bg-card px-4 py-3 text-sm">
-            Moyasar could not confirm this payment, so the downloads were not released. If mada, your card, Apple Pay,
-            or STC Pay shows a completed charge, email support with the time of the payment and we will match it.
+            {t.checkout.moyasarFailed}
           </p>
         ) : null}
         <div
@@ -157,15 +159,18 @@ export function CheckoutView({
             liveCheckout ? "bg-secondary" : "border border-copper/50 bg-card"
           }`}
         >
-          {checkoutNotice(stripeEnabled, paypalEnabled, moyasarEnabled)}
+          {checkoutNotice(t, locale, stripeEnabled, paypalEnabled, moyasarEnabled)}
         </div>
         {warnings.map((warning) => (
-          <p key={warning} role="status" className="rounded-xl border border-copper/40 px-4 py-3 text-sm">
-            {warning}
+          <p key={`${warning.bundle}-${warning.guide}`} role="status" className="rounded-xl border border-copper/40 px-4 py-3 text-sm">
+            {t.checkout.overlap(
+              localizedProduct(warning.guide, locale)?.title ?? warning.guide,
+              localizedProduct(warning.bundle, locale)?.title ?? warning.bundle,
+            )}
           </p>
         ))}
         <div className="space-y-2">
-          <Label htmlFor="checkout-email">Email for the receipt</Label>
+          <Label htmlFor="checkout-email">{t.checkout.email}</Label>
           <Input
             id="checkout-email"
             type="email"
@@ -177,12 +182,12 @@ export function CheckoutView({
             placeholder="you@example.com"
           />
           <p className="text-xs text-muted-foreground">
-            We use this for the download receipt. It is stored inside the signed link.
+            {t.checkout.emailHelp}
           </p>
         </div>
         {error ? (
           <p role="alert" className="text-sm text-destructive">
-            {error}
+            {translateMessage(locale, error)}
           </p>
         ) : null}
         {status ? (
@@ -191,15 +196,19 @@ export function CheckoutView({
           </p>
         ) : null}
         <p className="rounded-xl border bg-card px-4 py-3 text-sm leading-relaxed">
-          All sales are final. Digital downloads are not refundable.
+          {t.checkout.final}
         </p>
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
           {paypalEnabled && summary ? (
             <ApplePayButton
+              locale={locale}
               email={email}
               slugs={summary.lines.map((line) => line.slug)}
               amount={summary.subtotal}
-              items={summary.lines.map((line) => ({ label: line.title, amount: line.price }))}
+              items={summary.lines.map((line) => ({
+                label: localizedProduct(line.slug, locale)?.title ?? line.title,
+                amount: line.price,
+              }))}
               disabled={pending}
               onBusy={(busy) => {
                 setPending(busy);
@@ -207,16 +216,16 @@ export function CheckoutView({
               }}
               onPaid={(token) => {
                 summary.lines.forEach((line) => cart.remove(line.slug));
-                router.push(`/orders/${encodeURIComponent(token)}?paid=1`);
+                router.push(href(`/orders/${encodeURIComponent(token)}?paid=1`));
               }}
               onError={(message) => {
                 setStatus("");
-                setError(message);
+                setError(translateMessage(locale, message));
                 setPending(false);
               }}
               onCancel={() => {
                 setError("");
-                setStatus("Apple Pay was canceled. Nothing was charged.");
+                setStatus(t.checkout.appleCanceled);
                 setPending(false);
               }}
             />
@@ -227,12 +236,12 @@ export function CheckoutView({
               name="provider"
               value="card"
               disabled={pending}
-              className="h-11 px-5"
+              className="wrap-button h-auto w-full px-5 py-2 sm:w-auto"
               onClick={() => {
                 providerRef.current = "card";
               }}
             >
-              {pending ? "Working…" : stripeEnabled ? "Continue to Stripe" : "Place demo order"}
+              {pending ? t.checkout.working : stripeEnabled ? t.checkout.stripe : t.checkout.demo}
             </Button>
           ) : null}
           {paypalEnabled ? (
@@ -241,12 +250,12 @@ export function CheckoutView({
               name="provider"
               value="paypal"
               disabled={pending}
-              className="h-11 px-5"
+              className="wrap-button h-auto w-full px-5 py-2 sm:w-auto"
               onClick={() => {
                 providerRef.current = "paypal";
               }}
             >
-              {pending ? "Working…" : "Pay with PayPal"}
+              {pending ? t.checkout.working : t.checkout.paypal}
             </Button>
           ) : null}
           {moyasarEnabled ? (
@@ -256,13 +265,13 @@ export function CheckoutView({
               value="moyasar"
               variant={stripeEnabled || paypalEnabled ? "outline" : "default"}
               disabled={pending}
-              className="h-auto min-h-11 whitespace-normal px-5 py-2"
+              className="wrap-button h-auto w-full px-5 py-2 sm:w-auto"
               onClick={() => {
                 providerRef.current = "moyasar";
               }}
             >
               <span className="flex flex-col items-start">
-                <span>{pending ? "Working…" : "Pay with mada / card / Apple Pay / STC Pay"}</span>
+                <span>{pending ? t.checkout.working : t.checkout.moyasar}</span>
                 <span lang="ar" dir="rtl" className="text-xs font-normal opacity-80">
                   مدى · بطاقة · Apple Pay · STC Pay
                 </span>
@@ -273,17 +282,17 @@ export function CheckoutView({
         {moyasarConfig ? <MoyasarForm config={moyasarConfig} /> : null}
       </form>
       <aside className="order-1 h-fit rounded-2xl border bg-card p-5 lg:order-2 lg:sticky lg:top-28">
-        <h2 className="font-serif text-xl">Your order</h2>
+        <h2 className="font-serif text-xl">{t.checkout.order}</h2>
         <ul className="mt-4 space-y-3 text-sm">
           {summary.lines.map((line) => {
             const product = getProduct(line.slug);
             return (
               <li key={line.slug} className="flex items-start justify-between gap-3">
                 <span>
-                  {line.title}
+                  {localizedProduct(line.slug, locale)?.title ?? line.title}
                   {product?.kind === "bundle" ? (
                     <span className="mt-1 block text-xs text-muted-foreground">
-                      Includes {product.includes.length} guides
+                      {t.checkout.includes(product.includes.length)}
                     </span>
                   ) : null}
                 </span>
@@ -293,47 +302,72 @@ export function CheckoutView({
           })}
         </ul>
         <div className="mt-4 flex justify-between border-t pt-3 font-medium">
-          <span>Total</span>
-          <span className="price">{formatMoney(summary.subtotal)}</span>
+          <span>{t.checkout.total}</span>
+          <span className="price text-end">
+            {formatMoney(summary.subtotal)}
+            <span className="mt-1 block text-xs font-normal text-muted-foreground">
+              {t.price.approx} {formatSarAmount(summary.subtotal)} {t.price.sar}
+            </span>
+          </span>
         </div>
         {moyasarEnabled && usdToSarRate ? (
           <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-            Moyasar charges{" "}
-            <span className="price text-foreground">{formatSarHalalas(usdToHalalas(summary.subtotal, usdToSarRate))}</span>{" "}
-            before you pay. USD 1 = SAR {usdToSarRate}.
+            {t.checkout.moyasarCharge(formatSarHalalas(usdToHalalas(summary.subtotal, usdToSarRate)), usdToSarRate)}
             <span className="mt-1 block" lang="ar" dir="rtl">
-              المبلغ بالريال السعودي
+              {t.checkout.moyasarArNote}
             </span>
           </p>
         ) : null}
         {buy ? (
-          <p className="mt-3 text-xs text-muted-foreground">Buying this guide only. Your saved cart is unchanged until the order completes.</p>
+          <p className="mt-3 text-xs text-muted-foreground">{t.checkout.buyOnly}</p>
         ) : null}
       </aside>
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t bg-background/95 p-3 backdrop-blur lg:hidden">
+        <Button
+          type="submit"
+          form="checkout-form"
+          name="provider"
+          value={paypalEnabled ? "paypal" : stripeEnabled ? "card" : moyasarEnabled ? "moyasar" : "card"}
+          disabled={pending}
+          className="wrap-button h-auto w-full px-5 py-2"
+        >
+          {pending
+            ? t.checkout.working
+            : paypalEnabled
+              ? t.checkout.paypal
+              : stripeEnabled
+                ? t.checkout.stripe
+                : moyasarEnabled
+                  ? t.checkout.moyasar
+                  : t.checkout.demo}
+        </Button>
+      </div>
     </div>
   );
 }
 
-function checkoutNotice(stripeEnabled: boolean, paypalEnabled: boolean, moyasarEnabled: boolean) {
-  if (!stripeEnabled && !paypalEnabled && !moyasarEnabled) {
-    return "Demo checkout. PayPal is not configured, so this order is simulated. You will not be charged, and a real payment form is not shown.";
-  }
-  if (paypalEnabled && !stripeEnabled && !moyasarEnabled) {
-    return "Payments are processed by PayPal. You can pay with a card or your PayPal balance. Apple Pay appears on Safari when this device can make an Apple Pay payment. Vellum Press never sees your card number or your PayPal password. The receipt is issued only after PayPal confirms the capture.";
-  }
+function checkoutNotice(
+  t: ReturnType<typeof useI18n>["t"],
+  locale: ReturnType<typeof useI18n>["locale"],
+  stripeEnabled: boolean,
+  paypalEnabled: boolean,
+  moyasarEnabled: boolean,
+) {
+  if (!stripeEnabled && !paypalEnabled && !moyasarEnabled) return t.checkout.noticeDemo;
+  if (paypalEnabled && !stripeEnabled && !moyasarEnabled) return t.checkout.noticePaypal;
   const options = [
-    paypalEnabled ? "PayPal (cards, PayPal balance, and Apple Pay on Safari where available)" : "",
-    stripeEnabled ? "a card on Stripe" : "",
-    moyasarEnabled ? "mada, Visa, Mastercard, Apple Pay, or STC Pay through Moyasar, charged in SAR" : "",
+    paypalEnabled ? t.checkout.optionPaypal : "",
+    stripeEnabled ? t.checkout.optionStripe : "",
+    moyasarEnabled ? t.checkout.optionMoyasar : "",
   ].filter(Boolean);
-  if (options.length === 1 && stripeEnabled) {
-    return "You will continue to Stripe's hosted payment page. Vellum Press never sees your card number.";
-  }
-  return `Pay with ${joinOptions(options)}. Payments through PayPal are processed by PayPal. Vellum Press never sees your card number or your PayPal password. The receipt is issued only after the payment is confirmed.`;
+  if (options.length === 1 && stripeEnabled) return t.checkout.noticeStripe;
+  return t.checkout.payWith(joinOptions(options, locale));
 }
 
-function joinOptions(options: string[]) {
+function joinOptions(options: string[], locale: "en" | "ar") {
   if (options.length === 1) return options[0];
-  if (options.length === 2) return `${options[0]} or ${options[1]}`;
-  return `${options.slice(0, -1).join(", ")}, or ${options[options.length - 1]}`;
+  const or = locale === "ar" ? "أو" : "or";
+  const comma = locale === "ar" ? "، " : ", ";
+  if (options.length === 2) return `${options[0]} ${or} ${options[1]}`;
+  return `${options.slice(0, -1).join(comma)}${or} ${options[options.length - 1]}`;
 }

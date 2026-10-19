@@ -1,10 +1,13 @@
 "use client";
 
+import { useI18n } from "@/components/locale-provider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { translateMessage } from "@/lib/i18n/messages";
 import { useState } from "react";
 
 export function NewsletterForm({ inverted = false, stack = false }: { inverted?: boolean; stack?: boolean }) {
+  const { t, locale } = useI18n();
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
   const [message, setMessage] = useState("");
@@ -26,15 +29,15 @@ export function NewsletterForm({ inverted = false, stack = false }: { inverted?:
       const data = (await response.json()) as { error?: string; delivered?: boolean };
       if (!response.ok) {
         setStatus("error");
-        setMessage(data.error || "Could not add that email.");
+        setMessage(translateMessage(locale, data.error || "Could not add that email."));
         return;
       }
       setStatus("done");
       setEmail("");
-      setMessage("You are on the list. We will write when a new guide is ready.");
+      setMessage(t.newsletter.done);
     } catch {
       setStatus("error");
-      setMessage("Network error. Try again in a moment.");
+      setMessage(t.newsletter.network);
     }
   }
 
@@ -42,28 +45,28 @@ export function NewsletterForm({ inverted = false, stack = false }: { inverted?:
     <form onSubmit={onSubmit} className="space-y-3">
       <div className={stack ? "flex flex-col gap-2" : "flex flex-col gap-2 sm:flex-row"}>
         <label className="sr-only" htmlFor="newsletter-email">
-          Email address
+          {t.newsletter.label}
         </label>
         <Input
           id="newsletter-email"
           type="email"
           required
           autoComplete="email"
-          placeholder="you@example.com"
+          placeholder={t.newsletter.placeholder}
           value={email}
           onChange={(event) => setEmail(event.target.value)}
           className={`h-11 ${inverted ? "border-background/20 bg-background text-foreground" : ""}`}
         />
         <Button type="submit" disabled={status === "loading"} className="h-11 px-4">
-          {status === "loading" ? "Joining…" : "Get notes"}
+          {status === "loading" ? t.newsletter.joining : t.newsletter.button}
         </Button>
       </div>
       <div className="absolute -left-[9999px]" aria-hidden="true">
-        <label htmlFor="company">Company</label>
+        <label htmlFor="company">{t.newsletter.company}</label>
         <input id="company" name="company" tabIndex={-1} autoComplete="off" />
       </div>
       <p className={`text-xs ${inverted ? "text-background/75" : "text-muted-foreground"}`}>
-        Occasional notes about new guides. Unsubscribe anytime. No daily drip.
+        {t.newsletter.fine}
       </p>
       {message ? (
         <p role={status === "error" ? "alert" : "status"} className="text-sm">

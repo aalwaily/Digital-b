@@ -181,7 +181,7 @@ describe("search and article metadata", () => {
     expect(schema["@type"]).toBe("Article");
     expect(schema.headline).toBe(posts[0].title);
     expect(schema).not.toHaveProperty("aggregateRating");
-    expect(schema.mainEntityOfPage).toBe(`https://guides.example.com/blog/${posts[0].slug}`);
+    expect(schema.mainEntityOfPage).toBe(`https://guides.example.com/en/blog/${posts[0].slug}`);
   });
 });
 

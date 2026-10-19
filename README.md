@@ -48,7 +48,9 @@ npm install
 npm run dev
 ```
 
-Open [http://127.0.0.1:43123](http://127.0.0.1:43123).
+Open [http://127.0.0.1:43123](http://127.0.0.1:43123). The first visit follows `Accept-Language`: `ar` and `ar-*` go to `/ar`, and every other language goes to `/en`. A choice in the language switcher is stored in the `vellum_locale` cookie and overrides that detection. Crawlers are not redirected; `/en` and `/ar` are the canonical URLs, with hreflang alternates. Older unprefixed paths redirect visitors to the same page under their locale.
+
+The PDF files stay in English. Arabic product and receipt pages say so. Prices are shown in USD and as an approximate amount in SAR at 3.75.
 
 ```bash
 npm test
@@ -83,6 +85,7 @@ Copy `.env.example` to `.env.local` when you want to override the defaults. The 
 | `ALLOW_DEMO_CHECKOUT` | No | Set to `true` only if demo checkout should stay available after PayPal is connected or an enabled provider is on. Leave unset on a live store. |
 | `CONTACT_WEBHOOK_URL` | No | JSON endpoint that receives contact-form posts. |
 | `NEWSLETTER_WEBHOOK_URL` | No | JSON endpoint for newsletter signups and free-sample requests. If unset, those addresses are written to the server log. |
+| `GOOGLE_SITE_VERIFICATION` | No | Google Search Console verification token. `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` is also accepted. |
 | `NEXT_PUBLIC_GA_ID` | No | Google Analytics 4 id (`G-…`). The snippet loads only when this is set and well formed. |
 | `NEXT_PUBLIC_META_PIXEL_ID` | No | Meta Pixel id (digits only). Loads only when set. |
 | `NEXT_PUBLIC_TIKTOK_PIXEL_ID` | No | TikTok Pixel id. Loads only when set. |

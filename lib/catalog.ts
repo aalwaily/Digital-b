@@ -9,6 +9,8 @@ import {
   products,
   type Product,
 } from "@/data/products";
+import { localizeCategory, localizeProduct } from "@/lib/i18n/content";
+import type { Locale } from "@/lib/i18n/config";
 
 export type PdfMetaEntry = {
   pages: number;
@@ -101,19 +103,26 @@ function roundMoney(value: number) {
 }
 
 export function overlapWarnings(slugs: string[]) {
+  return overlapPairs(slugs).map((pair) => {
+    const guide = getProduct(pair.guide);
+    const bundle = getProduct(pair.bundle);
+    return `${guide?.title ?? pair.guide} is already included in ${bundle?.title ?? pair.bundle}.`;
+  });
+}
+
+export function overlapPairs(slugs: string[]) {
   const owned = new Set(slugs);
-  const warnings: string[] = [];
+  const pairs: { guide: string; bundle: string }[] = [];
   for (const slug of slugs) {
     const product = getProduct(slug);
     if (!product || !isBundle(product)) continue;
     for (const included of product.includes) {
       if (!owned.has(included)) continue;
-      const guide = getProduct(included);
-      if (!guide) continue;
-      warnings.push(`${guide.title} is already included in ${product.title}.`);
+      if (!getProduct(included)) continue;
+      pairs.push({ guide: included, bundle: slug });
     }
   }
-  return warnings;
+  return pairs;
 }
 
 export function relatedProducts(slug: string, limit = 3) {
@@ -145,14 +154,26 @@ export function relatedProducts(slug: string, limit = 3) {
   return result;
 }
 
-export function searchProducts(input: { query?: string; category?: string; sort?: string }) {
+export function searchProducts(input: { query?: string; category?: string; sort?: string; locale?: Locale }) {
+  const locale = input.locale ?? "en";
   const query = (input.query ?? "").trim().toLowerCase();
   const category = input.category && input.category !== "all" ? input.category : null;
   let list = products.filter((product) => {
     if (category && product.category !== category) return false;
     if (!query) return true;
-    const categoryName = getCategory(product.category)?.name ?? "";
-    const haystack = [product.title, product.subtitle, product.shortDescription, categoryName]
+    const localized = localizeProduct(product, locale);
+    const englishCategory = getCategory(product.category)?.name ?? "";
+    const categoryName = localizeCategory(product.category, locale)?.name ?? englishCategory;
+    const haystack = [
+      product.title,
+      product.subtitle,
+      product.shortDescription,
+      localized.title,
+      localized.subtitle,
+      localized.shortDescription,
+      englishCategory,
+      categoryName,
+    ]
       .join(" ")
       .toLowerCase();
     return haystack.includes(query);
@@ -160,7 +181,10 @@ export function searchProducts(input: { query?: string; category?: string; sort?
   const sort = input.sort ?? "featured";
   if (sort === "price-asc") list = [...list].sort((a, b) => a.price - b.price);
   else if (sort === "price-desc") list = [...list].sort((a, b) => b.price - a.price);
-  else if (sort === "title") list = [...list].sort((a, b) => a.title.localeCompare(b.title));
+  else if (sort === "title")
+    list = [...list].sort((a, b) =>
+      localizeProduct(a, locale).title.localeCompare(localizeProduct(b, locale).title, locale),
+    );
   else if (sort === "newest")
     list = [...list].sort((a, b) => b.published.localeCompare(a.published));
   return list;

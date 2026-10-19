@@ -129,6 +129,7 @@
   }
   html {
     @apply font-sans scroll-smooth;
+    max-width: 100%;
   }
   body {
     @apply bg-background text-foreground antialiased;
@@ -136,10 +137,32 @@
       radial-gradient(900px 420px at 0% -10%, color-mix(in oklch, var(--primary) 10%, transparent), transparent 55%),
       radial-gradient(700px 380px at 100% 0%, color-mix(in oklch, var(--copper) 12%, transparent), transparent 50%);
     text-rendering: optimizeLegibility;
+    min-width: 0;
+  }
+  main {
+    min-width: 0;
+  }
+  img, svg, video, canvas {
+    max-width: 100%;
   }
   h1, h2, h3, h4 {
     font-family: var(--font-serif), Georgia, serif;
     letter-spacing: -0.02em;
+  }
+  html[lang="ar"] body {
+    font-family: var(--font-arabic-sans), ui-sans-serif, system-ui, sans-serif;
+    overflow-wrap: break-word;
+  }
+  html[lang="ar"] h1,
+  html[lang="ar"] h2,
+  html[lang="ar"] h3,
+  html[lang="ar"] h4,
+  html[lang="ar"] .font-serif {
+    font-family: var(--font-arabic-serif), serif;
+    letter-spacing: 0;
+  }
+  html[lang="ar"] .uppercase {
+    letter-spacing: 0.02em;
   }
   ::selection {
     background: color-mix(in oklch, var(--primary) 28%, white);
@@ -165,12 +188,37 @@
   font-variant-numeric: tabular-nums;
 }
 
+.wrap-button {
+  white-space: normal;
+  min-width: 0;
+  flex-shrink: 1;
+  height: auto;
+  min-height: 2.75rem;
+  max-width: 100%;
+}
+
+.apple-pay-host {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-height: 44px;
+}
+
 .apple-pay-host apple-pay-button {
-  --apple-pay-button-width: 200px;
+  --apple-pay-button-width: 100%;
   --apple-pay-button-height: 44px;
   --apple-pay-button-border-radius: 8px;
   --apple-pay-button-padding: 0px 0px;
   --apple-pay-button-box-sizing: border-box;
+}
+
+@media (min-width: 640px) {
+  .apple-pay-host {
+    width: 200px;
+  }
+  .apple-pay-host apple-pay-button {
+    --apple-pay-button-width: 200px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

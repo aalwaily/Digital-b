@@ -1,3 +1,6 @@
+"use client";
+
+import { useI18n } from "@/components/locale-provider";
 import type { Product } from "@/data/products";
 import { cn } from "cn";
 
@@ -10,8 +13,14 @@ export function Cover({
   className?: string;
   decorative?: boolean;
 }) {
+  const { locale } = useI18n();
   const { bg, fg, accent, motif, titleLines, eyebrow, deck } = product.cover;
   const titleStart = titleLines.length > 2 ? 250 : 268;
+  const rtl = locale === "ar";
+  const x = rtl ? 552 : 48;
+  const anchor = rtl ? "end" : "start";
+  const family = rtl ? "var(--font-arabic-serif), serif" : "var(--font-serif), Georgia, serif";
+  const sans = rtl ? "var(--font-arabic-sans), sans-serif" : "var(--font-sans), sans-serif";
 
   return (
     <svg
@@ -23,67 +32,39 @@ export function Cover({
     >
       <rect width="600" height="800" fill={bg} />
       <Motif motif={motif} accent={accent} fg={fg} />
-      <text
-        x="48"
-        y="78"
-        fill={fg}
-        fillOpacity="0.78"
-        fontFamily="var(--font-sans), sans-serif"
-        fontSize="16"
-        letterSpacing="5"
-      >
+      <text x={x} y="78" fill={fg} fillOpacity="0.78" fontFamily={sans} fontSize="16" letterSpacing={rtl ? 0 : 5} textAnchor={anchor}>
         VELLUM PRESS
       </text>
-      <text
-        x="48"
-        y="168"
-        fill={accent}
-        fontFamily="var(--font-sans), sans-serif"
-        fontSize="18"
-        letterSpacing="2.5"
-      >
-        {eyebrow.toUpperCase()}
+      <text x={x} y="168" fill={accent} fontFamily={sans} fontSize="18" letterSpacing={rtl ? 0 : 2.5} textAnchor={anchor}>
+        {rtl ? eyebrow : eyebrow.toUpperCase()}
       </text>
       {titleLines.map((line, index) => (
         <text
-          key={line}
-          x="48"
-          y={titleStart + index * 78}
+          key={`${line}-${index}`}
+          x={x}
+          y={titleStart + index * (rtl ? 70 : 78)}
           fill={fg}
-          fontFamily="var(--font-serif), Georgia, serif"
-          fontSize="72"
+          fontFamily={family}
+          fontSize={rtl ? 54 : 72}
+          textAnchor={anchor}
         >
           {line}
         </text>
       ))}
       <text
-        x="48"
-        y={titleStart + titleLines.length * 78 + 8}
+        x={x}
+        y={titleStart + titleLines.length * (rtl ? 70 : 78) + 8}
         fill={fg}
         fillOpacity="0.82"
-        fontFamily="var(--font-sans), sans-serif"
+        fontFamily={sans}
         fontSize="22"
+        textAnchor={anchor}
       >
         {deck}
       </text>
-      <line
-        x1="48"
-        y1="720"
-        x2="180"
-        y2="720"
-        stroke={accent}
-        strokeWidth="3"
-      />
-      <text
-        x="48"
-        y="752"
-        fill={fg}
-        fillOpacity="0.7"
-        fontFamily="var(--font-sans), sans-serif"
-        fontSize="15"
-        letterSpacing="1.5"
-      >
-        DIGITAL GUIDE
+      <line x1={rtl ? 420 : 48} y1="720" x2={rtl ? 552 : 180} y2="720" stroke={accent} strokeWidth="3" />
+      <text x={x} y="752" fill={fg} fillOpacity="0.7" fontFamily={sans} fontSize="15" letterSpacing={rtl ? 0 : 1.5} textAnchor={anchor}>
+        {rtl ? "دليل رقمي" : "DIGITAL GUIDE"}
       </text>
     </svg>
   );
@@ -220,24 +201,28 @@ function Motif({ motif, accent, fg }: { motif: Product["cover"]["motif"]; accent
 }
 
 export function ContentsPlate({ product }: { product: Product }) {
+  const { locale } = useI18n();
+  const rtl = locale === "ar";
   const lines = product.contents.slice(0, 8);
+  const family = rtl ? "var(--font-arabic-serif), serif" : "var(--font-serif), Georgia, serif";
+  const sans = rtl ? "var(--font-arabic-sans), sans-serif" : "var(--font-sans), sans-serif";
   return (
     <svg viewBox="0 0 600 800" className="h-auto w-full" role="img" aria-label={`Contents preview for ${product.title}`}>
       <rect width="600" height="800" fill="#F7F3EC" />
-      <rect x="0" y="0" width="16" height="800" fill={product.cover.bg} />
-      <text x="48" y="86" fill="#1C1915" fontFamily="var(--font-serif), Georgia, serif" fontSize="36">
-        Contents
+      <rect x={rtl ? 584 : 0} y="0" width="16" height="800" fill={product.cover.bg} />
+      <text x={rtl ? 552 : 48} y="86" fill="#1C1915" fontFamily={family} fontSize="36" textAnchor={rtl ? "end" : "start"}>
+        {rtl ? "المحتويات" : "Contents"}
       </text>
-      <text x="48" y="122" fill="#6B645C" fontFamily="var(--font-sans), sans-serif" fontSize="16">
+      <text x={rtl ? 552 : 48} y="122" fill="#6B645C" fontFamily={sans} fontSize="16" textAnchor={rtl ? "end" : "start"}>
         {product.title}
       </text>
       {lines.map((line, index) => (
-        <g key={line}>
-          <text x="48" y={200 + index * 58} fill={product.cover.bg} fontFamily="var(--font-sans), sans-serif" fontSize="16">
+        <g key={`${line}-${index}`}>
+          <text x={rtl ? 552 : 48} y={200 + index * 58} fill={product.cover.bg} fontFamily={sans} fontSize="16" textAnchor={rtl ? "end" : "start"}>
             {String(index + 1).padStart(2, "0")}
           </text>
-          <text x="96" y={200 + index * 58} fill="#1C1915" fontFamily="var(--font-serif), Georgia, serif" fontSize="22">
-            {line.length > 34 ? `${line.slice(0, 32)}…` : line}
+          <text x={rtl ? 500 : 96} y={200 + index * 58} fill="#1C1915" fontFamily={family} fontSize={rtl ? 18 : 22} textAnchor={rtl ? "end" : "start"}>
+            {line.length > (rtl ? 28 : 34) ? `${line.slice(0, rtl ? 26 : 32)}…` : line}
           </text>
         </g>
       ))}
@@ -246,27 +231,32 @@ export function ContentsPlate({ product }: { product: Product }) {
 }
 
 export function WorksheetPlate({ product }: { product: Product }) {
+  const { locale } = useI18n();
+  const rtl = locale === "ar";
+  const headings = rtl ? ["خطة", "تم", "ملاحظة"] : ["PLAN", "DONE", "NOTE"];
+  const family = rtl ? "var(--font-arabic-serif), serif" : "var(--font-serif), Georgia, serif";
+  const sans = rtl ? "var(--font-arabic-sans), sans-serif" : "var(--font-sans), sans-serif";
   return (
     <svg viewBox="0 0 600 800" className="h-auto w-full" role="img" aria-label={`Worksheet preview for ${product.title}`}>
       <rect width="600" height="800" fill="#F7F3EC" />
       <rect x="40" y="48" width="520" height="92" rx="12" fill={product.cover.bg} />
-      <text x="64" y="92" fill={product.cover.fg} fontFamily="var(--font-serif), Georgia, serif" fontSize="28">
-        Weekly check
+      <text x={rtl ? 536 : 64} y="92" fill={product.cover.fg} fontFamily={family} fontSize="28" textAnchor={rtl ? "end" : "start"}>
+        {rtl ? "مراجعة أسبوعية" : "Weekly check"}
       </text>
-      <text x="64" y="120" fill={product.cover.accent} fontFamily="var(--font-sans), sans-serif" fontSize="14">
-        PRINTABLE PAGE · {product.cover.eyebrow.toUpperCase()}
+      <text x={rtl ? 536 : 64} y="120" fill={product.cover.accent} fontFamily={sans} fontSize="14" textAnchor={rtl ? "end" : "start"}>
+        {rtl ? `صفحة للطباعة · ${product.cover.eyebrow}` : `PRINTABLE PAGE · ${product.cover.eyebrow.toUpperCase()}`}
       </text>
-      {["Plan", "Done", "Note"].map((heading, index) => (
+      {headings.map((heading, index) => (
         <text
           key={heading}
           x={64 + index * 170}
           y="200"
           fill="#6B645C"
-          fontFamily="var(--font-sans), sans-serif"
+          fontFamily={sans}
           fontSize="14"
-          letterSpacing="1.5"
+          letterSpacing={rtl ? 0 : 1.5}
         >
-          {heading.toUpperCase()}
+          {heading}
         </text>
       ))}
       {Array.from({ length: 6 }).map((_, row) => (

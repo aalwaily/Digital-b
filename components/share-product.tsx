@@ -1,10 +1,12 @@
 "use client";
 
+import { useI18n } from "@/components/locale-provider";
 import { Button } from "@/components/ui/button";
 import { Check, Link2, Share2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export function ShareProduct({ title, url }: { title: string; url: string }) {
+  const { t } = useI18n();
   const [copied, setCopied] = useState(false);
   const [canShare, setCanShare] = useState(false);
   const encodedUrl = encodeURIComponent(url);
@@ -32,33 +34,33 @@ export function ShareProduct({ title, url }: { title: string; url: string }) {
   }
 
   const links = [
-    { label: "X", href: `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}` },
-    { label: "Facebook", href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}` },
-    { label: "WhatsApp", href: `https://wa.me/?text=${encodedTitle}%20${encodedUrl}` },
-    { label: "Email", href: `mailto:?subject=${encodedTitle}&body=${encodedUrl}` },
+    { label: "X", href: `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`, external: true },
+    { label: "Facebook", href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`, external: true },
+    { label: "WhatsApp", href: `https://wa.me/?text=${encodedTitle}%20${encodedUrl}`, external: true },
+    { label: t.product.email, href: `mailto:?subject=${encodedTitle}&body=${encodedUrl}`, external: false },
   ];
 
   return (
     <div className="mt-4">
-      <p className="text-xs tracking-[0.16em] text-copper uppercase">Share this guide</p>
+      <p className="text-xs tracking-[0.16em] text-copper uppercase">{t.product.share}</p>
       <div className="mt-2 flex flex-wrap items-center gap-2">
-        <Button type="button" variant="outline" className="h-9 px-3" onClick={copyLink}>
+        <Button type="button" variant="outline" className="wrap-button h-auto px-3 py-2" onClick={copyLink}>
           {copied ? <Check /> : <Link2 />}
-          {copied ? "Link copied" : "Copy link"}
+          {copied ? t.product.linkCopied : t.product.copyLink}
         </Button>
         {canShare ? (
-          <Button type="button" variant="outline" className="h-9 px-3" onClick={nativeShare}>
+          <Button type="button" variant="outline" className="h-11 px-3" onClick={nativeShare}>
             <Share2 />
-            Share
+            {t.product.shareAction}
           </Button>
         ) : null}
         {links.map((link) => (
           <a
             key={link.label}
             href={link.href}
-            target={link.label === "Email" ? undefined : "_blank"}
-            rel={link.label === "Email" ? undefined : "noopener noreferrer"}
-            className="inline-flex h-9 items-center rounded-lg border px-3 text-sm hover:bg-secondary"
+            target={link.external ? "_blank" : undefined}
+            rel={link.external ? "noopener noreferrer" : undefined}
+            className="inline-flex h-11 items-center rounded-lg border px-3 text-sm hover:bg-secondary"
           >
             {link.label}
           </a>
