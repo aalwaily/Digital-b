@@ -87,9 +87,29 @@ describe("arabic open graph font", () => {
   });
 
   it("places the first Arabic word on the right, including a wrapped line", async () => {
-    for (const text of ["إعادة الضبط في 12 أسبوعًا", "تنزيل فوري", "أدلة عملية للأكل والتمرين والمال والتركيز."]) {
+    for (const text of [
+      "إعادة الضبط في 12 أسبوعًا",
+      "تنزيل فوري",
+      "أدلة عملية للأكل والتمرين والمال والتركيز.",
+      "تصدر Vellum Press ملفات PDF تستطيع أن تنهيها",
+    ]) {
       expect(await visualOrder(text, text.length > 20 ? 72 : 48)).toEqual(ogRtlChunks(text).map(ogRtlChunkText));
     }
+  });
+
+  it("uses one even gap between Arabic words", async () => {
+    const text = "إعادة الضبط في 12 أسبوعًا";
+    const fontSize = 72;
+    const expected = Math.round(fontSize * 0.28);
+    const gaps = await visualGaps(text, fontSize, 1056);
+    expect(gaps).toHaveLength(ogRtlChunks(text).length - 1);
+    for (const gap of gaps) expect(Math.abs(gap - expected)).toBeLessThanOrEqual(2);
+
+    const lede = "تصدر Vellum Press ملفات PDF تستطيع أن تنهيها";
+    const ledeGaps = await visualGaps(lede, 28, 1056);
+    const ledeExpected = Math.round(28 * 0.28);
+    expect(ledeGaps.length).toBeGreaterThan(3);
+    for (const gap of ledeGaps) expect(Math.abs(gap - ledeExpected)).toBeLessThanOrEqual(2);
   });
 });
 
@@ -107,6 +127,21 @@ function chunkColor(index: number) {
 }
 
 async function visualOrder(text: string, fontSize: number) {
+  const { chunks, lines } = await layoutBoxes(text, fontSize, 1056);
+  return lines.flatMap((line) => line.sort((a, b) => b.x - a.x).map((box) => ogRtlChunkText(chunks[box.index])));
+}
+
+async function visualGaps(text: string, fontSize: number, width: number) {
+  const { lines } = await layoutBoxes(text, fontSize, width);
+  return lines.flatMap((line) => {
+    const sorted = line.sort((a, b) => b.maxX - a.maxX);
+    const gaps: number[] = [];
+    for (let index = 1; index < sorted.length; index++) gaps.push(sorted[index - 1].minX - sorted[index].maxX - 1);
+    return gaps;
+  });
+}
+
+async function layoutBoxes(text: string, fontSize: number, width: number) {
   const chunks = ogRtlChunks(text);
   const colors = chunks.map((_, index) => chunkColor(index));
   const response = new ImageResponse(
@@ -115,10 +150,10 @@ async function visualOrder(text: string, fontSize: number) {
       { style: { display: "flex", width: "100%", height: "100%", background: "#000", fontFamily: "IBM Plex Sans Arabic" } },
       createElement(OgRtlText, { text, fontSize, chunkColors: colors.map((color) => color.css) }),
     ),
-    { width: 1056, height: 360, fonts: ogArabicFonts() },
+    { width, height: 360, fonts: ogArabicFonts() },
   );
   const png = decodePng(Buffer.from(await response.arrayBuffer()));
-  const boxes = colors.map(() => ({ n: 0, y: 0, x: 0 }));
+  const boxes = colors.map(() => ({ n: 0, y: 0, x: 0, minX: width, maxX: 0 }));
   for (let y = 0; y < png.height; y++) {
     for (let x = 0; x < png.width; x++) {
       const offset = (y * png.width + x) * png.bpp;
@@ -128,10 +163,12 @@ async function visualOrder(text: string, fontSize: number) {
       boxes[index].n += 1;
       boxes[index].x += x;
       boxes[index].y += y;
+      boxes[index].minX = Math.min(boxes[index].minX, x);
+      boxes[index].maxX = Math.max(boxes[index].maxX, x);
     }
   }
   const present = boxes
-    .map((box, index) => ({ index, y: box.n ? box.y / box.n : 0, x: box.n ? box.x / box.n : 0, n: box.n }))
+    .map((box, index) => ({ index, y: box.n ? box.y / box.n : 0, x: box.n ? box.x / box.n : 0, minX: box.minX, maxX: box.maxX, n: box.n }))
     .filter((box) => box.n > 12);
   const lines: typeof present[] = [];
   for (const box of present.sort((a, b) => a.y - b.y)) {
@@ -139,7 +176,7 @@ async function visualOrder(text: string, fontSize: number) {
     if (line) line.push(box);
     else lines.push([box]);
   }
-  return lines.flatMap((line) => line.sort((a, b) => b.x - a.x).map((box) => ogRtlChunkText(chunks[box.index])));
+  return { chunks, lines };
 }
 
 function decodePng(buf: Buffer) {
