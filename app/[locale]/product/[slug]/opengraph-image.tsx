@@ -1,0 +1,40 @@
+import { getProduct } from "@/data/products";
+import { localizedProduct } from "@/lib/i18n/content";
+import { isLocale } from "@/lib/i18n/config";
+import { ImageResponse } from "next/og";
+
+export const size = { width: 1200, height: 630 };
+export const contentType = "image/png";
+export const alt = "Vellum Press guide";
+
+export default async function Image({ params }: { params: Promise<{ slug: string; locale: string }> }) {
+  const { slug, locale: raw } = await params;
+  const locale = isLocale(raw) ? raw : "en";
+  const product = localizedProduct(slug, locale) ?? getProduct(slug);
+  const bg = product?.cover.bg ?? "#1E3A32";
+  const fg = product?.cover.fg ?? "#F6F1E7";
+  const accent = product?.cover.accent ?? "#E4B15A";
+  const title = product?.title ?? "Vellum Press";
+  const deck = product?.subtitle ?? "Practical PDF guides";
+  const price = product ? `$${product.price}` : "";
+  const download = locale === "ar" ? "تنزيل فوري" : "Instant download";
+
+  return new ImageResponse(
+    (
+      <div style={{ display: "flex", width: "100%", height: "100%", background: bg, color: fg }}>
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", padding: 72, width: "100%" }}>
+          <div style={{ display: "flex", letterSpacing: 4, fontSize: 22, color: accent }}>VELLUM PRESS</div>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <div style={{ fontSize: title.length > 28 ? 56 : 76, lineHeight: 1.15, maxWidth: 980 }}>{title}</div>
+            <div style={{ marginTop: 18, fontSize: 28, opacity: 0.85 }}>{deck}</div>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between", fontSize: 28 }}>
+            <span>{price} · PDF</span>
+            <span style={{ color: accent }}>{download}</span>
+          </div>
+        </div>
+      </div>
+    ),
+    size,
+  );
+}

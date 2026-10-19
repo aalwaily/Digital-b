@@ -1,33 +1,34 @@
 import type { Post } from "@/data/blog";
 import type { Faq, Product } from "@/data/products";
-import { getCategory } from "@/data/products";
 import { site } from "@/data/site";
 import { pageCountFor } from "@/lib/catalog";
+import { stripBidiIsolates } from "@/lib/i18n/bidi";
+import { localizeCategory, localizeProduct } from "@/lib/i18n/content";
+import { localePath, type Locale } from "@/lib/i18n/config";
 
 export function jsonLdScript(data: unknown) {
   return JSON.stringify(data).replace(/</g, "\\u003c");
 }
 
-export function productSchema(
-  product: Product,
-  siteUrl: string,
-  options?: { name?: string; description?: string; url?: string },
-) {
-  const category = getCategory(product.category);
-  const url = options?.url ?? `${siteUrl}/product/${product.slug}`;
+export function productSchema(product: Product, siteUrl: string, locale: Locale = "en") {
+  const localized = localizeProduct(product, locale);
+  const category = localizeCategory(product.category, locale);
+  const path = localePath(locale, `/product/${product.slug}`);
+  const url = `${siteUrl}${path}`;
   return {
     "@context": "https://schema.org",
     "@type": "Product",
-    name: options?.name ?? product.title,
-    description: options?.description ?? product.shortDescription,
+    name: stripBidiIsolates(localized.title),
+    description: stripBidiIsolates(localized.shortDescription),
     sku: product.slug,
-    category: category?.name,
+    category: category ? stripBidiIsolates(category.name) : undefined,
     brand: { "@type": "Brand", name: site.name },
-    image: [`${siteUrl}/product/${product.slug}/opengraph-image`],
+    image: [`${url}/opengraph-image`],
     url,
+    inLanguage: locale,
     additionalProperty: {
       "@type": "PropertyValue",
-      name: "Page count",
+      name: locale === "ar" ? "عدد الصفحات" : "Page count",
       value: pageCountFor(product),
     },
     offers: {
@@ -40,7 +41,7 @@ export function productSchema(
       hasMerchantReturnPolicy: {
         "@type": "MerchantReturnPolicy",
         returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted",
-        merchantReturnLink: `${siteUrl}/legal/refunds`,
+        merchantReturnLink: `${siteUrl}${localePath(locale, "/legal/refunds")}`,
       },
     },
   };
@@ -52,8 +53,8 @@ export function faqSchema(faqs: Faq[]) {
     "@type": "FAQPage",
     mainEntity: faqs.map((faq) => ({
       "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: { "@type": "Answer", text: faq.answer },
+      name: stripBidiIsolates(faq.question),
+      acceptedAnswer: { "@type": "Answer", text: stripBidiIsolates(faq.answer) },
     })),
   };
 }
@@ -71,40 +72,45 @@ export function breadcrumbList(items: { name: string; url: string }[]) {
   };
 }
 
-export function breadcrumbSchema(siteUrl: string, product: Product) {
+export function breadcrumbSchema(siteUrl: string, product: Product, locale: Locale = "en") {
+  const localized = localizeProduct(product, locale);
   return breadcrumbList([
-    { name: "Home", url: siteUrl },
-    { name: "Shop", url: `${siteUrl}/shop` },
-    { name: product.title, url: `${siteUrl}/product/${product.slug}` },
+    { name: locale === "ar" ? "الرئيسية" : "Home", url: `${siteUrl}${localePath(locale, "/")}` },
+    { name: locale === "ar" ? "المتجر" : "Shop", url: `${siteUrl}${localePath(locale, "/shop")}` },
+    {
+      name: stripBidiIsolates(localized.title),
+      url: `${siteUrl}${localePath(locale, `/product/${product.slug}`)}`,
+    },
   ]);
 }
 
-export function websiteSchema(siteUrl: string, lang: "en" | "ar" = "en") {
+export function websiteSchema(siteUrl: string, locale: Locale = "en") {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: site.name,
-    url: siteUrl,
-    inLanguage: lang === "ar" ? "ar" : "en",
+    url: `${siteUrl}${localePath(locale, "/")}`,
+    inLanguage: locale,
     description: site.description,
     potentialAction: {
       "@type": "SearchAction",
-      target: `${siteUrl}/shop?q={search_term_string}`,
+      target: `${siteUrl}${localePath(locale, "/shop")}?q={search_term_string}`,
       "query-input": "required name=search_term_string",
     },
   };
 }
 
-export function articleSchema(post: Post, siteUrl: string, pageUrl?: string) {
-  const url = pageUrl ?? `${siteUrl}/blog/${post.slug}`;
+export function articleSchema(post: Post, siteUrl: string, locale: Locale = "en") {
+  const path = localePath(locale, `/blog/${post.slug}`);
+  const url = `${siteUrl}${path}`;
   return {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: post.seoTitle ?? post.title,
-    description: post.seoDescription ?? post.description,
+    headline: stripBidiIsolates(post.seoTitle ?? post.title),
+    description: stripBidiIsolates(post.seoDescription ?? post.description),
     datePublished: post.date,
     dateModified: post.date,
-    inLanguage: post.lang === "ar" ? "ar" : "en",
+    inLanguage: post.lang ?? locale,
     author: { "@type": "Organization", name: "Vellum Press", url: siteUrl },
     publisher: {
       "@type": "Organization",
@@ -112,9 +118,7 @@ export function articleSchema(post: Post, siteUrl: string, pageUrl?: string) {
       url: siteUrl,
       email: site.email,
     },
-    image: [
-      post.lang === "ar" ? `${siteUrl}/blog/opengraph-image` : `${siteUrl}/blog/${post.slug}/opengraph-image`,
-    ],
+    image: [`${url}/opengraph-image`],
     mainEntityOfPage: url,
   };
 }

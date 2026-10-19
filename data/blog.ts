@@ -383,7 +383,7 @@ export function postLang(post: Post) {
 }
 
 export function postPath(post: Post) {
-  return postLang(post) === "ar" ? `/ar/blog/${post.slug}` : `/blog/${post.slug}`;
+  return `/${postLang(post)}/blog/${post.slug}`;
 }
 
 export function resolvePostSeo(post: Post): SeoEntry {

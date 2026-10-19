@@ -85,7 +85,7 @@ describe("schema and sample labels", () => {
       hasMerchantReturnPolicy: {
         "@type": "MerchantReturnPolicy",
         returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted",
-        merchantReturnLink: "https://example.com/legal/refunds",
+        merchantReturnLink: "https://example.com/en/legal/refunds",
       },
     });
   });

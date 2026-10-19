@@ -1,14 +1,16 @@
 "use client";
 
+import { useI18n } from "@/components/locale-provider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { translateMessage } from "@/lib/i18n/messages";
 import { useState } from "react";
 
-const topics = ["Order help", "Missing download", "Licensing", "Something else"];
-
 export function ContactForm() {
+  const { t, locale } = useI18n();
+  const topics = t.contact.topics;
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
   const [message, setMessage] = useState("");
 
@@ -34,19 +36,17 @@ export function ContactForm() {
       const data = (await response.json()) as { error?: string; delivered?: boolean };
       if (!response.ok) {
         setStatus("error");
-        setMessage(data.error || "Could not send the message.");
+        setMessage(translateMessage(locale, data.error || "Could not send the message."));
         return;
       }
       setStatus("done");
       form.reset();
       setMessage(
-        data.delivered
-          ? "Message received. We will reply from the support address."
-          : "Message validated. Email delivery is not configured yet, so a copy was not sent to an inbox. Connect CONTACT_WEBHOOK_URL when you launch.",
+        data.delivered ? t.contact.received : t.contact.notConfigured,
       );
     } catch {
       setStatus("error");
-      setMessage("Network error. Try again in a moment.");
+      setMessage(t.contact.network);
     }
   }
 
@@ -62,21 +62,21 @@ export function ContactForm() {
     <form onSubmit={onSubmit} className="space-y-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="name">Name</Label>
+          <Label htmlFor="name">{t.contact.name}</Label>
           <Input id="name" name="name" required autoComplete="name" className="h-11" maxLength={120} />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email">{t.contact.email}</Label>
           <Input id="email" name="email" type="email" required autoComplete="email" className="h-11" />
         </div>
       </div>
       <div className="space-y-2">
-        <Label htmlFor="topic">Topic</Label>
+        <Label htmlFor="topic">{t.contact.topic}</Label>
         <select
           id="topic"
           name="topic"
           required
-          defaultValue="Order help"
+          defaultValue={topics[0]}
           className="h-11 w-full rounded-lg border border-input bg-transparent px-3 text-sm"
         >
           {topics.map((topic) => (
@@ -85,11 +85,11 @@ export function ContactForm() {
         </select>
       </div>
       <div className="space-y-2">
-        <Label htmlFor="message">Message</Label>
+        <Label htmlFor="message">{t.contact.message}</Label>
         <Textarea id="message" name="message" required minLength={10} maxLength={5000} className="min-h-36" />
       </div>
       <div className="absolute -left-[9999px]" aria-hidden="true">
-        <label htmlFor="contact-company">Company</label>
+        <label htmlFor="contact-company">{t.newsletter.company}</label>
         <input id="contact-company" name="company" tabIndex={-1} autoComplete="off" />
       </div>
       {message ? (
@@ -98,7 +98,7 @@ export function ContactForm() {
         </p>
       ) : null}
       <Button type="submit" disabled={status === "loading"} className="h-11 px-5">
-        {status === "loading" ? "Sending…" : "Send message"}
+        {status === "loading" ? t.contact.sending : t.contact.send}
       </Button>
     </form>
   );

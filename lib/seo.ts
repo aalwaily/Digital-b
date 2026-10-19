@@ -21,8 +21,8 @@ export function hreflang(enPath: string, arPath: string) {
 }
 
 export function readSiteVerification(env: NodeJS.ProcessEnv = process.env) {
-  const google = env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim() ?? "";
-  const bing = env.NEXT_PUBLIC_BING_SITE_VERIFICATION?.trim() ?? "";
+  const google = (env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || env.GOOGLE_SITE_VERIFICATION || "").trim();
+  const bing = (env.NEXT_PUBLIC_BING_SITE_VERIFICATION || "").trim();
   return {
     google: GOOGLE_VERIFICATION.test(google) ? google : null,
     bing: BING_VERIFICATION.test(bing) ? bing : null,

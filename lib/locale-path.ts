@@ -14,12 +14,16 @@ export function languageAlternate(pathname: string): { href: string; label: stri
     return { href: paired, label: toArabic ? "العربية" : "English", lang: toArabic ? "ar" : "en" };
   }
   if (pathname === "/ar" || pathname.startsWith("/ar/")) {
-    if (pathname.startsWith("/ar/product/")) return { href: pathname.slice(3), label: "English", lang: "en" };
-    if (pathname === "/ar/blog") return { href: "/blog", label: "English", lang: "en" };
-    return { href: "/", label: "English", lang: "en" };
+    const rest = pathname === "/ar" ? "/" : pathname.slice(3);
+    return { href: rest === "/" ? "/en" : `/en${rest}`, label: "English", lang: "en" };
+  }
+  if (pathname === "/en" || pathname.startsWith("/en/")) {
+    const rest = pathname === "/en" ? "/" : pathname.slice(3);
+    return { href: rest === "/" ? "/ar" : `/ar${rest}`, label: "العربية", lang: "ar" };
   }
   if (pathname === "/") return { href: "/ar", label: "العربية", lang: "ar" };
-  if (pathname.startsWith("/product/")) return { href: `/ar${pathname}`, label: "العربية", lang: "ar" };
-  if (pathname === "/blog") return { href: "/ar/blog", label: "العربية", lang: "ar" };
+  if (pathname.startsWith("/product/") || pathname.startsWith("/blog") || pathname.startsWith("/legal/")) {
+    return { href: `/ar${pathname}`, label: "العربية", lang: "ar" };
+  }
   return { href: "/ar", label: "العربية", lang: "ar" };
 }

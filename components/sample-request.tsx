@@ -1,8 +1,10 @@
 "use client";
 
+import { useI18n } from "@/components/locale-provider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { translateMessage } from "@/lib/i18n/messages";
 import { useState } from "react";
 
 type SampleDownload = {
@@ -19,6 +21,7 @@ export function SampleRequest({
   slug: string;
   samples: { slug: string; title: string; pages: number | null }[];
 }) {
+  const { t, locale } = useI18n();
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
   const [message, setMessage] = useState("");
@@ -42,7 +45,7 @@ export function SampleRequest({
       const data = (await response.json()) as { error?: string; downloads?: SampleDownload[] };
       if (!response.ok || !data.downloads?.length) {
         setStatus("error");
-        setMessage(data.error || "Could not unlock that sample.");
+        setMessage(translateMessage(locale, data.error || "Could not unlock that sample."));
         return;
       }
       setDownloads(data.downloads);
@@ -50,20 +53,19 @@ export function SampleRequest({
       setEmail("");
     } catch {
       setStatus("error");
-      setMessage("Network error. Try again in a moment.");
+      setMessage(t.sample.network);
     }
   }
 
   if (status === "done") {
     return (
       <div className="rounded-xl border bg-card p-4" role="status">
-        <p className="text-sm font-medium">Your free sample is ready.</p>
+        <p className="text-sm font-medium">{t.product.sampleReady}</p>
         <ul className="mt-3 space-y-2">
           {downloads.map((sample) => (
             <li key={sample.slug}>
               <a href={sample.href} className="text-sm underline underline-offset-4" download>
-                Download {sample.title}
-                {sample.pages ? ` (${sample.pages} pages)` : ""}
+                {t.product.downloadSample(sample.title, sample.pages)}
               </a>
             </li>
           ))}
@@ -72,32 +74,32 @@ export function SampleRequest({
     );
   }
 
-  const label = samples.length > 1 ? "Get the free samples" : "Get the free sample";
+  const label = samples.length > 1 ? t.product.sampleMany : t.product.sampleOne;
 
   return (
     <form onSubmit={onSubmit} className="space-y-3 rounded-xl border bg-card p-4">
       <div>
         <p className="text-sm font-medium">{label}</p>
         <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-          Enter your email and the sample PDF unlocks on this page.
-          {samples.length > 1 ? ` This bundle includes ${samples.length} samples.` : ""}
+          {t.product.sampleHelp}
+          {samples.length > 1 ? t.product.sampleBundle(samples.length) : ""}
         </p>
       </div>
       <div className="space-y-2">
-        <Label htmlFor={`sample-email-${slug}`}>Email</Label>
+        <Label htmlFor={`sample-email-${slug}`}>{t.sample.email}</Label>
         <Input
           id={`sample-email-${slug}`}
           type="email"
           required
           autoComplete="email"
-          placeholder="you@example.com"
+          placeholder={t.newsletter.placeholder}
           value={email}
           onChange={(event) => setEmail(event.target.value)}
           className="h-11"
         />
       </div>
       <div className="absolute -left-[9999px]" aria-hidden="true">
-        <label htmlFor={`sample-company-${slug}`}>Company</label>
+        <label htmlFor={`sample-company-${slug}`}>{t.newsletter.company}</label>
         <input id={`sample-company-${slug}`} name="company" tabIndex={-1} autoComplete="off" />
       </div>
       {message ? (
@@ -106,7 +108,7 @@ export function SampleRequest({
         </p>
       ) : null}
       <Button type="submit" disabled={status === "loading"} className="h-11 px-4">
-        {status === "loading" ? "Unlocking…" : label}
+        {status === "loading" ? t.product.unlocking : label}
       </Button>
     </form>
   );

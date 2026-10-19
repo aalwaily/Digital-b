@@ -2,10 +2,6 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
-  experimental: {
-    // Unmatched URLs need their own document when the app has two root layouts.
-    globalNotFound: true,
-  },
   async headers() {
     return [
       {

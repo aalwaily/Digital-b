@@ -1,7 +1,7 @@
 import { POST as newsletterPost } from "@/app/(store)/api/newsletter/route";
 import { POST as samplePost } from "@/app/(store)/api/sample/route";
 import robots from "@/app/robots";
-import sitemap from "@/app/(store)/sitemap";
+import sitemap from "@/app/sitemap";
 import { posts } from "@/data/blog";
 import { faqs } from "@/data/faq";
 import { getLegalPage } from "@/data/legal";
@@ -181,7 +181,7 @@ describe("search and article metadata", () => {
     expect(schema["@type"]).toBe("Article");
     expect(schema.headline).toBe(posts[0].title);
     expect(schema).not.toHaveProperty("aggregateRating");
-    expect(schema.mainEntityOfPage).toBe(`https://guides.example.com/blog/${posts[0].slug}`);
+    expect(schema.mainEntityOfPage).toBe(`https://guides.example.com/en/blog/${posts[0].slug}`);
   });
 });
 

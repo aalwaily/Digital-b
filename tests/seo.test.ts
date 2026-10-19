@@ -6,7 +6,7 @@ import { languageAlternate } from "@/lib/locale-path";
 import { postWordCount } from "@/lib/reading";
 import { sarAmount } from "@/lib/sar";
 import { CANONICAL_ORIGIN, canonicalUrl, readSiteVerification } from "@/lib/seo";
-import sitemap from "@/app/(store)/sitemap";
+import sitemap from "@/app/sitemap";
 import { describe, expect, it } from "vitest";
 
 describe("buyer-intent metadata", () => {
@@ -35,7 +35,7 @@ describe("buyer-intent metadata", () => {
     expect(urls.some((url) => url.endsWith("/ar"))).toBe(true);
     expect(urls.some((url) => url.endsWith("/ar/blog"))).toBe(true);
     for (const product of products) {
-      expect(urls).toContain(canonicalUrl(`/product/${product.slug}`));
+      expect(urls).toContain(canonicalUrl(`/en/product/${product.slug}`));
       expect(urls).toContain(canonicalUrl(`/ar/product/${product.slug}`));
       expect(arabicProducts[product.slug]).toBeTruthy();
       expect(productSeo[product.slug].title).toContain(`$${product.price}`);
@@ -54,8 +54,8 @@ describe("arabic pages and longform articles", () => {
     expect(sarAmount(29)).toBe(108.75);
     expect(sarAmount(12)).toBe(45);
     expect(sarAmount(17)).toBe(63.75);
-    expect(languageAlternate("/product/the-quiet-budget").href).toBe("/ar/product/the-quiet-budget");
-    expect(languageAlternate("/ar").href).toBe("/");
+    expect(languageAlternate("/en/product/the-quiet-budget").href).toBe("/ar/product/the-quiet-budget");
+    expect(languageAlternate("/ar").href).toBe("/en");
   });
 
   it("publishes at least eight long articles, four of them in Arabic, within 900 to 1500 words", () => {

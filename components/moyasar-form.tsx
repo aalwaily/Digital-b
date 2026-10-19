@@ -1,5 +1,7 @@
 "use client";
 
+import { useI18n } from "@/components/locale-provider";
+import { translateMessage } from "@/lib/i18n/messages";
 import {
   MOYASAR_APPLE_PAY_VALIDATE_URL,
   MOYASAR_FORM_CSS,
@@ -47,6 +49,7 @@ function loadScript() {
 }
 
 export function MoyasarForm({ config }: { config: MoyasarFormConfig }) {
+  const { t, locale } = useI18n();
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -67,7 +70,7 @@ export function MoyasarForm({ config }: { config: MoyasarFormConfig }) {
           callback_url: config.callbackUrl,
           methods: [...config.methods],
           supported_networks: [...config.supportedNetworks],
-          language: "en",
+          language: locale === "ar" ? "ar" : "en",
           fixed_width: false,
           metadata: config.metadata,
           apple_pay: {
@@ -78,31 +81,31 @@ export function MoyasarForm({ config }: { config: MoyasarFormConfig }) {
           on_initiating: async () => ({ amount: config.amount, callback_url: config.callbackUrl }),
           on_failure: async (message: unknown) => {
             if (cancelled) return;
-            setError(typeof message === "string" && message ? message : "The payment was not completed.");
+            setError(
+              translateMessage(
+                locale,
+                typeof message === "string" && message ? message : "The payment was not completed.",
+              ),
+            );
           },
         });
       })
       .catch(() => {
-        if (!cancelled) setError("The Moyasar payment form could not be loaded. Try again.");
+        if (!cancelled) setError(translateMessage(locale, "The Moyasar payment form could not be loaded. Try again."));
       });
 
     return () => {
       cancelled = true;
     };
-  }, [config]);
+  }, [config, locale]);
 
   return (
     <div className="space-y-3 rounded-2xl border bg-card p-4">
       <p className="text-sm font-medium">
-        You will pay {config.amountLabel}
-        <span className="mt-1 block text-xs font-normal text-muted-foreground" lang="ar" dir="rtl">
-          المبلغ بالريال السعودي قبل الدفع
-        </span>
+        {t.checkout.moyasarYouPay(config.amountLabel)}
+        <span className="mt-1 block text-xs font-normal text-muted-foreground">{t.checkout.moyasarArNote}</span>
       </p>
-      <p className="text-xs leading-relaxed text-muted-foreground">
-        mada, Visa, and Mastercard use the card form. Apple Pay and STC Pay appear when this browser and your Moyasar
-        account support them. Card details go to Moyasar, not to Vellum Press.
-      </p>
+      <p className="text-xs leading-relaxed text-muted-foreground">{t.checkout.moyasarHelp}</p>
       {error ? (
         <p role="alert" className="text-sm text-destructive">
           {error}

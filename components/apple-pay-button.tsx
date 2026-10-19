@@ -61,6 +61,7 @@ type Props = {
   onError: (message: string) => void;
   onCancel: () => void;
   onBusy: (busy: boolean) => void;
+  locale?: "en" | "ar";
 };
 
 function loadScript(src: string, marker: string) {
@@ -98,7 +99,7 @@ function paypalApplePay() {
   return paypal.Applepay();
 }
 
-export function ApplePayButton({ email, slugs, amount, items, disabled, onPaid, onError, onCancel, onBusy }: Props) {
+export function ApplePayButton({ email, slugs, amount, items, disabled, onPaid, onError, onCancel, onBusy, locale = "en" }: Props) {
   const { resolvedTheme } = useTheme();
   const [ready, setReady] = useState(false);
   const hostRef = useRef<HTMLDivElement>(null);
@@ -171,7 +172,7 @@ export function ApplePayButton({ email, slugs, amount, items, disabled, onPaid, 
     const button = document.createElement("apple-pay-button");
     button.setAttribute("buttonstyle", buttonStyle);
     button.setAttribute("type", "buy");
-    button.setAttribute("locale", "en");
+    button.setAttribute("locale", locale === "ar" ? "ar-SA" : "en");
     button.id = "apple-pay-buy";
     const onClick = (event: Event) => {
       event.preventDefault();
@@ -184,7 +185,7 @@ export function ApplePayButton({ email, slugs, amount, items, disabled, onPaid, 
       button.removeEventListener("click", onClick);
       host.replaceChildren();
     };
-  }, [ready, buttonStyle]);
+  }, [ready, buttonStyle, locale]);
 
   if (!ready) return null;
 
