@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/site-header";
 import { site } from "@/data/site";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { dirFor, htmlLang, isLocale, LOCALE_HEADER } from "@/lib/i18n/config";
-import { getSiteUrl } from "@/lib/site-url";
+import { CANONICAL_ORIGIN, verificationMetadata } from "@/lib/seo";
 import type { Metadata, Viewport } from "next";
 import { Fraunces, IBM_Plex_Sans_Arabic, Noto_Naskh_Arabic, Outfit } from "next/font/google";
 import { headers } from "next/headers";
@@ -33,8 +33,6 @@ const arabicSerif = Noto_Naskh_Arabic({
   variable: "--font-arabic-serif",
 });
 
-const googleVerification = process.env.GOOGLE_SITE_VERIFICATION || process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
-
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -42,7 +40,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL(getSiteUrl()),
+  metadataBase: new URL(CANONICAL_ORIGIN),
   title: {
     default: `${site.name} · Practical PDF guides`,
     template: `%s · ${site.name}`,
@@ -60,7 +58,7 @@ export const metadata: Metadata = {
     "أدلة رقمية",
     "كتب PDF",
   ],
-  ...(googleVerification ? { verification: { google: googleVerification } } : {}),
+  verification: verificationMetadata(),
   openGraph: {
     type: "website",
     siteName: site.name,

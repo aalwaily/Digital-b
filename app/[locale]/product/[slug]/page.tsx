@@ -14,6 +14,8 @@ import { localePath } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { localizeCategory, localizeProduct, localizedProduct, requireLocale } from "@/lib/i18n/content";
 import { pageMetadata } from "@/lib/page-meta";
+import { arabicProductSeo, productSeo } from "@/data/page-seo";
+import { EnglishPdfNotice } from "@/components/english-pdf-notice";
 import { breadcrumbSchema, faqSchema, productSchema } from "@/lib/schema";
 import { getSiteUrl } from "@/lib/site-url";
 import type { Metadata } from "next";
@@ -31,11 +33,13 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const locale = requireLocale(raw);
   const product = localizedProduct(slug, locale);
   if (!product) return { title: "Guide" };
+  const seo = locale === "ar" ? arabicProductSeo[slug] : productSeo[slug];
   return pageMetadata({
-    title: product.title,
-    description: product.shortDescription,
+    title: seo?.title ?? product.title,
+    description: seo?.description ?? product.shortDescription,
     path: `/product/${product.slug}`,
     locale,
+    absoluteTitle: Boolean(seo),
   });
 }
 
@@ -84,7 +88,9 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           <Price price={product.price} compareAt={product.compareAtPrice} size="lg" className="mt-5" />
           <p className="mt-2 text-sm text-muted-foreground">{t.product.meta(pages)}</p>
           {locale === "ar" ? (
-            <p className="mt-4 rounded-xl border bg-secondary px-4 py-3 text-sm leading-relaxed">{t.product.englishPdf}</p>
+            <div className="mt-4">
+              <EnglishPdfNotice />
+            </div>
           ) : null}
           <div className="mt-6">
             <PurchaseActions slug={product.slug} />

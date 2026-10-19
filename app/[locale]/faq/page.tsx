@@ -3,17 +3,20 @@ import { JsonLd } from "@/components/json-ld";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { localizeFaqs, requireLocale } from "@/lib/i18n/content";
 import { pageMetadata } from "@/lib/page-meta";
+import { staticSeo } from "@/data/page-seo";
 import { faqSchema } from "@/lib/schema";
 import type { Metadata } from "next";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const locale = requireLocale((await params).locale);
   const t = getDictionary(locale);
+  const seo = staticSeo.faq;
   return pageMetadata({
-    title: t.faq.metaTitle,
-    description: t.faq.metaDescription,
+    title: locale === "ar" ? t.faq.metaTitle : seo.title,
+    description: locale === "ar" ? t.faq.metaDescription : seo.description,
     path: "/faq",
     locale,
+    absoluteTitle: locale === "en",
   });
 }
 

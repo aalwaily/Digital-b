@@ -21,7 +21,7 @@ export function ProductCard({ product }: { product: Product }) {
       <Link
         href={href(`/product/${product.slug}`)}
         className="block overflow-hidden rounded-xl shadow-[0_18px_40px_-28px_rgba(28,24,18,0.7)] ring-1 ring-black/10 transition motion-safe:group-hover:-translate-y-0.5 dark:ring-white/10"
-        aria-label={product.title}
+        aria-label={`${product.title} PDF`}
       >
         <Cover product={product} decorative />
       </Link>

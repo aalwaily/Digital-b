@@ -10,12 +10,13 @@ export function pageMetadata(input: {
   index?: boolean;
   type?: "website" | "article";
   publishedTime?: string;
+  languages?: { en: string; ar: string; "x-default": string };
 }): Metadata {
   const locale = input.locale ?? "en";
   const canonical = localePath(locale, input.path);
-  const image = canonical === `/${locale}` ? `${canonical}/opengraph-image` : `${canonical}/opengraph-image`;
+  const image = `${canonical}/opengraph-image`;
   const images = input.index === false ? undefined : [{ url: image, width: 1200, height: 630, alt: input.title }];
-  const languages = {
+  const languages = input.languages ?? {
     en: localePath("en", input.path),
     ar: localePath("ar", input.path),
     "x-default": localePath("en", input.path),

@@ -1,15 +1,12 @@
-import { posts } from "@/data/blog";
+import { getPost, postLang, postPath, posts, type Post } from "@/data/blog";
 import { legalPages } from "@/data/legal";
 import { products } from "@/data/products";
 import { locales, localePath, type Locale } from "@/lib/i18n/config";
-import { getSiteUrl } from "@/lib/site-url";
+import { CANONICAL_ORIGIN } from "@/lib/seo";
 import type { MetadataRoute } from "next";
 
 export const dynamic = "force-static";
 
-// Next renders this metadata route by calling Date#toISOString on lastModified.
-// An invalid Date throws RangeError and the route responds HTTP 500.
-// Only accept a calendar date, and always construct it as UTC midnight.
 function lastModified(isoDate: string): Date {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(isoDate)) {
     throw new Error(`Sitemap lastModified must be YYYY-MM-DD, received ${JSON.stringify(isoDate)}`);
@@ -21,34 +18,57 @@ function lastModified(isoDate: string): Date {
   return date;
 }
 
-function origin(): string {
-  const raw = getSiteUrl().trim();
-  const withProtocol = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
-  return withProtocol.replace(/\/$/, "");
+function absolute(path: string) {
+  return `${CANONICAL_ORIGIN}${path}`;
 }
 
-function entry(siteUrl: string, path: string, modified: string): MetadataRoute.Sitemap[number] {
-  const languages = Object.fromEntries(
-    locales.map((locale) => [locale, `${siteUrl}${localePath(locale, path)}`]),
-  ) as Record<Locale, string>;
-  return {
-    url: `${siteUrl}${localePath("en", path)}`,
-    lastModified: lastModified(modified),
-    alternates: { languages: { ...languages, "x-default": languages.en } },
+function paired(path: string, modified: string): MetadataRoute.Sitemap {
+  const languages = {
+    en: absolute(localePath("en", path)),
+    ar: absolute(localePath("ar", path)),
+    "x-default": absolute(localePath("en", path)),
   };
+  return locales.map((locale) => ({
+    url: absolute(localePath(locale, path)),
+    lastModified: lastModified(modified),
+    alternates: { languages },
+  }));
+}
+
+function postLanguages(post: Post) {
+  if (post.translationOf) {
+    const other = getPost(post.translationOf);
+    if (other) {
+      const enPath = postLang(post) === "ar" ? postPath(other) : postPath(post);
+      const arPath = postLang(post) === "ar" ? postPath(post) : postPath(other);
+      return { en: absolute(enPath), ar: absolute(arPath), "x-default": absolute(enPath) };
+    }
+  }
+  if (!post.lang) {
+    const enPath = localePath("en", `/blog/${post.slug}`);
+    const arPath = localePath("ar", `/blog/${post.slug}`);
+    return { en: absolute(enPath), ar: absolute(arPath), "x-default": absolute(enPath) };
+  }
+  const self = absolute(postPath(post));
+  return postLang(post) === "ar" ? { ar: self, "x-default": self } : { en: self, "x-default": self };
+}
+
+function postEntries(post: Post): MetadataRoute.Sitemap {
+  const languages = postLanguages(post);
+  const available: Locale[] = post.lang === "ar" ? ["ar"] : post.lang === "en" ? ["en"] : ["en", "ar"];
+  return available.map((locale) => ({
+    url: absolute(post.lang ? postPath(post) : localePath(locale, `/blog/${post.slug}`)),
+    lastModified: lastModified(post.date),
+    alternates: { languages },
+  }));
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const siteUrl = origin();
-  const staticRoutes = ["/", "/shop", "/about", "/contact", "/faq", "/blog"].map((path) =>
-    entry(siteUrl, path, "2026-10-19"),
+  const staticRoutes = ["/", "/shop", "/about", "/contact", "/faq", "/blog"].flatMap((path) =>
+    paired(path, "2026-10-19"),
   );
-  const productRoutes = products.map((product) => entry(siteUrl, `/product/${product.slug}`, product.published));
-  const postRoutes = posts.map((post) => entry(siteUrl, `/blog/${post.slug}`, post.date));
-  const legalRoutes = legalPages.map((page) => entry(siteUrl, `/legal/${page.slug}`, page.updated));
-  const arabic = [...staticRoutes, ...productRoutes, ...postRoutes, ...legalRoutes].map((item) => ({
-    ...item,
-    url: item.alternates?.languages?.ar ?? item.url,
-  }));
-  return [...staticRoutes, ...productRoutes, ...postRoutes, ...legalRoutes, ...arabic];
+  const productRoutes = products.flatMap((product) => paired(`/product/${product.slug}`, product.published));
+  const postRoutes = posts.flatMap((post) => postEntries(post));
+  const legalRoutes = legalPages.flatMap((page) => paired(`/legal/${page.slug}`, page.updated));
+  return [...staticRoutes, ...productRoutes, ...postRoutes, ...legalRoutes];
 }

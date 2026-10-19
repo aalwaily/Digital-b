@@ -3,16 +3,19 @@ import { site } from "@/data/site";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { requireLocale } from "@/lib/i18n/content";
 import { pageMetadata } from "@/lib/page-meta";
+import { staticSeo } from "@/data/page-seo";
 import type { Metadata } from "next";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const locale = requireLocale((await params).locale);
   const t = getDictionary(locale);
+  const seo = staticSeo.contact;
   return pageMetadata({
-    title: t.contact.metaTitle,
-    description: t.contact.metaDescription(site.name, site.email),
+    title: locale === "ar" ? t.contact.metaTitle : seo.title,
+    description: locale === "ar" ? t.contact.metaDescription(site.name, site.email) : seo.description,
     path: "/contact",
     locale,
+    absoluteTitle: locale === "en",
   });
 }
 

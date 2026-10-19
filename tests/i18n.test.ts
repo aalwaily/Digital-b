@@ -76,6 +76,7 @@ describe("bilingual catalog", () => {
       });
     }
     for (const post of posts) {
+      if (post.lang) continue;
       const copy = arPosts[post.slug];
       expect(copy?.title).toBeTruthy();
       expect(copy.blocks.map((block) => block.type)).toEqual(post.blocks.map((block) => block.type));

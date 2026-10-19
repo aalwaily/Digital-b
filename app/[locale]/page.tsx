@@ -10,8 +10,9 @@ import { pageCountFor } from "@/lib/catalog";
 import { textDir } from "@/lib/i18n/bidi";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { localePath } from "@/lib/i18n/config";
-import { localizeFaqs, localizedCategories, localizedPosts, localizedProduct, requireLocale } from "@/lib/i18n/content";
+import { localizeFaqs, localizedCategories, localizedProduct, postsForLocale, requireLocale } from "@/lib/i18n/content";
 import { pageMetadata } from "@/lib/page-meta";
+import { staticSeo } from "@/data/page-seo";
 import { organizationSchema, websiteSchema } from "@/lib/schema";
 import { getSiteUrl } from "@/lib/site-url";
 import { formatMoney } from "@/lib/money";
@@ -23,10 +24,10 @@ type Params = { locale: string };
 
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const locale = requireLocale((await params).locale);
-  const t = getDictionary(locale);
+  const seo = locale === "ar" ? staticSeo.arabicHome : staticSeo.home;
   return pageMetadata({
-    title: t.home.metaTitle,
-    description: t.home.metaDescription,
+    title: seo.title,
+    description: seo.description,
     path: "/",
     locale,
     absoluteTitle: true,
@@ -199,7 +200,7 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
           </Link>
         </div>
         <div className="mt-6 grid gap-4 md:grid-cols-3">
-          {localizedPosts(locale).slice(0, 3).map((post) => (
+          {postsForLocale(locale).slice(0, 3).map((post) => (
             <Link key={post.slug} href={localePath(locale, `/blog/${post.slug}`)} className="min-w-0 rounded-2xl border bg-card p-5 hover:border-foreground/30">
               <p className="text-xs tracking-[0.16em] text-copper uppercase">{post.category}</p>
               <h3 dir={textDir(post.title)} className="mt-2 font-serif text-2xl">

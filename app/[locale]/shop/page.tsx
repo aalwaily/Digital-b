@@ -4,6 +4,7 @@ import { searchProducts } from "@/lib/catalog";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { localizeProduct, requireLocale } from "@/lib/i18n/content";
 import { pageMetadata } from "@/lib/page-meta";
+import { staticSeo } from "@/data/page-seo";
 import type { Metadata } from "next";
 
 type Search = { q?: string | string[]; category?: string | string[]; sort?: string | string[] };
@@ -14,12 +15,13 @@ function first(value: string | string[] | undefined) {
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const locale = requireLocale((await params).locale);
-  const t = getDictionary(locale);
+  const seo = staticSeo.shop;
   return pageMetadata({
-    title: t.shop.metaTitle,
-    description: t.shop.metaDescription,
+    title: locale === "ar" ? getDictionary(locale).shop.metaTitle : seo.title,
+    description: locale === "ar" ? getDictionary(locale).shop.metaDescription : seo.description,
     path: "/shop",
     locale,
+    absoluteTitle: locale === "en",
   });
 }
 

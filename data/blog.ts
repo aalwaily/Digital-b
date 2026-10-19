@@ -1,8 +1,13 @@
+import { longformPosts } from "@/data/longform";
+import { legacyPostSeo, type SeoEntry } from "@/data/page-seo";
+
 export type PostBlock =
   | { type: "p"; text: string }
   | { type: "h2"; text: string }
   | { type: "ul"; items: string[] }
-  | { type: "tip"; text: string };
+  | { type: "tip"; text: string }
+  | { type: "note"; text: string }
+  | { type: "links"; items: { href: string; label: string }[] };
 
 export type Post = {
   slug: string;
@@ -13,6 +18,12 @@ export type Post = {
   category: string;
   relatedProduct?: string;
   blocks: PostBlock[];
+  seoTitle?: string;
+  seoDescription?: string;
+  targetKeyword?: string;
+  lang?: "en" | "ar";
+  longform?: boolean;
+  translationOf?: string;
 };
 
 export const posts: Post[] = [
@@ -360,8 +371,37 @@ export const posts: Post[] = [
       },
     ],
   },
+  ...longformPosts,
 ];
 
 export function getPost(slug: string) {
   return posts.find((post) => post.slug === slug);
+}
+
+export function postLang(post: Post) {
+  return post.lang ?? "en";
+}
+
+export function postPath(post: Post) {
+  return `/${postLang(post)}/blog/${post.slug}`;
+}
+
+export function resolvePostSeo(post: Post): SeoEntry {
+  if (post.seoTitle && post.seoDescription && post.targetKeyword) {
+    return { title: post.seoTitle, description: post.seoDescription, keyword: post.targetKeyword };
+  }
+  const legacy = legacyPostSeo[post.slug];
+  if (!legacy) throw new Error(`Missing SEO copy for ${post.slug}`);
+  return legacy;
+}
+
+export function postsForProduct(slug: string) {
+  return posts.filter((post) => post.relatedProduct === slug);
+}
+
+export function orderedPosts(lang?: "en" | "ar") {
+  return posts
+    .filter((post) => (lang ? postLang(post) === lang : true))
+    .slice()
+    .sort((a, b) => b.date.localeCompare(a.date));
 }

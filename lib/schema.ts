@@ -14,6 +14,7 @@ export function productSchema(product: Product, siteUrl: string, locale: Locale 
   const localized = localizeProduct(product, locale);
   const category = localizeCategory(product.category, locale);
   const path = localePath(locale, `/product/${product.slug}`);
+  const url = `${siteUrl}${path}`;
   return {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -22,8 +23,8 @@ export function productSchema(product: Product, siteUrl: string, locale: Locale 
     sku: product.slug,
     category: category ? stripBidiIsolates(category.name) : undefined,
     brand: { "@type": "Brand", name: site.name },
-    image: [`${siteUrl}${path}/opengraph-image`],
-    url: `${siteUrl}${path}`,
+    image: [`${url}/opengraph-image`],
+    url,
     inLanguage: locale,
     additionalProperty: {
       "@type": "PropertyValue",
@@ -35,7 +36,7 @@ export function productSchema(product: Product, siteUrl: string, locale: Locale 
       priceCurrency: "USD",
       price: product.price.toFixed(2),
       availability: "https://schema.org/InStock",
-      url: `${siteUrl}${path}`,
+      url,
       seller: { "@type": "Organization", name: site.legalName },
       hasMerchantReturnPolicy: {
         "@type": "MerchantReturnPolicy",
@@ -58,22 +59,29 @@ export function faqSchema(faqs: Faq[]) {
   };
 }
 
-export function breadcrumbSchema(siteUrl: string, product: Product, locale: Locale = "en") {
-  const localized = localizeProduct(product, locale);
+export function breadcrumbList(items: { name: string; url: string }[]) {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: locale === "ar" ? "الرئيسية" : "Home", item: `${siteUrl}${localePath(locale, "/")}` },
-      { "@type": "ListItem", position: 2, name: locale === "ar" ? "المتجر" : "Shop", item: `${siteUrl}${localePath(locale, "/shop")}` },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: stripBidiIsolates(localized.title),
-        item: `${siteUrl}${localePath(locale, `/product/${product.slug}`)}`,
-      },
-    ],
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: item.url,
+    })),
   };
+}
+
+export function breadcrumbSchema(siteUrl: string, product: Product, locale: Locale = "en") {
+  const localized = localizeProduct(product, locale);
+  return breadcrumbList([
+    { name: locale === "ar" ? "الرئيسية" : "Home", url: `${siteUrl}${localePath(locale, "/")}` },
+    { name: locale === "ar" ? "المتجر" : "Shop", url: `${siteUrl}${localePath(locale, "/shop")}` },
+    {
+      name: stripBidiIsolates(localized.title),
+      url: `${siteUrl}${localePath(locale, `/product/${product.slug}`)}`,
+    },
+  ]);
 }
 
 export function websiteSchema(siteUrl: string, locale: Locale = "en") {
@@ -94,22 +102,24 @@ export function websiteSchema(siteUrl: string, locale: Locale = "en") {
 
 export function articleSchema(post: Post, siteUrl: string, locale: Locale = "en") {
   const path = localePath(locale, `/blog/${post.slug}`);
+  const url = `${siteUrl}${path}`;
   return {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: stripBidiIsolates(post.title),
-    description: stripBidiIsolates(post.description),
-    inLanguage: locale,
+    headline: stripBidiIsolates(post.seoTitle ?? post.title),
+    description: stripBidiIsolates(post.seoDescription ?? post.description),
     datePublished: post.date,
-    author: { "@type": "Organization", name: site.legalName, url: siteUrl },
+    dateModified: post.date,
+    inLanguage: post.lang ?? locale,
+    author: { "@type": "Organization", name: "Vellum Press", url: siteUrl },
     publisher: {
       "@type": "Organization",
-      name: site.legalName,
+      name: "Vellum Press",
       url: siteUrl,
       email: site.email,
     },
-    image: [`${siteUrl}${path}/opengraph-image`],
-    mainEntityOfPage: `${siteUrl}${path}`,
+    image: [`${url}/opengraph-image`],
+    mainEntityOfPage: url,
   };
 }
 

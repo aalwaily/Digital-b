@@ -1,4 +1,4 @@
-import { getSiteUrl } from "@/lib/site-url";
+import { CANONICAL_ORIGIN } from "@/lib/seo";
 import type { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
@@ -19,6 +19,7 @@ export default function robots(): MetadataRoute.Robots {
         "/ar/orders/",
       ],
     },
-    sitemap: `${getSiteUrl()}/sitemap.xml`,
+    sitemap: `${CANONICAL_ORIGIN}/sitemap.xml`,
+    host: CANONICAL_ORIGIN,
   };
 }

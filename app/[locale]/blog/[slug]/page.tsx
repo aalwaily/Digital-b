@@ -1,10 +1,13 @@
+import { ArticleBody } from "@/components/article-body";
 import { JsonLd } from "@/components/json-ld";
 import { LinkButton } from "@/components/link-button";
-import { posts } from "@/data/blog";
+import { getPost, postPath, posts, resolvePostSeo } from "@/data/blog";
 import { textDir } from "@/lib/i18n/bidi";
-import { formatLongDate, localizedPost, localizedProduct, requireLocale } from "@/lib/i18n/content";
+import { formatLongDate, localizePost, localizedProduct, requireLocale } from "@/lib/i18n/content";
 import { getDictionary } from "@/lib/i18n/dictionary";
+import { type Locale } from "@/lib/i18n/config";
 import { pageMetadata } from "@/lib/page-meta";
+import { readingMinutes } from "@/lib/reading";
 import { articleSchema } from "@/lib/schema";
 import { getSiteUrl } from "@/lib/site-url";
 import type { Metadata } from "next";
@@ -12,23 +15,48 @@ import { notFound } from "next/navigation";
 
 type Params = { locale: string; slug: string };
 
+function visibleIn(locale: Locale, slug: string) {
+  const post = getPost(slug);
+  if (!post) return false;
+  if (locale === "en" && post.lang === "ar") return false;
+  if (locale === "ar" && post.lang === "en") return false;
+  return true;
+}
+
+function articleLanguages(slug: string) {
+  const post = getPost(slug);
+  if (!post?.translationOf) return undefined;
+  const other = getPost(post.translationOf);
+  if (!other) return undefined;
+  const en = post.lang === "ar" ? postPath(other) : postPath(post);
+  const ar = post.lang === "ar" ? postPath(post) : postPath(other);
+  return { en, ar, "x-default": en };
+}
+
 export function generateStaticParams() {
-  return posts.map((post) => ({ slug: post.slug }));
+  return posts.flatMap((post) => {
+    const locales: Locale[] = post.lang === "ar" ? ["ar"] : post.lang === "en" ? ["en"] : ["en", "ar"];
+    return locales.map((locale) => ({ locale, slug: post.slug }));
+  });
 }
 
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { slug, locale: raw } = await params;
   const locale = requireLocale(raw);
-  const post = localizedPost(slug, locale);
   const t = getDictionary(locale);
-  if (!post) return { title: t.blog.metaTitle };
+  const source = getPost(slug);
+  if (!source || !visibleIn(locale, slug)) return { title: t.blog.metaTitle };
+  const post = localizePost(source, locale);
+  const seo = source.lang || locale === "en" ? resolvePostSeo(source) : undefined;
   return pageMetadata({
-    title: post.title,
-    description: post.description,
+    title: seo?.title ?? post.title,
+    description: seo?.description ?? post.description,
     path: `/blog/${post.slug}`,
     locale,
+    absoluteTitle: Boolean(seo),
     type: "article",
     publishedTime: post.date,
+    languages: articleLanguages(slug),
   });
 }
 
@@ -36,9 +64,11 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
   const { slug, locale: raw } = await params;
   const locale = requireLocale(raw);
   const t = getDictionary(locale);
-  const post = localizedPost(slug, locale);
-  if (!post) notFound();
+  const source = getPost(slug);
+  if (!source || !visibleIn(locale, slug)) notFound();
+  const post = localizePost(source, locale);
   const related = post.relatedProduct ? localizedProduct(post.relatedProduct, locale) : undefined;
+  const minutes = post.longform ? readingMinutes(post) : post.readingMinutes;
 
   return (
     <article className="mx-auto min-w-0 max-w-3xl px-5 py-12">
@@ -48,36 +78,9 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
         {post.title}
       </h1>
       <p className="mt-3 text-sm text-muted-foreground">
-        {formatLongDate(post.date, locale)} · {t.blog.minutes(post.readingMinutes)}
+        {formatLongDate(post.date, locale)} · {t.blog.minutes(minutes)}
       </p>
-      <div className="mt-8 space-y-4 text-[1.05rem] leading-relaxed">
-        {post.blocks.map((block, index) => {
-          if (block.type === "h2") {
-            return (
-              <h2 key={index} dir={textDir(block.text)} className="pt-6 font-serif text-3xl">
-                {block.text}
-              </h2>
-            );
-          }
-          if (block.type === "ul") {
-            return (
-              <ul key={index} className="list-disc space-y-2 ps-5">
-                {block.items.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            );
-          }
-          if (block.type === "tip") {
-            return (
-              <p key={index} className="border-s-2 border-copper ps-4 text-base">
-                {block.text}
-              </p>
-            );
-          }
-          return <p key={index}>{block.text}</p>;
-        })}
-      </div>
+      <ArticleBody blocks={post.blocks} />
       {related ? (
         <aside className="mt-12 rounded-2xl border bg-card p-5">
           <p className="text-xs tracking-[0.16em] text-copper uppercase">{t.blog.theGuide}</p>

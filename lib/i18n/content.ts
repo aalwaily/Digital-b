@@ -86,19 +86,35 @@ export function localizedLegal(slug: string, locale: Locale) {
 export function localizePost(post: Post, locale: Locale): Post {
   if (locale === "en") return post;
   const copy = arPosts[post.slug];
-  if (!copy) return post;
-  return {
-    ...post,
-    ...copy,
-    title: isolateEmbeds(copy.title),
-    description: isolateEmbeds(copy.description),
-    category: isolateEmbeds(copy.category),
-    blocks: copy.blocks.map(isolateBlock),
-  };
+  if (copy) {
+    return {
+      ...post,
+      ...copy,
+      title: isolateEmbeds(copy.title),
+      description: isolateEmbeds(copy.description),
+      category: isolateEmbeds(copy.category),
+      blocks: copy.blocks.map(isolateBlock),
+    };
+  }
+  if (post.lang === "ar") {
+    return {
+      ...post,
+      title: isolateEmbeds(post.title),
+      description: isolateEmbeds(post.description),
+      category: isolateEmbeds(post.category),
+      seoTitle: post.seoTitle ? isolateEmbeds(post.seoTitle) : post.seoTitle,
+      seoDescription: post.seoDescription ? isolateEmbeds(post.seoDescription) : post.seoDescription,
+      blocks: post.blocks.map(isolateBlock),
+    };
+  }
+  return post;
 }
 
 function isolateBlock(block: PostBlock): PostBlock {
   if (block.type === "ul") return { ...block, items: block.items.map(isolateEmbeds) };
+  if (block.type === "links") {
+    return { ...block, items: block.items.map((item) => ({ ...item, label: isolateEmbeds(item.label) })) };
+  }
   return { ...block, text: isolateEmbeds(block.text) };
 }
 
@@ -109,6 +125,13 @@ export function localizedPost(slug: string, locale: Locale) {
 
 export function localizedPosts(locale: Locale) {
   return posts.map((post) => localizePost(post, locale));
+}
+
+export function postsForLocale(locale: Locale) {
+  return posts
+    .filter((post) => (locale === "ar" ? post.lang === "ar" || (!post.lang && Boolean(arPosts[post.slug])) : post.lang !== "ar"))
+    .map((post) => localizePost(post, locale))
+    .sort((a, b) => b.date.localeCompare(a.date));
 }
 
 export function formatLongDate(iso: string, locale: Locale) {
