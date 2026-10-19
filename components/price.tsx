@@ -20,12 +20,16 @@ export function Price({
 
   return (
     <p className={cn("price flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-0.5", className)}>
-      <span className={cn("font-medium", size === "lg" && "font-serif text-3xl")}>{formatMoney(price)}</span>
+      <span dir="ltr" className={cn("font-medium", size === "lg" && "font-serif text-3xl")}>
+        {formatMoney(price)}
+      </span>
       {compareAt && compareAt > price ? (
-        <span className="text-sm text-muted-foreground line-through">{formatMoney(compareAt)}</span>
+        <span dir="ltr" className="text-sm text-muted-foreground line-through">
+          {formatMoney(compareAt)}
+        </span>
       ) : null}
       <span className="text-xs text-muted-foreground">
-        {t.price.approx} {sar} {t.price.sar}
+        {t.price.approx} <span dir="ltr">{sar}</span> {t.price.sar}
       </span>
     </p>
   );

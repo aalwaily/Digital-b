@@ -6,6 +6,7 @@ import { useI18n } from "@/components/locale-provider";
 import { Price } from "@/components/price";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { quote } from "@/lib/catalog";
+import { textDir } from "@/lib/i18n/bidi";
 import { formatMoney, formatSarAmount } from "@/lib/money";
 import { localizedProduct } from "@/lib/i18n/content";
 import Link from "next/link";
@@ -59,7 +60,7 @@ export function CartView({ canceled = false }: { canceled?: boolean }) {
                 <Cover product={item} decorative />
               </Link>
               <div className="min-w-0 flex-1">
-                <h2 className="font-serif text-xl">
+                <h2 dir={textDir(item.title)} className="font-serif text-xl">
                   <Link href={href(`/product/${item.slug}`)} className="hover:underline">
                     {item.title}
                   </Link>
@@ -82,20 +83,24 @@ export function CartView({ canceled = false }: { canceled?: boolean }) {
           <dl className="mt-4 space-y-2 text-sm">
             <div className="flex justify-between gap-3">
               <dt>{t.cartPage.subtotal}</dt>
-              <dd className="price text-end">{formatMoney(summary.subtotal)}</dd>
+              <dd dir="ltr" className="price text-end">
+                {formatMoney(summary.subtotal)}
+              </dd>
             </div>
             {summary.savings > 0 ? (
               <div className="flex justify-between gap-3 text-copper">
                 <dt>{t.cartPage.savings}</dt>
-                <dd className="price text-end">{formatMoney(summary.savings)}</dd>
+                <dd dir="ltr" className="price text-end">
+                  {formatMoney(summary.savings)}
+                </dd>
               </div>
             ) : null}
             <div className="flex justify-between gap-3 border-t pt-2 font-medium">
               <dt>{t.cartPage.due}</dt>
               <dd className="price text-end">
-                {formatMoney(summary.subtotal)}
+                <span dir="ltr">{formatMoney(summary.subtotal)}</span>
                 <span className="mt-1 block text-xs font-normal text-muted-foreground">
-                  {t.price.approx} {formatSarAmount(summary.subtotal)} {t.price.sar}
+                  {t.price.approx} <span dir="ltr">{formatSarAmount(summary.subtotal)}</span> {t.price.sar}
                 </span>
               </dd>
             </div>

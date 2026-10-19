@@ -1,3 +1,5 @@
+import { isolateEmbeds } from "@/lib/i18n/bidi";
+
 export const dictionary = {
   en: {
     skip: "Skip to content",
@@ -685,6 +687,23 @@ export const dictionary = {
 
 export type Dictionary = (typeof dictionary)["en"];
 
+function isolateTree(value: unknown): unknown {
+  if (typeof value === "string") return isolateEmbeds(value);
+  if (typeof value === "function") {
+    return (...args: unknown[]) => {
+      const result = (value as (...inner: unknown[]) => unknown)(...args);
+      return typeof result === "string" ? isolateEmbeds(result) : result;
+    };
+  }
+  if (Array.isArray(value)) return value.map(isolateTree);
+  if (value && typeof value === "object") {
+    return Object.fromEntries(Object.entries(value).map(([key, child]) => [key, isolateTree(child)]));
+  }
+  return value;
+}
+
+const arabicDictionary = isolateTree(dictionary.ar) as Dictionary;
+
 export function getDictionary(locale: "en" | "ar"): Dictionary {
-  return dictionary[locale] as Dictionary;
+  return locale === "ar" ? arabicDictionary : dictionary.en;
 }

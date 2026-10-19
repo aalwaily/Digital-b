@@ -1,3 +1,4 @@
+import { textDir } from "@/lib/i18n/bidi";
 import { localePath } from "@/lib/i18n/config";
 import { formatLongDate, localizedPosts, requireLocale } from "@/lib/i18n/content";
 import { getDictionary } from "@/lib/i18n/dictionary";
@@ -30,7 +31,7 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
         {posts.map((post) => (
           <article key={post.slug} className="border-b pb-8">
             <p className="text-xs tracking-[0.16em] text-copper uppercase">{post.category}</p>
-            <h2 className="mt-2 font-serif text-3xl">
+            <h2 dir={textDir(post.title)} className="mt-2 font-serif text-3xl">
               <Link href={localePath(locale, `/blog/${post.slug}`)} className="hover:underline">
                 {post.title}
               </Link>

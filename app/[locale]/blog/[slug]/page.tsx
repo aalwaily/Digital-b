@@ -1,6 +1,7 @@
 import { JsonLd } from "@/components/json-ld";
 import { LinkButton } from "@/components/link-button";
 import { posts } from "@/data/blog";
+import { textDir } from "@/lib/i18n/bidi";
 import { formatLongDate, localizedPost, localizedProduct, requireLocale } from "@/lib/i18n/content";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { pageMetadata } from "@/lib/page-meta";
@@ -43,7 +44,9 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
     <article className="mx-auto min-w-0 max-w-3xl px-5 py-12">
       <JsonLd data={articleSchema(post, getSiteUrl(), locale)} />
       <p className="text-xs tracking-[0.16em] text-copper uppercase">{post.category}</p>
-      <h1 className="mt-2 font-serif text-4xl md:text-5xl">{post.title}</h1>
+      <h1 dir={textDir(post.title)} className="mt-2 font-serif text-4xl md:text-5xl">
+        {post.title}
+      </h1>
       <p className="mt-3 text-sm text-muted-foreground">
         {formatLongDate(post.date, locale)} · {t.blog.minutes(post.readingMinutes)}
       </p>
@@ -51,7 +54,7 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
         {post.blocks.map((block, index) => {
           if (block.type === "h2") {
             return (
-              <h2 key={index} className="pt-6 font-serif text-3xl">
+              <h2 key={index} dir={textDir(block.text)} className="pt-6 font-serif text-3xl">
                 {block.text}
               </h2>
             );
@@ -78,7 +81,9 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
       {related ? (
         <aside className="mt-12 rounded-2xl border bg-card p-5">
           <p className="text-xs tracking-[0.16em] text-copper uppercase">{t.blog.theGuide}</p>
-          <h2 className="mt-2 font-serif text-2xl">{related.title}</h2>
+          <h2 dir={textDir(related.title)} className="mt-2 font-serif text-2xl">
+            {related.title}
+          </h2>
           <p className="mt-2 text-sm text-muted-foreground">{related.shortDescription}</p>
           <LinkButton href={`/product/${related.slug}`} className="mt-4 h-11 px-4">
             {t.blog.view(related.title)}

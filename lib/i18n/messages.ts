@@ -1,3 +1,4 @@
+import { isolateEmbeds } from "@/lib/i18n/bidi";
 import type { Locale } from "@/lib/i18n/config";
 
 const messages: Record<string, string> = {
@@ -54,5 +55,5 @@ const messages: Record<string, string> = {
 
 export function translateMessage(locale: Locale, message: string) {
   if (locale !== "ar") return message;
-  return messages[message] ?? message;
+  return isolateEmbeds(messages[message] ?? message);
 }

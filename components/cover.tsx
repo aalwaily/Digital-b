@@ -32,7 +32,18 @@ export function Cover({
     >
       <rect width="600" height="800" fill={bg} />
       <Motif motif={motif} accent={accent} fg={fg} />
-      <text x={x} y="78" fill={fg} fillOpacity="0.78" fontFamily={sans} fontSize="16" letterSpacing={rtl ? 0 : 5} textAnchor={anchor}>
+      <text
+        x={x}
+        y="78"
+        fill={fg}
+        fillOpacity="0.78"
+        fontFamily={sans}
+        fontSize="16"
+        letterSpacing={rtl ? 0 : 5}
+        textAnchor={anchor}
+        direction="ltr"
+        unicodeBidi="isolate"
+      >
         VELLUM PRESS
       </text>
       <text x={x} y="168" fill={accent} fontFamily={sans} fontSize="18" letterSpacing={rtl ? 0 : 2.5} textAnchor={anchor}>

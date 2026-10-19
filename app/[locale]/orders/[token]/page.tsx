@@ -7,6 +7,7 @@ import { PurchaseEvent } from "@/components/purchase-event";
 import { analyticsEnabled, readAnalytics } from "@/lib/analytics";
 import { verifyDownloadToken } from "@/lib/download-token";
 import { privatePdfPath } from "@/lib/files";
+import { textDir } from "@/lib/i18n/bidi";
 import { formatLongDate, localizedProduct, requireLocale } from "@/lib/i18n/content";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import type { Metadata } from "next";
@@ -82,7 +83,9 @@ export default async function OrderPage({
           const product = localizedProduct(item.slug, locale);
           return (
             <li key={item.slug} className="flex items-center justify-between gap-3 px-4 py-3 text-sm">
-              <span className="min-w-0">{product?.title ?? item.title}</span>
+              <span dir={textDir(product?.title ?? item.title)} className="min-w-0">
+                {product?.title ?? item.title}
+              </span>
               <Price price={item.price} />
             </li>
           );
@@ -102,8 +105,12 @@ export default async function OrderPage({
                 </div>
               ) : null}
               <div className="min-w-0 flex-1">
-                <p className="font-medium">{product?.title ?? slug}</p>
-                <p className="text-sm text-muted-foreground">{product?.subtitle}</p>
+                <p dir={textDir(product?.title ?? slug)} className="font-medium">
+                  {product?.title ?? slug}
+                </p>
+                <p dir={textDir(product?.subtitle ?? "")} className="text-sm text-muted-foreground">
+                  {product?.subtitle}
+                </p>
               </div>
               {available ? (
                 <a

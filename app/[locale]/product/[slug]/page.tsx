@@ -9,6 +9,7 @@ import { ShareProduct } from "@/components/share-product";
 import { isBundle, products } from "@/data/products";
 import { site } from "@/data/site";
 import { pageCountFor, relatedProducts, samplePageCount } from "@/lib/catalog";
+import { textDir } from "@/lib/i18n/bidi";
 import { localePath } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { localizeCategory, localizeProduct, localizedProduct, requireLocale } from "@/lib/i18n/content";
@@ -65,15 +66,21 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           {t.product.shop}
         </Link>
         <span aria-hidden> / </span>
-        <span className="text-foreground">{product.title}</span>
+        <span dir={textDir(product.title)} className="text-foreground">
+          {product.title}
+        </span>
       </nav>
 
       <div className="mt-6 grid min-w-0 gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
         <ProductGallery product={product} />
         <div className="min-w-0">
           <p className="text-xs tracking-[0.16em] text-copper uppercase sm:tracking-[0.18em]">{category?.name}</p>
-          <h1 className="mt-2 font-serif text-4xl md:text-5xl">{product.title}</h1>
-          <p className="mt-3 text-lg text-muted-foreground">{product.subtitle}</p>
+          <h1 dir={textDir(product.title)} className="mt-2 font-serif text-4xl md:text-5xl">
+            {product.title}
+          </h1>
+          <p dir={textDir(product.subtitle)} className="mt-3 text-lg text-muted-foreground">
+            {product.subtitle}
+          </p>
           <Price price={product.price} compareAt={product.compareAtPrice} size="lg" className="mt-5" />
           <p className="mt-2 text-sm text-muted-foreground">{t.product.meta(pages)}</p>
           {locale === "ar" ? (
@@ -99,7 +106,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
               {t.product.salesFinal}
             </Link>
             . {t.product.emailLead}{" "}
-            <a className="underline underline-offset-4" href={`mailto:${site.email}`}>
+            <a dir="ltr" className="underline underline-offset-4" href={`mailto:${site.email}`}>
               {site.email}
             </a>{" "}
             {t.product.resend}

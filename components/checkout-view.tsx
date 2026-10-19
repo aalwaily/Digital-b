@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { getProduct } from "@/data/products";
 import { overlapPairs, quote, CatalogError } from "@/lib/catalog";
+import { isolateEmbeds, textDir } from "@/lib/i18n/bidi";
 import { localizedProduct } from "@/lib/i18n/content";
 import { translateMessage } from "@/lib/i18n/messages";
 import { formatMoney, formatSarAmount } from "@/lib/money";
@@ -273,7 +274,7 @@ export function CheckoutView({
               <span className="flex flex-col items-start">
                 <span>{pending ? t.checkout.working : t.checkout.moyasar}</span>
                 <span lang="ar" dir="rtl" className="text-xs font-normal opacity-80">
-                  مدى · بطاقة · Apple Pay · STC Pay
+                  {isolateEmbeds(t.checkout.moyasarAr)}
                 </span>
               </span>
             </Button>
@@ -286,10 +287,11 @@ export function CheckoutView({
         <ul className="mt-4 space-y-3 text-sm">
           {summary.lines.map((line) => {
             const product = getProduct(line.slug);
+            const title = localizedProduct(line.slug, locale)?.title ?? line.title;
             return (
               <li key={line.slug} className="flex items-start justify-between gap-3">
                 <span>
-                  {localizedProduct(line.slug, locale)?.title ?? line.title}
+                  <span dir={textDir(title)}>{title}</span>
                   {product?.kind === "bundle" ? (
                     <span className="mt-1 block text-xs text-muted-foreground">
                       {t.checkout.includes(product.includes.length)}
@@ -304,9 +306,9 @@ export function CheckoutView({
         <div className="mt-4 flex justify-between border-t pt-3 font-medium">
           <span>{t.checkout.total}</span>
           <span className="price text-end">
-            {formatMoney(summary.subtotal)}
+            <span dir="ltr">{formatMoney(summary.subtotal)}</span>
             <span className="mt-1 block text-xs font-normal text-muted-foreground">
-              {t.price.approx} {formatSarAmount(summary.subtotal)} {t.price.sar}
+              {t.price.approx} <span dir="ltr">{formatSarAmount(summary.subtotal)}</span> {t.price.sar}
             </span>
           </span>
         </div>

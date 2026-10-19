@@ -31,8 +31,14 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b bg-background/85 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-1 px-3 sm:gap-3 sm:px-5">
-        <Link href={href("/")} className="me-1 inline-flex h-11 min-w-0 items-center truncate font-serif text-lg tracking-tight sm:text-xl">
-          Vellum <span className="text-copper">Press</span>
+        <Link
+          href={href("/")}
+          dir="ltr"
+          className="me-1 inline-flex h-11 min-w-0 items-center truncate font-serif text-lg tracking-tight sm:text-xl"
+        >
+          <span>
+            Vellum <span className="text-copper">Press</span>
+          </span>
         </Link>
         <nav className="hidden items-center gap-6 text-sm md:flex" aria-label={t.navPrimary}>
           {items.map((item) => (
@@ -76,7 +82,9 @@ export function SiteHeader() {
             </SheetTrigger>
             <SheetContent side={locale === "ar" ? "right" : "left"} className="w-[min(100%,20rem)]">
               <SheetHeader>
-                <SheetTitle className="font-serif text-xl">Vellum Press</SheetTitle>
+                <SheetTitle className="font-serif text-xl">
+                  <bdi dir="ltr">Vellum Press</bdi>
+                </SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col gap-1 px-4" aria-label={t.navMobile}>
                 {items.map((item) => (

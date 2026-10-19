@@ -27,7 +27,9 @@ export function renderOgImage({
           justifyContent: "space-between",
         }}
       >
-        <div style={{ display: "flex", letterSpacing: 6, fontSize: 22, color: "#E4B15A" }}>{eyebrow}</div>
+        <div style={{ display: "flex", direction: "ltr", unicodeBidi: "isolate", letterSpacing: 6, fontSize: 22, color: "#E4B15A" }}>
+          {eyebrow}
+        </div>
         <div style={{ display: "flex", fontSize: titleSize, lineHeight: 1.05, maxWidth: 980 }}>{title}</div>
         <div style={{ display: "flex", fontSize: 28, opacity: 0.9 }}>{deck}</div>
       </div>

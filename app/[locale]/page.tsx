@@ -7,6 +7,7 @@ import { ProductCard } from "@/components/product-card";
 import { LinkButton } from "@/components/link-button";
 import { products } from "@/data/products";
 import { pageCountFor } from "@/lib/catalog";
+import { textDir } from "@/lib/i18n/bidi";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { localePath } from "@/lib/i18n/config";
 import { localizeFaqs, localizedCategories, localizedPosts, localizedProduct, requireLocale } from "@/lib/i18n/content";
@@ -135,7 +136,9 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
           </Link>
           <div className="min-w-0">
             <p className="text-xs tracking-[0.18em] text-copper uppercase">{t.home.bundleEyebrow(savings)}</p>
-            <h2 className="mt-2 font-serif text-4xl">{bundle.title}</h2>
+            <h2 dir={textDir(bundle.title)} className="mt-2 font-serif text-4xl">
+              {bundle.title}
+            </h2>
             <p className="mt-4 text-muted-foreground">{bundle.description[0]}</p>
             <Price price={bundle.price} compareAt={bundle.compareAtPrice} size="lg" className="mt-5" />
             <p className="mt-2 text-sm text-muted-foreground">{t.home.pagesAcross(pageCountFor(bundle))}</p>
@@ -199,7 +202,9 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
           {localizedPosts(locale).slice(0, 3).map((post) => (
             <Link key={post.slug} href={localePath(locale, `/blog/${post.slug}`)} className="min-w-0 rounded-2xl border bg-card p-5 hover:border-foreground/30">
               <p className="text-xs tracking-[0.16em] text-copper uppercase">{post.category}</p>
-              <h3 className="mt-2 font-serif text-2xl">{post.title}</h3>
+              <h3 dir={textDir(post.title)} className="mt-2 font-serif text-2xl">
+                {post.title}
+              </h3>
               <p className="mt-2 text-sm text-muted-foreground">{post.description}</p>
             </Link>
           ))}

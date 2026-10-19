@@ -40,7 +40,9 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
       <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
         <div>
           <dt className="text-muted-foreground">{t.about.name}</dt>
-          <dd>{site.legalName}</dd>
+          <dd>
+            <bdi dir="ltr">{site.legalName}</bdi>
+          </dd>
         </div>
         <div>
           <dt className="text-muted-foreground">{t.about.location}</dt>
@@ -49,7 +51,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
         <div>
           <dt className="text-muted-foreground">{t.about.email}</dt>
           <dd>
-            <a className="inline-flex min-h-11 items-center underline underline-offset-4" href={`mailto:${site.email}`}>
+            <a dir="ltr" className="inline-flex min-h-11 items-center underline underline-offset-4" href={`mailto:${site.email}`}>
               {site.email}
             </a>
           </dd>
@@ -57,7 +59,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
         <div>
           <dt className="text-muted-foreground">{t.about.support}</dt>
           <dd>
-            <a className="inline-flex min-h-11 items-center underline underline-offset-4" href={`mailto:${site.supportEmail}`}>
+            <a dir="ltr" className="inline-flex min-h-11 items-center underline underline-offset-4" href={`mailto:${site.supportEmail}`}>
               {site.supportEmail}
             </a>
           </dd>

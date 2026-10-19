@@ -5,8 +5,10 @@ import { categories, products } from "@/data/products";
 import sitemap from "@/app/sitemap";
 import { arCategories, arProducts } from "@/lib/i18n/ar-catalog";
 import { arFaqs, arLegal, arPosts } from "@/lib/i18n/ar-pages";
+import { isolateEmbeds, stripBidiIsolates } from "@/lib/i18n/bidi";
 import { negotiateLocale, localeFromAcceptLanguage, localePath } from "@/lib/i18n/config";
-import { dictionary } from "@/lib/i18n/dictionary";
+import { localizeProduct } from "@/lib/i18n/content";
+import { dictionary, getDictionary } from "@/lib/i18n/dictionary";
 import { approximateSar, USD_TO_SAR_PEG } from "@/lib/money";
 import { pageMetadata } from "@/lib/page-meta";
 import { productSchema } from "@/lib/schema";
@@ -128,6 +130,26 @@ describe("localized SEO", () => {
     expect(schema.url).toBe(`https://example.com/ar/product/${products[0].slug}`);
     expect(schema.name).toBe(arProducts[products[0].slug].title);
     expect(schema.inLanguage).toBe("ar");
+  });
+
+  it("isolates Latin brands, prices, titles, emails, and URLs inside Arabic", () => {
+    const lede = getDictionary("ar").home.lede;
+    expect(lede).toContain("\u2066Vellum Press\u2069");
+    expect(getDictionary("en").home.lede).not.toContain("\u2066");
+    expect(isolateEmbeds("12-Week Reset")).toBe("\u206612-Week Reset\u2069");
+    expect(isolateEmbeds("باقة · وفّر 21$")).toContain("\u206621$\u2069");
+    expect(isolateEmbeds("راسل glarz.com@gmail.com من")).toContain("\u2066glarz.com@gmail.com\u2069");
+    expect(isolateEmbeds("على zatca.gov.sa اليوم")).toContain("\u2066zatca.gov.sa\u2069");
+    expect(isolateEmbeds("ملف PDF")).toBe("ملف PDF");
+    expect(isolateEmbeds("مدى · بطاقة · Apple Pay · STC Pay")).toContain("\u2066Apple Pay · STC Pay\u2069");
+    expect(isolateEmbeds(lede)).toBe(lede);
+    const guide = products.find((product) => product.slug === "saudi-freelancer-starter-kit");
+    expect(guide).toBeTruthy();
+    const localized = localizeProduct(guide!, "ar");
+    const answer = localized.faqs.find((faq) => faq.answer.includes("zatca"))?.answer ?? "";
+    expect(answer).toContain("\u2066zatca.gov.sa.\u2069");
+    expect(stripBidiIsolates(answer)).toBe(arProducts[guide!.slug].faqs.find((faq) => faq.answer.includes("zatca"))?.answer);
+    expect(productSchema(guide!, "https://example.com", "ar").name).not.toContain("\u2066");
   });
 
   it("builds locale paths without doubling a prefix", () => {

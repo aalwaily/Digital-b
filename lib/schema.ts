@@ -2,6 +2,7 @@ import type { Post } from "@/data/blog";
 import type { Faq, Product } from "@/data/products";
 import { site } from "@/data/site";
 import { pageCountFor } from "@/lib/catalog";
+import { stripBidiIsolates } from "@/lib/i18n/bidi";
 import { localizeCategory, localizeProduct } from "@/lib/i18n/content";
 import { localePath, type Locale } from "@/lib/i18n/config";
 
@@ -16,10 +17,10 @@ export function productSchema(product: Product, siteUrl: string, locale: Locale 
   return {
     "@context": "https://schema.org",
     "@type": "Product",
-    name: localized.title,
-    description: localized.shortDescription,
+    name: stripBidiIsolates(localized.title),
+    description: stripBidiIsolates(localized.shortDescription),
     sku: product.slug,
-    category: category?.name,
+    category: category ? stripBidiIsolates(category.name) : undefined,
     brand: { "@type": "Brand", name: site.name },
     image: [`${siteUrl}${path}/opengraph-image`],
     url: `${siteUrl}${path}`,
@@ -51,8 +52,8 @@ export function faqSchema(faqs: Faq[]) {
     "@type": "FAQPage",
     mainEntity: faqs.map((faq) => ({
       "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: { "@type": "Answer", text: faq.answer },
+      name: stripBidiIsolates(faq.question),
+      acceptedAnswer: { "@type": "Answer", text: stripBidiIsolates(faq.answer) },
     })),
   };
 }
@@ -68,7 +69,7 @@ export function breadcrumbSchema(siteUrl: string, product: Product, locale: Loca
       {
         "@type": "ListItem",
         position: 3,
-        name: localized.title,
+        name: stripBidiIsolates(localized.title),
         item: `${siteUrl}${localePath(locale, `/product/${product.slug}`)}`,
       },
     ],
@@ -96,8 +97,8 @@ export function articleSchema(post: Post, siteUrl: string, locale: Locale = "en"
   return {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: post.title,
-    description: post.description,
+    headline: stripBidiIsolates(post.title),
+    description: stripBidiIsolates(post.description),
     inLanguage: locale,
     datePublished: post.date,
     author: { "@type": "Organization", name: site.legalName, url: siteUrl },

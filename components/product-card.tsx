@@ -7,6 +7,7 @@ import { PurchaseActions } from "@/components/purchase-actions";
 import { Badge } from "@/components/ui/badge";
 import type { Product } from "@/data/products";
 import { pageCountFor } from "@/lib/catalog";
+import { textDir } from "@/lib/i18n/bidi";
 import { localizeCategory } from "@/lib/i18n/content";
 import Link from "next/link";
 
@@ -26,7 +27,7 @@ export function ProductCard({ product }: { product: Product }) {
       </Link>
       <div className="mt-4 flex min-w-0 flex-1 flex-col">
         <p className="text-xs tracking-[0.16em] text-copper uppercase">{category?.name}</p>
-        <h3 className="mt-1 font-serif text-2xl leading-tight">
+        <h3 dir={textDir(product.title)} className="mt-1 font-serif text-2xl leading-tight">
           <Link href={href(`/product/${product.slug}`)} className="hover:underline">
             {product.title}
           </Link>

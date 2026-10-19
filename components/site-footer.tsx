@@ -15,10 +15,12 @@ export function SiteFooter() {
     <footer className="mt-20 border-t">
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 sm:grid-cols-2 lg:grid-cols-12">
         <div className="min-w-0 sm:col-span-2 lg:col-span-4">
-          <p className="font-serif text-2xl">Vellum Press</p>
+          <p className="font-serif text-2xl">
+            <bdi dir="ltr">Vellum Press</bdi>
+          </p>
           <p className="mt-3 max-w-sm text-sm leading-relaxed text-muted-foreground">{t.home.metaDescription}</p>
           <p className="mt-4 text-sm break-all">
-            <a className="underline underline-offset-4" href={`mailto:${site.email}`}>
+            <a dir="ltr" className="underline underline-offset-4" href={`mailto:${site.email}`}>
               {site.email}
             </a>
             <span className="text-muted-foreground"> · {locale === "ar" ? t.about.locationValue : site.location}</span>
