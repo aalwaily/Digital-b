@@ -2,6 +2,7 @@ import { CheckoutView } from "@/components/checkout-view";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { requireLocale } from "@/lib/i18n/content";
 import { tryUsdToSarRate } from "@/lib/moyasar";
+import { paymentProvider } from "@/lib/checkout-provider";
 import { isMoyasarEnabled, isPayPalConfigured, isStripeEnabled } from "@/lib/payments";
 import type { Metadata } from "next";
 import { Suspense } from "react";
@@ -41,6 +42,7 @@ export default async function CheckoutPage({ params }: { params: Promise<{ local
             stripeEnabled={stripeEnabled}
             paypalEnabled={paypalEnabled}
             moyasarEnabled={moyasarEnabled}
+            halaEnabled={paymentProvider() === "hala"}
             usdToSarRate={tryUsdToSarRate()}
           />
         </Suspense>

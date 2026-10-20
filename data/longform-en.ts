@@ -8,10 +8,10 @@ export const englishLongform: Post[] = [
     slug: "freelance-budget-template-irregular-income",
     title: "Freelance Budget Template for Variable Pay",
     description:
-      "A freelance budget template for irregular income: plan from a low month, park surplus, and track invoices. PDF download, $15.",
+      "A freelance budget template for irregular income: plan from a low month, park surplus, and track invoices. PDF download, $7.50.",
     seoTitle: "Freelance Budget Template for Variable Pay",
     seoDescription:
-      "A freelance budget template for irregular income: plan from a low month, park surplus, and track invoices. PDF download, $15.",
+      "A freelance budget template for irregular income: plan from a low month, park surplus, and track invoices. PDF download, $7.50.",
     targetKeyword: "freelance budget template for irregular income",
     date: "2026-10-02",
     readingMinutes: 8,
@@ -93,13 +93,13 @@ export const englishLongform: Post[] = [
       },
       {
         type: "p",
-        text: "The Quiet Budget is the companion if you want the one-evening snapshot without the invoice pages. The Irregular-Income Budget + Invoice Sheets PDF is the template this article describes: a six-month log, a bill calendar, sinking funds, a debt order, a blank invoice, and a payment tracker. There is no spreadsheet file. You print the pages or fill the PDF. It is $15, charged in US dollars at PayPal checkout. All sales are final.",
+        text: "The Quiet Budget is the companion if you want the one-evening snapshot without the invoice pages. The Irregular-Income Budget + Invoice Sheets PDF is the template this article describes: a six-month log, a bill calendar, sinking funds, a debt order, a blank invoice, and a payment tracker. There is no spreadsheet file. You print the pages or fill the PDF. It is $7.50, charged in US dollars at PayPal checkout. All sales are final.",
       },
       {
         type: "links",
         items: [
-          { href: "/product/irregular-income-budget", label: "Freelance budget template PDF, $15" },
-          { href: "/product/the-quiet-budget", label: "Monthly budget planner PDF, $22" },
+          { href: "/product/irregular-income-budget", label: "Freelance budget template PDF, $7.50" },
+          { href: "/product/the-quiet-budget", label: "Monthly budget planner PDF, $11" },
           { href: "/blog/monthly-budget-planner-pdf", label: "How to use a monthly budget planner PDF" },
           { href: "/ar/blog/jadwal-mizaniya-shahriya", label: "جدول ميزانية شهرية (Arabic)" },
         ],
@@ -110,10 +110,10 @@ export const englishLongform: Post[] = [
     slug: "ats-cv-template-saudi-jobs",
     title: "ATS CV Template for Saudi Jobs PDF",
     description:
-      "An ATS CV template for Saudi and Gulf job posts: one column, plain headings, and a PDF guide for $12. No job promise.",
+      "An ATS CV template for Saudi and Gulf job posts: one column, plain headings, and a PDF guide for $6. No job promise.",
     seoTitle: "ATS CV Template for Saudi Jobs PDF",
     seoDescription:
-      "An ATS CV template for Saudi and Gulf job posts: one column, plain headings, and a PDF guide for $12. No job promise.",
+      "An ATS CV template for Saudi and Gulf job posts: one column, plain headings, and a PDF guide for $6. No job promise.",
     targetKeyword: "ATS CV template for Saudi jobs",
     date: "2026-10-04",
     readingMinutes: 8,
@@ -197,7 +197,7 @@ export const englishLongform: Post[] = [
       { type: "h2", text: "What the PDF is" },
       {
         type: "p",
-        text: "The Saudi & Gulf Job-Search and ATS CV Kit is a PDF guide, not a locked Word theme and not a guarantee that every portal parses every file the same way. It shows a single-column structure, a cover-letter page, LinkedIn headline and About prompts, an achievement worksheet that does not ask you to invent a percentage, interview prompts, and an application tracker. It is $12, paid in US dollars through PayPal. All sales are final. The file is in English.",
+        text: "The Saudi & Gulf Job-Search and ATS CV Kit is a PDF guide, not a locked Word theme and not a guarantee that every portal parses every file the same way. It shows a single-column structure, a cover-letter page, LinkedIn headline and About prompts, an achievement worksheet that does not ask you to invent a percentage, interview prompts, and an application tracker. It is $6, paid in US dollars through PayPal. All sales are final. The file is in English.",
       },
       {
         type: "p",
@@ -206,10 +206,10 @@ export const englishLongform: Post[] = [
       {
         type: "links",
         items: [
-          { href: "/product/gulf-ats-cv-kit", label: "ATS CV template PDF, $12" },
+          { href: "/product/gulf-ats-cv-kit", label: "ATS CV template PDF, $6" },
           { href: "/ar/blog/qalb-sira-ats", label: "قالب سيرة ذاتية ATS (Arabic)" },
           { href: "/ar/product/gulf-ats-cv-kit", label: "Arabic page for this PDF" },
-          { href: "/product/gulf-work-bundle", label: "Gulf work PDF bundle, $36" },
+          { href: "/product/gulf-work-bundle", label: "Gulf work PDF bundle, $18" },
         ],
       },
     ],
@@ -218,10 +218,10 @@ export const englishLongform: Post[] = [
     slug: "freelance-document-saudi-arabia",
     title: "How to Get a Saudi Freelance Document",
     description:
-      "How to get a freelance document in Saudi Arabia on freelance.sa, from the HRSD service page. English PDF guide, $17. Not legal advice.",
+      "How to get a freelance document in Saudi Arabia on freelance.sa, from the HRSD service page. English PDF guide, $8.50. Not legal advice.",
     seoTitle: "How to Get a Saudi Freelance Document",
     seoDescription:
-      "How to get a freelance document in Saudi Arabia via freelance.sa, citing the HRSD pages. English PDF kit, $17. Not legal advice.",
+      "How to get a freelance document in Saudi Arabia via freelance.sa, citing the HRSD pages. English PDF kit, $8.50. Not legal advice.",
     targetKeyword: "how to get a freelance document in Saudi Arabia",
     date: "2026-10-06",
     readingMinutes: 9,
@@ -296,7 +296,7 @@ export const englishLongform: Post[] = [
       { type: "h2", text: "The English PDF, and what it will not do" },
       {
         type: "p",
-        text: "The Saudi Freelancer Starter Kit is an English PDF. It does not issue the document and it does not log into freelance.sa for you. It is a checklist beside the official screens, a SAR pricing worksheet with a floor, a target, and a walk-away number, a thirty-day plan that assumes you still have other obligations, outreach notes you edit, a proposal page, and a printable invoice with a VAT line you use only if you are registered. It tells you to confirm VAT, zakat, and e-invoicing with an accountant and on zatca.gov.sa. It is $17, charged in US dollars. All sales are final. The Arabic page for the same file says clearly that the guide is in English.",
+        text: "The Saudi Freelancer Starter Kit is an English PDF. It does not issue the document and it does not log into freelance.sa for you. It is a checklist beside the official screens, a SAR pricing worksheet with a floor, a target, and a walk-away number, a thirty-day plan that assumes you still have other obligations, outreach notes you edit, a proposal page, and a printable invoice with a VAT line you use only if you are registered. It tells you to confirm VAT, zakat, and e-invoicing with an accountant and on zatca.gov.sa. It is $8.50, charged in US dollars. All sales are final. The Arabic page for the same file says clearly that the guide is in English.",
       },
       {
         type: "links",
@@ -314,7 +314,7 @@ export const englishLongform: Post[] = [
             href: "https://www.hrsd.gov.sa/knowledge-centre/decisions-and-regulations/ministerial-decisions/808083",
             label: "HRSD page for ministerial decision 99439",
           },
-          { href: "/product/saudi-freelancer-starter-kit", label: "Saudi freelance kit PDF, $17" },
+          { href: "/product/saudi-freelancer-starter-kit", label: "Saudi freelance kit PDF, $8.50" },
           { href: "/ar/blog/wathiqat-al-amal-al-hur", label: "وثيقة العمل الحر (Arabic article)" },
         ],
       },
@@ -324,10 +324,10 @@ export const englishLongform: Post[] = [
     slug: "fat-loss-meal-plan-pdf",
     title: "Fat Loss Meal Plan PDF, No Crash Diet",
     description:
-      "A fat loss meal plan PDF built from plates and protein, not a crash diet. Download The 12-Week Reset for $29. Not medical advice.",
+      "A fat loss meal plan PDF built from plates and protein, not a crash diet. Download The 12-Week Reset for $14.50. Not medical advice.",
     seoTitle: "Fat Loss Meal Plan PDF, No Crash Diet",
     seoDescription:
-      "A fat loss meal plan PDF built from plates and protein, not a crash diet. The 12-Week Reset download is $29. Not medical advice.",
+      "A fat loss meal plan PDF built from plates and protein, not a crash diet. The 12-Week Reset download is $14.50. Not medical advice.",
     targetKeyword: "fat loss meal plan pdf",
     date: "2026-10-08",
     readingMinutes: 8,
@@ -398,7 +398,7 @@ export const englishLongform: Post[] = [
       },
       {
         type: "p",
-        text: "If you want recipes rather than plate templates, use Weeknight Table beside this plan. If you want the sessions written as a progression, use Floor & Form. The health bundle is the three PDFs together for $59, which is less than buying them separately. Buying them together still does not turn the set into medical care.",
+        text: "If you want recipes rather than plate templates, use Weeknight Table beside this plan. If you want the sessions written as a progression, use Floor & Form. The health bundle is the three PDFs together for $29.50, which is less than buying them separately. Buying them together still does not turn the set into medical care.",
       },
       { type: "h2", text: "Who should not use a deficit PDF" },
       {
@@ -407,14 +407,14 @@ export const englishLongform: Post[] = [
       },
       {
         type: "p",
-        text: "The 12-Week Reset is $29, a one-time PDF, PayPal checkout in US dollars. All sales are final. It includes the schedule, plate templates, the no-gym sessions, travel and social-meal notes, and a tracker. It is education. It is not medical advice.",
+        text: "The 12-Week Reset is $14.50, a one-time PDF, PayPal checkout in US dollars. All sales are final. It includes the schedule, plate templates, the no-gym sessions, travel and social-meal notes, and a tracker. It is education. It is not medical advice.",
       },
       {
         type: "links",
         items: [
-          { href: "/product/12-week-reset", label: "12-week fat loss plan PDF, $29" },
-          { href: "/product/weeknight-table", label: "Meal prep recipes PDF, $24" },
-          { href: "/product/health-fitness-bundle", label: "Health and fitness PDF bundle, $59" },
+          { href: "/product/12-week-reset", label: "12-week fat loss plan PDF, $14.50" },
+          { href: "/product/weeknight-table", label: "Meal prep recipes PDF, $12" },
+          { href: "/product/health-fitness-bundle", label: "Health and fitness PDF bundle, $29.50" },
           { href: "/ar/blog/khitat-nuzul-al-wazn", label: "خطة نزول الوزن (Arabic)" },
         ],
       },
@@ -424,10 +424,10 @@ export const englishLongform: Post[] = [
     slug: "monthly-budget-planner-pdf",
     title: "Monthly Budget Planner PDF, One Sitting",
     description:
-      "Use a monthly budget planner PDF in one sitting: four piles, payday transfers, and a debt order. The Quiet Budget is $22.",
+      "Use a monthly budget planner PDF in one sitting: four piles, payday transfers, and a debt order. The Quiet Budget is $11.",
     seoTitle: "Monthly Budget Planner PDF, One Sitting",
     seoDescription:
-      "Use a monthly budget planner PDF in one sitting: four piles, payday transfers, and a debt order. The Quiet Budget PDF is $22.",
+      "Use a monthly budget planner PDF in one sitting: four piles, payday transfers, and a debt order. The Quiet Budget PDF is $11.",
     targetKeyword: "monthly budget planner pdf",
     date: "2026-10-10",
     readingMinutes: 8,
@@ -506,16 +506,16 @@ export const englishLongform: Post[] = [
       { type: "h2", text: "The download" },
       {
         type: "p",
-        text: "The Quiet Budget is the monthly budget planner PDF: a one-evening snapshot, a pay-yourself-first plan, avalanche and snowball tables, sinking-fund worksheets, and a one-hour review. It is $22, one-time, PayPal, US dollars. All sales are final. It is not an investment product. The Arabic article walks through the same evening for readers who want Arabic first. The file you download is English.",
+        text: "The Quiet Budget is the monthly budget planner PDF: a one-evening snapshot, a pay-yourself-first plan, avalanche and snowball tables, sinking-fund worksheets, and a one-hour review. It is $11, one-time, PayPal, US dollars. All sales are final. It is not an investment product. The Arabic article walks through the same evening for readers who want Arabic first. The file you download is English.",
       },
       {
         type: "links",
         items: [
-          { href: "/product/the-quiet-budget", label: "Monthly budget planner PDF, $22" },
-          { href: "/product/irregular-income-budget", label: "Freelance budget template PDF, $15" },
+          { href: "/product/the-quiet-budget", label: "Monthly budget planner PDF, $11" },
+          { href: "/product/irregular-income-budget", label: "Freelance budget template PDF, $7.50" },
           { href: "/blog/freelance-budget-template-irregular-income", label: "Budget template for irregular income" },
           { href: "/ar/blog/jadwal-mizaniya-shahriya", label: "جدول ميزانية شهرية (Arabic)" },
-          { href: "/product/work-money-bundle", label: "Work and money PDF bundle, $58" },
+          { href: "/product/work-money-bundle", label: "Work and money PDF bundle, $29" },
         ],
       },
     ],

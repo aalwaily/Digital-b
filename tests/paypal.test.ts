@@ -77,9 +77,9 @@ describe("PayPal catalog pricing", () => {
   it("charges a bundle at the bundle price and keeps the included files for delivery", () => {
     const priced = quote(["health-fitness-bundle"]);
     const retail = priced.files.reduce((sum, slug) => sum + (getProduct(slug)?.price ?? 0), 0);
-    expect(priced.subtotal).toBe(59);
-    expect(priced.savings).toBe(21);
-    expect(retail).toBe(80);
+    expect(priced.subtotal).toBe(29.5);
+    expect(priced.savings).toBe(10.5);
+    expect(retail).toBe(40);
     expect(priced.files).toEqual(["12-week-reset", "weeknight-table", "floor-and-form"]);
 
     const body = buildPayPalOrderBody({
@@ -92,15 +92,15 @@ describe("PayPal catalog pricing", () => {
     });
     const unit = body.purchase_units[0];
     expect(unit?.amount.currency_code).toBe("USD");
-    expect(unit?.amount.value).toBe("59.00");
-    expect(unit?.amount.breakdown.item_total.value).toBe("59.00");
+    expect(unit?.amount.value).toBe("29.50");
+    expect(unit?.amount.breakdown.item_total.value).toBe("29.50");
     expect(unit?.items).toEqual([
       {
         name: "Health & Fitness Bundle",
         sku: "health-fitness-bundle",
         quantity: "1",
         category: "DIGITAL_GOODS",
-        unit_amount: { currency_code: "USD", value: "59.00" },
+        unit_amount: { currency_code: "USD", value: "29.50" },
       },
     ]);
     expect(unit?.amount.value).not.toBe(formatUsdCents(amountToCents(retail)));
@@ -109,7 +109,7 @@ describe("PayPal catalog pricing", () => {
 
   it("sums a bundle and a guide without expanding the bundle to retail", () => {
     const priced = quote(["health-fitness-bundle", "the-quiet-budget"]);
-    expect(priced.subtotal).toBe(81);
+    expect(priced.subtotal).toBe(40.5);
     const body = buildPayPalOrderBody({
       lines: priced.lines,
       subtotal: priced.subtotal,
@@ -118,8 +118,8 @@ describe("PayPal catalog pricing", () => {
       cancelUrl: "https://guides.example.com/cart?canceled=1",
       brandName: "Vellum Press",
     });
-    expect(body.purchase_units[0]?.items.map((item) => item.unit_amount.value)).toEqual(["59.00", "22.00"]);
-    expect(body.purchase_units[0]?.amount.value).toBe("81.00");
+    expect(body.purchase_units[0]?.items.map((item) => item.unit_amount.value)).toEqual(["29.50", "11.00"]);
+    expect(body.purchase_units[0]?.amount.value).toBe("40.50");
   });
 
   it("refuses an order body whose subtotal does not match the line prices", () => {

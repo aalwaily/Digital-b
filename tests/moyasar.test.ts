@@ -54,7 +54,7 @@ function paidPayment(overrides: Partial<MoyasarPayment> & { callback_url?: strin
   return {
     id: PAYMENT_ID,
     status: "paid",
-    amount: usdToHalalas(18),
+    amount: usdToHalalas(quote(["steady-mind"]).subtotal),
     currency: "SAR",
     refunded: 0,
     callback_url: overrides.callback_url ?? moyasarCallbackUrl(ORIGIN, state),
@@ -75,11 +75,11 @@ describe("USD to SAR conversion", () => {
   it("prices a bundle from its catalog price, not the sum of the guides", () => {
     const bundle = quote(["health-fitness-bundle"]);
     const parts = quote(["12-week-reset", "weeknight-table", "floor-and-form"]);
-    expect(bundle.subtotal).toBe(59);
-    expect(parts.subtotal).toBe(80);
-    expect(usdToHalalas(bundle.subtotal)).toBe(22125);
-    expect(usdToHalalas(parts.subtotal)).toBe(30000);
-    expect(formatSarHalalas(22125)).toBe("SAR 221.25");
+    expect(bundle.subtotal).toBe(29.5);
+    expect(parts.subtotal).toBe(40);
+    expect(usdToHalalas(bundle.subtotal)).toBe(11063);
+    expect(usdToHalalas(parts.subtotal)).toBe(15000);
+    expect(formatSarHalalas(11063)).toBe("SAR 110.63");
   });
 
   it("rounds half a halala up and honors an explicit rate", () => {
@@ -102,8 +102,9 @@ describe("Moyasar payment verification", () => {
   it("accepts a paid SAR payment that matches the signed cart", () => {
     const state = signMoyasarCheckoutState({ email: "reader@example.com", slugs: ["steady-mind"] }, SECRET);
     const payment = paidPayment({ callback_url: moyasarCallbackUrl(ORIGIN, state) });
+    const halalas = usdToHalalas(quote(["steady-mind"]).subtotal);
     expect(
-      verifyMoyasarPayment(payment, { amount: 6750, currency: "SAR", state, origin: ORIGIN }),
+      verifyMoyasarPayment(payment, { amount: halalas, currency: "SAR", state, origin: ORIGIN }),
     ).toEqual({ ok: true });
     const assessed = assessMoyasarPayment({
       paymentId: PAYMENT_ID,
@@ -115,7 +116,7 @@ describe("Moyasar payment verification", () => {
     });
     expect(assessed.ok).toBe(true);
     if (assessed.ok) {
-      expect(assessed.halalas).toBe(6750);
+      expect(assessed.halalas).toBe(halalas);
       expect(assessed.priced.files).toEqual(["steady-mind"]);
       expect(assessed.email).toBe("reader@example.com");
     }
@@ -208,9 +209,9 @@ describe("Moyasar payment verification", () => {
       state,
       brandName: "Vellum Press",
     });
-    expect(config.amount).toBe(22125);
+    expect(config.amount).toBe(11063);
     expect(config.currency).toBe("SAR");
-    expect(config.amountLabel).toBe("SAR 221.25");
+    expect(config.amountLabel).toBe("SAR 110.63");
     expect(config.methods).toEqual(["creditcard", "applepay", "stcpay"]);
     expect(config.supportedNetworks).toEqual(["mada", "visa", "mastercard"]);
     expect(config.applePay.validateMerchantUrl).toBe("https://api.moyasar.com/v1/applepay/initiate");
@@ -263,7 +264,7 @@ describe("Moyasar routes", () => {
     );
     expect(response.status).toBe(200);
     const body = (await response.json()) as { amount: number; currency: string; publishableKey: string };
-    expect(body.amount).toBe(6750);
+    expect(body.amount).toBe(usdToHalalas(quote(["steady-mind"]).subtotal));
     expect(body.currency).toBe("SAR");
     expect(body.publishableKey.startsWith("pk_test_")).toBe(true);
     expect(JSON.stringify(body)).not.toContain("sk_test_");

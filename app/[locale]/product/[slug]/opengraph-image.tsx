@@ -1,6 +1,7 @@
 import { getProduct } from "@/data/products";
 import { localizedProduct } from "@/lib/i18n/content";
 import { isLocale } from "@/lib/i18n/config";
+import { formatMoney } from "@/lib/money";
 import { OG_ARABIC_FONT_FAMILY, ogArabicFonts, ogContainsArabic } from "@/lib/og-font";
 import { OgRtlText } from "@/lib/og-rtl";
 import { ImageResponse } from "next/og";
@@ -18,7 +19,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
   const accent = product?.cover.accent ?? "#E4B15A";
   const title = product?.title ?? "Vellum Press";
   const deck = product?.subtitle ?? "Practical PDF guides";
-  const price = product ? `$${product.price}` : "";
+  const price = product ? formatMoney(product.price) : "";
   const download = locale === "ar" ? "تنزيل فوري" : "Instant download";
   const arabic = ogContainsArabic(`${title}\n${deck}\n${download}`);
 

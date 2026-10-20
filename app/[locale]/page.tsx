@@ -141,7 +141,7 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
               {bundle.title}
             </h2>
             <p className="mt-4 text-muted-foreground">{bundle.description[0]}</p>
-            <Price price={bundle.price} compareAt={bundle.compareAtPrice} size="lg" className="mt-5" />
+            <Price price={bundle.price} compareAt={bundle.compareAtPrice} previousPrice={bundle.previousPrice} size="lg" className="mt-5" />
             <p className="mt-2 text-sm text-muted-foreground">{t.home.pagesAcross(pageCountFor(bundle))}</p>
             <LinkButton href={`/product/${bundle.slug}`} className="mt-6 h-11 px-5">
               {t.home.viewBundle}

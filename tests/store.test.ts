@@ -3,6 +3,7 @@ import { reviews } from "@/data/reviews";
 import { testimonials } from "@/data/testimonials";
 import { bundles, getProduct, guides, products } from "@/data/products";
 import { expandFiles, overlapWarnings, quote } from "@/lib/catalog";
+import { cleanSarPrice } from "@/lib/hala";
 import { signDownloadToken, verifyDownloadToken } from "@/lib/download-token";
 import { productSchema } from "@/lib/schema";
 import fs from "node:fs";
@@ -30,10 +31,20 @@ describe("catalog", () => {
     }
   });
 
+  it("charges half the previous USD price and a nearest-riyal SAR price", () => {
+    for (const product of products) {
+      expect(product.previousPrice).toBe(product.price * 2);
+      expect(product.priceSar).toBe(cleanSarPrice(product.price));
+      expect(Number.isInteger(product.priceSar)).toBe(true);
+    }
+    expect(getProduct("gulf-ats-cv-kit")?.priceSar).toBe(23);
+    expect(getProduct("health-fitness-bundle")?.priceSar).toBe(111);
+  });
+
   it("quotes the health bundle with savings and three files", () => {
     const priced = quote(["health-fitness-bundle"]);
-    expect(priced.subtotal).toBe(59);
-    expect(priced.savings).toBe(21);
+    expect(priced.subtotal).toBe(29.5);
+    expect(priced.savings).toBe(10.5);
     expect(priced.files).toEqual(["12-week-reset", "weeknight-table", "floor-and-form"]);
   });
 
