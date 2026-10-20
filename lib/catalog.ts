@@ -32,6 +32,8 @@ export type QuoteLine = {
   slug: string;
   title: string;
   price: number;
+  previousPrice: number | null;
+  priceSar: number;
   compareAtPrice: number | null;
 };
 
@@ -85,6 +87,8 @@ export function quote(slugs: string[]): Quote {
       slug: product.slug,
       title: product.title,
       price: product.price,
+      previousPrice: product.previousPrice ?? null,
+      priceSar: product.priceSar,
       compareAtPrice: product.compareAtPrice ?? null,
     };
   });

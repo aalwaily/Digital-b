@@ -85,7 +85,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           <p dir={textDir(product.subtitle)} className="mt-3 text-lg text-muted-foreground">
             {product.subtitle}
           </p>
-          <Price price={product.price} compareAt={product.compareAtPrice} size="lg" className="mt-5" />
+          <Price price={product.price} compareAt={product.compareAtPrice} previousPrice={product.previousPrice} size="lg" className="mt-5" />
           <p className="mt-2 text-sm text-muted-foreground">{t.product.meta(pages)}</p>
           {locale === "ar" ? (
             <div className="mt-4">

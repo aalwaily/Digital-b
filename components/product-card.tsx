@@ -34,7 +34,7 @@ export function ProductCard({ product }: { product: Product }) {
         </h3>
         <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">{product.shortDescription}</p>
         <div className="mt-3 flex min-w-0 flex-wrap items-center gap-2">
-          <Price price={product.price} compareAt={product.compareAtPrice} />
+          <Price price={product.price} compareAt={product.compareAtPrice} previousPrice={product.previousPrice} />
           {product.compareAtPrice ? <Badge variant="secondary">{t.product.bundleBadge}</Badge> : null}
           <span className="text-xs text-muted-foreground">{t.product.pages(pages)}</span>
         </div>

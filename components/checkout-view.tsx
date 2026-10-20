@@ -23,11 +23,13 @@ export function CheckoutView({
   stripeEnabled,
   paypalEnabled,
   moyasarEnabled = false,
+  halaEnabled = false,
   usdToSarRate = null,
 }: {
   stripeEnabled: boolean;
   paypalEnabled: boolean;
   moyasarEnabled?: boolean;
+  halaEnabled?: boolean;
   usdToSarRate?: string | null;
 }) {
   const params = useSearchParams();
@@ -49,8 +51,8 @@ export function CheckoutView({
   const [status, setStatus] = useState("");
   const [pending, setPending] = useState(false);
   const [moyasarConfig, setMoyasarConfig] = useState<MoyasarFormConfig | null>(null);
-  const providerRef = useRef<"card" | "paypal" | "moyasar">(
-    paypalEnabled ? "paypal" : stripeEnabled ? "card" : moyasarEnabled ? "moyasar" : "card",
+  const providerRef = useRef<"card" | "paypal" | "moyasar" | "hala">(
+    halaEnabled ? "hala" : paypalEnabled ? "paypal" : stripeEnabled ? "card" : moyasarEnabled ? "moyasar" : "card",
   );
 
   let summary: ReturnType<typeof quote> | null = null;
@@ -68,16 +70,30 @@ export function CheckoutView({
     const submitter = (event.nativeEvent as SubmitEvent).submitter;
     const buttonValue = submitter instanceof HTMLButtonElement ? submitter.value : "";
     const choice =
-      buttonValue === "paypal" || buttonValue === "card" || buttonValue === "moyasar" ? buttonValue : providerRef.current;
+      buttonValue === "paypal" || buttonValue === "card" || buttonValue === "moyasar" || buttonValue === "hala"
+        ? buttonValue
+        : providerRef.current;
     const provider =
-      choice === "paypal" && paypalEnabled ? "paypal" : choice === "moyasar" && moyasarEnabled ? "moyasar" : "card";
+      choice === "hala" && halaEnabled
+        ? "hala"
+        : choice === "paypal" && paypalEnabled
+          ? "paypal"
+          : choice === "moyasar" && moyasarEnabled
+            ? "moyasar"
+            : "card";
     setPending(true);
     setError("");
     setStatus("");
     if (provider !== "moyasar") setMoyasarConfig(null);
     try {
       const response = await fetch(
-        provider === "paypal" ? "/api/paypal/checkout" : provider === "moyasar" ? "/api/moyasar/session" : "/api/checkout",
+        provider === "hala"
+          ? "/api/hala/checkout"
+          : provider === "paypal"
+            ? "/api/paypal/checkout"
+            : provider === "moyasar"
+              ? "/api/moyasar/session"
+              : "/api/checkout",
         {
           method: "POST",
           headers: { "content-type": "application/json" },
@@ -245,6 +261,25 @@ export function CheckoutView({
               {pending ? t.checkout.working : stripeEnabled ? t.checkout.stripe : t.checkout.demo}
             </Button>
           ) : null}
+          {halaEnabled ? (
+            <Button
+              type="submit"
+              name="provider"
+              value="hala"
+              disabled={pending}
+              className="wrap-button h-auto w-full px-5 py-2 sm:w-auto"
+              onClick={() => {
+                providerRef.current = "hala";
+              }}
+            >
+              <span className="flex flex-col items-start">
+                <span>{pending ? t.checkout.working : t.checkout.hala}</span>
+                <span lang="ar" dir="rtl" className="text-xs font-normal opacity-80">
+                  {isolateEmbeds(t.checkout.halaAr)}
+                </span>
+              </span>
+            </Button>
+          ) : null}
           {paypalEnabled ? (
             <Button
               type="submit"
@@ -298,7 +333,7 @@ export function CheckoutView({
                     </span>
                   ) : null}
                 </span>
-                <Price price={line.price} compareAt={line.compareAtPrice} />
+                <Price price={line.price} compareAt={line.compareAtPrice} previousPrice={line.previousPrice} />
               </li>
             );
           })}
@@ -329,19 +364,23 @@ export function CheckoutView({
           type="submit"
           form="checkout-form"
           name="provider"
-          value={paypalEnabled ? "paypal" : stripeEnabled ? "card" : moyasarEnabled ? "moyasar" : "card"}
+          value={
+            halaEnabled ? "hala" : paypalEnabled ? "paypal" : stripeEnabled ? "card" : moyasarEnabled ? "moyasar" : "card"
+          }
           disabled={pending}
           className="wrap-button h-auto w-full px-5 py-2"
         >
           {pending
             ? t.checkout.working
-            : paypalEnabled
-              ? t.checkout.paypal
-              : stripeEnabled
-                ? t.checkout.stripe
-                : moyasarEnabled
-                  ? t.checkout.moyasar
-                  : t.checkout.demo}
+            : halaEnabled
+              ? t.checkout.hala
+              : paypalEnabled
+                ? t.checkout.paypal
+                : stripeEnabled
+                  ? t.checkout.stripe
+                  : moyasarEnabled
+                    ? t.checkout.moyasar
+                    : t.checkout.demo}
         </Button>
       </div>
     </div>

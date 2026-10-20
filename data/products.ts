@@ -62,6 +62,10 @@ type Shared = {
   subtitle: string;
   category: CategorySlug;
   price: number;
+  /** Last USD price actually charged, before the 50% reduction. */
+  previousPrice?: number;
+  /** Whole riyals for Hala. New USD price × 3.75, rounded to the nearest riyal. */
+  priceSar: number;
   compareAtPrice?: number;
   shortDescription: string;
   description: string[];
@@ -93,7 +97,9 @@ export const products: Product[] = [
     title: "The 12-Week Reset",
     subtitle: "A steady plan for fat loss without a crash diet",
     category: "health",
-    price: 29,
+    price: 14.5,
+    previousPrice: 29,
+    priceSar: 54,
     shortDescription:
       "Twelve weeks of protein, steps, strength, and weekends that still include your life.",
     description: [
@@ -160,7 +166,9 @@ export const products: Product[] = [
     title: "Weeknight Table",
     subtitle: "Meal prep and healthy recipes for busy weeks",
     category: "health",
-    price: 24,
+    price: 12,
+    previousPrice: 24,
+    priceSar: 45,
     shortDescription:
       "A 90-minute Sunday prep plus recipes that recombine into lunches and dinners.",
     description: [
@@ -224,7 +232,9 @@ export const products: Product[] = [
     title: "Floor & Form",
     subtitle: "A no-equipment workout program",
     category: "fitness",
-    price: 27,
+    price: 13.5,
+    previousPrice: 27,
+    priceSar: 51,
     shortDescription:
       "Three full-body sessions, an eight-week progression, and form cues for a living room.",
     description: [
@@ -288,7 +298,9 @@ export const products: Product[] = [
     title: "The Quiet Budget",
     subtitle: "A personal finance guide to spending, saving, and debt",
     category: "finance",
-    price: 22,
+    price: 11,
+    previousPrice: 22,
+    priceSar: 41,
     shortDescription:
       "One evening to see your money clearly, then a monthly hour that does not rely on shame.",
     description: [
@@ -353,7 +365,9 @@ export const products: Product[] = [
     title: "The Habit Ledger",
     subtitle: "A planner for habits and time",
     category: "productivity",
-    price: 19,
+    price: 9.5,
+    previousPrice: 19,
+    priceSar: 36,
     shortDescription:
       "Keystone habits, time blocks, and a weekly review that fits on one page.",
     description: [
@@ -418,7 +432,9 @@ export const products: Product[] = [
     title: "First Client",
     subtitle: "A freelancing and side-hustle starter guide",
     category: "career",
-    price: 32,
+    price: 16,
+    previousPrice: 32,
+    priceSar: 60,
     shortDescription:
       "Choose an offer, price it, and find the first paying clients without quitting your job.",
     description: [
@@ -483,7 +499,9 @@ export const products: Product[] = [
     title: "The Exam Room Method",
     subtitle: "Study skills and exam preparation",
     category: "learning",
-    price: 21,
+    price: 10.5,
+    previousPrice: 21,
+    priceSar: 39,
     shortDescription:
       "Retrieval practice, spacing, and a weekly plan you can apply to any subject.",
     description: [
@@ -547,7 +565,9 @@ export const products: Product[] = [
     title: "Steady Mind",
     subtitle: "A mindfulness and stress-relief guide",
     category: "mindfulness",
-    price: 18,
+    price: 9,
+    previousPrice: 18,
+    priceSar: 34,
     shortDescription:
       "Ten-minute practices, a stress log, and a four-week plan for steadier days.",
     description: [
@@ -611,7 +631,9 @@ export const products: Product[] = [
     title: "Saudi Freelancer Starter Kit",
     subtitle: "English edition: the freelance document, pricing, proposals, and invoices",
     category: "career",
-    price: 17,
+    price: 8.5,
+    previousPrice: 17,
+    priceSar: 32,
     shortDescription:
       "How to use the official freelance platform, price work in SAR, and send a proposal and an invoice. Not legal advice.",
     description: [
@@ -681,7 +703,9 @@ export const products: Product[] = [
     title: "Irregular-Income Budget + Invoice Sheets",
     subtitle: "A budget for months that are not the same size, plus invoice pages",
     category: "finance",
-    price: 15,
+    price: 7.5,
+    previousPrice: 15,
+    priceSar: 28,
     shortDescription:
       "Plan from a low month, park surplus, track invoices, and review the month on paper. Not financial advice.",
     description: [
@@ -749,7 +773,9 @@ export const products: Product[] = [
     title: "Saudi & Gulf Job-Search and ATS CV Kit",
     subtitle: "A single-column CV, a cover letter, and a LinkedIn draft for Gulf applications",
     category: "career",
-    price: 12,
+    price: 6,
+    previousPrice: 12,
+    priceSar: 23,
     shortDescription:
       "Structure a CV a screener can read, with Gulf notes, a cover letter, and interview prep. No job promises.",
     description: [
@@ -816,8 +842,10 @@ export const products: Product[] = [
     title: "Health & Fitness Bundle",
     subtitle: "Reset, Weeknight Table, and Floor & Form",
     category: "bundles",
-    price: 59,
-    compareAtPrice: 80,
+    price: 29.5,
+    previousPrice: 59,
+    priceSar: 111,
+    compareAtPrice: 40,
     includes: ["12-week-reset", "weeknight-table", "floor-and-form"],
     shortDescription:
       "The weight-loss guide, the meal-prep cookbook, and the no-equipment program, together.",
@@ -849,7 +877,7 @@ export const products: Product[] = [
       accent: "#C4622D",
       motif: "bundle",
       titleLines: ["Health &", "Fitness"],
-      eyebrow: "Bundle · save $21",
+      eyebrow: "Bundle · save $10.50",
       deck: "Three guides, one checkout",
     },
     faqs: [
@@ -876,8 +904,10 @@ export const products: Product[] = [
     title: "Work & Money Bundle",
     subtitle: "Budget, habits, and a first freelance offer",
     category: "bundles",
-    price: 58,
-    compareAtPrice: 73,
+    price: 29,
+    previousPrice: 58,
+    priceSar: 109,
+    compareAtPrice: 36.5,
     includes: ["the-quiet-budget", "habit-ledger", "first-client"],
     shortDescription:
       "A budget, a habit planner, and the side-hustle guide for people building something beside a job.",
@@ -909,7 +939,7 @@ export const products: Product[] = [
       accent: "#D7B48A",
       motif: "bundle",
       titleLines: ["Work &", "Money"],
-      eyebrow: "Bundle · save $15",
+      eyebrow: "Bundle · save $7.50",
       deck: "Budget, habits, clients",
     },
     faqs: [
@@ -926,7 +956,7 @@ export const products: Product[] = [
       {
         question: "How much do I save?",
         answer:
-          "The three guides are $73 together. The bundle is $58.",
+          "The three guides are $36.50 together. The bundle is $29.",
       },
     ],
   },
@@ -936,8 +966,10 @@ export const products: Product[] = [
     title: "Gulf Work Bundle",
     subtitle: "Freelance starter kit, irregular-income sheets, and the Gulf CV kit",
     category: "bundles",
-    price: 36,
-    compareAtPrice: 44,
+    price: 18,
+    previousPrice: 36,
+    priceSar: 68,
+    compareAtPrice: 22,
     includes: ["saudi-freelancer-starter-kit", "irregular-income-budget", "gulf-ats-cv-kit"],
     shortDescription:
       "The Saudi freelance kit, the variable-income budget, and the Gulf CV kit, in one checkout.",
@@ -969,7 +1001,7 @@ export const products: Product[] = [
       accent: "#D7A15A",
       motif: "bundle",
       titleLines: ["Gulf", "Work"],
-      eyebrow: "Bundle · save $8",
+      eyebrow: "Bundle · save $4",
       deck: "Freelance, budget, CV",
     },
     faqs: [
@@ -986,7 +1018,7 @@ export const products: Product[] = [
       {
         question: "How much do I save?",
         answer:
-          "The three guides are $44 together. The bundle is $36.",
+          "The three guides are $22 together. The bundle is $18.",
       },
     ],
   },

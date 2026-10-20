@@ -225,7 +225,7 @@ function paypalOrder(input: { status: string; value: string; currency?: string; 
 describe("Apple Pay order and capture", () => {
   it("prices the order from the catalog and ignores a client amount", async () => {
     const priced = quote(["health-fitness-bundle"]);
-    expect(priced.subtotal).toBe(59);
+    expect(priced.subtotal).toBe(29.5);
     const bodies: Array<{ purchase_units?: Array<{ amount?: { value?: string; currency_code?: string } }>; payment_source?: unknown }> = [];
 
     vi.stubGlobal(
@@ -266,8 +266,8 @@ describe("Apple Pay order and capture", () => {
             expect(payload.token).toBeUndefined();
             expect(bodies[0]?.purchase_units?.[0]?.amount).toEqual({
               currency_code: "USD",
-              value: "59.00",
-              breakdown: { item_total: { currency_code: "USD", value: "59.00" } },
+              value: "29.50",
+              breakdown: { item_total: { currency_code: "USD", value: "29.50" } },
             });
             expect(bodies[0]?.payment_source).toBeUndefined();
           });
@@ -318,7 +318,7 @@ describe("Apple Pay order and capture", () => {
       await withEnv("PAYPAL_CLIENT_SECRET", "client-secret", async () => {
         await withEnv("PAYPAL_ENV", "sandbox", async () => {
           await withEnv("DOWNLOAD_SECRET", SECRET, async () => {
-            install(paypalOrder({ status: "COMPLETED", value: "59.00", customId, captured: true }));
+            install(paypalOrder({ status: "COMPLETED", value: "29.50", customId, captured: true }));
             const paid = await capture();
             const paidBody = (await paid.json()) as { token?: string };
             expect(paid.status).toBe(200);
@@ -329,9 +329,9 @@ describe("Apple Pay order and capture", () => {
             expect(receipt?.files).toEqual(["12-week-reset", "weeknight-table", "floor-and-form"]);
             expect(receipt?.orderId).toBe("5O190127TN364715T");
 
-            install(paypalOrder({ status: "APPROVED", value: "59.00", customId }), paypalOrder({
+            install(paypalOrder({ status: "APPROVED", value: "29.50", customId }), paypalOrder({
               status: "COMPLETED",
-              value: "59.00",
+              value: "29.50",
               customId,
               captured: true,
             }));

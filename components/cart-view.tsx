@@ -74,7 +74,7 @@ export function CartView({ canceled = false }: { canceled?: boolean }) {
                   {t.cartPage.remove}
                 </button>
               </div>
-              <Price price={item.price} compareAt={item.compareAtPrice} />
+              <Price price={item.price} compareAt={item.compareAtPrice} previousPrice={item.previousPrice} />
             </li>
           ))}
         </ul>

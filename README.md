@@ -6,6 +6,8 @@ Customers pay through PayPal. Checkout shows Pay with PayPal, and the Apple Pay 
 
 Stripe and Moyasar stay in the repository and stay off the checkout page unless you set `ENABLE_STRIPE=true` or `ENABLE_MOYASAR=true` and add that provider's keys. Demo checkout also stays off once PayPal, or an enabled provider, can take payment, unless `ALLOW_DEMO_CHECKOUT=true`.
 
+Hala Payments (هلا للمدفوعات, [hala.com](https://hala.com)) is prepared and not enabled. Leave `PAYMENT_PROVIDER` unset or set it to `paypal`. The live checkout then stays on PayPal at the current USD prices. `PAYMENT_PROVIDER=hala` selects the placeholder routes `/api/hala/checkout` and `/api/hala/webhook`. Those routes do not call Hala, because Hala has not published API docs. `HALA_API_KEY` and `HALA_WEBHOOK_SECRET` are ignored until the flag is `hala`. Each product has a `priceSar` for that future charge: the USD price times 3.75, rounded to the nearest whole riyal.
+
 ![Vellum Press home page](docs/screenshots/home.png)
 
 ![Shop](docs/screenshots/shop.png)
@@ -18,20 +20,20 @@ Stripe and Moyasar stay in the repository and stay off the checkout page unless 
 
 | Guide | Price | Category |
 | --- | ---: | --- |
-| The 12-Week Reset | $29 | Health & nutrition |
-| Weeknight Table | $24 | Health & nutrition |
-| Floor & Form | $27 | Home fitness |
-| The Quiet Budget | $22 | Personal finance |
-| The Habit Ledger | $19 | Productivity |
-| First Client | $32 | Freelance & work |
-| The Exam Room Method | $21 | Study skills |
-| Steady Mind | $18 | Mindfulness |
-| Saudi Freelancer Starter Kit | $17 | Freelance & work (English edition) |
-| Irregular-Income Budget + Invoice Sheets | $15 | Personal finance |
-| Saudi & Gulf Job-Search and ATS CV Kit | $12 | Freelance & work |
-| Health & Fitness Bundle | $59 (was $80) | Reset, Weeknight Table, and Floor & Form |
-| Work & Money Bundle | $58 (was $73) | Quiet Budget, Habit Ledger, and First Client |
-| Gulf Work Bundle | $36 (was $44) | Freelancer kit, irregular-income sheets, and the Gulf CV kit |
+| The 12-Week Reset | $14.50 | Health & nutrition |
+| Weeknight Table | $12 | Health & nutrition |
+| Floor & Form | $13.50 | Home fitness |
+| The Quiet Budget | $11 | Personal finance |
+| The Habit Ledger | $9.50 | Productivity |
+| First Client | $16 | Freelance & work |
+| The Exam Room Method | $10.50 | Study skills |
+| Steady Mind | $9 | Mindfulness |
+| Saudi Freelancer Starter Kit | $8.50 | Freelance & work (English edition) |
+| Irregular-Income Budget + Invoice Sheets | $7.50 | Personal finance |
+| Saudi & Gulf Job-Search and ATS CV Kit | $6 | Freelance & work |
+| Health & Fitness Bundle | $29.50 (separate $40; previously $59) | Reset, Weeknight Table, and Floor & Form |
+| Work & Money Bundle | $29 (separate $36.50; previously $58) | Quiet Budget, Habit Ledger, and First Client |
+| Gulf Work Bundle | $18 (separate $22; previously $36) | Freelancer kit, irregular-income sheets, and the Gulf CV kit |
 
 Each guide has a free sample PDF in `public/samples/` and a full PDF in `private/pdfs/`. Full files are not served as public URLs. A purchase creates a signed link that expires after `DOWNLOAD_LINK_DAYS` (14 by default).
 
@@ -180,7 +182,7 @@ Optional analytics load only when set: `NEXT_PUBLIC_GA_ID`, `NEXT_PUBLIC_META_PI
 
 ## Add or edit a guide
 
-1. Add the product to `data/products.ts`. Guides use `kind: "guide"`. Bundles use `kind: "bundle"` and an `includes` array of guide slugs. Set `compareAtPrice` on a bundle to the sum of the included prices. The tests check that.
+1. Add the product to `data/products.ts`. Guides use `kind: "guide"`. Bundles use `kind: "bundle"` and an `includes` array of guide slugs. Set `compareAtPrice` on a bundle to the sum of the included prices. Set `priceSar` to the nearest whole riyal of `price × 3.75`. Set `previousPrice` only when that amount was actually charged. The 50% off label appears only when `previousPrice` is exactly twice `price`. The tests check that.
 2. Add the chapter text in `scripts/pdfgen/books_health.py`, `scripts/pdfgen/books_life.py`, or `scripts/pdfgen/books_gulf.py`. Chapter titles should match the `contents` list on the product.
 3. Give the cover the same colors and motif the site uses (`path`, `plate`, `form`, `ledger`, `grid`, `mark`, `bars`, `breath`, `bundle`).
 4. Regenerate the PDFs (below). `data/pdf-meta.json` picks up the page counts the site displays.

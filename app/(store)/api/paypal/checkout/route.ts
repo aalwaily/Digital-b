@@ -1,12 +1,6 @@
 import { parseCheckoutInput } from "@/lib/checkout-input";
+import { startPayPalHostedCheckout } from "@/lib/checkout-provider";
 import { signingSecret } from "@/lib/download-token";
-import {
-  approveUrlFromOrder,
-  buildPayPalOrderBody,
-  createPayPalOrder,
-  paypalOrderBinding,
-  signPayPalCheckoutState,
-} from "@/lib/paypal";
 import { isPayPalConfigured } from "@/lib/payments";
 import { getRequestOrigin } from "@/lib/site-url";
 import { site } from "@/data/site";
@@ -30,7 +24,6 @@ export async function POST(request: Request) {
   const parsed = parseCheckoutInput(body);
   if (!parsed.ok) return NextResponse.json({ error: parsed.error }, { status: 400 });
   const { email, priced } = parsed.value;
-  const slugs = priced.lines.map((line) => line.slug);
 
   let secret: string;
   try {
@@ -40,23 +33,17 @@ export async function POST(request: Request) {
   }
 
   const origin = getRequestOrigin(request);
-  const state = signPayPalCheckoutState({ email, slugs }, secret);
-  const orderBody = buildPayPalOrderBody({
-    lines: priced.lines,
-    subtotal: priced.subtotal,
-    customId: paypalOrderBinding(email, slugs, secret),
-    returnUrl: `${origin}/api/paypal/return?state=${encodeURIComponent(state)}`,
-    cancelUrl: `${origin}/cart?canceled=1`,
-    brandName: site.name,
-  });
 
   try {
-    const order = await createPayPalOrder(orderBody);
-    const url = approveUrlFromOrder(order);
-    if (!url) {
-      return NextResponse.json({ error: "PayPal did not return an approval link." }, { status: 502 });
-    }
-    return NextResponse.json({ url });
+    const result = await startPayPalHostedCheckout({
+      email,
+      priced,
+      origin,
+      brandName: site.name,
+      secret,
+    });
+    if (!result.ok) return NextResponse.json({ error: result.error }, { status: result.status });
+    return NextResponse.json({ url: result.url });
   } catch (error) {
     console.error("PayPal checkout failed", error instanceof Error ? error.message : "error");
     return NextResponse.json({ error: "PayPal checkout could not be started." }, { status: 502 });
