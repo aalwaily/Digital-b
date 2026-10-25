@@ -5,6 +5,7 @@ import { pageCountFor } from "@/lib/catalog";
 import { stripBidiIsolates } from "@/lib/i18n/bidi";
 import { localizeCategory, localizeProduct } from "@/lib/i18n/content";
 import { localePath, type Locale } from "@/lib/i18n/config";
+import { checkoutOptions } from "@/lib/payments";
 
 export function jsonLdScript(data: unknown) {
   return JSON.stringify(data).replace(/</g, "\\u003c");
@@ -35,7 +36,7 @@ export function productSchema(product: Product, siteUrl: string, locale: Locale 
       "@type": "Offer",
       priceCurrency: "USD",
       price: product.price.toFixed(2),
-      availability: "https://schema.org/InStock",
+      availability: checkoutOptions().open ? "https://schema.org/InStock" : "https://schema.org/PreOrder",
       url,
       seller: { "@type": "Organization", name: site.legalName },
       hasMerchantReturnPolicy: {

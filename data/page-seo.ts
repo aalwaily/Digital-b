@@ -8,21 +8,21 @@ export type SeoEntry = {
 
 export const staticSeo = {
   home: {
-    title: "Buy PDF Guides | Instant Download",
+    title: "Practical PDF Guides | From $6",
     description:
-      "Buy practical PDF guides and download them instantly. Plans, templates, and kits from $6. PayPal checkout. All sales are final.",
+      "Practical PDF guides from $6, with a free sample of each. Online payment opens soon. All sales are final.",
     keyword: "buy PDF guides instant download",
   },
   shop: {
     title: "Shop PDF Guides & Bundles | From $6",
     description:
-      "Shop PDF guides and bundles. Download a plan, template, or kit from $6. PayPal checkout. All sales are final.",
+      "Shop PDF guides and bundles from $6. Read a free sample first. Online payment opens soon. All sales are final.",
     keyword: "shop PDF guides and bundles",
   },
   about: {
     title: "About Vellum Press | PDF Guides, Dammam",
     description:
-      "Vellum Press in Dammam sells practical PDF guides you download once and keep. PayPal checkout. All sales are final.",
+      "Vellum Press in Dammam sells practical PDF guides you download once and keep. All sales are final.",
     keyword: "Vellum Press PDF guides Dammam",
   },
   contact: {
@@ -32,10 +32,10 @@ export const staticSeo = {
     keyword: "contact PDF order help",
   },
   faq: {
-    title: "PDF Download FAQ | PayPal, Sales Final",
+    title: "PDF Download FAQ | Sales Are Final",
     description:
-      "FAQ on PDF downloads, PayPal checkout, the personal license, and the all-sales-final policy. Guides from $6.",
-    keyword: "PDF download FAQ PayPal",
+      "FAQ on PDF downloads, the personal license, and the all-sales-final policy. Guides from $6.",
+    keyword: "PDF download FAQ",
   },
   blog: {
     title: "PDF Plans & Templates Blog | Vellum",
@@ -46,13 +46,13 @@ export const staticSeo = {
   privacy: {
     title: "Privacy Policy | Vellum Press PDFs",
     description:
-      "Privacy policy for Vellum Press PDF purchases, email, and PayPal checkout. The publisher is in Dammam.",
+      "Privacy policy for Vellum Press PDF purchases and email. The publisher is in Dammam.",
     keyword: "privacy policy PDF store",
   },
   terms: {
     title: "PDF Guide Terms of Sale | Vellum",
     description:
-      "Terms for buying a Vellum Press PDF guide. Personal license, PayPal checkout, and all sales are final.",
+      "Terms for buying a Vellum Press PDF guide. Personal license, and all sales are final.",
     keyword: "PDF guide terms of sale",
   },
   refunds: {
@@ -64,18 +64,18 @@ export const staticSeo = {
   delivery: {
     title: "Instant PDF Download Policy | Vellum",
     description:
-      "Instant PDF download after PayPal checkout. How the receipt link and file delivery work at Vellum Press.",
+      "How the receipt link and PDF file delivery work at Vellum Press. All sales are final.",
     keyword: "instant PDF download delivery",
   },
   cart: {
     title: "Your PDF Cart | Vellum Press",
-    description: "Review PDF guides in your cart before PayPal checkout. All sales are final.",
+    description: "Review PDF guides in your cart. All sales are final. Online payment opens soon.",
     keyword: "PDF cart checkout",
   },
   checkout: {
-    title: "PayPal Checkout for PDF Guides",
-    description: "PayPal checkout for Vellum Press PDF guides. You pay in US dollars. All sales are final.",
-    keyword: "PayPal checkout PDF guides",
+    title: "Checkout for PDF Guides",
+    description: "Checkout for Vellum Press PDF guides. Online payment opens soon. All sales are final.",
+    keyword: "PDF guide checkout",
   },
   success: {
     title: "PDF Payment Confirmation | Vellum",
@@ -89,13 +89,13 @@ export const staticSeo = {
   },
   notFound: {
     title: "Page Not Found | Vellum Press PDFs",
-    description: "That PDF guide page was not found. Browse the shop or the Arabic pages to buy a download.",
+    description: "That page was not found. Browse the shop or switch to the Arabic pages. Free samples are still available.",
     keyword: "PDF guide page not found",
   },
   arabicHome: {
-    title: "أدلة PDF للشراء | تحميل فوري",
+    title: "أدلة PDF عملية | من 6 دولارات",
     description:
-      "اشترِ أدلة PDF وحمّلها فوراً. خطط وقوالب من 6 دولارات. الدفع بـ PayPal، والسعر بالريال تقريبي. المبيعات نهائية.",
+      "أدلة PDF عملية من 6 دولارات، مع نموذج مجاني لكل دليل. الدفع عبر الإنترنت يفتح قريبًا. المبيعات نهائية.",
     keyword: "شراء أدلة PDF تحميل فوري",
   },
   arabicBlog: {

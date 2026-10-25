@@ -3,7 +3,7 @@
 import { getDictionary, type Dictionary } from "@/lib/i18n/dictionary";
 import { localeCookieValue, localePath, stripLocale, type Locale } from "@/lib/i18n/config";
 import { usePathname } from "next/navigation";
-import { createContext, useContext, useMemo } from "react";
+import { createContext, useContext, useLayoutEffect, useMemo } from "react";
 
 type LocaleValue = {
   locale: Locale;
@@ -35,6 +35,12 @@ export function LocaleProvider({ locale, children }: { locale: Locale; children:
       },
     };
   }, [locale, pathname]);
+
+  useLayoutEffect(() => {
+    const root = document.documentElement;
+    root.lang = locale === "ar" ? "ar" : "en";
+    root.dir = locale === "ar" ? "rtl" : "ltr";
+  }, [locale]);
 
   return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>;
 }

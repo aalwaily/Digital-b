@@ -24,13 +24,13 @@ export const legalPages: LegalPage[] = [
         heading: "Who we are",
         paragraphs: [
           `${site.legalName} ("we") publishes digital PDF guides. You can reach us at ${site.email}. We are based in ${site.location}.`,
-          "This policy describes the store when payments are processed by PayPal, and the labeled demo used when PayPal is not connected. It does not cover third-party sites we link to.",
+          "This policy describes this store. Online card payment is not open yet. It does not cover third-party sites we link to.",
         ],
       },
       {
         heading: "What we collect",
         paragraphs: [
-          "Checkout asks for an email address so we can build your receipt and download link. Payments are processed by PayPal. A card or a PayPal balance is entered on PayPal's pages. When Apple Pay is available, Apple shows the payment sheet and PayPal processes the charge. We do not receive your full card number, your Apple Pay token, or your PayPal password.",
+          "When online payment is open, checkout asks for an email address so we can build your receipt and download link. Card details are entered on the payment provider's pages, not on ours. We do not receive your full card number. Until then, the site asks you to email us and does not charge a card.",
           "The contact form collects your name, email, topic, and message. The newsletter form collects an email address and your consent to hear about new guides. The free-sample form collects an email address in exchange for the sample PDF.",
           "The cart and the theme preference are stored in your browser (local storage). They are not sent to us until you choose to check out.",
         ],
@@ -59,14 +59,14 @@ export const legalPages: LegalPage[] = [
       {
         heading: "Processors",
         paragraphs: [
-          "PayPal processes payments for this store, including cards, a PayPal balance, and Apple Pay where it is available, under PayPal's own privacy policy. In demo mode, when PayPal is not configured, no payment processor is contacted. Stripe and Moyasar are not offered unless the owner explicitly enables them. If they are enabled, those companies process that payment under their own privacy policies.",
+          "No payment processor is contacted while online payment is closed. Stripe and Moyasar are not offered unless the owner explicitly enables them. Hala is not offered unless the payment provider flag is set to hala. If a provider is enabled, that company processes the payment under its own privacy policy.",
           "If you deploy this store, your host (for example Vercel) will also process technical logs such as IP address and user agent as part of running the site. Review that host's policy.",
         ],
       },
       {
         heading: "How long we keep it",
         paragraphs: [
-          "This store does not include a database of orders. PayPal retains PayPal payments according to PayPal's own retention. Newsletter and free-sample addresses are sent to the configured webhook, or, when no webhook is set, written to the server log. Webhook forwards are retained by whatever service receives them.",
+          "This store does not include a database of orders. A payment provider, once enabled, retains payments according to its own policy. Newsletter and free-sample addresses are sent to the configured webhook, or, when no webhook is set, written to the server log. Webhook forwards are retained by whatever service receives them.",
           "Download tokens expire on their own. They are not a permanent archive of your library. Save the PDFs.",
         ],
       },
@@ -114,7 +114,7 @@ export const legalPages: LegalPage[] = [
       {
         heading: "License",
         paragraphs: [
-          "When your payment is confirmed, or when a demo order is completed in an unconfigured store, we grant you a personal, non-exclusive, non-transferable license to download and use the PDFs for yourself and your household.",
+          "When your payment is confirmed, we grant you a personal, non-exclusive, non-transferable license to download and use the PDFs for yourself and your household.",
           "You may print a copy for your own use. You may not resell, share, upload, or distribute the files, in whole or in part, and you may not present the text as your own work. Classroom, company, or client use needs written permission from us.",
         ],
       },
@@ -122,7 +122,7 @@ export const legalPages: LegalPage[] = [
         heading: "Prices and checkout",
         paragraphs: [
           "Prices in the catalog are in US dollars and are shown before you pay. We may change prices of future purchases at any time. A confirmed order keeps the price you paid.",
-          "Payments are processed by PayPal in US dollars. You can pay with a card or your PayPal balance. On Safari, Apple Pay can appear when this device can make an Apple Pay payment and the domain is registered with PayPal. We do not see your card number or your PayPal password. If PayPal is not configured, checkout is a labeled demo: no payment is collected and the download is issued so the flow can be reviewed. Do not present demo orders as real sales.",
+          "Catalog prices are in US dollars. Online payment is not open yet, so checkout does not charge a card and does not issue the full file. Email us if you want a note when payment opens, or if you want to request a file. When a provider is enabled, that provider processes the payment and we do not see your full card number.",
           "You must provide an email address you can access. The download link is tied to that address and to the products in the order.",
           "All sales are final. A completed purchase of a digital PDF is not refundable. See the all-sales-final policy for the replacement we offer when a file is corrupted, missing, or the download link fails.",
         ],
@@ -184,7 +184,7 @@ export const legalPages: LegalPage[] = [
         heading: "A working copy, not a refund",
         paragraphs: [
           `If a file is corrupted, missing, or the download link fails, email ${site.email} from the address you used at checkout. Include the order id from your receipt and the name of the guide. We will re-send a working copy or a fresh download link.`,
-          "That replacement is the file you already bought. It is not a refund, and it does not change the price you paid. Demo orders do not collect a payment, so there is nothing to reverse. The receipt page marks those orders as demos.",
+          "That replacement is the file you already bought. It is not a refund, and it does not change the price you paid. Asking for a file before payment is open is not a sale, and there is no charge to reverse.",
         ],
       },
       {
@@ -202,7 +202,7 @@ export const legalPages: LegalPage[] = [
       {
         heading: "Chargebacks",
         paragraphs: [
-          `If you do not recognize a charge, email ${site.email} before opening a dispute with your bank or PayPal so we can look at the order. A chargeback does not expand the license, and we will answer the payment network with the order record. Opening a dispute is not a refund from this store.`,
+          `If you do not recognize a charge, email ${site.email} before opening a dispute with your bank or card provider so we can look at the order. A chargeback does not expand the license, and we will answer the payment network with the order record. Opening a dispute is not a refund from this store.`,
         ],
       },
     ],
@@ -217,7 +217,7 @@ export const legalPages: LegalPage[] = [
       {
         heading: "Instant delivery",
         paragraphs: [
-          "There is no shipping. After PayPal confirms the payment, or after you confirm a demo order, you land on a receipt page with a download button for each full PDF you bought. A bundle lists each included guide.",
+          "There is no shipping. After the payment provider confirms the payment, you land on a receipt page with a download button for each full PDF you bought. A bundle lists each included guide. Until online payment is open, the full files are not released from checkout.",
           "Free samples are separate, shorter PDFs. They are available on the product page before you buy and are not a substitute for the full guide.",
         ],
       },
@@ -242,10 +242,10 @@ export const legalPages: LegalPage[] = [
         ],
       },
       {
-        heading: "Failed payments and demo mode",
+        heading: "Failed payments",
         paragraphs: [
-          "If you cancel PayPal, you return to the cart. Nothing is charged and the files stay locked. If Apple Pay is canceled, you stay on checkout with the same result.",
-          "Demo mode is labeled on the checkout page. It is what you see when PayPal is not configured. A demo receipt is not proof of payment.",
+          "If you cancel a payment, you return to the cart or stay on checkout. Nothing is charged and the full files stay locked.",
+          "While online payment is closed, checkout explains that and asks you to email us. That page is not a receipt and it is not proof of payment.",
         ],
       },
       {

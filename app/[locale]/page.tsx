@@ -86,27 +86,31 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
           </dl>
         </div>
         <div className="min-w-0 md:col-span-6">
-          <div className="flex max-w-full gap-4 overflow-x-auto overscroll-x-contain pb-2 md:hidden">
-            {heroCovers.map((product) => (
-              <Link key={product.slug} href={localePath(locale, `/product/${product.slug}`)} className="w-40 shrink-0" aria-label={product.title}>
-                <Cover product={product} decorative className="rounded-md shadow-lg" />
+          <div className="mx-auto w-full max-w-[15rem] md:hidden">
+            {heroCovers[0] ? (
+              <Link href={localePath(locale, `/product/${heroCovers[0].slug}`)}>
+                <Cover product={heroCovers[0]} decorative className="rounded-md shadow-lg" />
+                <span className="sr-only">{heroCovers[0].title}</span>
               </Link>
-            ))}
+            ) : null}
           </div>
           <div className="relative hidden h-[540px] overflow-hidden md:block">
             {heroCovers[2] ? (
-              <Link href={localePath(locale, "/product/first-client")} className="absolute top-6 end-2 z-10 w-52 rotate-3" aria-label={heroCovers[2].title}>
+              <Link href={localePath(locale, "/product/first-client")} className="absolute top-6 end-2 z-10 w-52 rotate-3">
                 <Cover product={heroCovers[2]} decorative />
+                <span className="sr-only">{heroCovers[2].title}</span>
               </Link>
             ) : null}
             {heroCovers[0] ? (
-              <Link href={localePath(locale, "/product/12-week-reset")} className="absolute top-10 start-0 z-20 w-60 -rotate-6" aria-label={heroCovers[0].title}>
+              <Link href={localePath(locale, "/product/12-week-reset")} className="absolute top-10 start-0 z-20 w-60 -rotate-6">
                 <Cover product={heroCovers[0]} decorative />
+                <span className="sr-only">{heroCovers[0].title}</span>
               </Link>
             ) : null}
             {heroCovers[1] ? (
-              <Link href={localePath(locale, "/product/the-quiet-budget")} className="absolute bottom-2 start-28 z-30 w-52 rotate-2" aria-label={heroCovers[1].title}>
+              <Link href={localePath(locale, "/product/the-quiet-budget")} className="absolute bottom-2 start-28 z-30 w-52 rotate-2">
                 <Cover product={heroCovers[1]} decorative />
+                <span className="sr-only">{heroCovers[1].title}</span>
               </Link>
             ) : null}
           </div>
@@ -132,8 +136,9 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
 
       {bundle ? (
         <section className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-16 md:grid-cols-2">
-          <Link href={localePath(locale, `/product/${bundle.slug}`)} className="mx-auto w-full max-w-sm" aria-label={bundle.title}>
+          <Link href={localePath(locale, `/product/${bundle.slug}`)} className="mx-auto w-full max-w-sm">
             <Cover product={bundle} decorative />
+            <span className="sr-only">{bundle.title}</span>
           </Link>
           <div className="min-w-0">
             <p className="text-xs tracking-[0.18em] text-copper uppercase">{t.home.bundleEyebrow(savings)}</p>

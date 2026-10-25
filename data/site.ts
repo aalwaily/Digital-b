@@ -10,7 +10,7 @@ export const site = {
   legalName: "Vellum Press",
   tagline: "Practical guides for a well-lived life.",
   description:
-    "Digital PDF guides on health, home training, money, work, study, and calm. Pay once, download instantly, and keep the file.",
+    "Practical PDF guides on health, training, money, work, study, and calm. Free samples are available now. Online payment opens soon.",
   email: "glarz.com@gmail.com",
   supportEmail: "glarz.com@gmail.com",
   location: "Dammam, Saudi Arabia",

@@ -3,6 +3,7 @@ import { JsonLd } from "@/components/json-ld";
 import { Price } from "@/components/price";
 import { ProductCard } from "@/components/product-card";
 import { ProductGallery } from "@/components/product-gallery";
+import { PaymentSoon } from "@/components/payment-soon";
 import { PurchaseActions } from "@/components/purchase-actions";
 import { SampleRequest } from "@/components/sample-request";
 import { ShareProduct } from "@/components/share-product";
@@ -17,6 +18,8 @@ import { pageMetadata } from "@/lib/page-meta";
 import { arabicProductSeo, productSeo } from "@/data/page-seo";
 import { EnglishPdfNotice } from "@/components/english-pdf-notice";
 import { breadcrumbSchema, faqSchema, productSchema } from "@/lib/schema";
+import { sourcesFor } from "@/data/sources";
+import { checkoutOptions } from "@/lib/payments";
 import { getSiteUrl } from "@/lib/site-url";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -55,18 +58,20 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
   const siteUrl = getSiteUrl();
   const sampleTargets = isBundle(product) ? product.includes : [product.slug];
   const productPath = localePath(locale, `/product/${product.slug}`);
+  const paymentsOpen = checkoutOptions().open;
+  const sources = sourcesFor(product.slug, locale);
 
   return (
-    <div className="mx-auto min-w-0 max-w-6xl px-5 py-10 pb-28 lg:pb-10">
+    <div className="mx-auto min-w-0 max-w-6xl px-5 py-10 pb-[calc(6.5rem+env(safe-area-inset-bottom))] lg:pb-10">
       <JsonLd data={productSchema(product, siteUrl, locale)} />
       <JsonLd data={faqSchema(product.faqs)} />
       <JsonLd data={breadcrumbSchema(siteUrl, product, locale)} />
       <nav className="text-sm text-muted-foreground" aria-label={t.product.breadcrumb}>
-        <Link href={localePath(locale, "/")} className="inline-flex min-h-11 items-center hover:underline">
+        <Link href={localePath(locale, "/")} className="inline-flex min-h-11 min-w-11 items-center px-1 hover:underline">
           {t.product.home}
         </Link>
         <span aria-hidden> / </span>
-        <Link href={localePath(locale, "/shop")} className="inline-flex min-h-11 items-center hover:underline">
+        <Link href={localePath(locale, "/shop")} className="inline-flex min-h-11 min-w-11 items-center px-1 hover:underline">
           {t.product.shop}
         </Link>
         <span aria-hidden> / </span>
@@ -95,6 +100,11 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           <div className="mt-6">
             <PurchaseActions slug={product.slug} />
           </div>
+          {paymentsOpen ? null : (
+            <div className="mt-4">
+              <PaymentSoon slugs={[product.slug]} />
+            </div>
+          )}
           <div className="mt-4">
             <SampleRequest
               slug={product.slug}
@@ -108,11 +118,11 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           <ShareProduct title={product.title} url={`${siteUrl}${productPath}`} />
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
             {t.product.license}{" "}
-            <Link href={localePath(locale, "/legal/refunds")} className="underline underline-offset-4">
+            <Link href={localePath(locale, "/legal/refunds")} className="inline-flex min-h-11 min-w-11 items-center underline underline-offset-4">
               {t.product.salesFinal}
             </Link>
             . {t.product.emailLead}{" "}
-            <a dir="ltr" className="underline underline-offset-4" href={`mailto:${site.email}`}>
+            <a dir="ltr" className="inline-flex min-h-11 min-w-11 items-center underline underline-offset-4" href={`mailto:${site.email}`}>
               {site.email}
             </a>{" "}
             {t.product.resend}
@@ -165,6 +175,23 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
         </ol>
       </section>
 
+      {sources.length ? (
+        <section className="mt-14 min-w-0">
+          <h2 className="font-serif text-3xl">{t.product.sources}</h2>
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t.product.sourcesNote}</p>
+          <ul className="mt-4 space-y-3 text-sm leading-relaxed">
+            {sources.map((source) => (
+              <li key={source.href}>
+                <a href={source.href} className="inline-flex min-h-11 min-w-11 items-center underline underline-offset-4" rel="noopener noreferrer">
+                  {source.label}
+                </a>
+                <span className="mt-1 block text-muted-foreground">{source.note}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
       <section className="mt-14">
         <h2 className="font-serif text-3xl">{t.product.questions}</h2>
         <div className="mt-4">
@@ -183,7 +210,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
         </section>
       ) : null}
 
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t bg-background/95 px-3 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t bg-background/95 px-3 pt-2 ps-[max(0.75rem,env(safe-area-inset-left))] pe-[max(0.75rem,env(safe-area-inset-right))] pb-[max(0.5rem,env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
         <PurchaseActions slug={product.slug} row />
       </div>
     </div>

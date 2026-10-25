@@ -109,11 +109,17 @@ export function negotiateLocale(input: {
     return { action: "rewrite", locale: "en", pathname: english };
   }
 
+  // The bare homepage is rewritten so the first visit is not a document redirect.
+  // The address can update after load; the HTML itself is the localized page.
+  if (input.pathname === "/") {
+    return { action: "rewrite", locale: preferred, pathname: `/${preferred}` };
+  }
+
   return {
     action: "redirect",
     locale: preferred,
     pathname: target,
-    status: input.pathname === "/" ? 307 : 301,
+    status: 301,
   };
 }
 

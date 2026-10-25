@@ -17,10 +17,10 @@ import { cn } from "cn";
 export function Cover({
   product,
   className,
-  decorative = false,
 }: {
   product: Product;
   className?: string;
+  /** Kept so existing calls compile. The drawing is always hidden from assistive tech; the link or heading names it. */
   decorative?: boolean;
 }) {
   const { locale } = useI18n();
@@ -37,9 +37,8 @@ export function Cover({
     <svg
       viewBox="0 0 600 800"
       className={cn("h-auto w-full", className)}
-      role={decorative ? undefined : "img"}
-      aria-label={decorative ? undefined : `${product.title} PDF cover`}
-      aria-hidden={decorative || undefined}
+      aria-hidden="true"
+      focusable="false"
       {...coverSvgBidi(rtl)}
     >
       <rect width="600" height="800" fill={bg} />
@@ -230,7 +229,7 @@ export function ContentsPlate({ product }: { product: Product }) {
   const heading = rtl ? coverTextPlacement(true) : { x: 48 };
   const title = rtl ? coverTextPlacement(true) : { x: 48 };
   return (
-    <svg viewBox="0 0 600 800" className="h-auto w-full" role="img" aria-label={`${product.title} PDF contents preview`} {...coverSvgBidi(rtl)}>
+    <svg viewBox="0 0 600 800" className="h-auto w-full" aria-hidden="true" focusable="false" {...coverSvgBidi(rtl)}>
       <rect width="600" height="800" fill="#F7F3EC" />
       <rect x={rtl ? COVER_WIDTH - 16 : 0} y="0" width="16" height="800" fill={product.cover.bg} />
       <text {...heading} y="86" fill="#1C1915" fontFamily={family} fontSize="36">
@@ -267,7 +266,7 @@ export function WorksheetPlate({ product }: { product: Product }) {
   const sans = rtl ? "var(--font-arabic-sans), sans-serif" : "var(--font-sans), sans-serif";
   const header = rtl ? coverTextPlacement(true, COVER_RIGHT - 16) : { x: 64 };
   return (
-    <svg viewBox="0 0 600 800" className="h-auto w-full" role="img" aria-label={`${product.title} PDF worksheet preview`} {...coverSvgBidi(rtl)}>
+    <svg viewBox="0 0 600 800" className="h-auto w-full" aria-hidden="true" focusable="false" {...coverSvgBidi(rtl)}>
       <rect width="600" height="800" fill="#F7F3EC" />
       <rect x="40" y="48" width="520" height="92" rx="12" fill={product.cover.bg} />
       <text {...header} y="92" fill={product.cover.fg} fontFamily={family} fontSize="28">

@@ -55,7 +55,7 @@ export function ShopBrowser({
             id="shop-sort"
             name="sort"
             defaultValue={sort}
-            className="mt-1 h-11 w-full max-w-full rounded-lg border border-input bg-transparent px-3 text-sm md:w-56"
+            className="mt-1 h-11 w-full max-w-full rounded-lg border border-input bg-transparent px-3 text-base md:w-56"
           >
             {sorts.map((option) => (
               <option key={option.id} value={option.id}>
@@ -72,8 +72,7 @@ export function ShopBrowser({
         </button>
       </form>
 
-      <div className="mt-5 w-full min-w-0 max-w-full overflow-x-auto pb-1">
-        <div className="flex w-max gap-2" role="toolbar" aria-label={t.shop.categories}>
+      <div className="mt-5 flex min-w-0 flex-wrap gap-2" role="toolbar" aria-label={t.shop.categories}>
           <FilterLink href={shopHref(href, { q: query, category: "all", sort })} pressed={category === "all"}>
             {t.shop.all}
           </FilterLink>
@@ -86,7 +85,6 @@ export function ShopBrowser({
               {item.name}
             </FilterLink>
           ))}
-        </div>
       </div>
 
       {activeCategory ? (
@@ -134,7 +132,7 @@ function FilterLink({
     <Link
       href={href}
       aria-current={pressed ? "page" : undefined}
-      className={`inline-flex h-11 shrink-0 items-center rounded-full px-3 text-sm ${
+      className={`inline-flex h-11 min-w-11 shrink-0 items-center justify-center rounded-full px-3 text-sm ${
         pressed ? "bg-foreground text-background" : "bg-card ring-1 ring-border"
       }`}
     >

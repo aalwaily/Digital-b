@@ -1,4 +1,9 @@
-import { isLocale, locales } from "@/lib/i18n/config";
+import { Providers } from "@/components/providers";
+import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site-header";
+import { SkipLink } from "@/components/skip-link";
+import { isLocale, locales, type Locale } from "@/lib/i18n/config";
+import { checkoutOptions } from "@/lib/payments";
 import { notFound } from "next/navigation";
 
 export function generateStaticParams() {
@@ -14,7 +19,18 @@ export default async function LocaleLayout({
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
-  if (!isLocale(locale)) notFound();
-  return children;
+  const { locale: raw } = await params;
+  if (!isLocale(raw)) notFound();
+  const locale: Locale = raw;
+
+  return (
+    <Providers locale={locale} checkout={checkoutOptions()}>
+      <SkipLink />
+      <SiteHeader />
+      <div className="overflow-x-clip">
+        <main id="main">{children}</main>
+        <SiteFooter />
+      </div>
+    </Providers>
+  );
 }
