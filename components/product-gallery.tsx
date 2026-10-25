@@ -3,9 +3,10 @@
 import { ContentsPlate, Cover, WorksheetPlate } from "@/components/cover";
 import { useI18n } from "@/components/locale-provider";
 import type { Product } from "@/data/products";
+import { cn } from "cn";
 import { useState } from "react";
 
-export function ProductGallery({ product }: { product: Product }) {
+export function ProductGallery({ product, className = "" }: { product: Product; className?: string }) {
   const { t } = useI18n();
   const panels = [
     { id: "cover" as const, label: t.product.cover },
@@ -15,7 +16,7 @@ export function ProductGallery({ product }: { product: Product }) {
   const [active, setActive] = useState<(typeof panels)[number]["id"]>("cover");
 
   return (
-    <div className="min-w-0">
+    <div className={cn("min-w-0", className)}>
       <div className="overflow-hidden rounded-2xl shadow-[0_24px_60px_-36px_rgba(28,24,18,0.8)] ring-1 ring-black/10 dark:ring-white/10">
         {active === "cover" ? <Cover product={product} /> : null}
         {active === "contents" ? <ContentsPlate product={product} /> : null}

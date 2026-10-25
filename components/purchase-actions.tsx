@@ -13,11 +13,14 @@ export function PurchaseActions({
   className = "",
   row = false,
   hint = false,
+  mode = "full",
 }: {
   slug: string;
   className?: string;
   row?: boolean;
   hint?: boolean;
+  /** full: add to cart, plus buy now when checkout is open. primary: one button for a tight bar. */
+  mode?: "full" | "primary";
 }) {
   const cart = useCart();
   const router = useRouter();
@@ -25,23 +28,27 @@ export function PurchaseActions({
   const { open } = useCheckoutOptions();
   const inCart = cart.has(slug);
   const [added, setAdded] = useState(false);
+  const showCart = mode === "full" || !open;
+  const showBuy = open && (mode === "full" || mode === "primary");
 
   return (
     <div className={className}>
-      <div className={`flex w-full min-w-0 gap-2 ${row && open ? "flex-row" : "flex-col sm:flex-row"}`}>
-        <Button
-          className="wrap-button h-auto min-h-11 w-full flex-1 px-4 py-2"
-          onClick={() => {
-            cart.add(slug);
-            setAdded(true);
-          }}
-        >
-          {inCart || added ? <Check /> : <ShoppingBag />}
-          {inCart || added ? t.product.inCart : t.product.add}
-        </Button>
-        {open ? (
+      <div className={`flex w-full min-w-0 gap-2 ${mode === "full" && row && open ? "flex-row" : "flex-col sm:flex-row"}`}>
+        {showCart ? (
           <Button
-            variant="outline"
+            className="wrap-button h-auto min-h-11 w-full flex-1 px-4 py-2"
+            onClick={() => {
+              cart.add(slug);
+              setAdded(true);
+            }}
+          >
+            {inCart || added ? <Check /> : <ShoppingBag />}
+            {inCart || added ? t.product.inCart : t.product.add}
+          </Button>
+        ) : null}
+        {showBuy ? (
+          <Button
+            variant={mode === "primary" ? "default" : "outline"}
             className="wrap-button h-auto min-h-11 w-full flex-1 px-4 py-2"
             onClick={() => {
               router.push(href(`/checkout?buy=${slug}`));
