@@ -80,7 +80,7 @@ export function SiteHeader() {
             >
               <Menu />
             </SheetTrigger>
-            <SheetContent side={locale === "ar" ? "right" : "left"} className="w-[min(100%,20rem)]">
+            <SheetContent side={locale === "ar" ? "left" : "right"} className="w-[min(100%,20rem)]">
               <SheetHeader>
                 <SheetTitle className="font-serif text-xl">
                   <bdi dir="ltr">Vellum Press</bdi>

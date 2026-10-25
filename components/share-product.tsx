@@ -60,6 +60,7 @@ export function ShareProduct({ title, url }: { title: string; url: string }) {
             href={link.href}
             target={link.external ? "_blank" : undefined}
             rel={link.external ? "noopener noreferrer" : undefined}
+            dir={link.external ? "ltr" : undefined}
             className="inline-flex h-11 min-w-11 items-center justify-center rounded-lg border px-3 text-sm hover:bg-secondary"
           >
             {link.label}

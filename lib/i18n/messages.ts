@@ -41,7 +41,7 @@ const messages: Record<string, string> = {
   "The Moyasar payment form could not be loaded. Try again.": "تعذر تحميل نموذج Moyasar. حاول مرة أخرى.",
   "Could not send the message.": "تعذر إرسال الرسالة.",
   "Could not add that email.": "تعذرت إضافة هذا البريد.",
-  "Could not unlock that sample.": "تعذر فتح هذا النموذج.",
+  "Could not unlock that sample.": "تعذر فتح هذه العيّنة.",
   "We could not confirm this payment.": "تعذر تأكيد هذا الدفع.",
   "Network error. Try again.": "خطأ في الشبكة. حاول مرة أخرى.",
   "Network error. Try again in a moment.": "خطأ في الشبكة. حاول بعد قليل.",

@@ -33,6 +33,8 @@ export function textDir(text: string): "ltr" | undefined {
 
 function shouldIsolate(token: string) {
   if (/[@$]|:\/\//.test(token)) return true;
+  // 3.75 and 1,250.00 stay in source order inside Arabic sentences.
+  if (/^\d[\d.,]*$/.test(token) && /[.,]/.test(token)) return true;
   if (!/[A-Za-z]/.test(token)) return false;
   if (/[\s.&/+_-]/.test(token)) return true;
   if (/^\d/.test(token)) return true;

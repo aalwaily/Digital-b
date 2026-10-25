@@ -84,7 +84,7 @@ function ShopControls({
             id="shop-sort"
             name="sort"
             defaultValue={query.sort}
-            className="mt-1 h-11 w-full max-w-full rounded-lg border border-input bg-transparent px-3 text-base md:w-56"
+            className="mt-1 h-11 w-full max-w-full rounded-lg border border-input bg-transparent px-3 text-start text-base md:w-56"
           >
             {sorts.map((option) => (
               <option key={option.id} value={option.id}>

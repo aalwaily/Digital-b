@@ -16,6 +16,7 @@ import { getDictionary } from "@/lib/i18n/dictionary";
 import { localizeCategory, localizeProduct, localizedProduct, requireLocale } from "@/lib/i18n/content";
 import { pageMetadata } from "@/lib/page-meta";
 import { arabicProductSeo, productSeo } from "@/data/page-seo";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { EnglishPdfNotice } from "@/components/english-pdf-notice";
 import { breadcrumbSchema, faqSchema, productSchema } from "@/lib/schema";
 import { sourcesFor } from "@/data/sources";
@@ -67,19 +68,15 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
       <JsonLd data={productSchema(product, CANONICAL_ORIGIN, locale)} />
       <JsonLd data={faqSchema(product.faqs)} />
       <JsonLd data={breadcrumbSchema(CANONICAL_ORIGIN, product, locale)} />
-      <nav className="text-sm text-muted-foreground" aria-label={t.product.breadcrumb}>
-        <Link href={localePath(locale, "/")} className="inline-flex min-h-11 min-w-11 items-center px-1 hover:underline">
-          {t.product.home}
-        </Link>
-        <span aria-hidden> / </span>
-        <Link href={localePath(locale, "/shop")} className="inline-flex min-h-11 min-w-11 items-center px-1 hover:underline">
-          {t.product.shop}
-        </Link>
-        <span aria-hidden> / </span>
-        <span dir={textDir(product.title)} className="text-foreground">
-          {product.title}
-        </span>
-      </nav>
+      <Breadcrumbs
+        label={t.product.breadcrumb}
+        locale={locale}
+        items={[
+          { href: localePath(locale, "/"), label: t.product.home },
+          { href: localePath(locale, "/shop"), label: t.product.shop },
+          { label: product.title },
+        ]}
+      />
 
       <div className="mt-6 grid min-w-0 gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
         <ProductGallery product={product} />

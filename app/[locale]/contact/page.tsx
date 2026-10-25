@@ -33,7 +33,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
           <div>
             <dt className="text-muted-foreground">{t.contact.orders}</dt>
             <dd>
-              <a className="inline-flex min-h-11 items-center underline underline-offset-4" href={`mailto:${site.supportEmail}`}>
+              <a dir="ltr" className="inline-flex min-h-11 items-center underline underline-offset-4" href={`mailto:${site.supportEmail}`}>
                 {site.supportEmail}
               </a>
             </dd>

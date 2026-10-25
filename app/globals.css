@@ -211,6 +211,16 @@
   unicode-bidi: isolate;
 }
 
+/* Native controls follow the page direction. Email fields opt back into LTR. */
+html[dir="rtl"] select,
+html[dir="rtl"] textarea {
+  text-align: start;
+}
+
+html[dir="rtl"] input[dir="ltr"] {
+  text-align: left;
+}
+
 .wrap-button {
   white-space: normal;
   min-width: 0;
