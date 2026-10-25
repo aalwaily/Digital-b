@@ -26,7 +26,7 @@ const arabicSerif = Noto_Naskh_Arabic({
 
 export function ArabicFontScope({ children }: { children: ReactNode }) {
   return (
-    <div className={`${arabicSans.variable} ${arabicSerif.variable} arabic-root`}>
+    <div lang="ar" dir="rtl" className={`${arabicSans.variable} ${arabicSerif.variable} arabic-root`}>
       <FontPreloads pick={preloadArabicFaces} />
       {children}
     </div>

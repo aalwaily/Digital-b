@@ -1,4 +1,5 @@
 import { ArticleBody } from "@/components/article-body";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { JsonLd } from "@/components/json-ld";
 import { LinkButton } from "@/components/link-button";
 import { getPost, postPath, posts, resolvePostSeo } from "@/data/blog";
@@ -10,7 +11,6 @@ import { pageMetadata } from "@/lib/page-meta";
 import { readingMinutes } from "@/lib/reading";
 import { articleSchema, breadcrumbList } from "@/lib/schema";
 import { CANONICAL_ORIGIN } from "@/lib/seo";
-import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -84,19 +84,15 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
           },
         ])}
       />
-      <nav className="text-sm text-muted-foreground" aria-label={t.product.breadcrumb}>
-        <Link href={localePath(locale, "/")} className="inline-flex min-h-11 items-center hover:underline">
-          {t.crumbs.home}
-        </Link>
-        <span aria-hidden> / </span>
-        <Link href={localePath(locale, "/blog")} className="inline-flex min-h-11 items-center hover:underline">
-          {t.nav.journal}
-        </Link>
-        <span aria-hidden> / </span>
-        <span dir={textDir(post.title)} className="text-foreground">
-          {post.title}
-        </span>
-      </nav>
+      <Breadcrumbs
+        label={t.product.breadcrumb}
+        locale={locale}
+        items={[
+          { href: localePath(locale, "/"), label: t.crumbs.home },
+          { href: localePath(locale, "/blog"), label: t.nav.journal },
+          { label: post.title },
+        ]}
+      />
       <p className="mt-6 text-xs tracking-[0.16em] text-copper uppercase">{post.category}</p>
       <h1 dir={textDir(post.title)} className="mt-2 font-serif text-4xl md:text-5xl">
         {post.title}

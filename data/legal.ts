@@ -224,7 +224,7 @@ export const legalPages: LegalPage[] = [
       {
         heading: "The download link",
         paragraphs: [
-          `The receipt URL contains a signed token. Our server checks the signature, the expiry, and the file name before it sends a PDF. The default lifetime is ${site.downloadDays} days from the order. You can change that with the DOWNLOAD_LINK_DAYS environment variable.`,
+          `The receipt URL contains a signed token. Our server checks the signature, the expiry, and the file name before it sends a PDF. The default lifetime is ${site.downloadDays} days from the order, unless the store is set to a different lifetime.`,
           "The link is a secret. If you forward it, the recipient can download the files until it expires. We cannot tell from the download itself who clicked.",
         ],
       },

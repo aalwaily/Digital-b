@@ -75,7 +75,7 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
             <dl className="mt-10 grid grid-cols-3 gap-3 text-sm">
               <div>
                 <dt className="text-muted-foreground">{t.home.guides}</dt>
-                <dd className="font-serif text-2xl">{products.filter((product) => product.kind === "guide").length}</dd>
+                <dd dir="ltr" className="font-serif text-2xl">{products.filter((product) => product.kind === "guide").length}</dd>
               </div>
               <div>
                 <dt className="text-muted-foreground">{t.home.delivery}</dt>
@@ -83,7 +83,7 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
               </div>
               <div>
                 <dt className="text-muted-foreground">{t.home.format}</dt>
-                <dd className="font-serif text-2xl">PDF</dd>
+                <dd dir="ltr" className="font-serif text-2xl">PDF</dd>
               </div>
             </dl>
           </div>

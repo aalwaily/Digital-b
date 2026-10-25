@@ -139,6 +139,8 @@ describe("localized SEO", () => {
     expect(getDictionary("en").home.lede).not.toContain("\u2066");
     expect(isolateEmbeds("12-Week Reset")).toBe("\u206612-Week Reset\u2069");
     expect(isolateEmbeds("باقة · وفّر 21$")).toContain("\u206621$\u2069");
+    expect(isolateEmbeds("بسعر 3.75 ريال")).toContain("\u20663.75\u2069");
+    expect(isolateEmbeds("خلال 14 يومًا")).toBe("خلال 14 يومًا");
     expect(isolateEmbeds("راسل glarz.com@gmail.com من")).toContain("\u2066glarz.com@gmail.com\u2069");
     expect(isolateEmbeds("على zatca.gov.sa اليوم")).toContain("\u2066zatca.gov.sa\u2069");
     expect(isolateEmbeds("ملف PDF")).toBe("ملف PDF");

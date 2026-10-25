@@ -51,27 +51,32 @@ export function CartView() {
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_300px]">
         <ul className="min-w-0 divide-y">
           {items.map((item) => (
-            <li key={item.slug} className="flex min-w-0 gap-4 py-5">
-              <Link href={href(`/product/${item.slug}`)} className="w-20 shrink-0 overflow-hidden rounded-md ring-1 ring-black/10">
+            <li key={item.slug} className="grid grid-cols-[5rem_minmax(0,1fr)] items-start gap-x-4 gap-y-2 py-5">
+              <Link href={href(`/product/${item.slug}`)} className="col-start-1 row-span-2 w-20 overflow-hidden rounded-md ring-1 ring-black/10">
                 <Cover product={item} decorative />
                 <span className="sr-only">{item.title}</span>
               </Link>
-              <div className="min-w-0 flex-1">
+              <div className="min-w-0">
                 <h2 dir={textDir(item.title)} className="font-serif text-xl">
                   <Link href={href(`/product/${item.slug}`)} className="inline-flex min-h-11 items-center hover:underline">
                     {item.title}
                   </Link>
                 </h2>
-                <p className="text-sm text-muted-foreground">{item.subtitle}</p>
+                <p dir={textDir(item.subtitle)} className="text-sm text-muted-foreground">{item.subtitle}</p>
                 <button
                   type="button"
-                  className="mt-2 inline-flex min-h-11 items-center text-sm underline underline-offset-4"
+                  className="mt-1 inline-flex min-h-11 items-center text-sm underline underline-offset-4"
                   onClick={() => cart.remove(item.slug)}
                 >
                   {t.cartPage.remove}
                 </button>
               </div>
-              <Price price={item.price} compareAt={item.compareAtPrice} previousPrice={item.previousPrice} />
+              <Price
+                price={item.price}
+                compareAt={item.compareAtPrice}
+                previousPrice={item.previousPrice}
+                className="col-start-2"
+              />
             </li>
           ))}
         </ul>
@@ -80,24 +85,24 @@ export function CartView() {
           <dl className="mt-4 space-y-2 text-sm">
             <div className="flex justify-between gap-3">
               <dt>{t.cartPage.subtotal}</dt>
-              <dd dir="ltr" className="price text-end">
-                {formatMoney(summary.subtotal)}
+              <dd className="price shrink-0 text-end">
+                <span dir="ltr" className="whitespace-nowrap">{formatMoney(summary.subtotal)}</span>
               </dd>
             </div>
             {summary.savings > 0 ? (
               <div className="flex justify-between gap-3 text-copper">
                 <dt>{t.cartPage.savings}</dt>
-                <dd dir="ltr" className="price text-end">
-                  {formatMoney(summary.savings)}
+                <dd className="price shrink-0 text-end">
+                  <span dir="ltr" className="whitespace-nowrap">{formatMoney(summary.savings)}</span>
                 </dd>
               </div>
             ) : null}
             <div className="flex justify-between gap-3 border-t pt-2 font-medium">
               <dt>{t.cartPage.due}</dt>
               <dd className="price text-end">
-                <span dir="ltr">{formatMoney(summary.subtotal)}</span>
+                <span dir="ltr" className="whitespace-nowrap">{formatMoney(summary.subtotal)}</span>
                 <span className="mt-1 block text-xs font-normal text-muted-foreground">
-                  {t.price.approx} <span dir="ltr">{formatSarAmount(summary.subtotal)}</span> {t.price.sar}
+                  {t.price.approx} <span dir="ltr" className="whitespace-nowrap">{formatSarAmount(summary.subtotal)}</span> {t.price.sar}
                 </span>
               </dd>
             </div>

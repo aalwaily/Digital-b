@@ -1,8 +1,10 @@
 import { Analytics } from "@/components/analytics";
 import { site } from "@/data/site";
+import { dirFor, htmlLang, isLocale, LOCALE_HEADER } from "@/lib/i18n/config";
 import { CANONICAL_ORIGIN, verificationMetadata } from "@/lib/seo";
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Outfit } from "next/font/google";
+import { headers } from "next/headers";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -63,11 +65,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const requested = (await headers()).get(LOCALE_HEADER);
+  const locale = isLocale(requested) ? requested : "en";
   return (
     <html
-      lang="en"
-      dir="ltr"
+      lang={htmlLang(locale)}
+      dir={dirFor(locale)}
       suppressHydrationWarning
       className={`${outfit.variable} ${fraunces.variable}`}
     >

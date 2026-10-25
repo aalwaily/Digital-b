@@ -269,9 +269,9 @@ export function CheckoutView({ usdToSarRate = null }: { usdToSarRate?: string | 
         <div className="mt-4 flex justify-between gap-3 border-t pt-3 font-medium">
           <span>{t.checkout.total}</span>
           <span className="price text-end">
-            <span dir="ltr">{formatMoney(summary.subtotal)}</span>
+            <span dir="ltr" className="whitespace-nowrap">{formatMoney(summary.subtotal)}</span>
             <span className="mt-1 block text-xs font-normal text-muted-foreground">
-              {t.price.approx} <span dir="ltr">{formatSarAmount(summary.subtotal)}</span> {t.price.sar}
+              {t.price.approx} <span dir="ltr" className="whitespace-nowrap">{formatSarAmount(summary.subtotal)}</span> {t.price.sar}
             </span>
           </span>
         </div>

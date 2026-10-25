@@ -77,7 +77,7 @@ export function ContactForm() {
           name="topic"
           required
           defaultValue={topics[0]}
-          className="h-11 w-full rounded-lg border border-input bg-transparent px-3 text-base"
+          className="h-11 w-full rounded-lg border border-input bg-transparent px-3 text-start text-base"
         >
           {topics.map((topic) => (
             <option key={topic}>{topic}</option>
