@@ -2,10 +2,12 @@ import { describe, expect, it } from "vitest";
 import { reviews } from "@/data/reviews";
 import { testimonials } from "@/data/testimonials";
 import { bundles, getProduct, guides, products } from "@/data/products";
-import { expandFiles, overlapWarnings, quote } from "@/lib/catalog";
+import { expandFiles, overlapWarnings, quote, shopListings } from "@/lib/catalog";
 import { cleanSarPrice } from "@/lib/hala";
 import { signDownloadToken, verifyDownloadToken } from "@/lib/download-token";
-import { productSchema } from "@/lib/schema";
+import { preloadArabicFaces, preloadLatinFaces } from "@/lib/font-preload";
+import { offerAvailability, productSchema, websiteSchema } from "@/lib/schema";
+import { staticSeo } from "@/data/page-seo";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -106,6 +108,50 @@ describe("schema and sample labels", () => {
     expect(testimonials).toEqual([]);
     const schema = JSON.stringify(productSchema(guides[0], "https://example.com"));
     expect(schema).not.toMatch(/aggregateRating|reviewCount|ratingValue/);
+  });
+
+  it("uses the real price and an availability that matches whether checkout can take payment", () => {
+    const saved = {
+      PAYMENT_PROVIDER: process.env.PAYMENT_PROVIDER,
+      ENABLE_STRIPE: process.env.ENABLE_STRIPE,
+      ENABLE_MOYASAR: process.env.ENABLE_MOYASAR,
+      STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+    };
+    delete process.env.PAYMENT_PROVIDER;
+    delete process.env.ENABLE_STRIPE;
+    delete process.env.ENABLE_MOYASAR;
+    delete process.env.STRIPE_SECRET_KEY;
+    try {
+      const guide = guides[0];
+      const closed = productSchema(guide, "https://getvellumpress.com");
+      expect(offerAvailability(false)).toBe("https://schema.org/OutOfStock");
+      expect(closed.offers.availability).toBe("https://schema.org/OutOfStock");
+      expect(closed.offers.price).toBe(guide.price.toFixed(2));
+      expect(closed.offers.priceCurrency).toBe("USD");
+      process.env.PAYMENT_PROVIDER = "hala";
+      expect(productSchema(guide, "https://getvellumpress.com").offers.availability).toBe("https://schema.org/InStock");
+      const arabic = websiteSchema("https://getvellumpress.com", "ar");
+      expect(arabic.description).toBe(staticSeo.arabicHome.description);
+      expect(arabic.potentialAction.target).toMatchObject({
+        urlTemplate: "https://getvellumpress.com/ar/shop?q={search_term_string}",
+      });
+      const listing = shopListings("ar").find((item) => item.product.slug === "the-quiet-budget");
+      expect(listing?.searchText).toContain("the quiet budget");
+      expect(preloadLatinFaces("@font-face{font-family:Outfit;unicode-range:u+00??}")).toBe(true);
+      expect(preloadLatinFaces("@font-face{font-family:Outfit Fallback;unicode-range:u+00??}")).toBe(false);
+      expect(preloadArabicFaces("@font-face{font-family:Noto Naskh Arabic;font-weight:500;unicode-range:u+06??}")).toBe(true);
+      expect(preloadArabicFaces("@font-face{font-family:Noto Naskh Arabic;font-weight:500;unicode-range:u+00??}")).toBe(true);
+      expect(preloadArabicFaces("@font-face{font-family:IBM Plex Sans Arabic;font-weight:500;unicode-range:u+06??}")).toBe(false);
+      expect(preloadArabicFaces("@font-face{font-family:IBM Plex Sans Arabic;font-weight:500;unicode-range:u+00??}")).toBe(false);
+      expect(preloadArabicFaces("@font-face{font-family:IBM Plex Sans Arabic;font-weight:400;unicode-range:u+06??}")).toBe(true);
+      expect(preloadArabicFaces("@font-face{font-family:IBM Plex Sans Arabic;font-weight:400;unicode-range:u+00??}")).toBe(true);
+      expect(preloadArabicFaces("@font-face{font-family:Noto Naskh Arabic;font-weight:500;unicode-range:u+0001-000c}")).toBe(false);
+    } finally {
+      for (const [key, value] of Object.entries(saved)) {
+        if (value === undefined) delete process.env[key];
+        else process.env[key] = value;
+      }
+    }
   });
 });
 

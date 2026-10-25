@@ -77,6 +77,7 @@ export const dictionary = {
       apply: "Apply",
       categories: "Categories",
       all: "All",
+      results: "All guides",
       sorts: {
         featured: "Featured",
         newest: "Newest",
@@ -417,6 +418,7 @@ export const dictionary = {
       apply: "تطبيق",
       categories: "التصنيفات",
       all: "الكل",
+      results: "كل الأدلة",
       sorts: {
         featured: "المختارة",
         newest: "الأحدث",

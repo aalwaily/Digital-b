@@ -13,8 +13,8 @@ import { localePath } from "@/lib/i18n/config";
 import { localizeFaqs, localizedCategories, localizedProduct, postsForLocale, requireLocale } from "@/lib/i18n/content";
 import { pageMetadata } from "@/lib/page-meta";
 import { staticSeo } from "@/data/page-seo";
-import { organizationSchema, websiteSchema } from "@/lib/schema";
-import { getSiteUrl } from "@/lib/site-url";
+import { faqSchema, organizationSchema, websiteSchema } from "@/lib/schema";
+import { CANONICAL_ORIGIN } from "@/lib/seo";
 import { formatMoney } from "@/lib/money";
 import type { Metadata } from "next";
 import { Download, LockKeyhole, Printer, ShieldCheck } from "lucide-react";
@@ -46,44 +46,47 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
     .slice(0, 4)
     .map((product) => localizedProduct(product.slug, locale))
     .filter((product) => product !== undefined);
-  const siteUrl = getSiteUrl();
   const icons = [Download, LockKeyhole, Printer, ShieldCheck];
   const savings = bundle?.compareAtPrice ? formatMoney(bundle.compareAtPrice - bundle.price) : "";
+  const homeFaqs = localizeFaqs(locale).slice(0, 5);
 
   return (
     <div className="min-w-0">
-      <JsonLd data={websiteSchema(siteUrl, locale)} />
-      <JsonLd data={organizationSchema(siteUrl)} />
+      <JsonLd data={websiteSchema(CANONICAL_ORIGIN, locale)} />
+      <JsonLd data={organizationSchema(CANONICAL_ORIGIN)} />
+      <JsonLd data={faqSchema(homeFaqs)} />
 
       <section className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-14 md:grid-cols-12 md:py-20">
-        <div className="rise min-w-0 md:col-span-6">
+        <div className="min-w-0 md:col-span-6">
           <p className="text-xs tracking-[0.16em] text-copper uppercase sm:tracking-[0.22em]">{t.home.eyebrow}</p>
           <h1 className="mt-4 max-w-xl font-serif text-4xl leading-[1.12] sm:text-5xl md:text-6xl md:leading-[1.05]">
             {t.home.title}
           </h1>
-          <p className="mt-6 max-w-md text-lg leading-relaxed text-muted-foreground">{t.home.lede}</p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <LinkButton href="/shop" className="h-11 px-5">
-              {t.home.shop}
-            </LinkButton>
-            <LinkButton href="/product/12-week-reset" variant="outline" className="h-11 px-5">
-              {t.home.preview}
-            </LinkButton>
+          <div className="rise">
+            <p className="mt-6 max-w-md text-lg leading-relaxed text-muted-foreground">{t.home.lede}</p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <LinkButton href="/shop" className="h-11 px-5">
+                {t.home.shop}
+              </LinkButton>
+              <LinkButton href="/product/12-week-reset" variant="outline" className="h-11 px-5">
+                {t.home.preview}
+              </LinkButton>
+            </div>
+            <dl className="mt-10 grid grid-cols-3 gap-3 text-sm">
+              <div>
+                <dt className="text-muted-foreground">{t.home.guides}</dt>
+                <dd className="font-serif text-2xl">{products.filter((product) => product.kind === "guide").length}</dd>
+              </div>
+              <div>
+                <dt className="text-muted-foreground">{t.home.delivery}</dt>
+                <dd className="font-serif text-2xl">{t.home.instant}</dd>
+              </div>
+              <div>
+                <dt className="text-muted-foreground">{t.home.format}</dt>
+                <dd className="font-serif text-2xl">PDF</dd>
+              </div>
+            </dl>
           </div>
-          <dl className="mt-10 grid grid-cols-3 gap-3 text-sm">
-            <div>
-              <dt className="text-muted-foreground">{t.home.guides}</dt>
-              <dd className="font-serif text-2xl">{products.filter((product) => product.kind === "guide").length}</dd>
-            </div>
-            <div>
-              <dt className="text-muted-foreground">{t.home.delivery}</dt>
-              <dd className="font-serif text-2xl">{t.home.instant}</dd>
-            </div>
-            <div>
-              <dt className="text-muted-foreground">{t.home.format}</dt>
-              <dd className="font-serif text-2xl">PDF</dd>
-            </div>
-          </dl>
         </div>
         <div className="min-w-0 md:col-span-6">
           <div className="mx-auto w-full max-w-[15rem] md:hidden">
@@ -220,7 +223,7 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
       <section className="mx-auto max-w-3xl px-5 py-16">
         <h2 className="font-serif text-3xl">{t.home.questions}</h2>
         <div className="mt-6">
-          <FaqList items={localizeFaqs(locale).slice(0, 5)} />
+          <FaqList items={homeFaqs} />
         </div>
         <Link href={localePath(locale, "/faq")} className="mt-4 inline-flex min-h-11 items-center text-sm underline underline-offset-4">
           {t.home.fullFaq}

@@ -53,7 +53,7 @@ export function SiteHeader() {
             hrefLang={other}
             lang={other}
             className="inline-flex h-11 min-w-11 items-center justify-center rounded-lg px-2 text-sm font-medium hover:bg-muted"
-            aria-label={t.switchToLabel}
+            aria-label={`${t.switchTo}, ${t.switchToLabel}`}
             onClick={(event) => {
               event.preventDefault();
               switchTo(other);

@@ -158,6 +158,33 @@ export function relatedProducts(slug: string, limit = 3) {
   return result;
 }
 
+export type ShopListing = {
+  product: Product;
+  searchText: string;
+};
+
+/** Full shop catalog in featured order, with a search blob for client filtering. */
+export function shopListings(locale: Locale = "en"): ShopListing[] {
+  return products.map((product) => {
+    const localized = localizeProduct(product, locale);
+    const englishCategory = getCategory(product.category)?.name ?? "";
+    const categoryName = localizeCategory(product.category, locale)?.name ?? englishCategory;
+    const searchText = [
+      product.title,
+      product.subtitle,
+      product.shortDescription,
+      localized.title,
+      localized.subtitle,
+      localized.shortDescription,
+      englishCategory,
+      categoryName,
+    ]
+      .join(" ")
+      .toLowerCase();
+    return { product: localized, searchText };
+  });
+}
+
 export function searchProducts(input: { query?: string; category?: string; sort?: string; locale?: Locale }) {
   const locale = input.locale ?? "en";
   const query = (input.query ?? "").trim().toLowerCase();

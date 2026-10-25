@@ -172,6 +172,24 @@
   }
 }
 
+/* Unlayered so these beat Tailwind's .font-serif / .font-sans utilities.
+   The Arabic font variables live on this wrapper, not on <html>, so the
+   files are only preloaded on Arabic pages. */
+.arabic-root {
+  font-family: var(--font-arabic-sans), ui-sans-serif, system-ui, sans-serif;
+  overflow-wrap: break-word;
+}
+.arabic-root :is(h1, h2, h3, h4, .font-serif) {
+  font-family: var(--font-arabic-serif), serif;
+  letter-spacing: 0;
+}
+.arabic-root .font-sans {
+  font-family: var(--font-arabic-sans), ui-sans-serif, system-ui, sans-serif;
+}
+.arabic-root .uppercase {
+  letter-spacing: 0.02em;
+}
+
 @keyframes rise {
   from {
     transform: translateY(8px);

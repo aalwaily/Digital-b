@@ -5,7 +5,19 @@ import { pageCountFor } from "@/lib/catalog";
 import { stripBidiIsolates } from "@/lib/i18n/bidi";
 import { localizeCategory, localizeProduct } from "@/lib/i18n/content";
 import { localePath, type Locale } from "@/lib/i18n/config";
+import { staticSeo } from "@/data/page-seo";
 import { checkoutOptions } from "@/lib/payments";
+
+/**
+ * Checkout is closed until a provider is switched on. PreOrder would claim a
+ * buyer can place an order now and receive the file later. OutOfStock is the
+ * honest ItemAvailability: the guide and its price are real, and it cannot
+ * be purchased until payment opens. InStock is only used once checkout is open,
+ * because a PDF has no inventory limit.
+ */
+export function offerAvailability(open = checkoutOptions().open) {
+  return open ? "https://schema.org/InStock" : "https://schema.org/OutOfStock";
+}
 
 export function jsonLdScript(data: unknown) {
   return JSON.stringify(data).replace(/</g, "\\u003c");
@@ -36,7 +48,7 @@ export function productSchema(product: Product, siteUrl: string, locale: Locale 
       "@type": "Offer",
       priceCurrency: "USD",
       price: product.price.toFixed(2),
-      availability: checkoutOptions().open ? "https://schema.org/InStock" : "https://schema.org/PreOrder",
+      availability: offerAvailability(),
       url,
       seller: { "@type": "Organization", name: site.legalName },
       hasMerchantReturnPolicy: {
@@ -92,10 +104,13 @@ export function websiteSchema(siteUrl: string, locale: Locale = "en") {
     name: site.name,
     url: `${siteUrl}${localePath(locale, "/")}`,
     inLanguage: locale,
-    description: site.description,
+    description: locale === "ar" ? staticSeo.arabicHome.description : staticSeo.home.description,
     potentialAction: {
       "@type": "SearchAction",
-      target: `${siteUrl}${localePath(locale, "/shop")}?q={search_term_string}`,
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${siteUrl}${localePath(locale, "/shop")}?q={search_term_string}`,
+      },
       "query-input": "required name=search_term_string",
     },
   };

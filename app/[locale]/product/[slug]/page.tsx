@@ -20,6 +20,7 @@ import { EnglishPdfNotice } from "@/components/english-pdf-notice";
 import { breadcrumbSchema, faqSchema, productSchema } from "@/lib/schema";
 import { sourcesFor } from "@/data/sources";
 import { checkoutOptions } from "@/lib/payments";
+import { CANONICAL_ORIGIN } from "@/lib/seo";
 import { getSiteUrl } from "@/lib/site-url";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -63,9 +64,9 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
 
   return (
     <div className="mx-auto min-w-0 max-w-6xl px-5 py-10 pb-[calc(6.5rem+env(safe-area-inset-bottom))] lg:pb-10">
-      <JsonLd data={productSchema(product, siteUrl, locale)} />
+      <JsonLd data={productSchema(product, CANONICAL_ORIGIN, locale)} />
       <JsonLd data={faqSchema(product.faqs)} />
-      <JsonLd data={breadcrumbSchema(siteUrl, product, locale)} />
+      <JsonLd data={breadcrumbSchema(CANONICAL_ORIGIN, product, locale)} />
       <nav className="text-sm text-muted-foreground" aria-label={t.product.breadcrumb}>
         <Link href={localePath(locale, "/")} className="inline-flex min-h-11 min-w-11 items-center px-1 hover:underline">
           {t.product.home}

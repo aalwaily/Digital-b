@@ -2,14 +2,15 @@ import { ArticleBody } from "@/components/article-body";
 import { JsonLd } from "@/components/json-ld";
 import { LinkButton } from "@/components/link-button";
 import { getPost, postPath, posts, resolvePostSeo } from "@/data/blog";
-import { textDir } from "@/lib/i18n/bidi";
+import { stripBidiIsolates, textDir } from "@/lib/i18n/bidi";
 import { formatLongDate, localizePost, localizedProduct, requireLocale } from "@/lib/i18n/content";
 import { getDictionary } from "@/lib/i18n/dictionary";
-import { type Locale } from "@/lib/i18n/config";
+import { localePath, type Locale } from "@/lib/i18n/config";
 import { pageMetadata } from "@/lib/page-meta";
 import { readingMinutes } from "@/lib/reading";
-import { articleSchema } from "@/lib/schema";
-import { getSiteUrl } from "@/lib/site-url";
+import { articleSchema, breadcrumbList } from "@/lib/schema";
+import { CANONICAL_ORIGIN } from "@/lib/seo";
+import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -72,8 +73,31 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
 
   return (
     <article className="mx-auto min-w-0 max-w-3xl px-5 py-12">
-      <JsonLd data={articleSchema(post, getSiteUrl(), locale)} />
-      <p className="text-xs tracking-[0.16em] text-copper uppercase">{post.category}</p>
+      <JsonLd data={articleSchema(post, CANONICAL_ORIGIN, locale)} />
+      <JsonLd
+        data={breadcrumbList([
+          { name: t.crumbs.home, url: `${CANONICAL_ORIGIN}${localePath(locale, "/")}` },
+          { name: t.nav.journal, url: `${CANONICAL_ORIGIN}${localePath(locale, "/blog")}` },
+          {
+            name: stripBidiIsolates(post.title),
+            url: `${CANONICAL_ORIGIN}${localePath(locale, `/blog/${post.slug}`)}`,
+          },
+        ])}
+      />
+      <nav className="text-sm text-muted-foreground" aria-label={t.product.breadcrumb}>
+        <Link href={localePath(locale, "/")} className="inline-flex min-h-11 items-center hover:underline">
+          {t.crumbs.home}
+        </Link>
+        <span aria-hidden> / </span>
+        <Link href={localePath(locale, "/blog")} className="inline-flex min-h-11 items-center hover:underline">
+          {t.nav.journal}
+        </Link>
+        <span aria-hidden> / </span>
+        <span dir={textDir(post.title)} className="text-foreground">
+          {post.title}
+        </span>
+      </nav>
+      <p className="mt-6 text-xs tracking-[0.16em] text-copper uppercase">{post.category}</p>
       <h1 dir={textDir(post.title)} className="mt-2 font-serif text-4xl md:text-5xl">
         {post.title}
       </h1>

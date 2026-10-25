@@ -2,33 +2,20 @@ import { Analytics } from "@/components/analytics";
 import { site } from "@/data/site";
 import { CANONICAL_ORIGIN, verificationMetadata } from "@/lib/seo";
 import type { Metadata, Viewport } from "next";
-import { Fraunces, IBM_Plex_Sans_Arabic, Noto_Naskh_Arabic, Outfit } from "next/font/google";
+import { Fraunces, Outfit } from "next/font/google";
 import "./globals.css";
 
 const outfit = Outfit({
   subsets: ["latin"],
   variable: "--font-outfit",
   display: "swap",
+  // Preload per locale. A global preload would fetch these on Arabic pages too.
+  preload: false,
 });
 
 const fraunces = Fraunces({
   subsets: ["latin"],
   variable: "--font-fraunces",
-  display: "swap",
-});
-
-const arabicSans = IBM_Plex_Sans_Arabic({
-  subsets: ["arabic"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-arabic-sans",
-  display: "swap",
-  preload: false,
-});
-
-const arabicSerif = Noto_Naskh_Arabic({
-  subsets: ["arabic"],
-  weight: ["500", "600", "700"],
-  variable: "--font-arabic-serif",
   display: "swap",
   preload: false,
 });
@@ -82,7 +69,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       lang="en"
       dir="ltr"
       suppressHydrationWarning
-      className={`${outfit.variable} ${fraunces.variable} ${arabicSans.variable} ${arabicSerif.variable}`}
+      className={`${outfit.variable} ${fraunces.variable}`}
     >
       <body className="min-h-screen font-sans antialiased">
         <script dangerouslySetInnerHTML={{ __html: localeBoot }} />
