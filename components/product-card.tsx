@@ -21,14 +21,14 @@ export function ProductCard({ product }: { product: Product }) {
       <Link
         href={href(`/product/${product.slug}`)}
         className="block overflow-hidden rounded-xl shadow-[0_18px_40px_-28px_rgba(28,24,18,0.7)] ring-1 ring-black/10 transition motion-safe:group-hover:-translate-y-0.5 dark:ring-white/10"
-        aria-label={`${product.title} PDF`}
       >
         <Cover product={product} decorative />
+        <span className="sr-only">{product.title}</span>
       </Link>
       <div className="mt-4 flex min-w-0 flex-1 flex-col">
         <p className="text-xs tracking-[0.16em] text-copper uppercase">{category?.name}</p>
         <h3 dir={textDir(product.title)} className="mt-1 font-serif text-2xl leading-tight">
-          <Link href={href(`/product/${product.slug}`)} className="hover:underline">
+          <Link href={href(`/product/${product.slug}`)} className="inline-flex min-h-11 items-center hover:underline">
             {product.title}
           </Link>
         </h3>
@@ -39,7 +39,7 @@ export function ProductCard({ product }: { product: Product }) {
           <span className="text-xs text-muted-foreground">{t.product.pages(pages)}</span>
         </div>
         <div className="mt-3">
-          <PurchaseActions slug={product.slug} />
+          <PurchaseActions slug={product.slug} hint />
         </div>
       </div>
     </article>

@@ -133,6 +133,9 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
+    overflow-wrap: break-word;
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
     background-image:
       radial-gradient(900px 420px at 0% -10%, color-mix(in oklch, var(--primary) 10%, transparent), transparent 55%),
       radial-gradient(700px 380px at 100% 0%, color-mix(in oklch, var(--copper) 12%, transparent), transparent 50%);
@@ -171,11 +174,9 @@
 
 @keyframes rise {
   from {
-    opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(8px);
   }
   to {
-    opacity: 1;
     transform: none;
   }
 }
@@ -199,30 +200,6 @@
   height: auto;
   min-height: 2.75rem;
   max-width: 100%;
-}
-
-.apple-pay-host {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  min-height: 44px;
-}
-
-.apple-pay-host apple-pay-button {
-  --apple-pay-button-width: 100%;
-  --apple-pay-button-height: 44px;
-  --apple-pay-button-border-radius: 8px;
-  --apple-pay-button-padding: 0px 0px;
-  --apple-pay-button-box-sizing: border-box;
-}
-
-@media (min-width: 640px) {
-  .apple-pay-host {
-    width: 200px;
-  }
-  .apple-pay-host apple-pay-button {
-    --apple-pay-button-width: 200px;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

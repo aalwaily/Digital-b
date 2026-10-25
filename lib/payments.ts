@@ -1,4 +1,5 @@
 import Stripe from "stripe";
+import { paymentProvider } from "@/lib/checkout-provider";
 import { isMoyasarConfigured } from "@/lib/moyasar";
 
 export function isStripeConfigured() {
@@ -16,18 +17,34 @@ export function getStripe() {
   return new Stripe(key);
 }
 
-export function isPayPalConfigured() {
-  const id = process.env.PAYPAL_CLIENT_ID?.trim();
-  const secret = process.env.PAYPAL_CLIENT_SECRET?.trim();
-  return Boolean(id && secret);
-}
-
 /** Customer-facing Moyasar checkout. Keys alone stay dormant until this is exactly "true". */
 export function isMoyasarEnabled() {
   return process.env.ENABLE_MOYASAR === "true" && isMoyasarConfigured();
 }
 
+export function isHalaEnabled() {
+  return paymentProvider() === "hala";
+}
+
+export type CheckoutOptions = {
+  stripe: boolean;
+  moyasar: boolean;
+  hala: boolean;
+  /** At least one customer-facing provider is switched on. */
+  open: boolean;
+};
+
+export function checkoutOptions(): CheckoutOptions {
+  const stripe = isStripeEnabled();
+  const moyasar = isMoyasarEnabled();
+  const hala = isHalaEnabled();
+  return { stripe, moyasar, hala, open: stripe || moyasar || hala };
+}
+
+/**
+ * Free demo receipts are off unless the owner sets this exactly to "true".
+ * A store with no live provider does not hand out paid files.
+ */
 export function demoCheckoutAllowed() {
-  if (!isStripeEnabled() && !isPayPalConfigured() && !isMoyasarEnabled()) return true;
   return process.env.ALLOW_DEMO_CHECKOUT === "true";
 }

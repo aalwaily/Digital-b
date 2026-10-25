@@ -64,7 +64,7 @@ export function SampleRequest({
         <ul className="mt-3 space-y-2">
           {downloads.map((sample) => (
             <li key={sample.slug}>
-              <a href={sample.href} className="text-sm underline underline-offset-4" download>
+              <a href={sample.href} className="inline-flex min-h-11 items-center text-sm underline underline-offset-4" download>
                 {t.product.downloadSample(sample.title, sample.pages)}
               </a>
             </li>

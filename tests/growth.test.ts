@@ -17,8 +17,7 @@ const ENV_KEYS = [
   "ENABLE_STRIPE",
   "ENABLE_MOYASAR",
   "STRIPE_SECRET_KEY",
-  "PAYPAL_CLIENT_ID",
-  "PAYPAL_CLIENT_SECRET",
+  "PAYMENT_PROVIDER",
   "MOYASAR_PUBLISHABLE_KEY",
   "MOYASAR_SECRET_KEY",
   "ALLOW_DEMO_CHECKOUT",
@@ -56,8 +55,7 @@ describe("contact address", () => {
 
 describe("payment flags", () => {
   it("keeps Stripe and Moyasar hidden unless their flags are exactly true", () => {
-    delete process.env.PAYPAL_CLIENT_ID;
-    delete process.env.PAYPAL_CLIENT_SECRET;
+    delete process.env.PAYMENT_PROVIDER;
     delete process.env.ALLOW_DEMO_CHECKOUT;
     process.env.STRIPE_SECRET_KEY = "sk_test_stripe";
     process.env.MOYASAR_PUBLISHABLE_KEY = "pk_test_publishablekey";
@@ -66,12 +64,17 @@ describe("payment flags", () => {
     delete process.env.ENABLE_MOYASAR;
     expect(isStripeEnabled()).toBe(false);
     expect(isMoyasarEnabled()).toBe(false);
-    expect(demoCheckoutAllowed()).toBe(true);
+    expect(demoCheckoutAllowed()).toBe(false);
 
     process.env.ENABLE_STRIPE = "false";
     process.env.ENABLE_MOYASAR = "1";
     expect(isStripeEnabled()).toBe(false);
     expect(isMoyasarEnabled()).toBe(false);
+
+    process.env.ALLOW_DEMO_CHECKOUT = "true";
+    expect(demoCheckoutAllowed()).toBe(true);
+    delete process.env.ALLOW_DEMO_CHECKOUT;
+    expect(demoCheckoutAllowed()).toBe(false);
 
     process.env.ENABLE_STRIPE = "true";
     expect(isStripeEnabled()).toBe(true);

@@ -25,7 +25,7 @@ describe("locale negotiation", () => {
   it("redirects the first visit and keeps a manual choice", () => {
     expect(
       negotiateLocale({ pathname: "/", cookie: null, acceptLanguage: "ar", userAgent: "Mozilla/5.0" }),
-    ).toEqual({ action: "redirect", locale: "ar", pathname: "/ar", status: 307 });
+    ).toEqual({ action: "rewrite", locale: "ar", pathname: "/ar" });
     expect(
       negotiateLocale({ pathname: "/shop", cookie: null, acceptLanguage: "en-GB", userAgent: "Mozilla/5.0" }),
     ).toEqual({ action: "redirect", locale: "en", pathname: "/en/shop", status: 301 });

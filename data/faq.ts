@@ -21,7 +21,7 @@ export const faqs: FaqItem[] = [
   {
     question: "Can I get a refund?",
     answer:
-      `No. All sales are final. Digital PDF guides and bundles are not refundable. If a file is corrupted, missing, or the download link fails, email ${site.email} with your order id and the email you used at checkout and we will re-send a working copy. That is a replacement of the file, not a return of the price you paid. Demo orders do not charge anything. Read the all-sales-final policy for the full terms.`,
+      `No. All sales are final. Digital PDF guides and bundles are not refundable. If a file is corrupted, missing, or the download link fails, email ${site.email} with your order id and the email you used at checkout and we will re-send a working copy. That is a replacement of the file, not a return of the price you paid. Read the all-sales-final policy for the full terms.`,
   },
   {
     question: "Which devices open the PDFs?",
@@ -35,18 +35,16 @@ export const faqs: FaqItem[] = [
   },
   {
     question: "How can I pay?",
-    answer:
-      "Payments are processed by PayPal. You can pay with a card or your PayPal balance. Apple Pay appears on Safari on a Mac, iPhone, or iPad that has a card in Wallet, when the store is served over HTTPS on a domain registered with PayPal. Other browsers still offer the card and PayPal balance checkout. The receipt is issued only after PayPal confirms the payment and the amount matches the price on the site.",
+    answer: `Online payment opens very soon. Email ${site.email} to be notified, or to request the file. Until a payment provider is turned on, checkout does not show a card form and nothing is charged. The free sample still downloads.`,
   },
   {
     question: "Can I pay with Apple Pay?",
-    answer:
-      "Yes, where Apple Pay is available. The Apple Pay button is processed by PayPal and appears in Safari when this device has a card in Wallet and the store's domain is registered for Apple Pay. If you do not see it, pay with a card or your PayPal balance on the PayPal page. Vellum Press never sees your card number or your PayPal password.",
+    answer: `Not on this store today. Apple Pay is not offered. Email ${site.email} if you want a note when online payment opens.`,
   },
   {
-    question: "Why does checkout say it is a demo?",
+    question: "Why is there no pay button?",
     answer:
-      "That label appears when PayPal is not configured. No payment form is shown and no charge is made. The demo still opens a download receipt so delivery can be reviewed. Once PayPal is connected, checkout charges through PayPal and the demo path turns off.",
+      "Online payment is not open yet. The product, cart, and checkout pages say so and give an email address. They do not show a button that fails, and they do not give away the full file.",
   },
   {
     question: "Can I share a file with a friend?",

@@ -9,10 +9,7 @@ const messages: Record<string, string> = {
   "Your cart is empty.": "سلتك فارغة.",
   "Too many items in one order.": "عناصر كثيرة في طلب واحد.",
   "Unknown product.": "منتج غير معروف.",
-  "PayPal is not configured.": "PayPal غير مُعد.",
   "Download links are not configured.": "روابط التنزيل غير مُعدة.",
-  "PayPal did not return an approval link.": "لم يُرجع PayPal رابط الموافقة.",
-  "PayPal checkout could not be started.": "تعذر بدء الدفع عبر PayPal.",
   "Card checkout is not available.": "الدفع بالبطاقة غير متاح.",
   "Demo checkout has to be confirmed on the checkout page.": "يجب تأكيد الدفع التجريبي في صفحة الدفع.",
   "Stripe did not return a checkout URL.": "لم يُرجع Stripe رابط الدفع.",
@@ -39,8 +36,6 @@ const messages: Record<string, string> = {
   "Apple Pay requires Safari over HTTPS on a registered domain.":
     "يتطلب Apple Pay متصفح Safari عبر HTTPS على نطاق مسجّل.",
   "Apple Pay could not verify this site. Nothing was charged.": "تعذر على Apple Pay التحقق من هذا الموقع. لم يُخصم شيء.",
-  "Apple Pay could not be confirmed, so the downloads were not released. If PayPal shows a completed payment, email support with the time of the charge.":
-    "تعذر تأكيد Apple Pay، لذلك لم تُفتح التنزيلات. إذا ظهرت دفعة مكتملة في PayPal، راسل الدعم مع وقت الخصم.",
   "Moyasar form failed to load.": "تعذر تحميل نموذج Moyasar.",
   "The payment was not completed.": "لم يكتمل الدفع.",
   "The Moyasar payment form could not be loaded. Try again.": "تعذر تحميل نموذج Moyasar. حاول مرة أخرى.",

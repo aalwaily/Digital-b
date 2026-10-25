@@ -1,8 +1,10 @@
 "use client";
 
 import { useCart } from "@/components/cart-provider";
+import { useCheckoutOptions } from "@/components/checkout-options";
 import { Cover } from "@/components/cover";
 import { useI18n } from "@/components/locale-provider";
+import { PaymentSoon } from "@/components/payment-soon";
 import { Price } from "@/components/price";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { quote } from "@/lib/catalog";
@@ -13,6 +15,7 @@ import Link from "next/link";
 
 export function CartView({ canceled = false }: { canceled?: boolean }) {
   const cart = useCart();
+  const { open } = useCheckoutOptions();
   const { t, href, locale } = useI18n();
   const items = cart.slugs
     .map((slug) => localizedProduct(slug, locale))
@@ -58,10 +61,11 @@ export function CartView({ canceled = false }: { canceled?: boolean }) {
             <li key={item.slug} className="flex min-w-0 gap-4 py-5">
               <Link href={href(`/product/${item.slug}`)} className="w-20 shrink-0 overflow-hidden rounded-md ring-1 ring-black/10">
                 <Cover product={item} decorative />
+                <span className="sr-only">{item.title}</span>
               </Link>
               <div className="min-w-0 flex-1">
                 <h2 dir={textDir(item.title)} className="font-serif text-xl">
-                  <Link href={href(`/product/${item.slug}`)} className="hover:underline">
+                  <Link href={href(`/product/${item.slug}`)} className="inline-flex min-h-11 items-center hover:underline">
                     {item.title}
                   </Link>
                 </h2>
@@ -105,10 +109,16 @@ export function CartView({ canceled = false }: { canceled?: boolean }) {
               </dd>
             </div>
           </dl>
-          <p className="mt-3 text-xs text-muted-foreground">{t.cartPage.note}</p>
-          <Link href={href("/checkout")} className={buttonVariants({ className: "mt-4 flex h-11 w-full" })}>
-            {t.cartPage.checkout}
-          </Link>
+          <p className="mt-3 text-xs text-muted-foreground">{open ? t.cartPage.note : t.cartPage.noteClosed}</p>
+          {open ? (
+            <Link href={href("/checkout")} className={buttonVariants({ className: "mt-4 flex h-11 w-full" })}>
+              {t.cartPage.checkout}
+            </Link>
+          ) : (
+            <div className="mt-4">
+              <PaymentSoon slugs={items.map((item) => item.slug)} />
+            </div>
+          )}
           <Button variant="ghost" className="mt-2 h-11 w-full" onClick={() => cart.clear()}>
             {t.cartPage.clear}
           </Button>

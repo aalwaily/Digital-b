@@ -1,9 +1,10 @@
 "use client";
 
-import { ApplePayButton } from "@/components/apple-pay-button";
 import { useCart } from "@/components/cart-provider";
+import { useCheckoutOptions } from "@/components/checkout-options";
 import { useI18n } from "@/components/locale-provider";
 import { MoyasarForm } from "@/components/moyasar-form";
+import { PaymentSoon } from "@/components/payment-soon";
 import { Price } from "@/components/price";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,28 +20,15 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
 
-export function CheckoutView({
-  stripeEnabled,
-  paypalEnabled,
-  moyasarEnabled = false,
-  halaEnabled = false,
-  usdToSarRate = null,
-}: {
-  stripeEnabled: boolean;
-  paypalEnabled: boolean;
-  moyasarEnabled?: boolean;
-  halaEnabled?: boolean;
-  usdToSarRate?: string | null;
-}) {
+export function CheckoutView({ usdToSarRate = null }: { usdToSarRate?: string | null }) {
   const params = useSearchParams();
   const router = useRouter();
   const cart = useCart();
   const { t, href, locale } = useI18n();
+  const { stripe: stripeEnabled, moyasar: moyasarEnabled, hala: halaEnabled, open } = useCheckoutOptions();
   const buy = params.get("buy");
   const canceled = params.get("canceled") === "1";
-  const paypalFailed = params.get("paypal") === "failed";
   const moyasarFailed = params.get("moyasar") === "failed";
-  const liveCheckout = stripeEnabled || paypalEnabled || moyasarEnabled;
   const slugs = useMemo(() => {
     if (buy) return [buy];
     return cart.slugs;
@@ -51,9 +39,10 @@ export function CheckoutView({
   const [status, setStatus] = useState("");
   const [pending, setPending] = useState(false);
   const [moyasarConfig, setMoyasarConfig] = useState<MoyasarFormConfig | null>(null);
-  const providerRef = useRef<"card" | "paypal" | "moyasar" | "hala">(
-    halaEnabled ? "hala" : paypalEnabled ? "paypal" : stripeEnabled ? "card" : moyasarEnabled ? "moyasar" : "card",
+  const providerRef = useRef<"card" | "moyasar" | "hala">(
+    halaEnabled ? "hala" : stripeEnabled ? "card" : "moyasar",
   );
+  const stickyProvider = halaEnabled ? "hala" : stripeEnabled ? "card" : "moyasar";
 
   let summary: ReturnType<typeof quote> | null = null;
   let catalogError = "";
@@ -66,41 +55,25 @@ export function CheckoutView({
 
   async function placeOrder(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!summary) return;
+    if (!summary || !open) return;
     const submitter = (event.nativeEvent as SubmitEvent).submitter;
     const buttonValue = submitter instanceof HTMLButtonElement ? submitter.value : "";
-    const choice =
-      buttonValue === "paypal" || buttonValue === "card" || buttonValue === "moyasar" || buttonValue === "hala"
-        ? buttonValue
-        : providerRef.current;
+    const choice = buttonValue === "card" || buttonValue === "moyasar" || buttonValue === "hala" ? buttonValue : providerRef.current;
     const provider =
-      choice === "hala" && halaEnabled
-        ? "hala"
-        : choice === "paypal" && paypalEnabled
-          ? "paypal"
-          : choice === "moyasar" && moyasarEnabled
-            ? "moyasar"
-            : "card";
+      choice === "hala" && halaEnabled ? "hala" : choice === "moyasar" && moyasarEnabled ? "moyasar" : "card";
     setPending(true);
     setError("");
     setStatus("");
     if (provider !== "moyasar") setMoyasarConfig(null);
     try {
       const response = await fetch(
-        provider === "hala"
-          ? "/api/hala/checkout"
-          : provider === "paypal"
-            ? "/api/paypal/checkout"
-            : provider === "moyasar"
-              ? "/api/moyasar/session"
-              : "/api/checkout",
+        provider === "hala" ? "/api/hala/checkout" : provider === "moyasar" ? "/api/moyasar/session" : "/api/checkout",
         {
           method: "POST",
           headers: { "content-type": "application/json" },
           body: JSON.stringify({
             slugs: summary.lines.map((line) => line.slug),
             email,
-            confirmDemo: provider === "card" && !stripeEnabled,
           }),
         },
       );
@@ -155,15 +128,14 @@ export function CheckoutView({
 
   return (
     <div className="grid min-w-0 gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,320px)]">
-      <form id="checkout-form" onSubmit={placeOrder} className="order-2 min-w-0 space-y-6 pb-28 lg:order-1 lg:pb-0">
+      <form
+        id="checkout-form"
+        onSubmit={placeOrder}
+        className={`order-2 min-w-0 space-y-6 lg:order-1 ${open ? "pb-[calc(6.5rem+env(safe-area-inset-bottom))] lg:pb-0" : ""}`}
+      >
         {canceled ? (
           <p role="status" className="rounded-xl border border-copper/40 bg-card px-4 py-3 text-sm">
             {t.checkout.canceled}
-          </p>
-        ) : null}
-        {paypalFailed ? (
-          <p role="alert" className="rounded-xl border border-destructive/40 bg-card px-4 py-3 text-sm">
-            {t.checkout.paypalFailed}
           </p>
         ) : null}
         {moyasarFailed ? (
@@ -171,13 +143,13 @@ export function CheckoutView({
             {t.checkout.moyasarFailed}
           </p>
         ) : null}
-        <div
-          className={`rounded-xl px-4 py-3 text-sm leading-relaxed ${
-            liveCheckout ? "bg-secondary" : "border border-copper/50 bg-card"
-          }`}
-        >
-          {checkoutNotice(t, locale, stripeEnabled, paypalEnabled, moyasarEnabled)}
-        </div>
+        {open ? (
+          <div className="rounded-xl bg-secondary px-4 py-3 text-sm leading-relaxed">
+            {checkoutNotice(t, locale, stripeEnabled, moyasarEnabled, halaEnabled)}
+          </div>
+        ) : (
+          <PaymentSoon slugs={summary.lines.map((line) => line.slug)} />
+        )}
         {warnings.map((warning) => (
           <p key={`${warning.bundle}-${warning.guide}`} role="status" className="rounded-xl border border-copper/40 px-4 py-3 text-sm">
             {t.checkout.overlap(
@@ -186,22 +158,22 @@ export function CheckoutView({
             )}
           </p>
         ))}
-        <div className="space-y-2">
-          <Label htmlFor="checkout-email">{t.checkout.email}</Label>
-          <Input
-            id="checkout-email"
-            type="email"
-            required
-            autoComplete="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            className="h-11"
-            placeholder="you@example.com"
-          />
-          <p className="text-xs text-muted-foreground">
-            {t.checkout.emailHelp}
-          </p>
-        </div>
+        {open ? (
+          <div className="space-y-2">
+            <Label htmlFor="checkout-email">{t.checkout.email}</Label>
+            <Input
+              id="checkout-email"
+              type="email"
+              required
+              autoComplete="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              className="h-11 text-base"
+              placeholder="you@example.com"
+            />
+            <p className="text-xs text-muted-foreground">{t.checkout.emailHelp}</p>
+          </div>
+        ) : null}
         {error ? (
           <p role="alert" className="text-sm text-destructive">
             {translateMessage(locale, error)}
@@ -212,109 +184,65 @@ export function CheckoutView({
             {status}
           </p>
         ) : null}
-        <p className="rounded-xl border bg-card px-4 py-3 text-sm leading-relaxed">
-          {t.checkout.final}
-        </p>
-        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-          {paypalEnabled && summary ? (
-            <ApplePayButton
-              locale={locale}
-              email={email}
-              slugs={summary.lines.map((line) => line.slug)}
-              amount={summary.subtotal}
-              items={summary.lines.map((line) => ({
-                label: localizedProduct(line.slug, locale)?.title ?? line.title,
-                amount: line.price,
-              }))}
-              disabled={pending}
-              onBusy={(busy) => {
-                setPending(busy);
-                if (busy) setMoyasarConfig(null);
-              }}
-              onPaid={(token) => {
-                summary.lines.forEach((line) => cart.remove(line.slug));
-                router.push(href(`/orders/${encodeURIComponent(token)}?paid=1`));
-              }}
-              onError={(message) => {
-                setStatus("");
-                setError(translateMessage(locale, message));
-                setPending(false);
-              }}
-              onCancel={() => {
-                setError("");
-                setStatus(t.checkout.appleCanceled);
-                setPending(false);
-              }}
-            />
-          ) : null}
-          {stripeEnabled || (!paypalEnabled && !moyasarEnabled) ? (
-            <Button
-              type="submit"
-              name="provider"
-              value="card"
-              disabled={pending}
-              className="wrap-button h-auto w-full px-5 py-2 sm:w-auto"
-              onClick={() => {
-                providerRef.current = "card";
-              }}
-            >
-              {pending ? t.checkout.working : stripeEnabled ? t.checkout.stripe : t.checkout.demo}
-            </Button>
-          ) : null}
-          {halaEnabled ? (
-            <Button
-              type="submit"
-              name="provider"
-              value="hala"
-              disabled={pending}
-              className="wrap-button h-auto w-full px-5 py-2 sm:w-auto"
-              onClick={() => {
-                providerRef.current = "hala";
-              }}
-            >
-              <span className="flex flex-col items-start">
-                <span>{pending ? t.checkout.working : t.checkout.hala}</span>
-                <span lang="ar" dir="rtl" className="text-xs font-normal opacity-80">
-                  {isolateEmbeds(t.checkout.halaAr)}
+        <p className="rounded-xl border bg-card px-4 py-3 text-sm leading-relaxed">{t.checkout.final}</p>
+        {open ? (
+          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+            {halaEnabled ? (
+              <Button
+                type="submit"
+                name="provider"
+                value="hala"
+                disabled={pending}
+                className="wrap-button h-auto min-h-11 w-full px-5 py-2 sm:w-auto"
+                onClick={() => {
+                  providerRef.current = "hala";
+                }}
+              >
+                <span className="flex flex-col items-start">
+                  <span>{pending ? t.checkout.working : t.checkout.hala}</span>
+                  <span lang="ar" dir="rtl" className="text-xs font-normal opacity-80">
+                    {isolateEmbeds(t.checkout.halaAr)}
+                  </span>
                 </span>
-              </span>
-            </Button>
-          ) : null}
-          {paypalEnabled ? (
-            <Button
-              type="submit"
-              name="provider"
-              value="paypal"
-              disabled={pending}
-              className="wrap-button h-auto w-full px-5 py-2 sm:w-auto"
-              onClick={() => {
-                providerRef.current = "paypal";
-              }}
-            >
-              {pending ? t.checkout.working : t.checkout.paypal}
-            </Button>
-          ) : null}
-          {moyasarEnabled ? (
-            <Button
-              type="submit"
-              name="provider"
-              value="moyasar"
-              variant={stripeEnabled || paypalEnabled ? "outline" : "default"}
-              disabled={pending}
-              className="wrap-button h-auto w-full px-5 py-2 sm:w-auto"
-              onClick={() => {
-                providerRef.current = "moyasar";
-              }}
-            >
-              <span className="flex flex-col items-start">
-                <span>{pending ? t.checkout.working : t.checkout.moyasar}</span>
-                <span lang="ar" dir="rtl" className="text-xs font-normal opacity-80">
-                  {isolateEmbeds(t.checkout.moyasarAr)}
+              </Button>
+            ) : null}
+            {stripeEnabled ? (
+              <Button
+                type="submit"
+                name="provider"
+                value="card"
+                variant={halaEnabled ? "outline" : "default"}
+                disabled={pending}
+                className="wrap-button h-auto min-h-11 w-full px-5 py-2 sm:w-auto"
+                onClick={() => {
+                  providerRef.current = "card";
+                }}
+              >
+                {pending ? t.checkout.working : t.checkout.stripe}
+              </Button>
+            ) : null}
+            {moyasarEnabled ? (
+              <Button
+                type="submit"
+                name="provider"
+                value="moyasar"
+                variant={stripeEnabled || halaEnabled ? "outline" : "default"}
+                disabled={pending}
+                className="wrap-button h-auto min-h-11 w-full px-5 py-2 sm:w-auto"
+                onClick={() => {
+                  providerRef.current = "moyasar";
+                }}
+              >
+                <span className="flex flex-col items-start">
+                  <span>{pending ? t.checkout.working : t.checkout.moyasar}</span>
+                  <span lang="ar" dir="rtl" className="text-xs font-normal opacity-80">
+                    {isolateEmbeds(t.checkout.moyasarAr)}
+                  </span>
                 </span>
-              </span>
-            </Button>
-          ) : null}
-        </div>
+              </Button>
+            ) : null}
+          </div>
+        ) : null}
         {moyasarConfig ? <MoyasarForm config={moyasarConfig} /> : null}
       </form>
       <aside className="order-1 h-fit rounded-2xl border bg-card p-5 lg:order-2 lg:sticky lg:top-28">
@@ -325,7 +253,7 @@ export function CheckoutView({
             const title = localizedProduct(line.slug, locale)?.title ?? line.title;
             return (
               <li key={line.slug} className="flex items-start justify-between gap-3">
-                <span>
+                <span className="min-w-0">
                   <span dir={textDir(title)}>{title}</span>
                   {product?.kind === "bundle" ? (
                     <span className="mt-1 block text-xs text-muted-foreground">
@@ -338,7 +266,7 @@ export function CheckoutView({
             );
           })}
         </ul>
-        <div className="mt-4 flex justify-between border-t pt-3 font-medium">
+        <div className="mt-4 flex justify-between gap-3 border-t pt-3 font-medium">
           <span>{t.checkout.total}</span>
           <span className="price text-end">
             <span dir="ltr">{formatMoney(summary.subtotal)}</span>
@@ -355,34 +283,28 @@ export function CheckoutView({
             </span>
           </p>
         ) : null}
-        {buy ? (
-          <p className="mt-3 text-xs text-muted-foreground">{t.checkout.buyOnly}</p>
-        ) : null}
+        {buy ? <p className="mt-3 text-xs text-muted-foreground">{t.checkout.buyOnly}</p> : null}
       </aside>
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t bg-background/95 p-3 backdrop-blur lg:hidden">
-        <Button
-          type="submit"
-          form="checkout-form"
-          name="provider"
-          value={
-            halaEnabled ? "hala" : paypalEnabled ? "paypal" : stripeEnabled ? "card" : moyasarEnabled ? "moyasar" : "card"
-          }
-          disabled={pending}
-          className="wrap-button h-auto w-full px-5 py-2"
-        >
-          {pending
-            ? t.checkout.working
-            : halaEnabled
-              ? t.checkout.hala
-              : paypalEnabled
-                ? t.checkout.paypal
+      {open ? (
+        <div className="fixed inset-x-0 bottom-0 z-30 border-t bg-background/95 px-3 pt-2 ps-[max(0.75rem,env(safe-area-inset-left))] pe-[max(0.75rem,env(safe-area-inset-right))] pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
+          <Button
+            type="submit"
+            form="checkout-form"
+            name="provider"
+            value={stickyProvider}
+            disabled={pending}
+            className="wrap-button h-auto min-h-11 w-full px-5 py-2"
+          >
+            {pending
+              ? t.checkout.working
+              : halaEnabled
+                ? t.checkout.hala
                 : stripeEnabled
                   ? t.checkout.stripe
-                  : moyasarEnabled
-                    ? t.checkout.moyasar
-                    : t.checkout.demo}
-        </Button>
-      </div>
+                  : t.checkout.moyasar}
+          </Button>
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -391,17 +313,17 @@ function checkoutNotice(
   t: ReturnType<typeof useI18n>["t"],
   locale: ReturnType<typeof useI18n>["locale"],
   stripeEnabled: boolean,
-  paypalEnabled: boolean,
   moyasarEnabled: boolean,
+  halaEnabled: boolean,
 ) {
-  if (!stripeEnabled && !paypalEnabled && !moyasarEnabled) return t.checkout.noticeDemo;
-  if (paypalEnabled && !stripeEnabled && !moyasarEnabled) return t.checkout.noticePaypal;
   const options = [
-    paypalEnabled ? t.checkout.optionPaypal : "",
+    halaEnabled ? t.checkout.optionHala : "",
     stripeEnabled ? t.checkout.optionStripe : "",
     moyasarEnabled ? t.checkout.optionMoyasar : "",
   ].filter(Boolean);
   if (options.length === 1 && stripeEnabled) return t.checkout.noticeStripe;
+  if (options.length === 1 && halaEnabled) return t.checkout.noticeHala;
+  if (options.length === 1 && moyasarEnabled) return t.checkout.noticeMoyasar;
   return t.checkout.payWith(joinOptions(options, locale));
 }
 
@@ -410,5 +332,5 @@ function joinOptions(options: string[], locale: "en" | "ar") {
   const or = locale === "ar" ? "أو" : "or";
   const comma = locale === "ar" ? "، " : ", ";
   if (options.length === 2) return `${options[0]} ${or} ${options[1]}`;
-  return `${options.slice(0, -1).join(comma)}${or} ${options[options.length - 1]}`;
+  return `${options.slice(0, -1).join(comma)}${locale === "ar" ? "، " : ", "}${or} ${options[options.length - 1]}`;
 }

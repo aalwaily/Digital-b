@@ -1,6 +1,5 @@
 import { POST as halaCheckout } from "@/app/(store)/api/hala/checkout/route";
 import { POST as halaWebhook } from "@/app/(store)/api/hala/webhook/route";
-import { POST as paypalCheckout } from "@/app/(store)/api/paypal/checkout/route";
 import { paymentProvider } from "@/lib/checkout-provider";
 import { verifyDownloadToken } from "@/lib/download-token";
 import {
@@ -44,14 +43,15 @@ function paidBody(overrides: Record<string, unknown> = {}) {
 }
 
 describe("payment provider", () => {
-  it("defaults to PayPal unless the flag is exactly hala", () => {
-    expect(paymentProvider(undefined)).toBe("paypal");
-    expect(paymentProvider("")).toBe("paypal");
-    expect(paymentProvider("paypal")).toBe("paypal");
-    expect(paymentProvider(" PayPal ")).toBe("paypal");
-    expect(paymentProvider("stripe")).toBe("paypal");
+  it("stays closed unless the flag is exactly hala", () => {
+    expect(paymentProvider(undefined)).toBe("none");
+    expect(paymentProvider("")).toBe("none");
+    expect(paymentProvider("paypal")).toBe("none");
+    expect(paymentProvider(" PayPal ")).toBe("none");
+    expect(paymentProvider("stripe")).toBe("none");
     expect(paymentProvider("hala")).toBe("hala");
     expect(paymentProvider("HALA")).toBe("hala");
+    expect(paymentProvider(" hala ")).toBe("hala");
   });
 });
 
@@ -193,64 +193,6 @@ describe("Hala routes", () => {
           const payload = verifyDownloadToken(token);
           expect(payload?.files).toEqual(["steady-mind"]);
           expect(payload?.demo).toBe(false);
-        });
-      });
-    });
-  });
-
-  it("keeps the PayPal route on the new USD price when Hala is not selected", async () => {
-    const bodies: Array<{ purchase_units?: Array<{ amount?: { value?: string; currency_code?: string } }> }> = [];
-    vi.stubGlobal(
-      "fetch",
-      vi.fn(async (url: string, init?: RequestInit) => {
-        const href = String(url);
-        if (href.endsWith("/v1/oauth2/token")) {
-          return new Response(JSON.stringify({ access_token: "tok" }), { status: 200 });
-        }
-        if (href.endsWith("/v2/checkout/orders")) {
-          bodies.push(JSON.parse(String(init?.body)) as (typeof bodies)[number]);
-          return new Response(
-            JSON.stringify({
-              id: "5O190127TN364715T",
-              status: "CREATED",
-              links: [{ rel: "payer-action", href: "https://www.sandbox.paypal.com/checkoutnow?token=1" }],
-            }),
-            { status: 201 },
-          );
-        }
-        return new Response("unexpected", { status: 500 });
-      }),
-    );
-
-    await withEnv("PAYMENT_PROVIDER", undefined, async () => {
-      await withEnv("PAYPAL_CLIENT_ID", "client-id", async () => {
-        await withEnv("PAYPAL_CLIENT_SECRET", "client-secret", async () => {
-          await withEnv("PAYPAL_ENV", "sandbox", async () => {
-            await withEnv("DOWNLOAD_SECRET", DOWNLOAD_SECRET, async () => {
-              const response = await paypalCheckout(
-                new Request("https://guides.example.com/api/paypal/checkout", {
-                  method: "POST",
-                  headers: {
-                    "content-type": "application/json",
-                    "x-forwarded-host": "guides.example.com",
-                    "x-forwarded-proto": "https",
-                  },
-                  body: JSON.stringify({
-                    email: "reader@example.com",
-                    slugs: ["health-fitness-bundle"],
-                    amount: 1,
-                  }),
-                }),
-              );
-              expect(response.status).toBe(200);
-              const payload = (await response.json()) as { url?: string };
-              expect(payload.url).toBe("https://www.sandbox.paypal.com/checkoutnow?token=1");
-              expect(bodies[0]?.purchase_units?.[0]?.amount).toMatchObject({
-                currency_code: "USD",
-                value: "29.50",
-              });
-            });
-          });
         });
       });
     });
