@@ -5,6 +5,10 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   experimental: {
     optimizePackageImports: ["lucide-react"],
+    // Inline the small stylesheets so the first paint does not wait on a
+    // separate render-blocking CSS request (and so fonts are discovered
+    // from the document itself).
+    inlineCss: true,
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {

@@ -12,8 +12,10 @@ import { textDir } from "@/lib/i18n/bidi";
 import { formatMoney, formatSarAmount } from "@/lib/money";
 import { localizedProduct } from "@/lib/i18n/content";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 
-export function CartView({ canceled = false }: { canceled?: boolean }) {
+export function CartView() {
   const cart = useCart();
   const { open } = useCheckoutOptions();
   const { t, href, locale } = useI18n();
@@ -22,20 +24,11 @@ export function CartView({ canceled = false }: { canceled?: boolean }) {
     .filter((item) => item !== undefined);
   const summary = items.length ? quote(items.map((item) => item.slug)) : null;
 
-  const canceledNote = canceled ? (
-    <p role="status" className="mb-6 rounded-xl border border-copper/40 bg-card px-4 py-3 text-sm">
-      {t.cartPage.canceled}
-    </p>
-  ) : null;
-
-  if (!cart.ready) {
-    return (
-      <div>
-        {canceledNote}
-        <p className="text-sm text-muted-foreground">{t.cartPage.loading}</p>
-      </div>
-    );
-  }
+  const canceledNote = (
+    <Suspense fallback={null}>
+      <CanceledNote />
+    </Suspense>
+  );
 
   if (!summary) {
     return (
@@ -125,5 +118,20 @@ export function CartView({ canceled = false }: { canceled?: boolean }) {
         </aside>
       </div>
     </div>
+  );
+}
+
+function CanceledNote() {
+  const params = useSearchParams();
+  const { t } = useI18n();
+  const [canceled, setCanceled] = useState(false);
+  useEffect(() => {
+    setCanceled(params.get("canceled") === "1");
+  }, [params]);
+  if (!canceled) return null;
+  return (
+    <p role="status" className="mb-6 rounded-xl border border-copper/40 bg-card px-4 py-3 text-sm">
+      {t.cartPage.canceled}
+    </p>
   );
 }

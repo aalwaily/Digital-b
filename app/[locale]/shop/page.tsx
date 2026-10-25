@@ -1,17 +1,11 @@
 import { ShopBrowser } from "@/components/shop-browser";
 import { bundles, guides } from "@/data/products";
-import { searchProducts } from "@/lib/catalog";
+import { shopListings } from "@/lib/catalog";
 import { getDictionary } from "@/lib/i18n/dictionary";
-import { localizeProduct, requireLocale } from "@/lib/i18n/content";
+import { requireLocale } from "@/lib/i18n/content";
 import { pageMetadata } from "@/lib/page-meta";
 import { staticSeo } from "@/data/page-seo";
 import type { Metadata } from "next";
-
-type Search = { q?: string | string[]; category?: string | string[]; sort?: string | string[] };
-
-function first(value: string | string[] | undefined) {
-  return Array.isArray(value) ? value[0] ?? "" : value ?? "";
-}
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const locale = requireLocale((await params).locale);
@@ -25,20 +19,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   });
 }
 
-export default async function ShopPage({
-  params,
-  searchParams,
-}: {
-  params: Promise<{ locale: string }>;
-  searchParams: Promise<Search>;
-}) {
+export default async function ShopPage({ params }: { params: Promise<{ locale: string }> }) {
   const locale = requireLocale((await params).locale);
   const t = getDictionary(locale);
-  const queryParams = await searchParams;
-  const query = first(queryParams.q);
-  const category = first(queryParams.category) || "all";
-  const sort = first(queryParams.sort) || "featured";
-  const results = searchProducts({ query, category, sort, locale }).map((product) => localizeProduct(product, locale));
+  const listings = shopListings(locale);
 
   return (
     <div className="mx-auto w-full min-w-0 max-w-6xl px-5 py-12">
@@ -46,7 +30,7 @@ export default async function ShopPage({
       <h1 className="mt-2 font-serif text-4xl md:text-5xl">{t.shop.title}</h1>
       <p className="mt-3 max-w-2xl text-muted-foreground">{t.shop.lede(guides.length, bundles.length)}</p>
       <div className="mt-8 min-w-0">
-        <ShopBrowser query={query} category={category} sort={sort} results={results} />
+        <ShopBrowser listings={listings} />
       </div>
     </div>
   );
