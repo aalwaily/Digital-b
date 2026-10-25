@@ -64,6 +64,38 @@ export function samplePageCount(slug: string) {
   return pdfMeta[slug]?.samplePages ?? null;
 }
 
+export type FileFacts = {
+  pages: number;
+  samplePages: number;
+  bytes: number;
+  files: number;
+};
+
+/** Page count, sample length, and byte size from the shipped PDFs. */
+export function fileFacts(product: Product): FileFacts {
+  const slugs = isBundle(product) ? product.includes : [product.slug];
+  let samplePages = 0;
+  let bytes = 0;
+  let files = 0;
+  for (const slug of slugs) {
+    const meta = pdfMeta[slug];
+    if (!meta) continue;
+    samplePages += meta.samplePages;
+    bytes += meta.bytes;
+    files += 1;
+  }
+  return {
+    pages: pageCountFor(product),
+    samplePages,
+    bytes,
+    files: files || slugs.length,
+  };
+}
+
+export function approximateKilobytes(bytes: number) {
+  return Math.max(1, Math.round(bytes / 1024));
+}
+
 export function expandFiles(slugs: string[]) {
   const files: string[] = [];
   for (const slug of slugs) {

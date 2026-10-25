@@ -1,5 +1,12 @@
 import { isolateEmbeds } from "@/lib/i18n/bidi";
 
+function arabicPages(count: number) {
+  if (count === 1) return "صفحة واحدة";
+  if (count === 2) return "صفحتان";
+  if (count >= 3 && count <= 10) return `${count} صفحات`;
+  return `${count} صفحة`;
+}
+
 export const dictionary = {
   en: {
     skip: "Skip to content",
@@ -124,6 +131,28 @@ export const dictionary = {
       cover: "Cover",
       contentsTab: "Contents",
       worksheet: "Worksheet",
+      forWhom: "Who it's for",
+      specs: "File details",
+      formatValue: "PDF",
+      samplePill: (count: number) => (count === 1 ? "1-page sample" : `${count}-page sample`),
+      paperValue: "US Letter",
+      languageValue: "English file",
+      filesValue: (count: number) => (count === 1 ? "1 PDF" : `${count} separate PDFs`),
+      sizeValue: (kb: number) => `About ${kb} KB`,
+      about: "About this guide",
+      previewTitle: "Look inside",
+      samplePageAlt: (title: string, page: number) => `Page ${page} of the free sample PDF for ${title}`,
+      samplePageCaption: (page: number, samplePages: number, fullPages: number) =>
+        `Page ${page} of the free sample (${samplePages} pages). The full guide is ${fullPages} pages.`,
+      deliveryTitle: "Delivery",
+      deliveryBody: (days: number) =>
+        `After payment is confirmed, the receipt includes a signed download link. The link lasts ${days} days. Full PDFs are not public links.`,
+      deliveryClosed: "Online payment is not open yet, so checkout does not release the full file.",
+      includedInBundle: "This guide is one of the PDFs in this bundle.",
+      sameCategory: "Same category.",
+      relatedLead: "Other guides on the same shelf, or the bundle that includes this file.",
+      stickyBuy: "Buy this guide",
+      sections: (count: number) => (count === 1 ? "1 section" : `${count} sections`),
       sampleOne: "Get the free sample",
       sampleMany: "Get the free samples",
       sampleHelp: "Enter your email and the sample PDF unlocks on this page.",
@@ -463,6 +492,37 @@ export const dictionary = {
       cover: "الغلاف",
       contentsTab: "المحتويات",
       worksheet: "ورقة عمل",
+      forWhom: "لمن يناسب",
+      specs: "تفاصيل الملف",
+      formatValue: "PDF",
+      samplePill: (count: number) => (count === 2 ? "عيّنة من صفحتين" : `عيّنة من ${arabicPages(count)}`),
+      paperValue: "ورق Letter",
+      languageValue: "الملف بالإنجليزية",
+      filesValue: (count: number) => {
+        if (count === 1) return "ملف PDF واحد";
+        if (count === 2) return "ملفان PDF منفصلان";
+        return `${count} ملفات PDF منفصلة`;
+      },
+      sizeValue: (kb: number) => `نحو ${kb} كيلوبايت`,
+      about: "عن هذا الدليل",
+      previewTitle: "اطّلع على الداخل",
+      samplePageAlt: (title: string, page: number) => `الصفحة ${page} من العيّنة المجانية: ${title}`,
+      samplePageCaption: (page: number, samplePages: number, fullPages: number) =>
+        `الصفحة ${page} من العيّنة المجانية (${arabicPages(samplePages)}). الدليل الكامل من ${arabicPages(fullPages)}.`,
+      deliveryTitle: "التسليم",
+      deliveryBody: (days: number) =>
+        `بعد تأكيد الدفع، يتضمن الإيصال رابط تنزيل موقّع. يبقى الرابط ${days} يومًا. ملفات PDF الكاملة ليست روابط عامة.`,
+      deliveryClosed: "الدفع عبر الإنترنت غير مفتوح بعد، لذلك لا يُسلَّم الملف الكامل من صفحة الشراء.",
+      includedInBundle: "هذا الدليل أحد ملفات هذه الباقة.",
+      sameCategory: "التصنيف نفسه.",
+      relatedLead: "أدلة من الرف نفسه، أو الباقة التي تضم هذا الملف.",
+      stickyBuy: "شراء هذا الدليل",
+      sections: (count: number) => {
+        if (count === 1) return "قسم واحد";
+        if (count === 2) return "قسمان";
+        if (count >= 3 && count <= 10) return `${count} أقسام`;
+        return `${count} قسمًا`;
+      },
       sampleOne: "احصل على العيّنة المجانية",
       sampleMany: "احصل على العيّنات المجانية",
       sampleHelp: "أدخل بريدك الإلكتروني، وتُفتح العيّنة في هذه الصفحة.",

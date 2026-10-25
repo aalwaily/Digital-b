@@ -1,7 +1,7 @@
 import type { Post } from "@/data/blog";
 import type { Faq, Product } from "@/data/products";
 import { site } from "@/data/site";
-import { pageCountFor } from "@/lib/catalog";
+import { fileFacts } from "@/lib/catalog";
 import { stripBidiIsolates } from "@/lib/i18n/bidi";
 import { localizeCategory, localizeProduct } from "@/lib/i18n/content";
 import { localePath, type Locale } from "@/lib/i18n/config";
@@ -28,6 +28,8 @@ export function productSchema(product: Product, siteUrl: string, locale: Locale 
   const category = localizeCategory(product.category, locale);
   const path = localePath(locale, `/product/${product.slug}`);
   const url = `${siteUrl}${path}`;
+  const facts = fileFacts(product);
+  const ar = locale === "ar";
   return {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -39,11 +41,19 @@ export function productSchema(product: Product, siteUrl: string, locale: Locale 
     image: [`${url}/opengraph-image`],
     url,
     inLanguage: locale,
-    additionalProperty: {
-      "@type": "PropertyValue",
-      name: locale === "ar" ? "عدد الصفحات" : "Page count",
-      value: pageCountFor(product),
-    },
+    additionalProperty: [
+      { "@type": "PropertyValue", name: ar ? "عدد الصفحات" : "Page count", value: facts.pages },
+      { "@type": "PropertyValue", name: ar ? "صفحات العيّنة" : "Sample pages", value: facts.samplePages },
+      { "@type": "PropertyValue", name: ar ? "صيغة الملف" : "File format", value: "PDF" },
+      {
+        "@type": "PropertyValue",
+        name: ar ? "مقاس الصفحة" : "Page size",
+        value: "US Letter (8.5 x 11 in)",
+      },
+      { "@type": "PropertyValue", name: ar ? "لغة الملف" : "File language", value: ar ? "الإنجليزية" : "English" },
+      { "@type": "PropertyValue", name: ar ? "عدد الملفات" : "PDF files", value: facts.files },
+      { "@type": "PropertyValue", name: ar ? "حجم الملف" : "File size", value: facts.bytes, unitText: "bytes" },
+    ],
     offers: {
       "@type": "Offer",
       priceCurrency: "USD",
