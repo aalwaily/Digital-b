@@ -34,8 +34,19 @@ export function PurchaseActions({
   return (
     <div className={className}>
       <div className={`flex w-full min-w-0 gap-2 ${mode === "full" && row && open ? "flex-row" : "flex-col sm:flex-row"}`}>
+        {showBuy ? (
+          <Button
+            className="wrap-button h-auto min-h-11 w-full flex-1 px-4 py-2"
+            onClick={() => {
+              router.push(href(`/checkout?buy=${slug}`));
+            }}
+          >
+            {t.product.buyNow}
+          </Button>
+        ) : null}
         {showCart ? (
           <Button
+            variant={showBuy ? "outline" : "default"}
             className="wrap-button h-auto min-h-11 w-full flex-1 px-4 py-2"
             onClick={() => {
               cart.add(slug);
@@ -44,17 +55,6 @@ export function PurchaseActions({
           >
             {inCart || added ? <Check /> : <ShoppingBag />}
             {inCart || added ? t.product.inCart : t.product.add}
-          </Button>
-        ) : null}
-        {showBuy ? (
-          <Button
-            variant={mode === "primary" ? "default" : "outline"}
-            className="wrap-button h-auto min-h-11 w-full flex-1 px-4 py-2"
-            onClick={() => {
-              router.push(href(`/checkout?buy=${slug}`));
-            }}
-          >
-            {t.product.buyNow}
           </Button>
         ) : null}
       </div>

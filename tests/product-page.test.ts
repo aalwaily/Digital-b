@@ -3,7 +3,7 @@ import { getProduct, guides, products } from "@/data/products";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { approximateKilobytes, fileFacts, pageCountFor, samplePageCount } from "@/lib/catalog";
 import { SAMPLE_PREVIEW, samplePreviewSrc } from "@/lib/sample-preview";
-import { productSchema } from "@/lib/schema";
+import { faqSchema, productSchema } from "@/lib/schema";
 import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
@@ -55,6 +55,44 @@ describe("product page facts", () => {
     expect(copy.deliveryClosed).not.toMatch(banned);
     expect(getDictionary("en").product.deliveryBody(14)).toContain("14");
     expect(copy.samplePageCaption(2, 4, 13)).toContain("4");
+  });
+
+  it("keeps the mobile decision copy honest in both languages", () => {
+    const hype = /30-day|30 day|money-back|guarantee|★★|5-star|customers love|فقط اليوم|ضمان/i;
+    for (const locale of ["en", "ar"] as const) {
+      const copy = getDictionary(locale).product;
+      const blob = [
+        copy.outcome,
+        copy.youGet,
+        copy.insideRest,
+        copy.trustTitle,
+        copy.trustInstantTitle,
+        copy.trustInstantBody,
+        copy.trustSecureTitle,
+        copy.trustSecureOpen,
+        copy.trustSecureClosed,
+        copy.trustCopyTitle,
+        copy.trustWhatsappTitle,
+      ].join("\n");
+      expect(blob, locale).not.toMatch(banned);
+      expect(blob, locale).not.toMatch(hype);
+    }
+    const english = getDictionary("en").product;
+    expect(english.trustInstantBody).toMatch(/payment is confirmed/i);
+    expect(english.trustSecureClosed).toMatch(/not open yet/i);
+    expect(english.trustSecureOpen).toMatch(/card/i);
+    expect(getDictionary("ar").product.trustSecureClosed).toMatch(/غير مفتوح/);
+    expect(getDictionary("ar").product.trustInstantBody).toMatch(/الإيصال/);
+  });
+
+  it("builds FAQPage JSON-LD from that product's own questions", () => {
+    const guide = getProduct("gulf-ats-cv-kit");
+    expect(guide).toBeTruthy();
+    const schema = faqSchema(guide!.faqs);
+    expect(schema["@type"]).toBe("FAQPage");
+    expect(schema.mainEntity).toHaveLength(guide!.faqs.length);
+    expect(schema.mainEntity.map((item) => item.name)).toEqual(guide!.faqs.map((item) => item.question));
+    expect(JSON.stringify(schema)).not.toMatch(/aggregateRating|reviewCount|ratingValue/);
   });
 
   it("extends product schema with file facts and still refuses ratings", () => {

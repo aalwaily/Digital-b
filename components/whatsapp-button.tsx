@@ -1,4 +1,4 @@
-const WHATSAPP_URL = "https://wa.me/966509309787?s=p";
+export const WHATSAPP_URL = "https://wa.me/966509309787?s=p";
 
 /**
  * Fixed chat button. `left` is physical, so Arabic pages keep it in the
