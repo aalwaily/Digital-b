@@ -83,8 +83,8 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="border-t">
-        <p className="mx-auto flex max-w-6xl flex-col gap-2 px-5 py-4 text-xs text-muted-foreground sm:flex-row sm:justify-between">
-          <span>{t.footer.rights(new Date().getFullYear(), site.legalName)}</span>
+        <p className="legal-row mx-auto flex max-w-6xl flex-col gap-2 px-5 py-4 text-xs text-muted-foreground sm:flex-row sm:justify-between">
+          <span data-copyright="">{t.footer.rights(new Date().getFullYear(), site.legalName)}</span>
           <span>{t.footer.prices}</span>
         </p>
       </div>

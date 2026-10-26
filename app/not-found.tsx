@@ -1,3 +1,4 @@
+import { WhatsAppButton } from "@/components/whatsapp-button";
 import { staticSeo } from "@/data/page-seo";
 import { getDictionary, type Dictionary } from "@/lib/i18n/dictionary";
 import type { Locale } from "@/lib/i18n/config";
@@ -47,6 +48,7 @@ function NotFoundBody({ locale, t }: { locale: Locale; t: Dictionary }) {
           </Link>
         </div>
       </div>
+      <WhatsAppButton label={t.whatsapp.label} dir={locale === "ar" ? "rtl" : "ltr"} />
     </>
   );
 }

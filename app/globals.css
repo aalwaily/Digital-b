@@ -231,10 +231,182 @@ html[dir="rtl"] input[dir="ltr"] {
 }
 
 /* The product buy bar is fixed. The footer follows the product column, so the
-   page itself has to clear the bar or the last footer line sits underneath it. */
+   page itself has to clear the bar or the last footer line sits underneath it.
+   The extra room also clears the floating WhatsApp button once it sits above
+   the bar. Other pages only pad the copyright row, which is enough for the
+   button at the bottom corner. */
+.legal-row {
+  padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
+}
+
 @media (max-width: 1023px) {
   body:has([data-sticky-buy]) {
-    padding-bottom: calc(6.5rem + env(safe-area-inset-bottom));
+    padding-bottom: calc(10rem + env(safe-area-inset-bottom, 0px));
+  }
+  body:has([data-sticky-buy]) .legal-row,
+  body:has(.fixed.bottom-0:not(.invisible)) .legal-row {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* Physical left in both LTR and RTL. `--wa-lift` is the distance from the
+   viewport bottom before the safe-area inset; the client sets it when a bar
+   or a key control would sit underneath the button. */
+.wa-fab {
+  --wa-lift: 1rem;
+  position: fixed;
+  z-index: 25;
+  left: max(0.875rem, env(safe-area-inset-left, 0px));
+  right: auto;
+  bottom: calc(var(--wa-lift) + env(safe-area-inset-bottom, 0px));
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.wa-fab:focus {
+  outline: none;
+}
+
+.wa-fab:focus-visible {
+  outline: 3px solid var(--foreground);
+  outline-offset: 3px;
+}
+
+.wa-fab-bob {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: inherit;
+  background-color: #25d366;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 8px 18px rgba(7, 94, 84, 0.28);
+  animation: wa-bob 3.2s ease-in-out infinite;
+}
+
+.wa-fab-bob::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 2px solid rgba(37, 211, 102, 0.55);
+  pointer-events: none;
+  animation: wa-ring 2.8s ease-out infinite;
+}
+
+.wa-fab:hover .wa-fab-bob,
+.wa-fab:focus-visible .wa-fab-bob {
+  background-color: #1ebe5b;
+}
+
+.wa-fab:active .wa-fab-bob {
+  background-color: #128c7e;
+}
+
+.wa-fab-wiggle {
+  display: grid;
+  place-items: center;
+  animation: wa-wiggle 5.6s ease-in-out infinite;
+}
+
+.wa-fab svg {
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  max-width: none;
+}
+
+.wa-fab-tip {
+  position: absolute;
+  left: calc(100% + 0.65rem);
+  right: auto;
+  top: 50%;
+  z-index: 1;
+  max-width: min(16rem, calc(100vw - 6.75rem));
+  padding: 0.4rem 0.7rem;
+  border-radius: 0.7rem;
+  background: var(--foreground);
+  color: var(--background);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.35;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-50%);
+  box-shadow: 0 8px 24px rgba(20, 16, 12, 0.18);
+  transition: opacity 160ms ease;
+}
+
+.wa-fab:hover .wa-fab-tip,
+.wa-fab:focus-visible .wa-fab-tip {
+  opacity: 1;
+}
+
+@media (max-width: 1023px) {
+  body:has([data-sticky-buy]:not(.invisible)) .wa-fab {
+    --wa-lift: 4.85rem;
+  }
+}
+
+@media (max-width: 1023px) and (max-height: 430px) {
+  body:has(#product-purchase) .wa-fab {
+    --wa-lift: 8rem;
+  }
+}
+
+@keyframes wa-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes wa-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.65;
+  }
+  75%,
+  100% {
+    transform: scale(1.34);
+    opacity: 0;
+  }
+}
+
+@keyframes wa-wiggle {
+  0%,
+  72%,
+  100% {
+    transform: rotate(0deg);
+  }
+  78% {
+    transform: rotate(-13deg);
+  }
+  84% {
+    transform: rotate(11deg);
+  }
+  90% {
+    transform: rotate(-7deg);
+  }
+  96% {
+    transform: rotate(3deg);
   }
 }
 
@@ -251,5 +423,10 @@ html[dir="rtl"] input[dir="ltr"] {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  .wa-fab-bob,
+  .wa-fab-wiggle,
+  .wa-fab-bob::after {
+    animation: none !important;
   }
 }
