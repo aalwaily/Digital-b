@@ -64,7 +64,7 @@ const whoActivity: Pair = {
   en: {
     label: "WHO: Physical activity recommendations",
     href: "https://www.who.int/initiatives/behealthy/physical-activity",
-    note: "Checked October 2026. For adults 18 to 64, WHO lists at least 150 minutes of moderate activity a week, or 75 minutes vigorous, plus muscle-strengthening on 2 or more days. This PDF is not a WHO program and does not count those minutes for you.",
+    note: "Checked October 2026. For adults 18 to 64, WHO lists at least 150 minutes of moderate activity a week, or 75 minutes of vigorous activity, plus muscle-strengthening on 2 or more days. This PDF is not a WHO program and does not count those minutes for you.",
   },
   ar: {
     label: "منظمة الصحة العالمية: توصيات النشاط البدني",

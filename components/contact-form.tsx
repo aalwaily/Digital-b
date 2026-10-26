@@ -36,7 +36,7 @@ export function ContactForm() {
       const data = (await response.json()) as { error?: string; delivered?: boolean };
       if (!response.ok) {
         setStatus("error");
-        setMessage(translateMessage(locale, data.error || "Could not send the message."));
+        setMessage(translateMessage(locale, data.error || "We could not send your message."));
         return;
       }
       setStatus("done");

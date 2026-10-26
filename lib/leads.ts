@@ -30,10 +30,10 @@ export async function recordLead(lead: LeadRecord): Promise<LeadResult> {
       body: JSON.stringify({ ...lead, at: new Date().toISOString() }),
     });
     if (!forwarded.ok) {
-      return { ok: false, error: "The signup could not be delivered." };
+      return { ok: false, error: "We could not save that email." };
     }
   } catch {
-    return { ok: false, error: "The signup could not be delivered." };
+    return { ok: false, error: "We could not save that email." };
   }
   return { ok: true, stored: "webhook" };
 }

@@ -11,7 +11,9 @@ export function PaymentSoon({
   className?: string;
 }) {
   const { t } = useI18n();
-  const subject = slugs.length ? `Vellum Press file request: ${slugs.join(", ")}` : "Vellum Press payment notification";
+  const subject = slugs.length
+    ? `Vellum Press file request: ${slugs.join(", ")}`
+    : "Please let me know when Vellum Press payment opens";
   const mailto = `mailto:${site.email}?subject=${encodeURIComponent(subject)}`;
 
   return (

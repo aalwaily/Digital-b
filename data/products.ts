@@ -2,7 +2,7 @@ export const categories = [
   {
     slug: "health",
     name: "Health & nutrition",
-    description: "Weight loss structure and weeknight cooking that can survive a busy calendar.",
+    description: "A structure for fat loss, and weeknight cooking that fits a busy week.",
   },
   {
     slug: "fitness",
@@ -104,7 +104,7 @@ export const products: Product[] = [
       "Twelve weeks of protein, steps, strength, and weekends that still include your life.",
     description: [
       "The 12-Week Reset is a field manual for losing fat without turning your kitchen into a second job. It uses a modest calorie deficit, a protein target you can hit with ordinary food, daily steps, and two or three short strength sessions.",
-      "The schedule is written in weeks, not moods. You will set a baseline, build a plate you can repeat (half plants, then protein and starch), and use a Sunday review when the scale sticks, travel shows up, or a social meal blows the plan. The plate is a template. It is not a gram target and not a promised loss.",
+      "The schedule is written in weeks, not moods. You will set a baseline, build a plate you can repeat (half plants, then protein and starch), and use a Sunday review when the scale sticks, travel shows up, or a social meal throws the plan off. The plate is a template. It is not a gram target and not a promised loss.",
       "This is education, not medical care. The guide tells you when a doctor, a registered dietitian, or a qualified coach is the right next step, and it does not promise a number on the scale.",
     ],
     included: [
@@ -436,7 +436,7 @@ export const products: Product[] = [
     previousPrice: 32,
     priceSar: 60,
     shortDescription:
-      "Choose an offer, price it, and find the first paying clients without quitting your job.",
+      "Choose an offer, set a price, and take the first steps without quitting your job.",
     description: [
       "First Client is a thirty-day start for a service you can sell beside a job. You will narrow an offer until a stranger can understand it, price it with a floor and a ceiling, and ask for work in places you already have access to.",
       "The guide covers proposals, deposits, scope, a simple pipeline, and invoices. It is blunt about contracts and taxes: those depend on where you live, and a PDF is not your lawyer or your accountant.",
@@ -571,7 +571,7 @@ export const products: Product[] = [
     shortDescription:
       "Ten-minute practices, a stress log, and a four-week plan for steadier days.",
     description: [
-      "Steady Mind is a small set of practices for stress and attention. You will learn a breath pattern you can use in a meeting, a ten-minute body scan with a script, and a log that shows which hours of the week actually cost you.",
+      "Steady Mind is a small set of practices for stress and attention. You will learn a breath pattern you can use in a meeting, a ten-minute body scan with a script, and a log that shows which hours of the week take the most out of you.",
       "The four-week plan is short on purpose. Each day has one practice, not a stack of apps. There is a chapter on phones, boundaries, and the difference between rest and avoidance.",
       "This is wellness education, not therapy. The guide says when to stop self-managing and talk with a licensed clinician, and it includes the 988 line for people in the United States who are in crisis.",
     ],
@@ -777,7 +777,7 @@ export const products: Product[] = [
     previousPrice: 12,
     priceSar: 23,
     shortDescription:
-      "Structure a CV a screener can read, with Gulf notes, a cover letter, and interview prep. No job promises.",
+      "Structure a CV a screener can read, with Gulf notes, a cover letter, and interview prep. It does not promise a job.",
     description: [
       "The Saudi & Gulf Job-Search and ATS CV Kit shows how to build a single-column CV with ordinary headings, dates a form can read, and bullets you can prove. It includes a cover-letter page, LinkedIn headline and About prompts, and a short interview worksheet.",
       "Gulf notes cover language (send the language the posting asked for), Gregorian dates, and why a photo or a text box can be dropped by some screening software. Software differs. The PDF cannot change an employer's Nitaqat band or tell you whether a job matches an iqama profession.",
@@ -848,7 +848,7 @@ export const products: Product[] = [
     compareAtPrice: 40,
     includes: ["12-week-reset", "weeknight-table", "floor-and-form"],
     shortDescription:
-      "The weight-loss guide, the meal-prep cookbook, and the no-equipment program, together.",
+      "The fat-loss guide, the meal-prep guide, and the no-equipment program, together.",
     description: [
       "This bundle is the practical health shelf: how to structure twelve weeks, how to cook food you will actually eat, and how to train in the room you have.",
       "You receive three separate PDFs, not a single merged file, so you can print the workout log without printing the recipes. The price is lower than buying the three guides one by one.",
@@ -889,7 +889,7 @@ export const products: Product[] = [
       {
         question: "Can I buy a single guide later?",
         answer:
-          "Yes. Each guide is sold on its own. If you already own one, check out carefully so you do not buy it twice. Checkout warns you when a bundle overlaps a guide in your cart.",
+          "Yes. Each guide is sold on its own. If you already own one, check your cart before checkout so you do not buy it twice. Checkout warns you when a bundle overlaps a guide already in your cart.",
       },
       {
         question: "Is the training program included, or only the nutrition guides?",

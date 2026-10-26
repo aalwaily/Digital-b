@@ -1,6 +1,14 @@
+import { staticSeo } from "@/data/page-seo";
 import { getDictionary, type Dictionary } from "@/lib/i18n/dictionary";
 import type { Locale } from "@/lib/i18n/config";
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: { absolute: staticSeo.notFound.title },
+  description: staticSeo.notFound.description,
+  robots: { index: false, follow: false },
+};
 
 function NotFoundBody({ locale, t }: { locale: Locale; t: Dictionary }) {
   const home = `/${locale}`;

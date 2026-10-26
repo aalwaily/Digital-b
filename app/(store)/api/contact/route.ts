@@ -37,7 +37,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Choose a topic." }, { status: 400 });
   }
   if (message.length < 10 || message.length > 5000) {
-    return NextResponse.json({ error: "Write a message of at least a sentence." }, { status: 400 });
+    return NextResponse.json({ error: "Please write at least a sentence." }, { status: 400 });
   }
   const webhook = process.env.CONTACT_WEBHOOK_URL;
   if (!webhook) return NextResponse.json({ ok: true, delivered: false });
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
     body: JSON.stringify({ type: "contact", name, email, topic, message }),
   });
   if (!forwarded.ok) {
-    return NextResponse.json({ error: "The message could not be delivered." }, { status: 502 });
+    return NextResponse.json({ error: "We could not send your message." }, { status: 502 });
   }
   return NextResponse.json({ ok: true, delivered: true });
 }

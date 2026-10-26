@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const locale = requireLocale((await params).locale);
   const t = getDictionary(locale);
   return {
-    title: t.checkout.title,
+    title: t.checkout.metaTitle,
     description: t.checkout.metaDescription,
     robots: { index: false, follow: false },
   };
