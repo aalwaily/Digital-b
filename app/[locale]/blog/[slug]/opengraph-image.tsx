@@ -17,7 +17,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
   const post = localizedPost(slug, locale);
   if (!post) notFound();
   return renderOgImage({
-    eyebrow: locale === "ar" ? "المدونة" : "JOURNAL",
+    eyebrow: locale === "ar" ? t.blog.eyebrow : "JOURNAL",
     title: post?.title ?? t.blog.title,
     deck: post?.description ?? t.blog.lede,
   });

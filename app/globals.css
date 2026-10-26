@@ -230,6 +230,18 @@ html[dir="rtl"] input[dir="ltr"] {
   max-width: 100%;
 }
 
+/* Arabic letterforms should not inherit Latin tracking. */
+html[lang="ar"] :where([class*="tracking-"]):not([dir="ltr"]),
+.arabic-root :where([class*="tracking-"]):not([dir="ltr"]) {
+  letter-spacing: 0;
+}
+
+/* Safe-area insets are physical. Logical start/end would swap them in RTL. */
+.safe-x {
+  padding-left: max(0.75rem, env(safe-area-inset-left, 0px));
+  padding-right: max(0.75rem, env(safe-area-inset-right, 0px));
+}
+
 /* The product buy bar is fixed. The footer follows the product column, so the
    page itself has to clear the bar or the last footer line sits underneath it.
    The extra room also clears the floating WhatsApp button once it sits above

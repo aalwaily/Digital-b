@@ -42,7 +42,7 @@ export function ProductStickyBar({
       data-ready={ready ? "true" : "false"}
       aria-hidden={show ? undefined : true}
       className={cn(
-        "fixed inset-x-0 bottom-0 z-30 border-t bg-background/95 px-3 pt-2 ps-[max(0.75rem,env(safe-area-inset-left))] pe-[max(0.75rem,env(safe-area-inset-right))] pb-[max(0.5rem,env(safe-area-inset-bottom))] backdrop-blur lg:hidden",
+        "safe-x fixed inset-x-0 bottom-0 z-30 border-t bg-background/95 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] backdrop-blur lg:hidden",
         show ? "" : "invisible pointer-events-none",
       )}
       role="region"

@@ -3,11 +3,11 @@ import type { Locale } from "@/lib/i18n/config";
 const limits: Record<string, { en: string; ar: string }> = {
   "12-week-reset": {
     en: "General information, not medical advice or a diet prescription. A calorie deficit is not safe for everyone. Talk with a licensed clinician before you change how you eat or train if you are pregnant, under 18, injured, managing an illness, or in treatment for an eating disorder. The plate in this guide is a template. It does not calculate a gram target for you, and it does not promise a weight.",
-    ar: "معلومات عامة، وليست نصيحة طبية ولا وصفة حمية. عجز السعرات لا يناسب الجميع. تحدث مع مختص مرخّص قبل أن تغيّر أكلك أو تمرينك إذا كنتِ حاملًا، أو دون 18 عامًا، أو مصابًا، أو تعالج مرضًا، أو تتابع اضطراب أكل. الطبق في هذا الدليل قالب. لا يحسب لك غرامات، ولا يعدك برقم على الميزان.",
+    ar: "معلومات عامة، وليست نصيحة طبية ولا وصفة حمية. عجز السعرات لا يناسب الجميع. راجع مختصًا مرخّصًا قبل تغيير الأكل أو التمرين في حال الحمل، أو العمر دون 18 عامًا، أو الإصابة، أو مرض قيد العلاج، أو متابعة اضطراب أكل. الطبق في هذا الدليل قالب. لا يحسب غرامات، ولا يعد برقمًا على الميزان.",
   },
   "weeknight-table": {
     en: "General cooking information, not a medical meal plan. Cooked leftovers in this file follow USDA guidance: 3 to 4 days in the fridge, then freeze or discard, and reheat to 165°F (74°C). Poultry is done when a thermometer in the thickest part reads 165°F (74°C), not when the juice looks clear. If a local authority sets a stricter rule, follow that.",
-    ar: "معلومات طبخ عامة، وليست خطة وجبات طبية. بقايا الطعام المطبوخ في هذا الملف تتبع إرشاد وزارة الزراعة الأمريكية: 3 إلى 4 أيام في الثلاجة ثم التجميد أو الرمي، وإعادة التسخين إلى 165°ف (74°م). الدجاج ينضج حين يقرأ مقياس الحرارة 165°ف (74°م) في أسمك موضع، لا حين يبدو العصير صافيًا. إذا وضعت جهة محلية حدًا أشد، فاتبعه.",
+    ar: "معلومات طبخ عامة، وليست خطة وجبات طبية. بقايا الطعام المطبوخ في هذا الملف تتبع إرشاد وزارة الزراعة الأمريكية: من 3 إلى 4 أيام في الثلاجة ثم التجميد أو الرمي، وإعادة التسخين إلى 74 درجة مئوية (165 فهرنهايت). الدجاج ينضج حين يقرأ مقياس الحرارة 74 درجة مئوية في أسمك موضع، لا حين يبدو العصير صافيًا. إذا وضعت جهة محلية حدًا أشد، فاتبعه.",
   },
   "floor-and-form": {
     en: "General exercise education, not physical therapy and not a WHO or NHS program. Stop for sharp pain, chest pain, fainting, or dizziness. WHO and the NHS describe muscle-strengthening on at least 2 days a week for adults. This PDF does not claim to meet your aerobic minutes or to treat an injury.",
@@ -15,7 +15,7 @@ const limits: Record<string, { en: string; ar: string }> = {
   },
   "the-quiet-budget": {
     en: "General education, not financial, tax, credit, or investment advice. After minimum payments, the US Consumer Financial Protection Bureau describes two choices for extra money: the highest interest rate, or the smallest balance (snowball). Neither is required, and neither is written for every country or every debt. If you cannot pay minimums, contact the lender and a nonprofit counselor. Do not pay a company that promises to delete accurate debt.",
-    ar: "تعليم عام، وليس نصيحة مالية أو ضريبية أو ائتمانية أو استثمارية. بعد سداد الحدود الدنيا، يصف مكتب الحماية المالية للمستهلك في أمريكا خيارين للمبلغ الزائد: الدين الأعلى فائدة، أو الرصيد الأصغر. لا أحد منهما إلزام، ولا هما مكتوبين لكل بلد أو كل دين. إذا عجزت عن الحدود الدنيا، تواصل مع الجهة الدائنة ومع مستشار غير ربحي. لا تدفع لجهة تعدك بحذف دين صحيح.",
+    ar: "تعليم عام، وليس نصيحة مالية أو ضريبية أو ائتمانية أو استثمارية. بعد سداد الحدود الدنيا، يصف مكتب الحماية المالية للمستهلك في أمريكا خيارين للمبلغ الزائد: الدين الأعلى فائدة، أو الرصيد الأصغر. ليس أي منهما إلزاميًا، وليسا مكتوبين لكل بلد ولا لكل دين. إذا عجزت عن الحدود الدنيا، تواصل مع الجهة الدائنة ومع مستشار غير ربحي. لا تدفع لجهة تعدك بحذف دين صحيح.",
   },
   "habit-ledger": {
     en: "A planning method, not a scientific prescription. It does not claim a habit becomes automatic after 21 days, or after any fixed number of days. A missed day is a reason to restart at the next cue, not a verdict on you.",

@@ -15,7 +15,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
   const page = localizedLegal(slug, locale);
   if (!page) notFound();
   return renderOgImage({
-    eyebrow: locale === "ar" ? "قانوني" : "LEGAL",
+    eyebrow: locale === "ar" ? t.legal.eyebrow : "LEGAL",
     title: page?.title ?? t.legal.metaFallback,
     deck: page?.description ?? t.about.metaDescription,
   });

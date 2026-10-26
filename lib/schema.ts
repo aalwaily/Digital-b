@@ -48,11 +48,11 @@ export function productSchema(product: Product, siteUrl: string, locale: Locale 
       {
         "@type": "PropertyValue",
         name: ar ? "مقاس الصفحة" : "Page size",
-        value: "US Letter (8.5 x 11 in)",
+        value: ar ? "مقاس Letter الأمريكي (8.5 × 11 إنش)" : "US Letter (8.5 x 11 in)",
       },
       { "@type": "PropertyValue", name: ar ? "لغة الملف" : "File language", value: ar ? "الإنجليزية" : "English" },
       { "@type": "PropertyValue", name: ar ? "عدد الملفات" : "PDF files", value: facts.files },
-      { "@type": "PropertyValue", name: ar ? "حجم الملف" : "File size", value: facts.bytes, unitText: "bytes" },
+      { "@type": "PropertyValue", name: ar ? "حجم الملف" : "File size", value: facts.bytes, unitText: ar ? "بايت" : "bytes" },
     ],
     offers: {
       "@type": "Offer",
