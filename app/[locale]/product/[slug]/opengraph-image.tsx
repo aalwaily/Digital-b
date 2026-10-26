@@ -5,6 +5,7 @@ import { formatMoney } from "@/lib/money";
 import { OG_ARABIC_FONT_FAMILY, ogArabicFonts, ogContainsArabic } from "@/lib/og-font";
 import { OgRtlText } from "@/lib/og-rtl";
 import { ImageResponse } from "next/og";
+import { notFound } from "next/navigation";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
@@ -13,7 +14,8 @@ export const alt = "Vellum Press guide";
 export default async function Image({ params }: { params: Promise<{ slug: string; locale: string }> }) {
   const { slug, locale: raw } = await params;
   const locale = isLocale(raw) ? raw : "en";
-  const product = localizedProduct(slug, locale) ?? getProduct(slug);
+  if (!getProduct(slug)) notFound();
+  const product = localizedProduct(slug, locale);
   const bg = product?.cover.bg ?? "#1E3A32";
   const fg = product?.cover.fg ?? "#F6F1E7";
   const accent = product?.cover.accent ?? "#E4B15A";

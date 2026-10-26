@@ -35,6 +35,8 @@ import { notFound } from "next/navigation";
 
 type Params = { locale: string; slug: string };
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return products.map((product) => ({ slug: product.slug }));
 }

@@ -2,7 +2,8 @@ import { ArticleBody } from "@/components/article-body";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { JsonLd } from "@/components/json-ld";
 import { LinkButton } from "@/components/link-button";
-import { getPost, postPath, posts, resolvePostSeo } from "@/data/blog";
+import { getPost, posts, resolvePostSeo } from "@/data/blog";
+import { blogHreflang, blogLocalesForSlug } from "@/lib/blog-index";
 import { stripBidiIsolates, textDir } from "@/lib/i18n/bidi";
 import { formatLongDate, localizePost, localizedProduct, requireLocale } from "@/lib/i18n/content";
 import { getDictionary } from "@/lib/i18n/dictionary";
@@ -16,28 +17,16 @@ import { notFound } from "next/navigation";
 
 type Params = { locale: string; slug: string };
 
-function visibleIn(locale: Locale, slug: string) {
-  const post = getPost(slug);
-  if (!post) return false;
-  if (locale === "en" && post.lang === "ar") return false;
-  if (locale === "ar" && post.lang === "en") return false;
-  return true;
-}
+export const dynamicParams = false;
 
-function articleLanguages(slug: string) {
-  const post = getPost(slug);
-  if (!post?.translationOf) return undefined;
-  const other = getPost(post.translationOf);
-  if (!other) return undefined;
-  const en = post.lang === "ar" ? postPath(other) : postPath(post);
-  const ar = post.lang === "ar" ? postPath(post) : postPath(other);
-  return { en, ar, "x-default": en };
+function visibleIn(locale: Locale, slug: string) {
+  return blogLocalesForSlug(slug).includes(locale) && Boolean(getPost(slug));
 }
 
 export function generateStaticParams() {
   return posts.flatMap((post) => {
-    const locales: Locale[] = post.lang === "ar" ? ["ar"] : post.lang === "en" ? ["en"] : ["en", "ar"];
-    return locales.map((locale) => ({ locale, slug: post.slug }));
+    const available: Locale[] = post.lang === "ar" ? ["ar"] : post.lang === "en" ? ["en"] : ["en", "ar"];
+    return available.map((locale) => ({ locale, slug: post.slug }));
   });
 }
 
@@ -57,7 +46,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
     absoluteTitle: Boolean(seo),
     type: "article",
     publishedTime: post.date,
-    languages: articleLanguages(slug),
+    languages: blogHreflang(slug) ?? undefined,
   });
 }
 
