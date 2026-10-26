@@ -29,10 +29,13 @@ import { sourcesFor } from "@/data/sources";
 import { checkoutOptions } from "@/lib/payments";
 import { CANONICAL_ORIGIN } from "@/lib/seo";
 import { getSiteUrl } from "@/lib/site-url";
-import { Check } from "lucide-react";
+import { WHATSAPP_URL } from "@/components/whatsapp-button";
+import { Check, FileDown, Mail, MessageCircle, ShieldCheck } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+
+const HERO_INCLUDED = 3;
 
 type Params = { locale: string; slug: string };
 
@@ -80,18 +83,22 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
   const limit = limitFor(product.slug, locale);
   const audience = audienceFor(product.slug, locale);
   const slides = previewSlides(sampleTargets, locale, t);
-  const specPills = [
+  const hasSample = slides.length > 0;
+  const highlights = product.included.slice(0, HERO_INCLUDED);
+  const primaryPills = [
     t.product.pages(facts.pages),
     t.product.formatValue,
-    facts.samplePages > 0 ? t.product.samplePill(facts.samplePages) : null,
-    t.product.paperValue,
     t.product.languageValue,
     facts.files > 1 ? t.product.filesValue(facts.files) : null,
+  ].filter((item): item is string => Boolean(item));
+  const extraFacts = [
+    t.product.paperValue,
+    facts.samplePages > 0 ? t.product.samplePill(facts.samplePages) : null,
     facts.bytes > 0 ? t.product.sizeValue(approximateKilobytes(facts.bytes)) : null,
   ].filter((item): item is string => Boolean(item));
 
   return (
-    <div className="mx-auto min-w-0 max-w-6xl px-4 py-6 sm:px-5 sm:py-10">
+    <div className="mx-auto min-w-0 max-w-6xl px-4 py-4 sm:px-5 sm:py-10">
       <JsonLd data={productSchema(product, CANONICAL_ORIGIN, locale)} />
       <JsonLd data={faqSchema(product.faqs)} />
       <JsonLd data={breadcrumbSchema(CANONICAL_ORIGIN, product, locale)} />
@@ -105,81 +112,89 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
         ]}
       />
 
-      <div className="mt-4 grid min-w-0 gap-8 lg:mt-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-10">
+      <div className="mt-3 grid min-w-0 gap-8 lg:mt-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-10">
         <div className="order-1 min-w-0 lg:order-2">
           <p className="text-xs tracking-[0.16em] text-copper uppercase sm:tracking-[0.18em]">{category?.name}</p>
           <h1 dir={textDir(product.title)} className="mt-2 font-serif text-3xl leading-tight md:text-4xl lg:text-5xl">
             {product.title}
           </h1>
-          <p dir={textDir(product.subtitle)} className="mt-2 text-base leading-relaxed text-muted-foreground sm:text-lg">
+          <p dir={textDir(product.subtitle)} className="mt-2 text-base leading-snug text-muted-foreground sm:text-lg sm:leading-relaxed">
             {product.subtitle}
           </p>
           <div id="product-purchase">
-            <Price price={product.price} compareAt={product.compareAtPrice} previousPrice={product.previousPrice} locale={locale} size="lg" className="mt-4" />
+            <Price price={product.price} compareAt={product.compareAtPrice} previousPrice={product.previousPrice} locale={locale} size="lg" className="mt-3" />
             <div className="mt-3">
-              <PurchaseActions slug={product.slug} />
+              <PurchaseActions slug={product.slug} hint={!paymentsOpen} />
             </div>
           </div>
           {locale === "ar" ? (
-            <div className="mt-4">
+            <div className="mt-3">
               <EnglishPdfNotice />
             </div>
           ) : null}
-          <ul aria-label={t.product.specs} className="mt-4 flex flex-wrap gap-1.5">
-            {specPills.map((pill) => (
-              <li key={pill} className="rounded-full bg-card px-2.5 py-1 text-sm leading-5 ring-1 ring-border">
-                {pill}
-              </li>
-            ))}
-          </ul>
-          {paymentsOpen ? null : (
-            <div className="mt-4">
-              <PaymentSoon slugs={[product.slug]} />
-            </div>
-          )}
-          <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-            {t.product.emailLead}{" "}
-            <a dir="ltr" className="text-foreground underline underline-offset-4" href={`mailto:${site.email}`}>
-              {site.email}
-            </a>{" "}
-            {t.product.resend}{" "}
-            <Link href={localePath(locale, "/legal/refunds")} className="text-foreground underline underline-offset-4">
-              {t.product.salesFinal}
-            </Link>
-            .
-          </p>
           {audience.length ? (
-            <section aria-labelledby="for-whom" className="mt-5 rounded-2xl border bg-card px-4 py-3">
-              <h2 id="for-whom" className="font-serif text-xl">
+            <section aria-labelledby="for-whom" className="mt-3">
+              <h2 id="for-whom" className="text-sm font-medium text-copper">
                 {t.product.forWhom}
               </h2>
-              <ul className="mt-2 space-y-2 text-sm leading-relaxed">
+              <ul className="mt-1 space-y-1.5 text-sm leading-snug">
                 {audience.map((line) => (
-                  <li key={line}>{line}</li>
+                  <li key={line} dir={textDir(line)}>
+                    {line}
+                  </li>
                 ))}
               </ul>
             </section>
           ) : null}
+          <section aria-labelledby="outcome" className="mt-2">
+            <h2 id="outcome" className="text-sm font-medium text-copper">
+              {t.product.outcome}
+            </h2>
+            <p dir={textDir(product.shortDescription)} className="mt-1 text-sm leading-snug">
+              {product.shortDescription}
+            </p>
+          </section>
+          <section aria-labelledby="you-get" className="mt-2">
+            <h2 id="you-get" className="text-sm font-medium text-copper">
+              {t.product.youGet}
+            </h2>
+            <ul aria-label={t.product.specs} className="mt-2 flex flex-wrap gap-1.5">
+              {primaryPills.map((pill) => (
+                <li key={pill} className="rounded-full bg-card px-2.5 py-1 text-sm leading-5 ring-1 ring-border">
+                  {pill}
+                </li>
+              ))}
+            </ul>
+            <div className="hero-points">
+              <ul className="mt-2 space-y-1.5">
+                {highlights.map((item) => (
+                  <li key={item} className="flex min-w-0 gap-2 text-sm leading-snug">
+                    <Check aria-hidden className="mt-0.5 size-4 shrink-0 text-copper" />
+                    <span dir={textDir(item)} className="min-w-0">
+                      {item}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              {product.included.length > highlights.length ? (
+                <a href="#included-heading" className="mt-1 inline-flex min-h-11 items-center text-sm underline underline-offset-4">
+                  {t.product.insideRest}
+                </a>
+              ) : null}
+            </div>
+          </section>
         </div>
 
         <div className="order-2 min-w-0 lg:order-1">
           <section aria-labelledby="preview-heading">
             <h2 id="preview-heading" className="font-serif text-2xl">
-              {t.product.previewTitle}
+              {hasSample ? t.product.previewTitle : t.product.youGet}
             </h2>
-            <div className="mt-3 flex flex-col gap-4">
-              <SamplePreview slides={slides} className="order-1 lg:order-2" />
-              <ProductGallery
-                className="order-2 mx-auto w-full max-w-[22rem] lg:order-1 lg:max-w-none"
-                galleryLabel={t.product.gallery}
-                coverLabel={t.product.cover}
-                contentsLabel={t.product.contentsTab}
-                worksheetLabel={t.product.worksheet}
-                cover={<Cover product={product} locale={locale} />}
-                contents={<ContentsPlate product={product} locale={locale} />}
-                worksheet={<WorksheetPlate product={product} locale={locale} />}
-              />
-            </div>
+            {hasSample ? (
+              <SamplePreview slides={slides} className="mt-3" />
+            ) : (
+              <ProductBreakdown product={product} t={t} facts={extraFacts} className="mt-4" />
+            )}
           </section>
           <div className="mx-auto mt-4 w-full max-w-[22rem] lg:max-w-none">
             <SampleRequest
@@ -194,18 +209,90 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
         </div>
       </div>
 
-      <section className="mt-12 min-w-0" aria-labelledby="included-heading">
-        <h2 id="included-heading" className="font-serif text-2xl sm:text-3xl">
-          {t.product.included}
+      <section className="mt-10 min-w-0" aria-labelledby="trust-heading">
+        <h2 id="trust-heading" className="font-serif text-2xl sm:text-3xl">
+          {t.product.trustTitle}
         </h2>
-        <ul className="mt-4 grid gap-2 sm:grid-cols-2">
-          {product.included.map((item) => (
-            <li key={item} className="flex min-w-0 gap-2 rounded-xl border bg-card px-3 py-3 text-sm leading-relaxed">
-              <Check aria-hidden className="mt-0.5 size-4 shrink-0 text-copper" />
-              <span className="min-w-0">{item}</span>
-            </li>
-          ))}
+        <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+          <li className="rounded-2xl border bg-card px-4 py-3">
+            <h3 className="flex items-center gap-2 text-sm font-medium">
+              <FileDown aria-hidden className="size-4 shrink-0 text-copper" />
+              {t.product.trustInstantTitle}
+            </h3>
+            <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{t.product.trustInstantBody}</p>
+          </li>
+          <li className="rounded-2xl border bg-card px-4 py-3">
+            <h3 className="flex items-center gap-2 text-sm font-medium">
+              <ShieldCheck aria-hidden className="size-4 shrink-0 text-copper" />
+              {t.product.trustSecureTitle}
+            </h3>
+            <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+              {paymentsOpen ? t.product.trustSecureOpen : t.product.trustSecureClosed}
+            </p>
+          </li>
+          <li className="rounded-2xl border bg-card px-4 py-3">
+            <h3 className="flex items-center gap-2 text-sm font-medium">
+              <Mail aria-hidden className="size-4 shrink-0 text-copper" />
+              {t.product.trustCopyTitle}
+            </h3>
+            <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+              {t.product.emailLead}{" "}
+              <a dir="ltr" className="text-foreground underline underline-offset-4" href={`mailto:${site.email}`}>
+                {site.email}
+              </a>{" "}
+              {t.product.resend}{" "}
+              <Link href={localePath(locale, "/legal/refunds")} className="text-foreground underline underline-offset-4">
+                {t.product.salesFinal}.
+              </Link>
+            </p>
+          </li>
+          <li className="rounded-2xl border bg-card px-4 py-3">
+            <h3 className="flex items-center gap-2 text-sm font-medium">
+              <MessageCircle aria-hidden className="size-4 shrink-0 text-copper" />
+              {t.product.trustWhatsappTitle}
+            </h3>
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-1 inline-flex min-h-11 items-center text-sm underline underline-offset-4"
+            >
+              {t.whatsapp.label}
+            </a>
+          </li>
         </ul>
+        {paymentsOpen ? null : (
+          <div className="mt-4">
+            <PaymentSoon slugs={[product.slug]} />
+          </div>
+        )}
+      </section>
+
+      <section className="mt-10" aria-labelledby="questions-heading">
+        <h2 id="questions-heading" className="font-serif text-2xl sm:text-3xl">
+          {t.product.questions}
+        </h2>
+        <div className="mt-4">
+          <FaqList items={product.faqs} />
+        </div>
+      </section>
+
+      {hasSample ? <ProductBreakdown product={product} t={t} facts={extraFacts} className="mt-12" /> : null}
+
+      <section className="mt-12 min-w-0" aria-labelledby="gallery-heading">
+        <h2 id="gallery-heading" className="font-serif text-2xl sm:text-3xl">
+          {t.product.gallery}
+        </h2>
+        <ProductGallery
+          className="mx-auto mt-4 w-full max-w-[22rem] lg:mx-0 lg:max-w-md"
+          galleryLabel={t.product.gallery}
+          coverLabel={t.product.cover}
+          contentsLabel={t.product.contentsTab}
+          worksheetLabel={t.product.worksheet}
+          cover={<Cover product={product} locale={locale} />}
+          contents={<ContentsPlate product={product} locale={locale} />}
+          worksheet={<WorksheetPlate product={product} locale={locale} />}
+        />
       </section>
 
       <div className="mt-10 min-w-0 space-y-4 text-[1.05rem] leading-relaxed">
@@ -228,21 +315,6 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           </div>
         </section>
       ) : null}
-
-      <section className="mt-12 min-w-0" aria-labelledby="contents-heading">
-        <h2 id="contents-heading" className="font-serif text-2xl sm:text-3xl">
-          {t.product.contents}
-          <span className="ms-2 font-sans text-base font-normal text-muted-foreground">{t.product.sections(product.contents.length)}</span>
-        </h2>
-        <ol className="mt-4 divide-y rounded-2xl border bg-card">
-          {product.contents.map((item, index) => (
-            <li key={item} className="flex gap-4 px-4 py-3 text-sm">
-              <span dir="ltr" className="w-8 shrink-0 text-copper tabular-nums">{String(index + 1).padStart(2, "0")}</span>
-              <span className="min-w-0">{item}</span>
-            </li>
-          ))}
-        </ol>
-      </section>
 
       <section className="mt-12 min-w-0" aria-labelledby="delivery">
         <h2 id="delivery" className="font-serif text-2xl sm:text-3xl">
@@ -295,15 +367,6 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
         </section>
       ) : null}
 
-      <section className="mt-12" aria-labelledby="questions-heading">
-        <h2 id="questions-heading" className="font-serif text-2xl sm:text-3xl">
-          {t.product.questions}
-        </h2>
-        <div className="mt-4">
-          <FaqList items={product.faqs} />
-        </div>
-      </section>
-
       <div className="mt-10">
         <ShareProduct title={stripBidiIsolates(product.title)} url={`${siteUrl}${productPath}`} />
       </div>
@@ -334,6 +397,63 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
         compareAt={product.compareAtPrice}
         previousPrice={product.previousPrice}
       />
+    </div>
+  );
+}
+
+function ProductBreakdown({
+  product,
+  t,
+  facts,
+  className = "",
+}: {
+  product: Product;
+  t: Dictionary;
+  facts: string[];
+  className?: string;
+}) {
+  return (
+    <div className={className}>
+      <section className="min-w-0" aria-labelledby="included-heading">
+        <h2 id="included-heading" className="scroll-mt-24 font-serif text-2xl sm:text-3xl">
+          {t.product.included}
+        </h2>
+        {facts.length ? (
+          <p className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-sm text-muted-foreground">
+            {facts.map((fact) => (
+              <span key={fact}>{fact}</span>
+            ))}
+          </p>
+        ) : null}
+        <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+          {product.included.map((item) => (
+            <li key={item} className="flex min-w-0 gap-2 rounded-xl border bg-card px-3 py-3 text-sm leading-relaxed">
+              <Check aria-hidden className="mt-0.5 size-4 shrink-0 text-copper" />
+              <span dir={textDir(item)} className="min-w-0">
+                {item}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </section>
+      <section className="mt-12 min-w-0" aria-labelledby="contents-heading">
+        <h2 id="contents-heading" className="scroll-mt-24 font-serif text-2xl sm:text-3xl">
+          {t.product.contents}
+          <span className="ms-2 font-sans text-base font-normal text-muted-foreground">{t.product.sections(product.contents.length)}</span>
+        </h2>
+        <ol className="mt-4 divide-y rounded-2xl border bg-card">
+          {product.contents.map((item, index) => (
+            <li key={item} className="flex gap-4 px-4 py-3 text-sm">
+              <span dir="ltr" className="w-8 shrink-0 text-copper tabular-nums">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span dir={textDir(item)} className="min-w-0">
+                {item}
+              </span>
+            </li>
+          ))}
+        </ol>
+      </section>
     </div>
   );
 }

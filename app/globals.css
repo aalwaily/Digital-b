@@ -397,6 +397,14 @@ html[lang="ar"] :where([class*="tracking-"]):not([dir="ltr"]),
   }
 }
 
+/* The WhatsApp button is fixed to the physical left. Logical padding would
+   indent the wrong side in Arabic and leave the lines under the button. */
+@media (max-width: 1023px) {
+  .hero-points {
+    padding-left: 3.5rem;
+  }
+}
+
 /* 320px-wide product pages: the in-page purchase controls sit in the same
    band as the lifted button. Tighten the block so the price and add button
    stay above it without moving the button while scrolling. */
