@@ -10,10 +10,15 @@ export function PaymentSoon({
   slugs?: string[];
   className?: string;
 }) {
-  const { t } = useI18n();
-  const subject = slugs.length
-    ? `Vellum Press file request: ${slugs.join(", ")}`
-    : "Please let me know when Vellum Press payment opens";
+  const { t, locale } = useI18n();
+  const subject =
+    locale === "ar"
+      ? slugs.length
+        ? `طلب ملف من Vellum Press: ${slugs.join(", ")}`
+        : "أريد تنبيهًا حين يفتح الدفع في Vellum Press"
+      : slugs.length
+        ? `Vellum Press file request: ${slugs.join(", ")}`
+        : "Please let me know when Vellum Press payment opens";
   const mailto = `mailto:${site.email}?subject=${encodeURIComponent(subject)}`;
 
   return (

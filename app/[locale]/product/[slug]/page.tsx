@@ -227,7 +227,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
         <ol className="mt-4 divide-y rounded-2xl border bg-card">
           {product.contents.map((item, index) => (
             <li key={item} className="flex gap-4 px-4 py-3 text-sm">
-              <span className="w-8 shrink-0 text-copper tabular-nums">{String(index + 1).padStart(2, "0")}</span>
+              <span dir="ltr" className="w-8 shrink-0 text-copper tabular-nums">{String(index + 1).padStart(2, "0")}</span>
               <span className="min-w-0">{item}</span>
             </li>
           ))}
@@ -244,9 +244,8 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           <li>
             {t.product.license}{" "}
             <Link href={localePath(locale, "/legal/refunds")} className="inline-flex min-h-11 items-center underline underline-offset-4">
-              {t.product.salesFinal}
+              {t.product.salesFinal}.
             </Link>
-            .
           </li>
           <li>
             {t.product.emailLead}{" "}

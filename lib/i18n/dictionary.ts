@@ -7,6 +7,15 @@ function arabicPages(count: number) {
   return `${count} صفحة`;
 }
 
+/** Arabic count agreement: one, two, 3–10, then 11 and above. `#` is the numeral. */
+function arCount(count: number, one: string, two: string, few: string, many: string) {
+  if (count === 1) return one;
+  if (count === 2) return two;
+  const n = String(count);
+  if (count >= 3 && count <= 10) return few.replaceAll("#", n);
+  return many.replaceAll("#", n);
+}
+
 export const dictionary = {
   en: {
     skip: "Skip to content",
@@ -387,7 +396,7 @@ export const dictionary = {
     openMenu: "فتح القائمة",
     close: "إغلاق",
     cart: "السلة",
-    cartCount: (count: number) => `السلة، ${count} من المنتجات`,
+    cartCount: (count: number) => `السلة، ${arCount(count, "منتج واحد", "منتجان", "# منتجات", "# منتجًا")}`,
     themeLight: "التبديل إلى الوضع الفاتح",
     themeDark: "التبديل إلى الوضع الداكن",
     whatsapp: { label: "تواصل معنا عبر واتساب" },
@@ -395,7 +404,7 @@ export const dictionary = {
       shop: "المتجر",
       allGuides: "كل الأدلة",
       company: "الناشر",
-      notes: "تنبيهات",
+      notes: "ملاحظات",
       rights: (year: number, name: string) => `© ${year} ${name}. جميع الحقوق محفوظة.`,
       prices: "الأسعار بالدولار الأمريكي، مع ما يعادلها تقريبًا بالريال السعودي بسعر 3.75. الدفع عبر الإنترنت يفتح قريبًا جدًا.",
       paymentsNote: "الدفع عبر الإنترنت يفتح قريبًا جدًا. راسل glarz.com@gmail.com ليصلك تنبيه عند الفتح، أو لتطلب الملف.",
@@ -404,7 +413,7 @@ export const dictionary = {
     home: {
       eyebrow: "أدلة رقمية · تنزيل فوري",
       title: "أدلة عملية للأكل والتمرين والمال والتركيز.",
-      lede: "تصدر Vellum Press ملفات PDF تستطيع أن تنهيها وتطبعها وتحتفظ بها. بلا اشتراك. بلا دروس تُفتح على دفعات. لكل دليل سعر واحد.",
+      lede: "تصدر Vellum Press أدلة PDF تقرأها حتى آخرها، وتطبعها، وتحتفظ بها. بلا اشتراك، وبلا دروس تُفتح لاحقًا. لكل دليل سعر واحد.",
       shop: "تصفّح المكتبة",
       preview: "اطّلع على عيّنة",
       guides: "الأدلة",
@@ -412,13 +421,13 @@ export const dictionary = {
       instant: "فوري",
       format: "الصيغة",
       perks: [
-        { title: "تنزيل فوري", text: "صفحة الإيصال تعطيك ملفات PDF مباشرة." },
-        { title: "روابط موقّعة", text: "الملفات الكاملة ليست متاحة على الويب العام." },
-        { title: "اطبع ما تستخدمه", text: "صفحات بمقاس Letter جاهزة للطباعة، مع قوائم وجداول." },
+        { title: "تنزيل فوري", text: "تجد ملفات PDF في صفحة الإيصال." },
+        { title: "روابط موقّعة", text: "الملفات الكاملة ليست روابط عامة." },
+        { title: "اطبع ما تستخدمه", text: "صفحات بمقاس Letter جاهزة للطباعة، وفيها قوائم وجداول." },
         { title: "سعر واحد", text: "لكل دليل سعر واحد. الدفع عبر الإنترنت يفتح قريبًا جدًا." },
       ],
       bundleEyebrow: (savings: string) => `باقة · وفّر ${savings}`,
-      pagesAcross: (pages: number) => `${pages} صفحة في ثلاثة ملفات PDF.`,
+      pagesAcross: (pages: number) => `${arabicPages(pages)} في ثلاثة ملفات PDF.`,
       viewBundle: "عرض الباقة",
       featured: "أدلة مختارة",
       shopAll: "كل المتجر",
@@ -433,7 +442,7 @@ export const dictionary = {
       questions: "أسئلة",
       fullFaq: "اقرأ كل الأسئلة",
       noteTitle: "ملاحظة حين يجهز دليل جديد.",
-      noteText: "قصيرة، وعلى فترات، ولا تصلك إلا إذا طلبتها. بلا عدّ تنازلي للشراء.",
+      noteText: "قصيرة، وعلى فترات، ولا تصلك إلا إذا طلبتها. بلا مؤقت للعدّ.",
       metaTitle: "Vellum Press · أدلة PDF عملية",
       metaDescription:
         "أدلة PDF عملية في الصحة والتمرين والمال والعمل والدراسة والهدوء. العيّنة المجانية متاحة الآن. الدفع عبر الإنترنت يفتح قريبًا.",
@@ -441,8 +450,11 @@ export const dictionary = {
     shop: {
       eyebrow: "المكتبة",
       title: "تسوّق الأدلة",
-      lede: (guides: number, bundles: number) =>
-        `${guides} ملفات PDF عملية و${bundles} باقات. لكل دليل عيّنة مجانية، وفهرس، وسعر واضح.`,
+      lede: (guides: number, bundles: number) => {
+        const files = arCount(guides, "ملف PDF عملي واحد", "ملفّان PDF عمليان", "# ملفات PDF عملية", "# ملفًا بصيغة PDF");
+        const packs = arCount(bundles, "باقة واحدة", "باقتان", "# باقات", "# باقة");
+        return `${files} و${packs}. لكل دليل عيّنة مجانية، وفهرس، وسعر واضح.`;
+      },
       metaTitle: "المتجر",
       metaDescription: "تصفّح أدلة Vellum Press وباقاتها. صفِّ حسب التصنيف، وابحث، ورتّب.",
       search: "بحث",
@@ -457,7 +469,7 @@ export const dictionary = {
         newest: "الأحدث",
         "price-asc": "السعر: من الأقل",
         "price-desc": "السعر: من الأعلى",
-        title: "العنوان",
+        title: "العنوان: أ–ي",
       },
       emptyTitle: "لا توجد أدلة تطابق البحث",
       emptyText: "جرّب كلمة أخرى، أو امسح التصفية وتصفّح المكتبة كلها.",
@@ -487,12 +499,12 @@ export const dictionary = {
       sources: "المصادر والمراجع",
       sourcesNote: "صفحات رُاجعت لهذه النسخة. هي خلفية، وليست مراجعة لهذا الملف، وليست وعدًا بنتيجة.",
       bundleBadge: "باقة",
-      pages: (count: number) => `${count} صفحة`,
+      pages: (count: number) => arabicPages(count),
       share: "شارك هذا الدليل",
       copyLink: "انسخ الرابط",
       linkCopied: "تم نسخ الرابط",
       shareAction: "مشاركة",
-      email: "بريد",
+      email: "البريد",
       gallery: "صور المنتج",
       cover: "الغلاف",
       contentsTab: "المحتويات",
@@ -501,14 +513,14 @@ export const dictionary = {
       specs: "تفاصيل الملف",
       formatValue: "PDF",
       samplePill: (count: number) => (count === 2 ? "عيّنة من صفحتين" : `عيّنة من ${arabicPages(count)}`),
-      paperValue: "ورق Letter",
+      paperValue: "مقاس Letter",
       languageValue: "الملف بالإنجليزية",
       filesValue: (count: number) => {
         if (count === 1) return "ملف PDF واحد";
         if (count === 2) return "ملفان PDF منفصلان";
         return `${count} ملفات PDF منفصلة`;
       },
-      sizeValue: (kb: number) => `نحو ${kb} كيلوبايت`,
+      sizeValue: (kb: number) => `حوالي ${kb} كيلوبايت`,
       about: "عن هذا الدليل",
       previewTitle: "اطّلع على الداخل",
       samplePageAlt: (title: string, page: number) => `الصفحة ${page} من العيّنة المجانية: ${title}`,
@@ -531,17 +543,18 @@ export const dictionary = {
       sampleOne: "احصل على العيّنة المجانية",
       sampleMany: "احصل على العيّنات المجانية",
       sampleHelp: "أدخل بريدك الإلكتروني، وتُفتح العيّنة في هذه الصفحة.",
-      sampleBundle: (count: number) => ` وتتضمن هذه الباقة ${count} عيّنات.`,
+      sampleBundle: (count: number) =>
+        ` ${arCount(count, "وتتضمن هذه الباقة عيّنة واحدة.", "وتتضمن هذه الباقة عيّنتين.", "وتتضمن هذه الباقة # عيّنات.", "وتتضمن هذه الباقة # عيّنة.")}`,
       sampleReady: "العيّنة المجانية جاهزة.",
       downloadSample: (title: string, pages: number | null) =>
-        pages ? `تنزيل ${title} (${pages} صفحة)` : `تنزيل ${title}`,
+        pages ? `تنزيل ${title} (${arabicPages(pages)})` : `تنزيل ${title}`,
       unlocking: "جارٍ الفتح…",
     },
     cartPage: {
       title: "السلة",
       lede: "تبقى الأدلة في هذا المتصفح إلى أن تُتمّ الطلب أو تحذفها.",
       metaTitle: "السلة",
-      metaDescription: "راجع أدلة Vellum Press في سلتك. كل المبيعات نهائية.",
+      metaDescription: "راجع أدلة Vellum Press في سلتك. كل المبيعات نهائية. الدفع عبر الإنترنت يفتح قريبًا جدًا.",
       loading: "جارٍ تحميل السلة…",
       emptyTitle: "سلتك فارغة",
       emptyText: "تصفّح المكتبة من هنا. كل دليل شراء لمرة واحدة، ويصلك ملف PDF.",
@@ -567,8 +580,8 @@ export const dictionary = {
       returnShop: "العودة إلى المتجر",
       canceled: "أُلغي الدفع. لم يُخصم شيء. سلتك ما زالت هنا إن جئت منها.",
       moyasarFailed:
-        "لم يؤكد Moyasar هذه الدفعة، لذلك لم تُفتح التنزيلات. إذا ظهرت عملية مكتملة عبر مدى أو البطاقة أو Apple Pay أو STC Pay، راسل الدعم مع وقت الدفع وسنطابقها.",
-      email: "البريد لإيصال التنزيل",
+        "تعذّر على Moyasar تأكيد هذه الدفعة، لذلك لم تُفتح التنزيلات. إذا ظهرت عملية مكتملة عبر مدى أو البطاقة أو Apple Pay أو STC Pay، راسل الدعم مع وقت الدفع وسنطابقها.",
+      email: "البريد الإلكتروني للإيصال",
       emailHelp: "نستخدمه لإيصال التنزيل. يُحفظ داخل الرابط الموقّع.",
       final: "كل المبيعات نهائية. التنزيلات الرقمية غير قابلة للاسترداد.",
       working: "جارٍ العمل…",
@@ -578,7 +591,8 @@ export const dictionary = {
       moyasar: "ادفع بمدى / بطاقة / Apple Pay / STC Pay",
       moyasarAr: "مدى · بطاقة · Apple Pay · STC Pay",
       order: "طلبك",
-      includes: (count: number) => `يتضمن ${count} أدلة`,
+      includes: (count: number) =>
+        arCount(count, "يتضمن دليلًا واحدًا", "يتضمن دليلين", "يتضمن # أدلة", "يتضمن # دليلًا"),
       total: "الإجمالي",
       moyasarCharge: (sar: string, rate: string) => `يعرض Moyasar مبلغ ${sar} قبل الدفع. الدولار يعادل ${rate} ريالًا.`,
       moyasarArNote: "المبلغ بالريال السعودي",
@@ -606,7 +620,7 @@ export const dictionary = {
     },
     receipt: {
       metaTitle: "تنزيلاتك",
-      metaDescription: "إيصال وتنزيلات PDF لطلب من Vellum Press.",
+      metaDescription: "إيصال Vellum Press وملفات PDF. احفظ الملفات. كل المبيعات نهائية.",
       eyebrow: "إيصال",
       title: "أدلتك جاهزة",
       orderFor: (orderId: string, email: string, expires: string) =>
@@ -630,7 +644,7 @@ export const dictionary = {
     success: {
       title: "تم استلام الدفع",
       metaTitle: "تأكيد الدفع",
-      metaDescription: "تأكيد دفعة Vellum Press بالبطاقة.",
+      metaDescription: "جارٍ تأكيد دفعة Vellum Press. يبدأ التنزيل من صفحة الإيصال.",
       missing: "هذه الصفحة بلا جلسة دفع. إذا كان لديك إيصال، افتح ذلك الرابط.",
       missingTail: "إذا دُفع مبلغ ولم تظهر التنزيلات.",
       contact: "تواصل مع الدعم",
@@ -643,10 +657,10 @@ export const dictionary = {
     about: {
       eyebrow: "الناشر",
       title: "أدلة تستحق أن تُحفظ.",
-      metaTitle: "عن الدار",
+      metaTitle: "من نحن",
       metaDescription: "تصدر Vellum Press أدلة PDF عملية تشتريها مرة وتحتفظ بها. الدفع عبر الإنترنت يفتح قريبًا جدًا.",
       paragraphs: [
-        "Vellum Press دار نشر رقمية صغيرة. ننشر أدلة عملية في الطعام والتمرين والمال والعمل والدراسة والضغط. كل دليل ملف PDF له بداية ووسط وأوراق عمل تطبعها. بلا عضوية، وبلا درس يُفتح الأسبوع القادم.",
+        "Vellum Press دار نشر رقمية صغيرة. ننشر أدلة عملية في الأكل والتمرين والمال والعمل والدراسة والتوتر. كل دليل ملف PDF له بداية ووسط وأوراق عمل تطبعها. بلا اشتراك، وبلا درس يُفتح الأسبوع القادم.",
         "الكتابة محددة عن قصد. دليل ميزانية لا يرتّب سداد الديون لم يكتمل. دليل تمرين يتخطى البدائل الأسهل لم يكتمل. نفضّل دليلًا محددًا يمكن استخدامه على دليل عام يكتفي بالإلهام.",
         "لسنا عيادة ولا وساطة مالية ولا مكتب محاماة. أدلة الصحة تعليم، وفيها تنبيهات وعلامات تستدعي التوقف. أدلة المال والعمل الحر تبيّن أين يجب أن يتولى الأمر مختص مرخّص. إذا وعدت صفحة بجسم مثالي أو درجة أو دخل، فهي ليست من أدلتنا.",
       ],
@@ -659,7 +673,7 @@ export const dictionary = {
       details: "بيانات الناشر",
       name: "الاسم",
       location: "الموقع",
-      email: "البريد",
+      email: "البريد الإلكتروني",
       support: "الدعم",
       locationValue: "الدمام، المملكة العربية السعودية",
       note: (email: string, location: string, legalName: string) =>
@@ -686,7 +700,7 @@ export const dictionary = {
       where: "أين نحن",
       response: "يومي عمل",
       name: "الاسم",
-      email: "البريد",
+      email: "البريد الإلكتروني",
       topic: "الموضوع",
       message: "الرسالة",
       send: "إرسال الرسالة",
@@ -704,7 +718,7 @@ export const dictionary = {
       lede: "مقالات قصيرة تقف وحدها. الأدلة تذهب أبعد، ومعها أوراق عمل.",
       metaTitle: "المدوّنة",
       metaDescription: "ملاحظات عن تحضير الوجبات والميزانية والدراسة وبدء عمل جانبي إلى جانب الوظيفة.",
-      minutes: (count: number) => `${count} دقائق قراءة`,
+      minutes: (count: number) => arCount(count, "دقيقة قراءة", "دقيقتان قراءة", "# دقائق قراءة", "# دقيقة قراءة"),
       theGuide: "الدليل",
       view: (title: string) => `عرض ${title}`,
     },
@@ -729,7 +743,7 @@ export const dictionary = {
     newsletter: {
       label: "البريد الإلكتروني",
       placeholder: "you@example.com",
-      button: "أرسلوا لي التنبيهات",
+      button: "أرسلوا لي الملاحظات",
       joining: "جارٍ التسجيل…",
       fine: "ملاحظات متفرقة عن الأدلة الجديدة. ألغِ الاشتراك متى شئت. بلا رسائل يومية.",
       done: "أنت في القائمة. نكتب حين يجهز دليل جديد.",
@@ -740,7 +754,7 @@ export const dictionary = {
     sample: {
       fallback: "تعذر فتح هذه العيّنة.",
       network: "خطأ في الشبكة. حاول بعد قليل.",
-      email: "البريد",
+      email: "البريد الإلكتروني",
     },
     crumbs: { home: "الرئيسية", shop: "المتجر" },
     schema: { pageCount: "عدد الصفحات" },

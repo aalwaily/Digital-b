@@ -180,7 +180,7 @@ function FilterLink({
     <Link
       href={href}
       aria-current={pressed ? "page" : undefined}
-      className={`inline-flex h-11 min-w-11 shrink-0 items-center justify-center rounded-full px-3 text-sm ${
+      className={`inline-flex h-11 min-w-11 max-w-full shrink-0 items-center justify-center whitespace-nowrap rounded-full px-3 text-sm ${
         pressed ? "bg-foreground text-background" : "bg-card ring-1 ring-border"
       }`}
     >

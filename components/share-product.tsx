@@ -6,7 +6,7 @@ import { Check, Link2, Share2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export function ShareProduct({ title, url }: { title: string; url: string }) {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const [copied, setCopied] = useState(false);
   const [canShare, setCanShare] = useState(false);
   const encodedUrl = encodeURIComponent(url);
@@ -34,10 +34,10 @@ export function ShareProduct({ title, url }: { title: string; url: string }) {
   }
 
   const links = [
-    { label: "X", href: `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`, external: true },
-    { label: "Facebook", href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`, external: true },
-    { label: "WhatsApp", href: `https://wa.me/?text=${encodedTitle}%20${encodedUrl}`, external: true },
-    { label: t.product.email, href: `mailto:?subject=${encodedTitle}&body=${encodedUrl}`, external: false },
+    { label: "X", href: `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`, latin: true },
+    { label: locale === "ar" ? "فيسبوك" : "Facebook", href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`, latin: locale !== "ar" },
+    { label: locale === "ar" ? "واتساب" : "WhatsApp", href: `https://wa.me/?text=${encodedTitle}%20${encodedUrl}`, latin: locale !== "ar" },
+    { label: t.product.email, href: `mailto:?subject=${encodedTitle}&body=${encodedUrl}`, latin: false },
   ];
 
   return (
@@ -58,9 +58,9 @@ export function ShareProduct({ title, url }: { title: string; url: string }) {
           <a
             key={link.label}
             href={link.href}
-            target={link.external ? "_blank" : undefined}
-            rel={link.external ? "noopener noreferrer" : undefined}
-            dir={link.external ? "ltr" : undefined}
+            target={link.href.startsWith("mailto:") ? undefined : "_blank"}
+            rel={link.href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
+            dir={link.latin ? "ltr" : undefined}
             className="inline-flex h-11 min-w-11 items-center justify-center rounded-lg border px-3 text-sm hover:bg-secondary"
           >
             {link.label}
