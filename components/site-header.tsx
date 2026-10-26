@@ -1,19 +1,15 @@
 "use client";
 
 import { useCart } from "@/components/cart-provider";
+import { useI18n } from "@/components/locale-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { useI18n } from "@/components/locale-provider";
 import { Menu, ShoppingBag } from "lucide-react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useState } from "react";
+
+const MobileMenu = dynamic(() => import("@/components/mobile-menu").then((mod) => mod.MobileMenu), { ssr: false });
 
 export function SiteHeader() {
   const cart = useCart();
@@ -74,46 +70,29 @@ export function SiteHeader() {
               </span>
             ) : null}
           </Link>
-          <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger
-              render={<Button variant="ghost" size="icon-touch" className="md:hidden" aria-label={t.openMenu} />}
-            >
-              <Menu />
-            </SheetTrigger>
-            <SheetContent side={locale === "ar" ? "left" : "right"} className="w-[min(100%,20rem)]">
-              <SheetHeader>
-                <SheetTitle className="font-serif text-xl">
-                  <bdi dir="ltr">Vellum Press</bdi>
-                </SheetTitle>
-              </SheetHeader>
-              <nav className="flex flex-col gap-1 px-4" aria-label={t.navMobile}>
-                {items.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={href(item.href)}
-                    onClick={() => setOpen(false)}
-                    className="flex min-h-11 items-center rounded-lg px-2 text-lg hover:bg-muted"
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-                <Link
-                  href={href("/contact")}
-                  onClick={() => setOpen(false)}
-                  className="flex min-h-11 items-center rounded-lg px-2 text-lg hover:bg-muted"
-                >
-                  {t.nav.contact}
-                </Link>
-                <button
-                  type="button"
-                  className="flex min-h-11 items-center rounded-lg px-2 text-start text-lg hover:bg-muted"
-                  onClick={() => switchTo(other)}
-                >
-                  {t.switchToLabel}
-                </button>
-              </nav>
-            </SheetContent>
-          </Sheet>
+          <Button
+            variant="ghost"
+            size="icon-touch"
+            className="md:hidden"
+            aria-label={t.openMenu}
+            aria-expanded={open}
+            onClick={() => setOpen(true)}
+          >
+            <Menu />
+          </Button>
+          {open ? (
+            <MobileMenu
+              open={open}
+              onOpenChange={setOpen}
+              side={locale === "ar" ? "left" : "right"}
+              navLabel={t.navMobile}
+              items={items.map((item) => ({ href: href(item.href), label: item.label }))}
+              contactHref={href("/contact")}
+              contactLabel={t.nav.contact}
+              switchLabel={t.switchToLabel}
+              onSwitch={() => switchTo(other)}
+            />
+          ) : null}
         </div>
       </div>
     </header>

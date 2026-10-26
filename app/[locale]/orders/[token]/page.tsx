@@ -86,7 +86,7 @@ export default async function OrderPage({
               <span dir={textDir(product?.title ?? item.title)} className="min-w-0">
                 {product?.title ?? item.title}
               </span>
-              <Price price={item.price} />
+              <Price price={item.price} locale={locale} />
             </li>
           );
         })}
@@ -101,7 +101,7 @@ export default async function OrderPage({
             <li key={slug} className="flex min-w-0 flex-col gap-3 rounded-2xl border bg-card p-3 sm:flex-row sm:items-center">
               {product ? (
                 <div className="w-16 shrink-0 overflow-hidden rounded-md">
-                  <Cover product={product} decorative />
+                  <Cover product={product} locale={locale} decorative />
                 </div>
               ) : null}
               <div className="min-w-0 flex-1">

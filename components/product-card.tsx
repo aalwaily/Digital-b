@@ -1,18 +1,26 @@
-"use client";
-
 import { Cover } from "@/components/cover";
-import { useI18n } from "@/components/locale-provider";
 import { Price } from "@/components/price";
 import { PurchaseActions } from "@/components/purchase-actions";
 import { Badge } from "@/components/ui/badge";
 import type { Product } from "@/data/products";
 import { pageCountFor } from "@/lib/catalog";
 import { textDir } from "@/lib/i18n/bidi";
+import { localePath, type Locale } from "@/lib/i18n/config";
 import { localizeCategory } from "@/lib/i18n/content";
+import { getDictionary } from "@/lib/i18n/dictionary";
 import Link from "next/link";
 
-export function ProductCard({ product, layout = "stack" }: { product: Product; layout?: "stack" | "responsive" }) {
-  const { locale, t, href } = useI18n();
+export function ProductCard({
+  product,
+  locale,
+  layout = "stack",
+}: {
+  product: Product;
+  locale: Locale;
+  layout?: "stack" | "responsive";
+}) {
+  const t = getDictionary(locale);
+  const href = (path: string) => localePath(locale, path);
   const category = localizeCategory(product.category, locale);
   const pages = pageCountFor(product);
 
@@ -22,7 +30,7 @@ export function ProductCard({ product, layout = "stack" }: { product: Product; l
         href={href(`/product/${product.slug}`)}
         className={`block overflow-hidden rounded-xl shadow-[0_18px_40px_-28px_rgba(28,24,18,0.7)] ring-1 ring-black/10 transition motion-safe:group-hover:-translate-y-0.5 dark:ring-white/10 ${layout === "responsive" ? "w-28 shrink-0 lg:w-full" : ""}`}
       >
-        <Cover product={product} decorative />
+        <Cover product={product} locale={locale} decorative />
         <span className="sr-only">{product.title}</span>
       </Link>
       <div className={`flex min-w-0 flex-1 flex-col ${layout === "responsive" ? "mt-0 lg:mt-4" : "mt-4"}`}>
@@ -36,7 +44,7 @@ export function ProductCard({ product, layout = "stack" }: { product: Product; l
           {product.shortDescription}
         </p>
         <div className="mt-3 flex min-w-0 flex-wrap items-center gap-2">
-          <Price price={product.price} compareAt={product.compareAtPrice} previousPrice={product.previousPrice} />
+          <Price price={product.price} compareAt={product.compareAtPrice} previousPrice={product.previousPrice} locale={locale} />
           {product.compareAtPrice ? <Badge variant="secondary">{t.product.bundleBadge}</Badge> : null}
           <span className="text-xs text-muted-foreground">{t.product.pages(pages)}</span>
         </div>

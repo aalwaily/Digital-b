@@ -20,6 +20,7 @@ export function SamplePreview({
             width={SAMPLE_PREVIEW.width}
             height={SAMPLE_PREVIEW.height}
             sizes="(min-width: 1024px) 36rem, 22rem"
+            fetchPriority="low"
             className="h-auto w-full rounded-xl bg-white ring-1 ring-black/10 dark:ring-white/15"
           />
           <figcaption className="mt-2 text-xs leading-relaxed text-muted-foreground">{slide.caption}</figcaption>

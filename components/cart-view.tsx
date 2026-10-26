@@ -53,7 +53,7 @@ export function CartView() {
           {items.map((item) => (
             <li key={item.slug} className="grid grid-cols-[5rem_minmax(0,1fr)] items-start gap-x-4 gap-y-2 py-5">
               <Link href={href(`/product/${item.slug}`)} className="col-start-1 row-span-2 w-20 overflow-hidden rounded-md ring-1 ring-black/10">
-                <Cover product={item} decorative />
+                <Cover product={item} locale={locale} decorative />
                 <span className="sr-only">{item.title}</span>
               </Link>
               <div className="min-w-0">
@@ -75,6 +75,7 @@ export function CartView() {
                 price={item.price}
                 compareAt={item.compareAtPrice}
                 previousPrice={item.previousPrice}
+                locale={locale}
                 className="col-start-2"
               />
             </li>

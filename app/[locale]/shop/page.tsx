@@ -1,3 +1,4 @@
+import { ProductCard } from "@/components/product-card";
 import { ShopBrowser } from "@/components/shop-browser";
 import { bundles, guides } from "@/data/products";
 import { shopListings } from "@/lib/catalog";
@@ -30,7 +31,15 @@ export default async function ShopPage({ params }: { params: Promise<{ locale: s
       <h1 className="mt-2 font-serif text-4xl md:text-5xl">{t.shop.title}</h1>
       <p className="mt-3 max-w-2xl text-muted-foreground">{t.shop.lede(guides.length, bundles.length)}</p>
       <div className="mt-8 min-w-0">
-        <ShopBrowser listings={listings} />
+        <ShopBrowser
+          listings={listings}
+          cards={Object.fromEntries(
+            listings.map((entry) => [
+              entry.product.slug,
+              <ProductCard key={entry.product.slug} product={entry.product} locale={locale} />,
+            ]),
+          )}
+        />
       </div>
     </div>
   );

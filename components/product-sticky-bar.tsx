@@ -17,7 +17,7 @@ export function ProductStickyBar({
   compareAt?: number;
   previousPrice?: number;
 }) {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const [show, setShow] = useState(false);
   const [ready, setReady] = useState(false);
 
@@ -53,6 +53,7 @@ export function ProductStickyBar({
           price={price}
           compareAt={compareAt}
           previousPrice={previousPrice}
+          locale={locale}
           size="bar"
           className="min-w-0 flex-1"
         />

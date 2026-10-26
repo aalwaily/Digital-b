@@ -190,6 +190,14 @@
   letter-spacing: 0.02em;
 }
 
+/* Unlayered so it beats the font-sans utility. The Arabic families live on
+   .arabic-root. If <html> or <body> still compute to Outfit, the browser
+   downloads that Latin file on Arabic pages and delays the heading font. */
+html[lang="ar"],
+html[lang="ar"] body {
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
 @keyframes rise {
   from {
     transform: translateY(8px);

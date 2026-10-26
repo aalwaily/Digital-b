@@ -92,7 +92,7 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
           <div className="mx-auto w-full max-w-[15rem] md:hidden">
             {heroCovers[0] ? (
               <Link href={localePath(locale, `/product/${heroCovers[0].slug}`)}>
-                <Cover product={heroCovers[0]} decorative className="rounded-md shadow-lg" />
+                <Cover product={heroCovers[0]} locale={locale} decorative className="rounded-md shadow-lg" />
                 <span className="sr-only">{heroCovers[0].title}</span>
               </Link>
             ) : null}
@@ -100,19 +100,19 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
           <div className="relative hidden h-[540px] overflow-hidden md:block">
             {heroCovers[2] ? (
               <Link href={localePath(locale, "/product/first-client")} className="absolute top-6 end-2 z-10 w-52 rotate-3">
-                <Cover product={heroCovers[2]} decorative />
+                <Cover product={heroCovers[2]} locale={locale} decorative />
                 <span className="sr-only">{heroCovers[2].title}</span>
               </Link>
             ) : null}
             {heroCovers[0] ? (
               <Link href={localePath(locale, "/product/12-week-reset")} className="absolute top-10 start-0 z-20 w-60 -rotate-6">
-                <Cover product={heroCovers[0]} decorative />
+                <Cover product={heroCovers[0]} locale={locale} decorative />
                 <span className="sr-only">{heroCovers[0].title}</span>
               </Link>
             ) : null}
             {heroCovers[1] ? (
               <Link href={localePath(locale, "/product/the-quiet-budget")} className="absolute bottom-2 start-28 z-30 w-52 rotate-2">
-                <Cover product={heroCovers[1]} decorative />
+                <Cover product={heroCovers[1]} locale={locale} decorative />
                 <span className="sr-only">{heroCovers[1].title}</span>
               </Link>
             ) : null}
@@ -140,7 +140,7 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
       {bundle ? (
         <section className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-16 md:grid-cols-2">
           <Link href={localePath(locale, `/product/${bundle.slug}`)} className="mx-auto w-full max-w-sm">
-            <Cover product={bundle} decorative />
+            <Cover product={bundle} locale={locale} decorative />
             <span className="sr-only">{bundle.title}</span>
           </Link>
           <div className="min-w-0">
@@ -149,7 +149,7 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
               {bundle.title}
             </h2>
             <p className="mt-4 text-muted-foreground">{bundle.description[0]}</p>
-            <Price price={bundle.price} compareAt={bundle.compareAtPrice} previousPrice={bundle.previousPrice} size="lg" className="mt-5" />
+            <Price price={bundle.price} compareAt={bundle.compareAtPrice} previousPrice={bundle.previousPrice} locale={locale} size="lg" className="mt-5" />
             <p className="mt-2 text-sm text-muted-foreground">{t.home.pagesAcross(pageCountFor(bundle))}</p>
             <LinkButton href={`/product/${bundle.slug}`} className="mt-6 h-11 px-5">
               {t.home.viewBundle}
@@ -167,7 +167,7 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
         </div>
         <div className="mt-8 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {featured.map((product) => (
-            <ProductCard key={product.slug} product={product} />
+            <ProductCard key={product.slug} product={product} locale={locale} />
           ))}
         </div>
       </section>
@@ -236,7 +236,7 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
             <h2 className="font-serif text-4xl">{t.home.noteTitle}</h2>
             <p className="mt-3 max-w-md text-background/75">{t.home.noteText}</p>
           </div>
-          <NewsletterForm inverted />
+          <NewsletterForm inverted id="home-note" />
         </div>
       </section>
     </div>

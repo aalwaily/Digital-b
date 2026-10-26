@@ -6,7 +6,15 @@ import { Input } from "@/components/ui/input";
 import { translateMessage } from "@/lib/i18n/messages";
 import { useState } from "react";
 
-export function NewsletterForm({ inverted = false, stack = false }: { inverted?: boolean; stack?: boolean }) {
+export function NewsletterForm({
+  inverted = false,
+  stack = false,
+  id = "newsletter",
+}: {
+  inverted?: boolean;
+  stack?: boolean;
+  id?: string;
+}) {
   const { t, locale } = useI18n();
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
@@ -44,11 +52,11 @@ export function NewsletterForm({ inverted = false, stack = false }: { inverted?:
   return (
     <form onSubmit={onSubmit} className="space-y-3">
       <div className={stack ? "flex flex-col gap-2" : "flex flex-col gap-2 sm:flex-row"}>
-        <label className="sr-only" htmlFor="newsletter-email">
+        <label className="sr-only" htmlFor={`${id}-email`}>
           {t.newsletter.label}
         </label>
         <Input
-          id="newsletter-email"
+          id={`${id}-email`}
           type="email"
           required
           autoComplete="email"
@@ -62,8 +70,8 @@ export function NewsletterForm({ inverted = false, stack = false }: { inverted?:
         </Button>
       </div>
       <div className="sr-only" aria-hidden="true">
-        <label htmlFor="company">{t.newsletter.company}</label>
-        <input id="company" name="company" tabIndex={-1} autoComplete="off" />
+        <label htmlFor={`${id}-company`}>{t.newsletter.company}</label>
+        <input id={`${id}-company`} name="company" tabIndex={-1} autoComplete="off" />
       </div>
       <p className={`text-xs ${inverted ? "text-background/75" : "text-muted-foreground"}`}>
         {t.newsletter.fine}

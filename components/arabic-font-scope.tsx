@@ -1,5 +1,3 @@
-import { FontPreloads } from "@/components/font-preloads";
-import { preloadArabicFaces } from "@/lib/font-preload";
 import { IBM_Plex_Sans_Arabic, Noto_Naskh_Arabic } from "next/font/google";
 import type { ReactNode } from "react";
 
@@ -27,7 +25,6 @@ const arabicSerif = Noto_Naskh_Arabic({
 export function ArabicFontScope({ children }: { children: ReactNode }) {
   return (
     <div lang="ar" dir="rtl" className={`${arabicSans.variable} ${arabicSerif.variable} arabic-root`}>
-      <FontPreloads pick={preloadArabicFaces} />
       {children}
     </div>
   );

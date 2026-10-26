@@ -1,6 +1,5 @@
-"use client";
-
-import { useI18n } from "@/components/locale-provider";
+import { type Locale } from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n/dictionary";
 import { formatMoney, formatSarAmount } from "@/lib/money";
 import { cn } from "cn";
 
@@ -14,14 +13,16 @@ export function Price({
   previousPrice,
   className,
   size = "md",
+  locale,
 }: {
   price: number;
   compareAt?: number | null;
   previousPrice?: number | null;
   className?: string;
   size?: "md" | "lg" | "bar";
+  locale: Locale;
 }) {
-  const { t } = useI18n();
+  const t = getDictionary(locale);
   const sar = formatSarAmount(price);
   const halfOff = previousPrice != null && previousPrice > price && isExactHalf(price, previousPrice);
   const struck = halfOff ? previousPrice : compareAt && compareAt > price ? compareAt : null;
