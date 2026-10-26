@@ -10,7 +10,7 @@ export type LegalPage = {
   sections: LegalSection[];
 };
 
-const note = `These pages are written for ${site.legalName}, a small publisher of digital guides based in ${site.location}. They are a practical starting point, not a law-firm opinion. The owner must still confirm the registered legal name and the commercial registration (or other license) that covers online sales. Governing law is set to ${site.jurisdiction}. Have a lawyer review these pages before you rely on them.`;
+const note = `These pages are written for ${site.legalName}, a small publisher of digital guides based in ${site.location}. They are a practical starting point, not a law-firm opinion. The owner must still confirm the registered legal name and the commercial registration (or other license) that covers online sales. Governing law is set to ${site.jurisdiction}. Ask a lawyer to review these pages before you rely on them.`;
 
 export const legalPages: LegalPage[] = [
   {
@@ -30,15 +30,15 @@ export const legalPages: LegalPage[] = [
       {
         heading: "What we collect",
         paragraphs: [
-          "When online payment is open, checkout asks for an email address so we can build your receipt and download link. Card details are entered on the payment provider's pages, not on ours. We do not receive your full card number. Until then, the site asks you to email us and does not charge a card.",
-          "The contact form collects your name, email, topic, and message. The newsletter form collects an email address and your consent to hear about new guides. The free-sample form collects an email address in exchange for the sample PDF.",
+          "When online payment is open, checkout asks for an email address so we can build your receipt and download link. Card details are entered on the payment provider's page, not on ours. We do not receive your full card number. Until then, the site asks you to email us and does not charge a card.",
+          "The contact form collects your name, email, topic, and message. The newsletter form collects an email address and your consent to hear about new guides. The free-sample form collects an email address in return for the sample PDF.",
           "The cart and the theme preference are stored in your browser (local storage). They are not sent to us until you choose to check out.",
         ],
       },
       {
         heading: "What we do not do",
         paragraphs: [
-          "We do not sell personal information. We do not ask you to create a password. Google Analytics, the Meta Pixel, and the TikTok Pixel are not loaded unless the store owner sets the matching public id. When one of those ids is set, that provider's script loads, and a completed purchase can send an order id, total, and product names from the receipt page. When the ids are unset, those scripts are not included.",
+          "We do not sell personal information. We do not ask you to create a password. Google Analytics, the Meta Pixel, and the TikTok Pixel are not loaded unless the store owner sets the matching public id. When one of those ids is set, that provider's script loads, and a completed purchase can send an order ID, total, and product names from the receipt page. When the ids are unset, those scripts are not included.",
           "We do not use the health, money, or stress content you might type into a worksheet. Those worksheets live in the PDF on your device.",
         ],
       },
@@ -52,7 +52,7 @@ export const legalPages: LegalPage[] = [
       {
         heading: "Download links",
         paragraphs: [
-          `After purchase we sign a download token that contains the order id, the email you entered, the product names, and an expiry. The default expiry is ${site.downloadDays} days. Anyone with the link can download the files until it expires, so treat it like a receipt you do not post publicly.`,
+          `After purchase we sign a download token that contains the order ID, the email you entered, the product names, and an expiry. The default expiry is ${site.downloadDays} days. Anyone with the link can download the files until it expires, so treat it like a receipt you do not post publicly.`,
           "The token is checked on our server. The full PDFs are not sitting in a public folder.",
         ],
       },
@@ -121,8 +121,8 @@ export const legalPages: LegalPage[] = [
       {
         heading: "Prices and checkout",
         paragraphs: [
-          "Prices in the catalog are in US dollars and are shown before you pay. We may change prices of future purchases at any time. A confirmed order keeps the price you paid.",
-          "Catalog prices are in US dollars. Online payment is not open yet, so checkout does not charge a card and does not issue the full file. Email us if you want a note when payment opens, or if you want to request a file. When a provider is enabled, that provider processes the payment and we do not see your full card number.",
+          "Prices in the catalog are in US dollars and are shown before you pay. We may change the price of a future purchase at any time. A confirmed order keeps the price you paid.",
+          `Online payment is not open yet, so checkout does not charge a card and does not release the full file. Email ${site.email} and we will let you know when it opens, or help you request a file. When a provider is enabled, that provider processes the payment and we do not see your full card number.`,
           "You must provide an email address you can access. The download link is tied to that address and to the products in the order.",
           "All sales are final. A completed purchase of a digital PDF is not refundable. See the all-sales-final policy for the replacement we offer when a file is corrupted, missing, or the download link fails.",
         ],
@@ -143,7 +143,7 @@ export const legalPages: LegalPage[] = [
         heading: "Disclaimers",
         paragraphs: [
           "The guides are sold as educational documents. We do not warrant that a guide will produce a particular body weight, grade, income, client, or mood. Results depend on factors a PDF cannot see.",
-          "The site is provided as available. We will try to keep downloads working, and we do not promise uninterrupted hosting.",
+          "The site is offered in its current form. We will try to keep downloads working, and we do not promise uninterrupted hosting.",
         ],
       },
       {
@@ -183,7 +183,7 @@ export const legalPages: LegalPage[] = [
       {
         heading: "A working copy, not a refund",
         paragraphs: [
-          `If a file is corrupted, missing, or the download link fails, email ${site.email} from the address you used at checkout. Include the order id from your receipt and the name of the guide. We will re-send a working copy or a fresh download link.`,
+          `If a file is corrupted, missing, or the download link fails, email ${site.email} from the address you used at checkout. Include the order ID from your receipt and the name of the guide. We will re-send a working copy or a fresh download link.`,
           "That replacement is the file you already bought. It is not a refund, and it does not change the price you paid. Asking for a file before payment is open is not a sale, and there is no charge to reverse.",
         ],
       },
@@ -210,14 +210,14 @@ export const legalPages: LegalPage[] = [
   {
     slug: "delivery",
     title: "Digital delivery policy",
-    description: "How PDF delivery, download links, and reprints of a lost file work.",
+    description: "How PDF delivery, download links, and a fresh link for a lost file work.",
     updated: "2026-10-18",
     sections: [
       { heading: "Read this first", paragraphs: [note] },
       {
         heading: "Instant delivery",
         paragraphs: [
-          "There is no shipping. After the payment provider confirms the payment, you land on a receipt page with a download button for each full PDF you bought. A bundle lists each included guide. Until online payment is open, the full files are not released from checkout.",
+          "There is no shipping. After the payment provider confirms the payment, you land on a receipt page with a download button for each full PDF you bought. A bundle lists each guide it includes. Until online payment is open, checkout does not release the full files.",
           "Free samples are separate, shorter PDFs. They are available on the product page before you buy and are not a substitute for the full guide.",
         ],
       },
@@ -232,7 +232,7 @@ export const legalPages: LegalPage[] = [
         heading: "Save your copy",
         paragraphs: [
           "Download the PDFs and store them somewhere you control. The receipt link is not a permanent library. When it expires, the page explains that, and the buttons stop working.",
-          `If the link expires or you lose the files, email ${site.supportEmail} from the purchase email with your order id. We can sign a fresh link for a purchase we can verify. Please do this yourself rather than sharing the old link in a public place.`,
+          `If the link expires or you lose the files, email ${site.supportEmail} from the address you used at checkout and include your order ID. We can sign a fresh link for a purchase we can verify. Please write to us yourself rather than posting the old link in public.`,
         ],
       },
       {
@@ -244,8 +244,8 @@ export const legalPages: LegalPage[] = [
       {
         heading: "Failed payments",
         paragraphs: [
-          "If you cancel a payment, you return to the cart or stay on checkout. Nothing is charged and the full files stay locked.",
-          "While online payment is closed, checkout explains that and asks you to email us. That page is not a receipt and it is not proof of payment.",
+          "If you cancel a payment, you return to the cart or stay on checkout. Nothing is charged, and the full files stay locked.",
+          "While online payment is closed, checkout says so and asks you to email us. That page is not a receipt, and it is not proof of payment.",
         ],
       },
       {

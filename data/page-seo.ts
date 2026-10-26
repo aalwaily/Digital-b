@@ -10,37 +10,37 @@ export const staticSeo = {
   home: {
     title: "Practical PDF Guides | From $6",
     description:
-      "Practical PDF guides from $6, with a free sample of each. Online payment opens soon. All sales are final.",
+      "Practical PDF guides from $6, with a free sample of each. Online payment opens very soon. All sales are final.",
     keyword: "buy PDF guides instant download",
   },
   shop: {
     title: "Shop PDF Guides & Bundles | From $6",
     description:
-      "Shop PDF guides and bundles from $6. Read a free sample first. Online payment opens soon. All sales are final.",
+      "Shop PDF guides and bundles from $6. Read a free sample first. Online payment opens very soon. All sales are final.",
     keyword: "shop PDF guides and bundles",
   },
   about: {
     title: "About Vellum Press | PDF Guides, Dammam",
     description:
-      "Vellum Press in Dammam sells practical PDF guides you download once and keep. All sales are final.",
+      "Vellum Press in Dammam publishes practical PDF guides you download once and keep. All sales are final.",
     keyword: "Vellum Press PDF guides Dammam",
   },
   contact: {
     title: "Contact Vellum Press | PDF Order Help",
     description:
-      "Contact Vellum Press about a PDF order or a failed download. Email glarz.com@gmail.com. All sales are final.",
+      "Write to Vellum Press about an order or a failed download. Email glarz.com@gmail.com. All sales are final.",
     keyword: "contact PDF order help",
   },
   faq: {
     title: "PDF Download FAQ | Sales Are Final",
     description:
-      "FAQ on PDF downloads, the personal license, and the all-sales-final policy. Guides from $6.",
+      "Answers on PDF downloads, the personal license, and the all-sales-final policy. Guides from $6.",
     keyword: "PDF download FAQ",
   },
   blog: {
     title: "PDF Plans & Templates Blog | Vellum",
     description:
-      "Buyer guides to PDF plans, templates, and kits: budgets, ATS CVs, Saudi freelance documents, and fat-loss plans.",
+      "Notes on PDF plans and templates: budgets, ATS CVs, Saudi freelance documents, and fat-loss plans.",
     keyword: "PDF plans templates kits blog",
   },
   privacy: {
@@ -69,17 +69,17 @@ export const staticSeo = {
   },
   cart: {
     title: "Your PDF Cart | Vellum Press",
-    description: "Review PDF guides in your cart. All sales are final. Online payment opens soon.",
+    description: "Review the PDF guides in your cart. All sales are final. Online payment opens very soon.",
     keyword: "PDF cart checkout",
   },
   checkout: {
     title: "Checkout for PDF Guides",
-    description: "Checkout for Vellum Press PDF guides. Online payment opens soon. All sales are final.",
+    description: "Checkout for Vellum Press PDF guides. Online payment opens very soon. All sales are final.",
     keyword: "PDF guide checkout",
   },
   success: {
     title: "PDF Payment Confirmation | Vellum",
-    description: "Confirming your PDF guide payment. The receipt page is where the download starts.",
+    description: "Confirming your PDF payment. The download starts on the receipt page.",
     keyword: "PDF payment confirmation",
   },
   orders: {
@@ -89,7 +89,7 @@ export const staticSeo = {
   },
   notFound: {
     title: "Page Not Found | Vellum Press PDFs",
-    description: "That page was not found. Browse the shop or switch to the Arabic pages. Free samples are still available.",
+    description: "That page was not found. Browse the shop, or switch to Arabic. Free samples are still available.",
     keyword: "PDF guide page not found",
   },
   arabicHome: {
@@ -153,7 +153,7 @@ export const productSeo: Record<string, SeoEntry> = {
   ),
   "saudi-freelancer-starter-kit": productEntry(
     "Saudi Freelance Kit PDF | $8.50",
-    "Download the Saudi freelance kit PDF for $8.50. freelance.sa checklist, SAR pricing, proposal, and invoice. Not legal advice.",
+    "Download the Saudi freelance kit PDF for $8.50. A freelance.sa checklist, SAR pricing, a proposal, and an invoice. Not legal advice.",
     "Saudi freelance starter kit PDF",
   ),
   "irregular-income-budget": productEntry(

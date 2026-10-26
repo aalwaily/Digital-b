@@ -45,7 +45,7 @@ export function SampleRequest({
       const data = (await response.json()) as { error?: string; downloads?: SampleDownload[] };
       if (!response.ok || !data.downloads?.length) {
         setStatus("error");
-        setMessage(translateMessage(locale, data.error || "Could not unlock that sample."));
+        setMessage(translateMessage(locale, data.error || "We could not open that sample."));
         return;
       }
       setDownloads(data.downloads);

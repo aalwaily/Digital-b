@@ -8,9 +8,9 @@ export const site = {
   // - a street address, if the store is required to show one
   // This file is not a commercial registration and it is not legal advice.
   legalName: "Vellum Press",
-  tagline: "Practical guides for a well-lived life.",
+  tagline: "Practical PDF guides you can finish and keep.",
   description:
-    "Practical PDF guides on health, training, money, work, study, and calm. Free samples are available now. Online payment opens soon.",
+    "Practical PDF guides on health, training, money, work, study, and calm. Free samples are available now. Online payment opens very soon.",
   email: "glarz.com@gmail.com",
   supportEmail: "glarz.com@gmail.com",
   location: "Dammam, Saudi Arabia",

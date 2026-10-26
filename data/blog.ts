@@ -116,7 +116,7 @@ export const posts: Post[] = [
     slug: "one-evening-budget-reset",
     title: "A budget reset you can finish in one evening",
     description:
-      "Skip the perfect spreadsheet. See one month honestly, name the leaks, and give the next paycheck a job.",
+      "Skip the perfect spreadsheet. See one month clearly, name the leaks, and give the next paycheck a job.",
     date: "2026-05-06",
     readingMinutes: 8,
     category: "Personal finance",
@@ -124,7 +124,7 @@ export const posts: Post[] = [
     blocks: [
       {
         type: "p",
-        text: "A budget reset fails when it starts with a new app and a promise to track every coffee. You do not need a new personality by midnight. You need a picture of one recent month and a decision about the next paycheck.",
+        text: "A budget reset fails when it starts with a new app and a plan to track every coffee. You do not need a new personality by midnight. You need a picture of one recent month and a decision about the next paycheck.",
       },
       {
         type: "h2",
@@ -201,7 +201,7 @@ export const posts: Post[] = [
     slug: "stop-rereading-your-notes",
     title: "Stop rereading your notes",
     description:
-      "Recognition feels like learning. Retrieval is slower and works better. A weekly plan you can use for any exam.",
+      "Recognition feels like learning. Retrieval is slower, and it is closer to what an exam asks you to do.",
     date: "2026-07-15",
     readingMinutes: 9,
     category: "Study skills",
@@ -278,7 +278,7 @@ export const posts: Post[] = [
       },
       {
         type: "p",
-        text: "None of this guarantees a score. It raises the chance that the hours you spend become memories you can use. The Exam Room Method turns the sequence above into a weekly table, a note format, and a morning-of checklist you can print.",
+        text: "None of this guarantees a score. It makes it more likely that the hours you spend become memories you can use. The Exam Room Method turns the sequence above into a weekly table, a note format, and a morning-of checklist you can print.",
       },
     ],
   },

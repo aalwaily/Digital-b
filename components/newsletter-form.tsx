@@ -29,7 +29,7 @@ export function NewsletterForm({ inverted = false, stack = false }: { inverted?:
       const data = (await response.json()) as { error?: string; delivered?: boolean };
       if (!response.ok) {
         setStatus("error");
-        setMessage(translateMessage(locale, data.error || "Could not add that email."));
+        setMessage(translateMessage(locale, data.error || "We could not add that email."));
         return;
       }
       setStatus("done");

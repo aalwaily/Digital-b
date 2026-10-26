@@ -42,7 +42,7 @@ export function rootMetadata(locale: "en" | "ar" = "en"): Metadata {
   const description =
     locale === "ar"
       ? "أدلة PDF عملية من 6 دولارات، مع عيّنة مجانية لكل دليل. الدفع عبر الإنترنت يفتح قريبًا. المبيعات نهائية."
-      : "Practical PDF guides from $6, with a free sample of each. Online payment opens soon. All sales are final.";
+      : "Practical PDF guides from $6, with a free sample of each. Online payment opens very soon. All sales are final.";
   return {
     metadataBase: new URL(CANONICAL_ORIGIN),
     title: { default: title, template: "%s" },
