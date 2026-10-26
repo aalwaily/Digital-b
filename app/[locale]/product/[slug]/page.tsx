@@ -23,6 +23,7 @@ import { arabicProductSeo, productSeo } from "@/data/page-seo";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { EnglishPdfNotice } from "@/components/english-pdf-notice";
 import { breadcrumbSchema, faqSchema, productSchema } from "@/lib/schema";
+import { limitFor } from "@/data/limits";
 import { sourcesFor } from "@/data/sources";
 import { checkoutOptions } from "@/lib/payments";
 import { CANONICAL_ORIGIN } from "@/lib/seo";
@@ -73,6 +74,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
   const productPath = localePath(locale, `/product/${product.slug}`);
   const paymentsOpen = checkoutOptions().open;
   const sources = sourcesFor(product.slug, locale);
+  const limit = limitFor(product.slug, locale);
   const audience = audienceFor(product.slug, locale);
   const slides = previewSlides(sampleTargets, locale, t);
   const specPills = [
@@ -251,6 +253,17 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           </li>
         </ul>
       </section>
+
+      {limit ? (
+        <section className="mt-12 min-w-0 rounded-2xl border bg-card px-4 py-4 sm:px-5" aria-labelledby="limit-heading">
+          <h2 id="limit-heading" className="font-serif text-2xl sm:text-3xl">
+            {t.product.limit}
+          </h2>
+          <p dir={textDir(limit)} className="mt-3 text-sm leading-relaxed text-muted-foreground">
+            {limit}
+          </p>
+        </section>
+      ) : null}
 
       {sources.length ? (
         <section className="mt-12 min-w-0">

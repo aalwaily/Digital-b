@@ -104,7 +104,7 @@ export const products: Product[] = [
       "Twelve weeks of protein, steps, strength, and weekends that still include your life.",
     description: [
       "The 12-Week Reset is a field manual for losing fat without turning your kitchen into a second job. It uses a modest calorie deficit, a protein target you can hit with ordinary food, daily steps, and two or three short strength sessions.",
-      "The schedule is written in weeks, not moods. You will set a baseline, build a plate you can repeat, and use a Sunday review when the scale sticks, travel shows up, or a social meal blows the plan.",
+      "The schedule is written in weeks, not moods. You will set a baseline, build a plate you can repeat (half plants, then protein and starch), and use a Sunday review when the scale sticks, travel shows up, or a social meal blows the plan. The plate is a template. It is not a gram target and not a promised loss.",
       "This is education, not medical care. The guide tells you when a doctor, a registered dietitian, or a qualified coach is the right next step, and it does not promise a number on the scale.",
     ],
     included: [
@@ -174,7 +174,7 @@ export const products: Product[] = [
     description: [
       "Weeknight Table is a cooking system for people who want to eat well on a Tuesday and do not want a second full-time job. You prep a few building blocks, then assemble meals instead of starting from zero.",
       "The guide includes a four-week rotation, sauce formulas that make the same chicken taste different, and full recipes with servings, times, and storage notes. Shopping lists are grouped the way a store is actually walked.",
-      "Nutrition here is practical, not clinical. The recipes lean on vegetables, protein, and fiber. They are not a medical meal plan, and the guide says so.",
+      "Nutrition here is practical, not clinical. The recipes lean on vegetables, protein, and fiber. Cooked leftovers are written as 3 to 4 days in the fridge, and chicken is done at 165°F (74°C), not when the juice looks clear. They are not a medical meal plan.",
     ],
     included: [
       "A 90-minute Sunday prep sequence",
@@ -305,7 +305,7 @@ export const products: Product[] = [
       "One evening to see your money clearly, then a monthly hour that does not rely on shame.",
     description: [
       "The Quiet Budget is a personal system for people who are tired of apps that scold them and spreadsheets they abandon. You will list what comes in, give every dollar a job, and separate true bills from leaks.",
-      "Debt gets an order: minimums first, then either avalanche or snowball, chosen on purpose. Sinking funds cover the expenses that are not monthly but are not surprises either, like car registration and gifts.",
+      "Debt gets an order: minimums first, then extra money either to the highest interest rate or to the smallest balance. Both are described by the US Consumer Financial Protection Bureau. Neither is a rule. Sinking funds cover expenses that are not monthly but are not surprises either, like car registration and gifts.",
       "Nothing here is investment advice, tax advice, or a promise that a budget will fix a structural income problem. The last chapter is explicit about what a PDF cannot do.",
     ],
     included: [
@@ -371,7 +371,7 @@ export const products: Product[] = [
     shortDescription:
       "Keystone habits, time blocks, and a weekly review that fits on one page.",
     description: [
-      "The Habit Ledger is for people who own three planners and still lose the week. It asks you to pick fewer habits, attach each one to a cue that already happens, and review the week on a single page.",
+      "The Habit Ledger is for people who own three planners and still lose the week. It asks you to pick fewer habits, attach each one to a cue that already happens, and review the week on a single page. It does not claim a habit is automatic after 21 days.",
       "Time blocking is treated as a draft, not a moral document. The guide shows how to protect two deep-work blocks, leave slack, and restart after a missed day without a new personality.",
       "There are printable ledger pages for thirty days. The point is repetition you can see, not a perfect streak.",
     ],
@@ -507,7 +507,7 @@ export const products: Product[] = [
     description: [
       "The Exam Room Method is a study system for courses and licensing exams. It replaces rereading with retrieval, spaces reviews before you feel ready, and turns a vague 'I'll study this weekend' into a weekly plan.",
       "You will build a small set of notes worth keeping, write questions as you learn, and use practice tests as information rather than as a verdict on your character.",
-      "The guide does not know your syllabus. It gives you methods and blank plans you fill with the course in front of you. It also treats sleep as part of studying, because all-nighters are a poor strategy with a long research trail.",
+      "The guide does not know your syllabus. It gives you methods and blank plans you fill with the course in front of you. Sleep is part of the plan only in this sense: an all-nighter is a poor trade for a short session you can remember. The guide does not set a required number of hours, and it does not promise a score.",
     ],
     included: [
       "A retrieval and spacing schedule",
@@ -638,7 +638,7 @@ export const products: Product[] = [
       "How to use the official freelance platform, price work in SAR, and send a proposal and an invoice. Not legal advice.",
     description: [
       "The Saudi Freelancer Starter Kit is an English field guide for someone in Saudi Arabia who wants to sell a service. It walks through the Freelance Work Document on the official platform (freelance.sa), then pricing, a thirty-day plan, outreach, a proposal page, and an invoice page you can print.",
-      "Rules change. The guide is dated October 2026 and tells you to read the screen on the official platform, and to ask a Saudi lawyer or accountant before you sign, register for VAT, or treat a template as a contract. It does not promise clients or income.",
+      "Rules on the public ministry pages do not all match. Checked in October 2026, the service page, decision 99439, and the English user guide disagree on the upper age, on how fast a document is issued, and on renewal. The guide tells you to believe the screen on freelance.sa, and to ask a Saudi lawyer or accountant before you sign, register for VAT, or treat a template as a contract. It does not promise clients or income.",
       "This edition is English. The PDF fonts and layout do not shape Arabic right-to-left text, so Arabic headings are not in the file.",
     ],
     included: [
@@ -780,11 +780,11 @@ export const products: Product[] = [
       "Structure a CV a screener can read, with Gulf notes, a cover letter, and interview prep. No job promises.",
     description: [
       "The Saudi & Gulf Job-Search and ATS CV Kit shows how to build a single-column CV with ordinary headings, dates a form can read, and bullets you can prove. It includes a cover-letter page, LinkedIn headline and About prompts, and a short interview worksheet.",
-      "Gulf notes cover language (send the language the posting asked for), Gregorian dates, why a photo and a text box often get dropped, and the limits of this PDF: it cannot change Saudization rules or an iqama profession.",
+      "Gulf notes cover language (send the language the posting asked for), Gregorian dates, and why a photo or a text box can be dropped by some screening software. Software differs. The PDF cannot change an employer's Nitaqat band or tell you whether a job matches an iqama profession.",
       "Nothing here promises an interview, a visa, or a job. If a posting says who may apply, believe the posting.",
     ],
     included: [
-      "An ATS structure: one column, standard headings, no tables or icons in the CV itself",
+      "A cautious CV structure: one column, standard headings, no tables or icons in the CV itself. Not a guarantee about every portal",
       "A bilingual note: two files when the employer needs Arabic and English, not mixed scripts in one parser",
       "A cover-letter page and LinkedIn headline and About prompts",
       "An achievement worksheet that does not ask you to invent a percentage",
