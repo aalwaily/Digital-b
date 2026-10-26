@@ -1,132 +1,13 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-
 const WHATSAPP_URL = "https://wa.me/966509309787?s=p";
 
 /**
  * Fixed chat button. `left` is physical, so Arabic pages keep it in the
- * bottom-left corner. A short effect lifts it above the buy bar and any
- * on-screen control the corner would cover.
+ * bottom-left corner. Position comes only from CSS (including the static
+ * product-page lift), so scrolling never moves it.
  */
 export function WhatsAppButton({ label, dir }: { label: string; dir: "ltr" | "rtl" }) {
-  const ref = useRef<HTMLAnchorElement>(null);
-
-  useEffect(() => {
-    const fab = ref.current;
-    if (!fab) return;
-
-    const cornerSelector = "a, button, input, select, textarea, .price, [data-copyright], [data-sticky-buy], .fixed.bottom-0";
-    const mustClearSelector = "#product-purchase .price, #product-purchase button, [data-copyright], [data-sticky-buy], .fixed.bottom-0, aside .price, aside a, aside button, #checkout-form button, #checkout-form .price";
-    let frame = 0;
-
-    const overlaps = (rect: { left: number; right: number; top: number; bottom: number }, box: DOMRect) =>
-      rect.left < box.right - 1 && rect.right > box.left + 1 && rect.top < box.bottom - 1 && rect.bottom > box.top + 1;
-
-    const boxesFor = (selector: string) => {
-      const boxes: DOMRect[] = [];
-      for (const el of document.querySelectorAll<HTMLElement>(selector)) {
-        if (el === fab || fab.contains(el)) continue;
-        if (el.closest("[data-whatsapp], [data-slot='sheet-content'], [data-slot='sheet-overlay'], .sr-only, [hidden]")) continue;
-        const style = getComputedStyle(el);
-        if (style.display === "none" || style.visibility === "hidden" || Number(style.opacity) === 0) continue;
-        const box = el.getBoundingClientRect();
-        if (box.width < 8 || box.height < 8) continue;
-        if (box.bottom <= 0 || box.top >= window.innerHeight) continue;
-        boxes.push(box);
-      }
-      return boxes;
-    };
-
-    const place = () => {
-      if (fab.getClientRects().length === 0) {
-        fab.dataset.placed = "true";
-        return;
-      }
-      const width = fab.offsetWidth;
-      const height = fab.offsetHeight;
-      const left = fab.getBoundingClientRect().left;
-      const gap = 12;
-      const floor = 16;
-      const maxBottom = Math.max(floor, Math.round(window.innerHeight * 0.58 - height));
-      const rectAt = (bottom: number) => {
-        const top = window.innerHeight - bottom - height;
-        return { left, right: left + width, top, bottom: top + height };
-      };
-
-      // One step out of whatever is already in the resting corner. Full-width
-      // rows above that stay put, so a long list does not chase the button up the page.
-      const resting = rectAt(floor);
-      let ceiling = Number.POSITIVE_INFINITY;
-      for (const box of boxesFor(cornerSelector)) {
-        if (overlaps(resting, box) && box.top < ceiling) ceiling = box.top;
-      }
-      let bottom = floor;
-      if (Number.isFinite(ceiling)) bottom = Math.min(maxBottom, Math.ceil(window.innerHeight - ceiling + gap));
-
-      const stepAbove = (candidates: DOMRect[], passes: number, guard: (box: DOMRect, rect: { left: number; right: number; top: number; bottom: number }) => boolean) => {
-        for (let pass = 0; pass < passes; pass += 1) {
-          const rect = rectAt(bottom);
-          let hit = Number.POSITIVE_INFINITY;
-          for (const box of candidates) {
-            if (!guard(box, rect)) continue;
-            if (box.top < hit) hit = box.top;
-          }
-          if (!Number.isFinite(hit)) break;
-          const next = Math.min(maxBottom, Math.ceil(window.innerHeight - hit + gap));
-          if (next <= bottom) break;
-          bottom = next;
-        }
-      };
-      stepAbove(boxesFor(mustClearSelector), 6, (box, rect) => overlaps(rect, box));
-      // One step off a chip or icon button. Full-width rows still have room
-      // beside the button, and a wrapped row of chips should not chase it up the page.
-      stepAbove(
-        boxesFor("a, button").filter((box) => box.width <= 128),
-        1,
-        (box, rect) => {
-          if (box.top < window.innerHeight - 340) return false;
-          if (!overlaps(rect, box)) return false;
-          const overlapW = Math.min(rect.right, box.right) - Math.max(rect.left, box.left);
-          return overlapW > box.width * 0.45;
-        },
-      );
-
-      fab.style.setProperty("--wa-lift", `${bottom}px`);
-      fab.dataset.placed = "true";
-    };
-
-    const schedule = () => {
-      if (frame) return;
-      frame = requestAnimationFrame(() => {
-        frame = 0;
-        place();
-      });
-    };
-
-    place();
-    document.fonts?.ready.then(schedule).catch(() => {});
-    window.addEventListener("resize", schedule);
-    window.addEventListener("scroll", schedule, { passive: true });
-    const observer = new MutationObserver(schedule);
-    observer.observe(document.body, {
-      attributes: true,
-      attributeFilter: ["class"],
-      childList: true,
-      subtree: true,
-    });
-
-    return () => {
-      if (frame) cancelAnimationFrame(frame);
-      window.removeEventListener("resize", schedule);
-      window.removeEventListener("scroll", schedule);
-      observer.disconnect();
-    };
-  }, []);
-
   return (
     <a
-      ref={ref}
       className="wa-fab"
       data-whatsapp=""
       href={WHATSAPP_URL}

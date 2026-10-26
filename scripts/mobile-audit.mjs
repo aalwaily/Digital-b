@@ -9,7 +9,8 @@
  * Also fails when the product buy bar covers the on-screen purchase button
  * or the footer, when the mobile menu cannot scroll or will not close, and
  * when the WhatsApp button is missing, not in the bottom-left of the viewport,
- * or covering the buy bar, price, or add-to-cart control.
+ * or covering the buy bar, price, or add-to-cart control, and when the button
+ * moves in viewport coordinates while the page scrolls.
  */
 import { mkdirSync } from "node:fs";
 import { chromium } from "playwright-core";
@@ -135,7 +136,6 @@ function probeBuyBar() {
 
 function probeWhatsApp() {
   const link = [...document.querySelectorAll("[data-whatsapp]")].find((node) => {
-    if (node.dataset.placed !== "true") return false;
     const nodeStyle = getComputedStyle(node);
     if (nodeStyle.display === "none" || nodeStyle.visibility === "hidden") return false;
     const nodeBox = node.getBoundingClientRect();
@@ -145,6 +145,9 @@ function probeWhatsApp() {
   const issues = [];
   const style = getComputedStyle(link);
   const box = link.getBoundingClientRect();
+  if (link.style.bottom || link.style.top || link.style.left || link.getAttribute("style")?.includes("--wa-lift")) {
+    issues.push("whatsapp position is set from script");
+  }
   if (style.position !== "fixed") issues.push("whatsapp button is not fixed");
   const computedLeft = Number.parseFloat(style.left);
   if (!Number.isFinite(computedLeft) || computedLeft > 48) issues.push(`whatsapp button left ${style.left}`);
@@ -231,7 +234,6 @@ for (const locale of ["en", "ar"]) {
       }
       await page.waitForFunction(() => {
         return [...document.querySelectorAll("[data-whatsapp]")].some((node) => {
-          if (node.dataset.placed !== "true") return false;
           const box = node.getBoundingClientRect();
           return box.width > 8 && box.height > 8;
         });
@@ -253,7 +255,7 @@ for (const locale of ["en", "ar"]) {
           const bar = document.querySelector("[data-sticky-buy]");
           const fab = [...document.querySelectorAll("[data-whatsapp]")].find((node) => {
             const box = node.getBoundingClientRect();
-            return node.dataset.placed === "true" && box.width > 8 && box.height > 8;
+            return box.width > 8 && box.height > 8;
           });
           if (!bar || !fab) return false;
           const style = getComputedStyle(bar);
@@ -318,6 +320,126 @@ for (const locale of ["en", "ar"]) {
     if (await page.locator("[data-slot='sheet-content']").count()) problems.push(`${label} did not close`);
   }
 
+  await context.close();
+}
+
+const phoneViewports = [
+  { width: 320, height: 568, name: "320", altHeight: 520 },
+  { width: 390, height: 844, name: "390", altHeight: 760 },
+  { width: 430, height: 932, name: "430", altHeight: 860 },
+  { width: 667, height: 375, name: "667x375", altHeight: 340 },
+];
+
+async function swipePage(page, deltaY) {
+  const viewport = page.viewportSize();
+  const x = Math.round(viewport.width * 0.62);
+  const startY = Math.round(viewport.height * 0.68);
+  const client = await page.context().newCDPSession(page);
+  try {
+    await client.send("Input.dispatchTouchEvent", {
+      type: "touchStart",
+      touchPoints: [{ x, y: startY, id: 1 }],
+    });
+    const steps = 8;
+    for (let step = 1; step <= steps; step += 1) {
+      await client.send("Input.dispatchTouchEvent", {
+        type: "touchMove",
+        touchPoints: [{ x, y: Math.round(startY - (deltaY * step) / steps), id: 1 }],
+      });
+      await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(resolve)));
+    }
+    await client.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  } finally {
+    await client.detach();
+  }
+}
+
+for (const locale of ["en", "ar"]) {
+  const context = await browser.newContext({
+    hasTouch: true,
+    isMobile: true,
+    deviceScaleFactor: 2,
+    viewport: { width: 390, height: 844 },
+    userAgent:
+      "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1",
+    locale: locale === "ar" ? "ar-SA" : "en-US",
+    extraHTTPHeaders: { "Accept-Language": locale === "ar" ? "ar" : "en" },
+  });
+  await context.addCookies([{ name: "vellum_locale", value: locale, url: base }]);
+  const page = await context.newPage();
+  for (const viewport of phoneViewports) {
+    await page.setViewportSize({ width: viewport.width, height: viewport.height });
+    for (const path of ["/", "/product/first-client"]) {
+      const label = `${locale} ${viewport.name} touch ${path}`;
+      await page.goto(`${base}/${locale}${path === "/" ? "" : path}`, { waitUntil: "domcontentloaded" });
+      await page.evaluate(() => document.fonts?.ready);
+      await page.waitForFunction(() => {
+        const node = document.querySelector("[data-whatsapp]");
+        return node && node.getBoundingClientRect().width > 8;
+      });
+      if (path.startsWith("/product/")) {
+        await page.waitForFunction(() => document.querySelector("[data-sticky-buy]")?.dataset.ready === "true");
+      }
+      await page.evaluate(() => {
+        const fab = document.querySelector("[data-whatsapp]");
+        window.__waSamples = [];
+        window.__waOn = true;
+        const tick = () => {
+          if (!window.__waOn) return;
+          const box = fab.getBoundingClientRect();
+          window.__waSamples.push([box.left, box.top, box.right, box.bottom, window.scrollY, window.innerHeight]);
+          requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      });
+      await swipePage(page, Math.round(viewport.height * 0.45)).catch(() => {});
+      await swipePage(page, -Math.round(viewport.height * 0.35)).catch(() => {});
+      const stability = await page.evaluate(async () => {
+        const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+        document.documentElement.style.scrollBehavior = "auto";
+        const frame = () => new Promise((resolve) => requestAnimationFrame(resolve));
+        const steps = 10;
+        for (const direction of [1, -1]) {
+          for (let step = 0; step <= steps; step += 1) {
+            const index = direction > 0 ? step : steps - step;
+            window.scrollTo(0, Math.round((maxScroll * index) / steps));
+            await frame();
+          }
+        }
+        await frame();
+        window.__waOn = false;
+        const samples = window.__waSamples || [];
+        window.scrollTo(0, 0);
+        if (!samples.length) return { missing: true };
+        const baseSample = samples[0];
+        let drift = 0;
+        for (const sample of samples) {
+          if (sample[5] !== baseSample[5]) continue;
+          for (let index = 0; index < 4; index += 1) drift = Math.max(drift, Math.abs(sample[index] - baseSample[index]));
+        }
+        const scrolled = samples.reduce((max, sample) => Math.max(max, sample[4]), 0) - samples.reduce((min, sample) => Math.min(min, sample[4]), samples[0][4]);
+        return { drift, scrolled, maxScroll, frames: samples.length };
+      });
+      if (stability.missing) problems.push(`${label} whatsapp missing during scroll`);
+      else if (!(stability.frames > 8)) problems.push(`${label} whatsapp scroll sampled ${stability.frames} frames`);
+      else if (stability.drift > 1) problems.push(`${label} whatsapp moved ${stability.drift.toFixed(2)}px during scroll`);
+      else if (stability.maxScroll > 240 && stability.scrolled < 160) problems.push(`${label} scroll sample stayed at ${Math.round(stability.scrolled)}px`);
+      const gapBefore = await page.evaluate(() => {
+        const box = document.querySelector("[data-whatsapp]").getBoundingClientRect();
+        return window.innerHeight - box.bottom;
+      });
+      await page.setViewportSize({ width: viewport.width, height: viewport.altHeight });
+      await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+      const gapAfter = await page.evaluate(() => {
+        const box = document.querySelector("[data-whatsapp]").getBoundingClientRect();
+        return window.innerHeight - box.bottom;
+      });
+      if (Math.abs(gapBefore - gapAfter) > 1) {
+        problems.push(`${label} whatsapp bottom gap changed ${gapBefore.toFixed(1)}px to ${gapAfter.toFixed(1)}px when the viewport height changed`);
+      }
+      await page.setViewportSize({ width: viewport.width, height: viewport.height });
+    }
+  }
   await context.close();
 }
 
