@@ -1,5 +1,7 @@
-import { checkoutOptions, demoCheckoutAllowed, isHalaEnabled } from "@/lib/payments";
+import { limitFor } from "@/data/limits";
+import { products } from "@/data/products";
 import { sourcesFor } from "@/data/sources";
+import { checkoutOptions, demoCheckoutAllowed, isHalaEnabled } from "@/lib/payments";
 import { describe, expect, it } from "vitest";
 
 describe("closed checkout", () => {
@@ -32,17 +34,24 @@ describe("closed checkout", () => {
   });
 });
 
-describe("product sources", () => {
-  it("cites only https pages on the guides that make health or Saudi regulatory claims", () => {
-    for (const slug of ["12-week-reset", "weeknight-table", "floor-and-form", "steady-mind", "saudi-freelancer-starter-kit"]) {
-      const sources = sourcesFor(slug, "en");
-      expect(sources.length).toBeGreaterThan(0);
+describe("product sources and limits", () => {
+  it("gives every product a bilingual limit and https sources where a claim was checked", () => {
+    for (const product of products) {
+      expect(limitFor(product.slug, "en").length, product.slug).toBeGreaterThan(40);
+      expect(limitFor(product.slug, "ar").length, product.slug).toBeGreaterThan(40);
+      const sources = sourcesFor(product.slug, "en");
+      const arabic = sourcesFor(product.slug, "ar");
+      expect(arabic.map((item) => item.href)).toEqual(sources.map((item) => item.href));
       for (const source of sources) {
-        expect(source.href.startsWith("https://")).toBe(true);
-        expect(sourcesFor(slug, "ar").some((item) => item.href === source.href)).toBe(true);
+        expect(source.href.startsWith("https://"), source.href).toBe(true);
+        expect(source.label.length).toBeGreaterThan(3);
+        expect(source.note.length).toBeGreaterThan(20);
       }
     }
-    expect(sourcesFor("habit-ledger", "en")).toEqual([]);
-    expect(sourcesFor("gulf-ats-cv-kit", "en")).toEqual([]);
+    expect(sourcesFor("first-client", "en")).toEqual([]);
+    expect(sourcesFor("saudi-freelancer-starter-kit", "en").some((item) => item.href.includes("hrsd.gov.sa"))).toBe(true);
+    expect(sourcesFor("weeknight-table", "en").some((item) => item.href.includes("fsis.usda.gov"))).toBe(true);
+    expect(sourcesFor("gulf-ats-cv-kit", "en").some((item) => item.href.includes("hrsd.gov.sa"))).toBe(true);
+    expect(sourcesFor("gulf-work-bundle", "en").length).toBeGreaterThan(sourcesFor("gulf-ats-cv-kit", "en").length);
   });
 });

@@ -2,14 +2,14 @@
   "12-week-reset": {
     "pages": 13,
     "samplePages": 4,
-    "bytes": 112141,
+    "bytes": 112434,
     "sampleBytes": 89684
   },
   "weeknight-table": {
     "pages": 11,
     "samplePages": 3,
-    "bytes": 106280,
-    "sampleBytes": 87747
+    "bytes": 106853,
+    "sampleBytes": 87749
   },
   "floor-and-form": {
     "pages": 11,
@@ -20,13 +20,13 @@
   "the-quiet-budget": {
     "pages": 11,
     "samplePages": 3,
-    "bytes": 105290,
+    "bytes": 105422,
     "sampleBytes": 87990
   },
   "habit-ledger": {
-    "pages": 10,
+    "pages": 11,
     "samplePages": 3,
-    "bytes": 104660,
+    "bytes": 106057,
     "sampleBytes": 88485
   },
   "first-client": {
@@ -38,20 +38,20 @@
   "exam-room-method": {
     "pages": 10,
     "samplePages": 3,
-    "bytes": 102572,
+    "bytes": 102607,
     "sampleBytes": 87142
   },
   "steady-mind": {
     "pages": 10,
     "samplePages": 3,
-    "bytes": 102811,
+    "bytes": 102840,
     "sampleBytes": 86666
   },
   "saudi-freelancer-starter-kit": {
     "pages": 16,
     "samplePages": 4,
-    "bytes": 117380,
-    "sampleBytes": 89056
+    "bytes": 118978,
+    "sampleBytes": 90340
   },
   "irregular-income-budget": {
     "pages": 15,
@@ -62,7 +62,7 @@
   "gulf-ats-cv-kit": {
     "pages": 15,
     "samplePages": 3,
-    "bytes": 114916,
-    "sampleBytes": 88277
+    "bytes": 115148,
+    "sampleBytes": 88321
   }
 }

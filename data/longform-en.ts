@@ -233,7 +233,7 @@ export const englishLongform: Post[] = [
     blocks: [
       {
         type: "note",
-        text: "Not legal, tax, or accounting advice. Rules on the official screens can change. This article describes public pages of the Ministry of Human Resources and Social Development (HRSD) as they read on 19 October 2026. The portal decides eligibility, not this page.",
+        text: "Not legal, tax, or accounting advice. Rules on the official screens can change. This article describes public pages of the Ministry of Human Resources and Social Development (HRSD) as they read on 26 October 2026. The portal decides eligibility, not this page.",
       },
       {
         type: "p",
@@ -255,7 +255,7 @@ export const englishLongform: Post[] = [
       },
       {
         type: "p",
-        text: "Nafath and Absher are government login tools. This store is not those tools. If a login page asks you to type your password into a site that is not the official one, stop. The support number printed on the HRSD service page and in the user guide is 920002654. The service page also lists the social account @Freelancersksa.",
+        text: "Nafath and Absher are government login tools. This store is not those tools. If a login page asks you to type your password into a site that is not the official one, stop. The freelance contact block on the HRSD service page, and the English user guide, list 920002654. The service page header also shows the ministry number 19911. The service page lists the social account @Freelancersksa.",
       },
       { type: "h2", text: "Issue the document, as the pages describe it" },
       {
@@ -282,7 +282,7 @@ export const englishLongform: Post[] = [
       },
       {
         type: "p",
-        text: "Renewal is the point where the two official pages do not tell one story. A FAQ line on the HRSD service page says renewal is done automatically without an action from the beneficiary. The user guide describes renewal as something you do from document management. Do not pick the sentence you prefer. Open the dashboard and read the control that is actually there. If it is unclear, use the number 920002654 rather than a blog, including this one.",
+        text: "Renewal is where the official texts do not tell one story. On 26 October 2026 the FAQ 'How is the document renewed?' answered that renewal is through the portal, and the link on that answer pointed to nvg.gov.sa, the National Volunteer Portal, not to freelance.sa. Do not follow that link for a freelance document. A line in the steps area of the same service page says the process is automatic and needs nothing from the beneficiary, without naming which step. The English user guide says document management can renew, cancel, or download a document. Open freelance.sa and read the control on your dashboard. If it is unclear, use 920002654, which the freelance contact block and the user guide both print, rather than a blog, including this one.",
       },
       { type: "h2", text: "What this document is not" },
       {

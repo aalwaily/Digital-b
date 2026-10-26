@@ -41,12 +41,12 @@ BUDGET = {
             P("List the next two paydays and the bills that must clear before the payday after that. Move bill money the day you are paid. What remains is the number you can choose with. If it is smaller than you hoped, the budget is working."),
             P("Transfer a fixed amount to savings on payday, before you decide the chosen spending. 'Save what is left' is a story you edit every Friday. If income varies, budget the low month. A larger deposit is surplus, not a new baseline."),
             H("A simple split, if you want one"),
-            P("Fifty percent of take-home to needs, thirty to wants, twenty to savings and extra debt payments is a sketch, not a law. High rent breaks the fifty. Use the sketch to notice the break. Then assign dollars anyway, starting with minimums and housing."),
+            P("Fifty percent of take-home to needs, thirty to wants, and twenty to savings and extra debt payments is a popular sketch, not a law and not a Consumer Financial Protection Bureau rule. High rent breaks the fifty. Use the sketch to notice the break. Then assign dollars anyway, starting with minimums and housing."),
             TIP("Name the account that holds bill money. If bills and spending share one balance, you will spend the electric bill."),
         ),
         chapter(
             "Debt, in an order that works",
-            P("Pay every minimum. That is not optional. Then choose one balance to hit with extra money. Avalanche means the highest interest rate first, which usually costs less over time. Snowball means the smallest balance first, which finishes an account sooner. Pick one and write the name of the account on the monthly page."),
+            P("Pay every minimum. That is not optional. Then choose one balance to hit with extra money. The US Consumer Financial Protection Bureau describes two methods. Highest interest rate first can cost less over time. Snowball, the smallest balance first, finishes an account sooner and may cost more in interest. Neither is required, and neither is written for every country. Pick one and write the name of the account on the monthly page."),
             T(
                 ["Method", "Order", "Best when", "Watch out"],
                 [
@@ -180,7 +180,7 @@ HABIT = {
         chapter(
             "When you miss",
             P("Missing is the data. A habit that fails every Wednesday has a Wednesday problem: the cue does not exist that day, or the day is already full. Change the cue or shrink the habit. Do not start a new tracker to punish the miss."),
-            P("Never miss twice is a useful rule if you treat the second day as a restart, not as a trial. The first miss is weather. The second is a design question. Answer the question in one sentence on the ledger."),
+            P("Do not treat day 21, or any fixed day, as the day a habit becomes automatic. A review in the British Journal of General Practice, checked for this edition, reports an average near 66 days in one study, a wide spread, and that an occasional miss did not erase progress. That average is not your target. Restart at the next cue. If the same day fails every week, the cue is the question. Answer it in one sentence on the ledger."),
             B(
                 "Restart at the next cue, not next Monday.",
                 "Do the two-minute version if the full version feels ruined.",
@@ -420,7 +420,7 @@ EXAM = {
         ),
         chapter(
             "Energy, sleep, and asking for help",
-            P("Sleep is when memory consolidates. An all-nighter is a bet against that. If you are sick or exhausted, a shorter retrieval session beats a heroic reread you will not remember."),
+            P("An all-nighter is a poor trade for a short retrieval session you can remember. This guide does not set a required number of hours of sleep, and it does not claim a score. If you are sick or exhausted, the shorter session still beats a heroic reread."),
             P("If you need extended time, a quiet room, or another accommodation, ask on the institution's timeline, not the week of the exam. If you are lost in the subject itself, ask the instructor what the exam will require you to do, not whether you are 'behind.' The verb matters: define, compare, calculate, argue."),
             N("This guide cannot raise a score by a promised amount. It can make the hours you spend more likely to become answers you can produce."),
         ),
@@ -465,7 +465,7 @@ MIND = {
                     ["Box", "One minute", "You like a count", "Holds feel bad"],
                 ],
             ),
-            N("Stop if you feel dizzy, numb, or more panicked. Sit down. These are ordinary exercises, not tests of will."),
+            N("Stop if you feel dizzy, numb, or more panicked. Sit down. These are ordinary exercises, not a treatment for panic or depression, and not a test of will."),
         ),
         chapter(
             "A ten-minute body scan",

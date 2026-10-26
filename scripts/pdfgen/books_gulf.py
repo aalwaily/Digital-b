@@ -43,6 +43,10 @@ FREELANCE = {
             "What the freelance document is",
             P("The Freelance Work Document is issued through the official freelance platform at https://freelance.sa. The site's own Arabic name is on that home page. This English PDF does not set Arabic type: the fonts in this file do not shape right-to-left text, so the Arabic name is left on the official site rather than drawn broken here. Check the address bar before you sign in or approve a login request."),
             P("The document, when the portal issues one, permits the activities printed on it. It is not a commercial registration from the Ministry of Commerce. It is not a work visa. It does not cancel an employment contract. It does not, by itself, make an online shop legal, and it does not register you for VAT."),
+            P("Checked 26 October 2026, then check again on the day you apply. HRSD's service page lists the fee as free, the languages as Arabic and English, and the duration as immediate. The same page says the document is issued after the operations team reviews the attachments. Read both. The dashboard status is the one that counts. Do not pay a stranger a processing fee."),
+            P("Ministerial decision 99439, publication date shown as 2 March 2021, says the term is one year, renewable, and that citizens aged 18 to 60 may obtain the document after eligibility is checked on the approved platform. The service page's conditions are not the same list: age 18 or older, Saudi nationality, an active Absher account, and extra conditions for some categories. This PDF will not guess which line wins. If the screen you are logged into disagrees, believe the screen."),
+            P("Renewal is also unsettled. The FAQ 'How is the document renewed?' answered that renewal is through the portal, and the link pointed to nvg.gov.sa, the National Volunteer Portal, not to freelance.sa. Do not follow that link for this document. A line in the steps area says the process is automatic and needs nothing from the beneficiary, without naming the step. The English user guide on hrsd.gov.sa, file path dated August 2026, says document management can renew, cancel, or download. Open freelance.sa and read the control you actually have."),
+            P("The freelance contact block and that user guide list 920002654. The service page header also shows 19911. Use a number printed on the official page."),
             T(
                 ["Paper", "What it is for", "What it is not"],
                 [
@@ -73,10 +77,10 @@ FREELANCE = {
             P("The steps below are the shape of the process, not a screenshot that will stay true. Labels move. If a button is not where this list says, use the label on the screen."),
             B(
                 "Open https://freelance.sa and confirm the host.",
-                "Sign in with the national access method the portal offers. Often that is Nafath. Approve the request only if you started it.",
+                "Sign in the way the screen offers. The English user guide says: open freelance.sa, choose Login, choose Nafath, then the one-time code. Approve a login request only if you started it.",
                 "Read the eligibility questions. Answer them. If you do not qualify, stop.",
                 "Choose an activity from the list the portal shows. Pick the one that matches the work, not the one that sounds broader.",
-                "Read the fee on that page. Do not rely on a remembered number. When this guide was written, the thing to do was to read the fee on the portal, including if the fee was zero.",
+                "Read the fee on that page before you submit. When this guide was checked, the service page listed the government fee as free. A remembered number is not the fee.",
                 "Submit. If a document is issued, download it. Write the number, the activities, and the expiry on the field page.",
                 "Note how long it says it lasts, and the renewal path. Do not assume a year if the page says otherwise.",
             ),
@@ -107,7 +111,7 @@ FREELANCE = {
                 ],
                 26,
             ),
-            P("Quote in SAR unless the client asked for another currency. If you are paid in another currency, write the rate you actually received, not a rate you hoped for. The riyal's peg is a fact about the currency, not a promise about what a foreign client will send after fees."),
+            P("Quote in SAR unless the client asked for another currency. If you are paid in another currency, write the amount you actually received after fees, not a rate you hoped for."),
             TIP("If you cannot say the hours, you cannot say the price. Go back one step."),
         ),
         chapter(
@@ -208,13 +212,13 @@ FREELANCE = {
                 ],
                 30,
             ),
-            P("If you are not registered for VAT, do not add 15 percent because a sample invoice had a VAT line. If you are registered, follow ZATCA's current invoice rules, which are stricter than this page. The next chapter is the list of questions, not the answers."),
+            P("If you are not registered for VAT, do not add 15 percent because a sample invoice had a VAT line. ZATCA says a paper bill that you scan or save as an ordinary PDF is not an electronic invoice. If you are registered, follow the current Fatoora rules, which are stricter than this page. The next chapter is the list of questions, not the answers."),
         ),
         chapter(
             "VAT, zakat, and your accountant",
             P("Tax rules depend on what you are, what you sell, and the current ZATCA publications. This page is a list of things to verify. It is not a calculation of what you owe."),
             H("What was published, and what you must re-check"),
-            P("ZATCA's standard VAT rate has been 15 percent since 1 July 2020. Confirm the rate on zatca.gov.sa before you charge it. For many years ZATCA has published a mandatory VAT registration threshold of SAR 375,000 of taxable supplies in twelve months, and a voluntary band from SAR 187,500. Confirm both numbers on zatca.gov.sa. They are included so you know which page to open, not so you can skip opening it. This paragraph was written in October 2026."),
+            P("Checked October 2026. ZATCA's page on VAT registration for individuals says the service is for annual revenues that exceed SAR 375,000, and that registration is optional when revenues exceed SAR 187,500 and are less than SAR 375,000. The page says revenues. It is not a worksheet for you to decide you are under the line. The VAT law sets the standard rate at 15 percent, and ZATCA announced that rate took effect on 1 July 2020. Confirm the rate and whether you must register on zatca.gov.sa before you charge tax. Do not add 15 percent to a bill you are not registered to issue."),
             B(
                 "Am I required to register for VAT, or am I allowed to register voluntarily?",
                 "If I register, what must the invoice contain, and does e-invoicing (Fatoora) apply to me yet?",
@@ -509,7 +513,7 @@ CV = {
         ),
         chapter(
             "What a screener actually receives",
-            P("Many employers run an application through software before a person reads it. That software is often called an ATS. It tends to keep text in the body of a simple file and to drop text that lives in a picture, a text box, or a header. You cannot see which system a given employer uses. The safe file is the one that still makes sense if only the plain text survives."),
+            P("Many employers run an application through software before a person reads it. That software is often called an ATS. Career offices describe a safer file as one column, with ordinary headings, and without tables, images, or text that lives only in a header. Systems differ. You cannot see which one a given employer uses. Treat the plain file as a precaution, not as a map of every portal. The safe file is the one that still makes sense if only the plain text survives."),
             T(
                 ["Often kept", "Often dropped or scrambled"],
                 [
@@ -563,8 +567,8 @@ CV = {
         ),
         chapter(
             "Gulf notes",
-            P("These are limits, not tricks. Saudization (including Nitaqat) is a system for employers. A CV template does not make you eligible for a role, and it does not change an employer's quota. If a posting says Saudi nationals only, read that line and apply only if it is true of you. Do not adjust a nationality field to fit a template."),
-            P("For expatriates, the profession on an iqama can limit the work you may do. This PDF cannot compare a job title with your iqama. Ask the employer or a qualified adviser before you treat an offer as something you can accept."),
+            P("These are limits, not tricks. HRSD's Nitaqat calculator is an employer service. It estimates a band from worker counts and the establishment's activity. A CV template does not make you eligible for a role, and it does not change that band. If a posting says Saudi nationals only, read that line and apply only if it is true of you. Do not adjust a nationality field to fit a template."),
+            P("Qiwa is where a worker reviews a pending employment contract. The help page checked in October 2026 gives 10 days to accept, reject, or request a change. Occupation management is a separate Qiwa service. This PDF cannot tell you whether a job title matches the profession on a residency. Ask the employer or a qualified adviser before you treat an offer as something you can accept."),
             P("Elsewhere in the Gulf, private-sector applications are often in English, and public-sector applications often follow that country's own portal. Some employers ask for a photo. Some systems reject photos. Do what the posting says. A photo is a poor default, because many parsers ignore the image and a biased reader may not. Leave it off unless they asked."),
             B(
                 "Qatar, the UAE, Kuwait, Bahrain, and Oman do not share one CV law. Read the posting.",
