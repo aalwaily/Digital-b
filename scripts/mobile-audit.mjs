@@ -133,18 +133,14 @@ function probeBuyBar() {
   return issues;
 }
 
-function visibleWhatsApp() {
-  return [...document.querySelectorAll("[data-whatsapp]")].find((node) => {
-    if (node.dataset.placed !== "true") return false;
-    const style = getComputedStyle(node);
-    if (style.display === "none" || style.visibility === "hidden") return false;
-    const box = node.getBoundingClientRect();
-    return box.width > 8 && box.height > 8;
-  });
-}
-
 function probeWhatsApp() {
-  const link = visibleWhatsApp();
+  const link = [...document.querySelectorAll("[data-whatsapp]")].find((node) => {
+    if (node.dataset.placed !== "true") return false;
+    const nodeStyle = getComputedStyle(node);
+    if (nodeStyle.display === "none" || nodeStyle.visibility === "hidden") return false;
+    const nodeBox = node.getBoundingClientRect();
+    return nodeBox.width > 8 && nodeBox.height > 8;
+  });
   if (!link) return ["whatsapp button missing"];
   const issues = [];
   const style = getComputedStyle(link);
