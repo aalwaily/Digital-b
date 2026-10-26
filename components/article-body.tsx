@@ -1,13 +1,7 @@
 import type { PostBlock } from "@/data/blog";
 import { textDir } from "@/lib/i18n/bidi";
-import { localePath } from "@/lib/i18n/config";
+import { articleHref } from "@/lib/routes";
 import Link from "next/link";
-
-function articleHref(href: string) {
-  if (/^https?:\/\//i.test(href)) return href;
-  if (href === "/en" || href === "/ar" || href.startsWith("/en/") || href.startsWith("/ar/")) return href;
-  return localePath("en", href);
-}
 
 export function ArticleBody({ blocks }: { blocks: PostBlock[] }) {
   return (
