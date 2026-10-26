@@ -90,7 +90,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
   ].filter((item): item is string => Boolean(item));
 
   return (
-    <div className="mx-auto min-w-0 max-w-6xl px-4 py-6 pb-[calc(6.5rem+env(safe-area-inset-bottom))] sm:px-5 sm:py-10 lg:pb-10">
+    <div className="mx-auto min-w-0 max-w-6xl px-4 py-6 sm:px-5 sm:py-10">
       <JsonLd data={productSchema(product, CANONICAL_ORIGIN, locale)} />
       <JsonLd data={faqSchema(product.faqs)} />
       <JsonLd data={breadcrumbSchema(CANONICAL_ORIGIN, product, locale)} />
@@ -107,21 +107,23 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
       <div className="mt-4 grid min-w-0 gap-8 lg:mt-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-10">
         <div className="order-1 min-w-0 lg:order-2">
           <p className="text-xs tracking-[0.16em] text-copper uppercase sm:tracking-[0.18em]">{category?.name}</p>
-          <h1 dir={textDir(product.title)} className="mt-2 font-serif text-3xl leading-tight sm:text-4xl lg:text-5xl">
+          <h1 dir={textDir(product.title)} className="mt-2 font-serif text-3xl leading-tight md:text-4xl lg:text-5xl">
             {product.title}
           </h1>
           <p dir={textDir(product.subtitle)} className="mt-2 text-base leading-relaxed text-muted-foreground sm:text-lg">
             {product.subtitle}
           </p>
+          <div id="product-purchase">
+            <Price price={product.price} compareAt={product.compareAtPrice} previousPrice={product.previousPrice} size="lg" className="mt-4" />
+            <div className="mt-3">
+              <PurchaseActions slug={product.slug} />
+            </div>
+          </div>
           {locale === "ar" ? (
             <div className="mt-4">
               <EnglishPdfNotice />
             </div>
           ) : null}
-          <Price price={product.price} compareAt={product.compareAtPrice} previousPrice={product.previousPrice} size="lg" className="mt-4" />
-          <div className="mt-4">
-            <PurchaseActions slug={product.slug} />
-          </div>
           <ul aria-label={t.product.specs} className="mt-4 flex flex-wrap gap-1.5">
             {specPills.map((pill) => (
               <li key={pill} className="rounded-full bg-card px-2.5 py-1 text-sm leading-5 ring-1 ring-border">
