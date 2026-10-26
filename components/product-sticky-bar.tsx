@@ -3,6 +3,8 @@
 import { Price } from "@/components/price";
 import { PurchaseActions } from "@/components/purchase-actions";
 import { useI18n } from "@/components/locale-provider";
+import { cn } from "cn";
+import { useEffect, useState } from "react";
 
 export function ProductStickyBar({
   slug,
@@ -16,10 +18,33 @@ export function ProductStickyBar({
   previousPrice?: number;
 }) {
   const { t } = useI18n();
+  const [show, setShow] = useState(false);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const target = document.getElementById("product-purchase");
+    if (!target) {
+      setShow(true);
+      setReady(true);
+      return;
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      setShow(!entry.isIntersecting);
+      setReady(true);
+    });
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div
-      className="fixed inset-x-0 bottom-0 z-30 border-t bg-background/95 px-3 pt-2 ps-[max(0.75rem,env(safe-area-inset-left))] pe-[max(0.75rem,env(safe-area-inset-right))] pb-[max(0.5rem,env(safe-area-inset-bottom))] backdrop-blur lg:hidden"
+      data-sticky-buy=""
+      data-ready={ready ? "true" : "false"}
+      aria-hidden={show ? undefined : true}
+      className={cn(
+        "fixed inset-x-0 bottom-0 z-30 border-t bg-background/95 px-3 pt-2 ps-[max(0.75rem,env(safe-area-inset-left))] pe-[max(0.75rem,env(safe-area-inset-right))] pb-[max(0.5rem,env(safe-area-inset-bottom))] backdrop-blur lg:hidden",
+        show ? "" : "invisible pointer-events-none",
+      )}
       role="region"
       aria-label={t.product.stickyBuy}
     >

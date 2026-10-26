@@ -97,7 +97,7 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
             {related.title}
           </h2>
           <p className="mt-2 text-sm text-muted-foreground">{related.shortDescription}</p>
-          <LinkButton href={`/product/${related.slug}`} className="mt-4 h-11 px-4">
+          <LinkButton href={`/product/${related.slug}`} className="wrap-button mt-4 w-full px-4 py-2 sm:w-auto">
             {t.blog.view(related.title)}
           </LinkButton>
         </aside>

@@ -15,18 +15,19 @@ export function Breadcrumbs({
   const Separator = locale === "ar" ? ChevronLeft : ChevronRight;
 
   return (
-    <nav aria-label={label} className="flex min-w-0 flex-wrap items-center gap-x-1 gap-y-1 text-sm text-muted-foreground">
+    <nav aria-label={label} className="flex h-11 min-w-0 items-center gap-1 overflow-hidden text-sm text-muted-foreground">
       {items.map((item, index) => {
         const dir = textDir(item.label);
+        const current = !item.href;
         return (
-          <span key={`${index}-${item.href ?? item.label}`} className="inline-flex min-w-0 max-w-full items-center gap-1">
+          <span key={`${index}-${item.href ?? item.label}`} className={`inline-flex min-w-0 items-center gap-1 ${current ? "flex-1" : "shrink-0"}`}>
             {index > 0 ? <Separator aria-hidden className="size-3.5 shrink-0 opacity-60" /> : null}
             {item.href ? (
-              <Link href={item.href} dir={dir} className="inline-flex min-h-11 items-center hover:underline">
+              <Link href={item.href} dir={dir} className="inline-flex h-11 shrink-0 items-center hover:underline">
                 {item.label}
               </Link>
             ) : (
-              <span dir={dir} className="min-w-0 break-words text-foreground">
+              <span dir={dir} className="min-w-0 truncate text-foreground">
                 {item.label}
               </span>
             )}
