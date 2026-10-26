@@ -3,6 +3,10 @@ import path from "path";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Lighthouse 12's mobile UA is a normal Chrome string, so streamed metadata
+  // lands in the body and the meta description audit fails. These pages
+  // resolve metadata from local data, so every visitor can get it in <head>.
+  htmlLimitedBots: /.*/,
   experimental: {
     optimizePackageImports: ["lucide-react"],
     // Inline the small stylesheets so the first paint does not wait on a

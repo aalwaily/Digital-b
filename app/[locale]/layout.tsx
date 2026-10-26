@@ -1,5 +1,3 @@
-import { FontPreloads } from "@/components/font-preloads";
-import { preloadLatinFaces } from "@/lib/font-preload";
 import { Providers } from "@/components/providers";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -29,11 +27,11 @@ export default async function LocaleLayout({
   const locale: Locale = raw;
   const shell = (
     <>
-      <SkipLink />
+      <SkipLink label={getDictionary(locale).skip} />
       <SiteHeader />
       <div className="overflow-x-clip">
         <main id="main">{children}</main>
-        <SiteFooter />
+        <SiteFooter locale={locale} />
       </div>
       <WhatsAppButton label={getDictionary(locale).whatsapp.label} dir={locale === "ar" ? "rtl" : "ltr"} />
     </>
@@ -44,10 +42,7 @@ export default async function LocaleLayout({
       {locale === "ar" ? (
         <ArabicShell>{shell}</ArabicShell>
       ) : (
-        <>
-          <FontPreloads pick={preloadLatinFaces} />
-          {shell}
-        </>
+        shell
       )}
     </Providers>
   );

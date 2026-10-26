@@ -11,16 +11,17 @@ import {
 import { isNotFoundProbe, normalizePathname, notFoundPath, pageExists, unprefixedTarget } from "@/lib/routes";
 import { NextResponse, type NextRequest } from "next/server";
 
-function withLocaleHeaders(request: NextRequest, locale: "en" | "ar") {
+function withLocaleHeaders(request: NextRequest, locale: "en" | "ar", pathname: string) {
   const headers = new Headers(request.headers);
   headers.set(LOCALE_HEADER, locale);
+  headers.set("x-vellum-path", pathname);
   return headers;
 }
 
 function rewriteWithLocale(request: NextRequest, pathname: string, locale: "en" | "ar", setCookie: boolean) {
   const url = request.nextUrl.clone();
   url.pathname = pathname;
-  const response = NextResponse.rewrite(url, { request: { headers: withLocaleHeaders(request, locale) } });
+  const response = NextResponse.rewrite(url, { request: { headers: withLocaleHeaders(request, locale, pathname) } });
   response.headers.set("Content-Language", locale);
   response.headers.set("Vary", "Accept-Language, Cookie");
   if (setCookie && !request.cookies.get(LOCALE_COOKIE)) {
@@ -57,7 +58,7 @@ export function middleware(request: NextRequest) {
 
   if (requested) {
     if (isNotFoundProbe(normalized) || pageExists(normalized, requested)) {
-      const headers = withLocaleHeaders(request, requested);
+      const headers = withLocaleHeaders(request, requested, normalized);
       const response = NextResponse.next({ request: { headers } });
       response.headers.set("Content-Language", requested);
       response.headers.set("Vary", "Accept-Language, Cookie");

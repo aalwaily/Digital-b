@@ -1,3 +1,4 @@
+import { ContentsPlate, Cover, WorksheetPlate } from "@/components/cover";
 import { FaqList } from "@/components/faq-list";
 import { JsonLd } from "@/components/json-ld";
 import { Price } from "@/components/price";
@@ -114,7 +115,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
             {product.subtitle}
           </p>
           <div id="product-purchase">
-            <Price price={product.price} compareAt={product.compareAtPrice} previousPrice={product.previousPrice} size="lg" className="mt-4" />
+            <Price price={product.price} compareAt={product.compareAtPrice} previousPrice={product.previousPrice} locale={locale} size="lg" className="mt-4" />
             <div className="mt-3">
               <PurchaseActions slug={product.slug} />
             </div>
@@ -168,7 +169,16 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
             </h2>
             <div className="mt-3 flex flex-col gap-4">
               <SamplePreview slides={slides} className="order-1 lg:order-2" />
-              <ProductGallery product={product} className="order-2 mx-auto w-full max-w-[22rem] lg:order-1 lg:max-w-none" />
+              <ProductGallery
+                className="order-2 mx-auto w-full max-w-[22rem] lg:order-1 lg:max-w-none"
+                galleryLabel={t.product.gallery}
+                coverLabel={t.product.cover}
+                contentsLabel={t.product.contentsTab}
+                worksheetLabel={t.product.worksheet}
+                cover={<Cover product={product} locale={locale} />}
+                contents={<ContentsPlate product={product} locale={locale} />}
+                worksheet={<WorksheetPlate product={product} locale={locale} />}
+              />
             </div>
           </section>
           <div className="mx-auto mt-4 w-full max-w-[22rem] lg:max-w-none">
@@ -213,7 +223,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           <div className="mt-6 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {product.includes.map((included) => {
               const guide = localizedProduct(included, locale);
-              return guide ? <ProductCard key={guide.slug} product={guide} layout="responsive" /> : null;
+              return guide ? <ProductCard key={guide.slug} product={guide} locale={locale} layout="responsive" /> : null;
             })}
           </div>
         </section>
@@ -310,7 +320,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
               return (
                 <div key={item.slug} className="min-w-0">
                   {note ? <p className="mb-2 text-xs font-medium text-copper">{note}</p> : null}
-                  <ProductCard product={item} layout="responsive" />
+                  <ProductCard product={item} locale={locale} layout="responsive" />
                 </div>
               );
             })}

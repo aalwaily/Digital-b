@@ -19,13 +19,16 @@ function fontCss() {
 
 /** URLs for the @font-face rules a page should preload. Empty when CSS is not built yet. */
 export function fontHrefs(pick: (face: string) => boolean) {
-  const hrefs = new Set<string>();
+  const found: { href: string; face: string }[] = [];
+  const seen = new Set<string>();
   for (const face of fontCss().match(/@font-face\{[^}]+\}/g) ?? []) {
     if (!pick(face)) continue;
     const src = face.match(/url\((\/_next\/static\/media\/[^)]+\.woff2)\)/);
-    if (src) hrefs.add(src[1]);
+    if (!src || seen.has(src[1])) continue;
+    seen.add(src[1]);
+    found.push({ href: src[1], face });
   }
-  return [...hrefs];
+  return found;
 }
 
 export function preloadLatinFaces(face: string) {

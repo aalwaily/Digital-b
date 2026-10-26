@@ -1,7 +1,6 @@
 "use client";
 
 import { useI18n } from "@/components/locale-provider";
-import { ProductCard } from "@/components/product-card";
 import { Input } from "@/components/ui/input";
 import type { ShopListing } from "@/lib/catalog";
 import { localizedCategories } from "@/lib/i18n/content";
@@ -11,15 +10,15 @@ import { Suspense, useEffect, useMemo, useState, type ReactNode } from "react";
 
 const DEFAULT_QUERY = { query: "", category: "all", sort: "featured" };
 
-export function ShopBrowser({ listings }: { listings: ShopListing[] }) {
+export function ShopBrowser({ listings, cards }: { listings: ShopListing[]; cards: Record<string, ReactNode> }) {
   return (
-    <Suspense fallback={<ShopControls listings={listings} query={DEFAULT_QUERY} />}>
-      <ShopFiltered listings={listings} />
+    <Suspense fallback={<ShopControls listings={listings} cards={cards} query={DEFAULT_QUERY} />}>
+      <ShopFiltered listings={listings} cards={cards} />
     </Suspense>
   );
 }
 
-function ShopFiltered({ listings }: { listings: ShopListing[] }) {
+function ShopFiltered({ listings, cards }: { listings: ShopListing[]; cards: Record<string, ReactNode> }) {
   const params = useSearchParams();
   const [query, setQuery] = useState(DEFAULT_QUERY);
   useEffect(() => {
@@ -32,14 +31,16 @@ function ShopFiltered({ listings }: { listings: ShopListing[] }) {
       current.query === next.query && current.category === next.category && current.sort === next.sort ? current : next,
     );
   }, [params]);
-  return <ShopControls listings={listings} query={query} />;
+  return <ShopControls listings={listings} cards={cards} query={query} />;
 }
 
 function ShopControls({
   listings,
+  cards,
   query,
 }: {
   listings: ShopListing[];
+  cards: Record<string, ReactNode>;
   query: { query: string; category: string; sort: string };
 }) {
   const { t, href, locale } = useI18n();
@@ -127,7 +128,7 @@ function ShopControls({
       ) : (
         <div className="mt-8 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
           {results.map((product) => (
-            <ProductCard key={product.slug} product={product} />
+            <div key={product.slug}>{cards[product.slug]}</div>
           ))}
         </div>
       )}

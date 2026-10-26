@@ -1,5 +1,7 @@
 import { Analytics } from "@/components/analytics";
+import { FontPreloads } from "@/components/font-preloads";
 import { site } from "@/data/site";
+import { preloadArabicFaces, preloadLatinFaces } from "@/lib/font-preload";
 import { dirFor, htmlLang, isLocale, LOCALE_HEADER } from "@/lib/i18n/config";
 import { CANONICAL_ORIGIN, verificationMetadata } from "@/lib/seo";
 import type { Metadata, Viewport } from "next";
@@ -66,8 +68,10 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const requested = (await headers()).get(LOCALE_HEADER);
+  const headerList = await headers();
+  const requested = headerList.get(LOCALE_HEADER);
   const locale = isLocale(requested) ? requested : "en";
+  const path = headerList.get("x-vellum-path") ?? "";
   return (
     <html
       lang={htmlLang(locale)}
@@ -75,7 +79,11 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
       suppressHydrationWarning
       className={`${outfit.variable} ${fraunces.variable}`}
     >
-      <body className="min-h-screen font-sans antialiased">
+      <body className={locale === "ar" ? "min-h-screen antialiased" : "min-h-screen font-sans antialiased"}>
+        <FontPreloads
+          pick={locale === "ar" ? preloadArabicFaces : preloadLatinFaces}
+          preferBody={path.includes("/product/")}
+        />
         <script dangerouslySetInnerHTML={{ __html: localeBoot }} />
         {children}
         <Analytics />

@@ -1,13 +1,13 @@
-"use client";
-
 import { NewsletterForm } from "@/components/newsletter-form";
-import { useI18n } from "@/components/locale-provider";
-import { localizedCategories } from "@/lib/i18n/content";
 import { legalNav, site } from "@/data/site";
+import { localePath, type Locale } from "@/lib/i18n/config";
+import { localizedCategories } from "@/lib/i18n/content";
+import { getDictionary } from "@/lib/i18n/dictionary";
 import Link from "next/link";
 
-export function SiteFooter() {
-  const { t, href, locale } = useI18n();
+export function SiteFooter({ locale }: { locale: Locale }) {
+  const t = getDictionary(locale);
+  const href = (path: string) => localePath(locale, path);
   const categories = localizedCategories(locale);
 
   return (
@@ -24,7 +24,7 @@ export function SiteFooter() {
             </a>
             <span className="text-muted-foreground"> · {locale === "ar" ? t.about.locationValue : site.location}</span>
           </p>
-          <PaymentMarks />
+          <p className="mt-5 max-w-xs text-xs leading-relaxed text-muted-foreground">{t.footer.paymentsNote}</p>
         </div>
         <div className="lg:col-span-3">
           <p className="text-xs tracking-[0.16em] text-copper uppercase">{t.footer.shop}</p>
@@ -78,7 +78,7 @@ export function SiteFooter() {
         <div className="min-w-0 sm:col-span-2 lg:col-span-3">
           <p className="text-xs tracking-[0.16em] text-copper uppercase">{t.footer.notes}</p>
           <div className="mt-3 max-w-sm">
-            <NewsletterForm stack />
+            <NewsletterForm stack id="footer-note" />
           </div>
         </div>
       </div>
@@ -98,11 +98,4 @@ function legalLabel(href: string) {
   if (href.endsWith("/refunds")) return "كل المبيعات نهائية";
   if (href.endsWith("/delivery")) return "التسليم";
   return href;
-}
-
-function PaymentMarks() {
-  const { t } = useI18n();
-  return (
-    <p className="mt-5 max-w-xs text-xs leading-relaxed text-muted-foreground">{t.footer.paymentsNote}</p>
-  );
 }

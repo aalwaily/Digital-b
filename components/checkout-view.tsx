@@ -261,7 +261,7 @@ export function CheckoutView({ usdToSarRate = null }: { usdToSarRate?: string | 
                     </span>
                   ) : null}
                 </span>
-                <Price price={line.price} compareAt={line.compareAtPrice} previousPrice={line.previousPrice} />
+                <Price price={line.price} compareAt={line.compareAtPrice} previousPrice={line.previousPrice} locale={locale} />
               </li>
             );
           })}

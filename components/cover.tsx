@@ -1,6 +1,3 @@
-"use client";
-
-import { useI18n } from "@/components/locale-provider";
 import type { Product } from "@/data/products";
 import {
   COVER_RIGHT,
@@ -12,18 +9,20 @@ import {
   mirrorX,
   worksheetHeadingX,
 } from "@/lib/cover-layout";
+import type { Locale } from "@/lib/i18n/config";
 import { cn } from "cn";
 
 export function Cover({
   product,
   className,
+  locale,
 }: {
   product: Product;
   className?: string;
+  locale: Locale;
   /** Kept so existing calls compile. The drawing is always hidden from assistive tech; the link or heading names it. */
   decorative?: boolean;
 }) {
-  const { locale } = useI18n();
   const { bg, fg, accent, motif, titleLines, eyebrow, deck } = product.cover;
   const titleStart = titleLines.length > 2 ? 250 : 268;
   const rtl = locale === "ar";
@@ -220,8 +219,7 @@ function Motif({ motif, accent, fg }: { motif: Product["cover"]["motif"]; accent
   );
 }
 
-export function ContentsPlate({ product }: { product: Product }) {
-  const { locale } = useI18n();
+export function ContentsPlate({ product, locale }: { product: Product; locale: Locale }) {
   const rtl = locale === "ar";
   const lines = product.contents.slice(0, 8);
   const family = rtl ? "var(--font-arabic-serif), serif" : "var(--font-serif), Georgia, serif";
@@ -258,8 +256,7 @@ export function ContentsPlate({ product }: { product: Product }) {
   );
 }
 
-export function WorksheetPlate({ product }: { product: Product }) {
-  const { locale } = useI18n();
+export function WorksheetPlate({ product, locale }: { product: Product; locale: Locale }) {
   const rtl = locale === "ar";
   const headings = rtl ? ["خطة", "تم", "ملاحظة"] : ["PLAN", "DONE", "NOTE"];
   const family = rtl ? "var(--font-arabic-serif), serif" : "var(--font-serif), Georgia, serif";
