@@ -4,7 +4,9 @@ import { Providers } from "@/components/providers";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { SkipLink } from "@/components/skip-link";
+import { WhatsAppButton } from "@/components/whatsapp-button";
 import { isLocale, locales, type Locale } from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n/dictionary";
 import { checkoutOptions } from "@/lib/payments";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
@@ -33,6 +35,7 @@ export default async function LocaleLayout({
         <main id="main">{children}</main>
         <SiteFooter />
       </div>
+      <WhatsAppButton label={getDictionary(locale).whatsapp.label} dir={locale === "ar" ? "rtl" : "ltr"} />
     </>
   );
 

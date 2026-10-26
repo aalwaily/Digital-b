@@ -7,7 +7,9 @@
  * Fails when a key page, in English or Arabic, grows wider than the viewport
  * at 320, 360, 375, 390, 414, or 430px, or in a 667×375 landscape check.
  * Also fails when the product buy bar covers the on-screen purchase button
- * or the footer, and when the mobile menu cannot scroll or will not close.
+ * or the footer, when the mobile menu cannot scroll or will not close, and
+ * when the WhatsApp button is missing, not in the bottom-left of the viewport,
+ * or covering the buy bar, price, or add-to-cart control.
  */
 import { mkdirSync } from "node:fs";
 import { chromium } from "playwright-core";
@@ -131,6 +133,58 @@ function probeBuyBar() {
   return issues;
 }
 
+function probeWhatsApp() {
+  const link = [...document.querySelectorAll("[data-whatsapp]")].find((node) => {
+    if (node.dataset.placed !== "true") return false;
+    const nodeStyle = getComputedStyle(node);
+    if (nodeStyle.display === "none" || nodeStyle.visibility === "hidden") return false;
+    const nodeBox = node.getBoundingClientRect();
+    return nodeBox.width > 8 && nodeBox.height > 8;
+  });
+  if (!link) return ["whatsapp button missing"];
+  const issues = [];
+  const style = getComputedStyle(link);
+  const box = link.getBoundingClientRect();
+  if (style.position !== "fixed") issues.push("whatsapp button is not fixed");
+  const computedLeft = Number.parseFloat(style.left);
+  if (!Number.isFinite(computedLeft) || computedLeft > 48) issues.push(`whatsapp button left ${style.left}`);
+  if (box.width < 44 || box.height < 44) issues.push(`whatsapp target ${Math.round(box.width)}x${Math.round(box.height)}`);
+  if (box.left < -1 || box.top < -1 || box.right > window.innerWidth + 1 || box.bottom > window.innerHeight + 1) {
+    issues.push("whatsapp button is outside the viewport");
+  }
+  if (box.left > 48 || box.right > window.innerWidth * 0.55) issues.push("whatsapp button is not at the bottom-left");
+  const fromBottom = window.innerHeight - box.bottom;
+  if (fromBottom > box.top && fromBottom > 180) issues.push(`whatsapp button is ${Math.round(fromBottom)}px above the bottom`);
+  const href = link.getAttribute("href") || "";
+  if (href !== "https://wa.me/966509309787?s=p") issues.push(`whatsapp href ${href}`);
+  if (link.target !== "_blank") issues.push("whatsapp target");
+  const rel = link.getAttribute("rel") || "";
+  if (!/\bnoopener\b/.test(rel) || !/\bnoreferrer\b/.test(rel)) issues.push("whatsapp rel");
+  const expected = document.documentElement.dir === "rtl" ? "تواصل معنا عبر واتساب" : "Chat on WhatsApp";
+  if ((link.getAttribute("aria-label") || "") !== expected) issues.push(`whatsapp label "${link.getAttribute("aria-label") || ""}"`);
+  const shown = (el) => {
+    const nodeStyle = getComputedStyle(el);
+    return nodeStyle.display !== "none" && nodeStyle.visibility !== "hidden" && Number(nodeStyle.opacity) !== 0;
+  };
+  const hits = (a, b) => a.left < b.right - 1 && a.right > b.left + 1 && a.top < b.bottom - 1 && a.bottom > b.top + 1;
+  const blocks = [
+    ["buy bar", document.querySelector("[data-sticky-buy]")],
+    ["price", document.querySelector("#product-purchase .price")],
+    ["add to cart", document.querySelector("#product-purchase button")],
+    ["copyright", document.querySelector("[data-copyright]")],
+  ];
+  for (const el of document.querySelectorAll("aside .price, aside a, aside button, #checkout-form button")) {
+    blocks.push(["key control", el]);
+  }
+  for (const [name, el] of blocks) {
+    if (!el || !shown(el)) continue;
+    const target = el.getBoundingClientRect();
+    if (target.width < 8 || target.height < 8 || target.bottom <= 0 || target.top >= window.innerHeight) continue;
+    if (hits(box, target)) issues.push(`whatsapp button covers the ${name}`);
+  }
+  return issues;
+}
+
 function probeFooter() {
   const barShown = (bar) => {
     const style = getComputedStyle(bar);
@@ -175,9 +229,18 @@ for (const locale of ["en", "ar"]) {
         problems.push(`${label} status ${status}`);
         continue;
       }
+      await page.waitForFunction(() => {
+        return [...document.querySelectorAll("[data-whatsapp]")].some((node) => {
+          if (node.dataset.placed !== "true") return false;
+          const box = node.getBoundingClientRect();
+          return box.width > 8 && box.height > 8;
+        });
+      });
       const metrics = await page.evaluate(probeOverflow);
       if (metrics.docOverflow > 1) problems.push(`${label} document overflow ${metrics.docOverflow}px`);
       for (const item of metrics.outside) problems.push(`${label} ${item}`);
+      const whatsappIssues = await page.evaluate(probeWhatsApp);
+      for (const item of whatsappIssues) problems.push(`${label} ${item}`);
       if (path.startsWith("/product/")) {
         await page.waitForFunction(() => document.querySelector("[data-sticky-buy]")?.dataset.ready === "true");
         const barIssues = await page.evaluate(probeBuyBar);
@@ -188,11 +251,18 @@ for (const locale of ["en", "ar"]) {
         });
         await page.waitForFunction(() => {
           const bar = document.querySelector("[data-sticky-buy]");
-          if (!bar) return false;
+          const fab = [...document.querySelectorAll("[data-whatsapp]")].find((node) => {
+            const box = node.getBoundingClientRect();
+            return node.dataset.placed === "true" && box.width > 8 && box.height > 8;
+          });
+          if (!bar || !fab) return false;
           const style = getComputedStyle(bar);
-          return style.visibility !== "hidden" && style.display !== "none";
+          if (style.visibility === "hidden" || style.display === "none") return false;
+          return fab.getBoundingClientRect().bottom <= bar.getBoundingClientRect().top + 1;
         });
         const footerIssues = await page.evaluate(probeFooter);
+        const footerWhatsapp = await page.evaluate(probeWhatsApp);
+        for (const item of footerWhatsapp) problems.push(`${label} scrolled ${item}`);
         for (const item of footerIssues) problems.push(`${label} ${item}`);
       }
       if (problems.some((item) => item.startsWith(label))) {

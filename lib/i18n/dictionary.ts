@@ -23,6 +23,7 @@ export const dictionary = {
     cartCount: (count: number) => `Cart, ${count} items`,
     themeLight: "Switch to light theme",
     themeDark: "Switch to dark theme",
+    whatsapp: { label: "Chat on WhatsApp" },
     footer: {
       shop: "Shop",
       allGuides: "All guides",
@@ -389,6 +390,7 @@ export const dictionary = {
     cartCount: (count: number) => `السلة، ${count} من المنتجات`,
     themeLight: "التبديل إلى الوضع الفاتح",
     themeDark: "التبديل إلى الوضع الداكن",
+    whatsapp: { label: "تواصل معنا عبر واتساب" },
     footer: {
       shop: "المتجر",
       allGuides: "كل الأدلة",

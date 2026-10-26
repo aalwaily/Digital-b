@@ -1,5 +1,6 @@
 "use client";
 
+import { WhatsAppButton } from "@/components/whatsapp-button";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import type { Locale } from "@/lib/i18n/config";
 
@@ -18,6 +19,7 @@ function ErrorBody({ locale, reset }: { locale: Locale; reset: () => void }) {
           {t.error.retry}
         </button>
       </div>
+      <WhatsAppButton label={t.whatsapp.label} dir={locale === "ar" ? "rtl" : "ltr"} />
     </div>
   );
 }
