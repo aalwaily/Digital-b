@@ -249,16 +249,16 @@ html[dir="rtl"] input[dir="ltr"] {
   }
 }
 
-/* Physical left in both LTR and RTL. `--wa-lift` is the distance from the
-   viewport bottom before the safe-area inset; the client sets it when a bar
-   or a key control would sit underneath the button. */
+/* Physical left in both LTR and RTL. The offset is a constant viewport
+   inset — no vh, and nothing on the page may change it while scrolling.
+   The wrapper itself is not animated; a compositor layer keeps it glued
+   to the corner on iOS Safari and Android Chrome. */
 .wa-fab {
-  --wa-lift: 1rem;
   position: fixed;
   z-index: 25;
-  left: max(0.875rem, env(safe-area-inset-left, 0px));
+  left: max(14px, env(safe-area-inset-left, 0px));
   right: auto;
-  bottom: calc(var(--wa-lift) + env(safe-area-inset-bottom, 0px));
+  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
   display: grid;
   place-items: center;
   width: 3.5rem;
@@ -272,6 +272,9 @@ html[dir="rtl"] input[dir="ltr"] {
   cursor: pointer;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .wa-fab:focus {
@@ -293,8 +296,9 @@ html[dir="rtl"] input[dir="ltr"] {
   background-color: #25d366;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.35),
-    0 8px 18px rgba(7, 94, 84, 0.28);
-  animation: wa-bob 3.2s ease-in-out infinite;
+    0 4px 10px rgba(7, 94, 84, 0.22);
+  animation: wa-bob 4.8s ease-in-out infinite;
+  will-change: transform;
 }
 
 .wa-fab-bob::after {
@@ -304,7 +308,7 @@ html[dir="rtl"] input[dir="ltr"] {
   border-radius: inherit;
   border: 2px solid rgba(37, 211, 102, 0.55);
   pointer-events: none;
-  animation: wa-ring 2.8s ease-out infinite;
+  animation: wa-ring 3.6s ease-out infinite;
 }
 
 .wa-fab:hover .wa-fab-bob,
@@ -319,7 +323,7 @@ html[dir="rtl"] input[dir="ltr"] {
 .wa-fab-wiggle {
   display: grid;
   place-items: center;
-  animation: wa-wiggle 5.6s ease-in-out infinite;
+  animation: wa-wiggle 7s ease-in-out infinite;
 }
 
 .wa-fab svg {
@@ -356,57 +360,80 @@ html[dir="rtl"] input[dir="ltr"] {
   opacity: 1;
 }
 
+/* Same offset for the whole product page, whether or not the buy bar is
+   on screen. Toggling it with the bar would jump the button mid-scroll.
+   3.625rem clears the bar (about 4rem) with a small gap. */
 @media (max-width: 1023px) {
-  body:has([data-sticky-buy]:not(.invisible)) .wa-fab {
-    --wa-lift: 4.85rem;
+  body:has([data-sticky-buy]) .wa-fab {
+    bottom: calc(14px + 3.625rem + env(safe-area-inset-bottom, 0px));
   }
 }
 
-@media (max-width: 1023px) and (max-height: 430px) {
-  body:has(#product-purchase) .wa-fab {
-    --wa-lift: 8rem;
+/* Short landscape product pages keep one higher inset. Both address-bar
+   heights stay under 500px, so the inset does not change as the bar toggles. */
+@media (max-width: 1023px) and (orientation: landscape) and (max-height: 500px) {
+  body:has([data-sticky-buy]) .wa-fab {
+    bottom: calc(14px + 6rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* 320px-wide product pages: the in-page purchase controls sit in the same
+   band as the lifted button. Tighten the block so the price and add button
+   stay above it without moving the button while scrolling. */
+@media (max-width: 340px) {
+  #product-purchase > .price {
+    margin-top: 0.25rem;
+  }
+
+  #product-purchase > div {
+    margin-top: 0.25rem;
+  }
+}
+
+/* Arabic cart totals align to the physical left, under the button.
+   Inset just those totals so the corner stays clear. */
+@media (max-width: 1023px) {
+  html[dir="rtl"] [data-cart-summary] .price {
+    margin-left: 2.5rem;
   }
 }
 
 @keyframes wa-bob {
   0%,
   100% {
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
   50% {
-    transform: translateY(-4px);
+    transform: translate3d(0, -2px, 0);
   }
 }
 
 @keyframes wa-ring {
   0% {
     transform: scale(1);
-    opacity: 0.65;
+    opacity: 0.4;
   }
-  75%,
+  70%,
   100% {
-    transform: scale(1.34);
+    transform: scale(1.16);
     opacity: 0;
   }
 }
 
 @keyframes wa-wiggle {
   0%,
-  72%,
+  78%,
   100% {
     transform: rotate(0deg);
   }
-  78% {
-    transform: rotate(-13deg);
-  }
   84% {
-    transform: rotate(11deg);
+    transform: rotate(-6deg);
   }
   90% {
-    transform: rotate(-7deg);
+    transform: rotate(5deg);
   }
   96% {
-    transform: rotate(3deg);
+    transform: rotate(-2deg);
   }
 }
 
@@ -428,5 +455,6 @@ html[dir="rtl"] input[dir="ltr"] {
   .wa-fab-wiggle,
   .wa-fab-bob::after {
     animation: none !important;
+    will-change: auto;
   }
 }

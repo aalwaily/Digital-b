@@ -80,7 +80,7 @@ export function CartView() {
             </li>
           ))}
         </ul>
-        <aside className="h-fit rounded-2xl border bg-card p-5 lg:sticky lg:top-28">
+        <aside data-cart-summary="" className="h-fit rounded-2xl border bg-card p-5 lg:sticky lg:top-28">
           <h2 className="font-serif text-xl">{t.cartPage.summary}</h2>
           <dl className="mt-4 space-y-2 text-sm">
             <div className="flex justify-between gap-3">
