@@ -51,9 +51,20 @@ function parseAttrs(source) {
   return attrs;
 }
 
-function toLocal(raw, base, pageUrl) {
+function decodeHtml(value) {
+  return value
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .replace(/&#0*39;|&apos;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(Number.parseInt(hex, 16)))
+    .replace(/&#(\d+);/g, (_, num) => String.fromCodePoint(Number(num)));
+}
+
+function toLocal(raw, base, pageUrl, allowRelative = true) {
   if (!raw) return null;
-  const trimmed = raw.trim();
+  const trimmed = decodeHtml(raw).trim();
   if (!trimmed || trimmed.startsWith("#")) return null;
   const lower = trimmed.toLowerCase();
   if (
@@ -64,6 +75,9 @@ function toLocal(raw, base, pageUrl) {
     lower.startsWith("data:") ||
     lower.startsWith("blob:")
   ) {
+    return null;
+  }
+  if (!allowRelative && !trimmed.startsWith("/") && !trimmed.startsWith("//") && !/^https?:\/\//i.test(trimmed)) {
     return null;
   }
   let url;
@@ -99,8 +113,8 @@ function walkJson(value, found) {
 
 function collect(html, pageUrl, base) {
   const found = [];
-  const add = (raw, kind) => {
-    const local = toLocal(raw, base, pageUrl);
+  const add = (raw, kind, allowRelative = true) => {
+    const local = toLocal(raw, base, pageUrl, allowRelative);
     if (!local) return;
     const pathName = new URL(local).pathname;
     let nextKind = kind;
@@ -154,7 +168,7 @@ function collect(html, pageUrl, base) {
       const data = JSON.parse(match[2]);
       const strings = [];
       walkJson(data, strings);
-      for (const value of strings) add(value, "link");
+      for (const value of strings) add(value, "link", false);
     } catch {
       note(`${pageUrl} has invalid JSON-LD`);
     }
@@ -204,7 +218,8 @@ async function request(url) {
   const location = response.headers.get("location");
   const type = response.headers.get("content-type") || "";
   let body = "";
-  if (status >= 200 && status < 300 && /text\/html|xml|text\/plain|json/.test(type)) {
+  const readable = /text\/html|xml|text\/plain|json/.test(type);
+  if (readable && (status === 404 || (status >= 200 && status < 300))) {
     body = await response.text();
   } else {
     await response.body?.cancel();
@@ -224,20 +239,48 @@ function shouldCrawl(url, type, body) {
   return false;
 }
 
-async function pool(items, limit, worker) {
-  const queue = [...items];
-  const runners = Array.from({ length: Math.min(limit, queue.length) }, async () => {
-    while (queue.length) {
-      const item = queue.shift();
-      await worker(item);
-    }
-  });
-  await Promise.all(runners);
+const pending = [];
+let active = 0;
+const waiters = [];
+const crawlLimit = 6;
+
+function notifyIdle() {
+  if (active !== 0 || pending.length !== 0) return;
+  while (waiters.length) waiters.shift()();
 }
 
-async function checkUrl(base, entry) {
+function kick() {
+  while (active < crawlLimit && pending.length) {
+    const entry = pending.shift();
+    active += 1;
+    checkUrl(entry)
+      .catch((error) => {
+        note(`${entry.url} crashed the checker (${error instanceof Error ? error.message : "error"})`);
+      })
+      .finally(() => {
+        active -= 1;
+        kick();
+        notifyIdle();
+      });
+  }
+}
+
+function enqueue(entry) {
   if (checked.has(entry.url)) return;
   checked.set(entry.url, entry.from || "");
+  pending.push(entry);
+  kick();
+}
+
+function drain() {
+  if (active === 0 && pending.length === 0) return Promise.resolve();
+  return new Promise((resolve) => {
+    waiters.push(resolve);
+    if (active === 0 && pending.length === 0) notifyIdle();
+  });
+}
+
+async function checkUrl(entry) {
   let result;
   try {
     result = await request(entry.url);
@@ -245,35 +288,40 @@ async function checkUrl(base, entry) {
     note(`${entry.kind} ${entry.url} failed to load (${error instanceof Error ? error.name : "error"}) from ${entry.from || "seed"}`);
     return;
   }
-  if (entry.expect === 404) {
-    if (result.status !== 404) note(`missing page ${entry.url} returned ${result.status}, expected 404`);
+  if (checked.size % 25 === 0) console.log(`checked ${checked.size}…`);
+  const probe = entry.expect === 404;
+  if (probe) {
+    if (result.status !== 404) {
+      note(`missing page ${entry.url} returned ${result.status}, expected 404`);
+      return;
+    }
   } else if (result.status >= 300 && result.status < 400) {
     note(`${entry.kind} ${result.status} ${entry.url} -> ${result.location || "(no location)"} from ${entry.from || "seed"}`);
     return;
   } else if (result.status < 200 || result.status >= 300) {
     note(`${entry.kind} ${result.status} ${entry.url} from ${entry.from || "seed"}`);
     return;
-  } else if (entry.expect !== 404 && isSoftNotFound(result.body) && !entry.url.endsWith("/404")) {
+  } else if (isSoftNotFound(result.body)) {
     note(`${entry.kind} ${entry.url} returned the not-found page with HTTP 200 from ${entry.from || "seed"}`);
   }
   if (/Application error|Unhandled Runtime Error|server component error/i.test(result.body)) {
     note(`${entry.url} rendered an application error`);
   }
-  if (!shouldCrawl(entry.url, result.type, result.body) || crawled.has(entry.url)) return;
+  if (!probe && (!shouldCrawl(entry.url, result.type, result.body) || crawled.has(entry.url))) return;
+  if (probe && crawled.has(entry.url)) return;
   crawled.add(entry.url);
-  const discovered = [];
+  const base = entry.base;
   if (new URL(entry.url).pathname.endsWith("/sitemap.xml") || result.type.includes("xml")) {
     for (const match of result.body.matchAll(/<loc>\s*([^<\s]+)\s*<\/loc>/gi)) {
       const local = toLocal(match[1], base, entry.url);
-      if (local) discovered.push({ url: local, kind: "link", from: entry.url });
+      if (local) enqueue({ url: local, kind: "link", from: entry.url, base });
     }
   }
   if (result.type.includes("html") || result.body.trimStart().startsWith("<!DOCTYPE") || result.body.includes("<html")) {
     for (const item of collect(result.body, entry.url, base)) {
-      discovered.push({ url: item.url, kind: item.kind, from: entry.url });
+      enqueue({ url: item.url, kind: item.kind, from: entry.url, base });
     }
   }
-  await pool(discovered, 6, (item) => checkUrl(base, item));
 }
 
 function runBuild() {
@@ -347,9 +395,14 @@ async function main() {
       { url: `${base}/ar`, kind: "link", from: "seed" },
       { url: `${base}/en/this-page-is-not-real`, kind: "link", from: "404 probe", expect: 404 },
       { url: `${base}/ar/this-page-is-not-real`, kind: "link", from: "404 probe", expect: 404 },
-      ...publicSeeds().map((href) => ({ url: `${base}${href}`, kind: href.includes("/samples/") ? "sample" : "image", from: "public" })),
+      ...publicSeeds().map((href) => ({
+        url: `${base}${href}`,
+        kind: href.includes("/samples/") ? "sample" : "image",
+        from: "public",
+      })),
     ];
-    await pool(seeds, 4, (entry) => checkUrl(base, entry));
+    for (const entry of seeds) enqueue({ ...entry, base });
+    await drain();
 
     const log = readLog();
     const errorLines = log
