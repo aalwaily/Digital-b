@@ -27,6 +27,20 @@ export function normalizePathname(pathname: string) {
   return pathname || "/";
 }
 
+/**
+ * Old catalog address. One hop to the shop.
+ * A locale prefix wins. Otherwise `preferred` is the remembered language,
+ * or the browser language when nothing was remembered. Callers pass English
+ * for crawlers.
+ */
+export function productsShopTarget(pathname: string, preferred: Locale): string | null {
+  const path = normalizePathname(pathname);
+  if (path === "/en/products") return "/en/shop";
+  if (path === "/ar/products") return "/ar/shop";
+  if (path === "/products") return `/${preferred}/shop`;
+  return null;
+}
+
 export function notFoundPath(locale: Locale) {
   return `/${locale}/${NOT_FOUND_SLUG}`;
 }

@@ -8,7 +8,7 @@ import {
   negotiateLocale,
   shouldSkipLocale,
 } from "@/lib/i18n/config";
-import { isNotFoundProbe, normalizePathname, notFoundPath, pageExists, unprefixedTarget } from "@/lib/routes";
+import { isNotFoundProbe, normalizePathname, notFoundPath, pageExists, productsShopTarget, unprefixedTarget } from "@/lib/routes";
 import { NextResponse, type NextRequest } from "next/server";
 
 function withLocaleHeaders(request: NextRequest, locale: "en" | "ar", pathname: string) {
@@ -44,6 +44,19 @@ function redirectTo(request: NextRequest, pathname: string) {
   return response;
 }
 
+/** Redirect to an exact path. NextURL would keep a trailing slash from the request. */
+function redirectExact(request: NextRequest, pathname: string, status: 301 | 308) {
+  const url = new URL(request.url);
+  url.pathname = pathname;
+  url.hash = "";
+  const response = NextResponse.redirect(url, status);
+  if (status === 301) {
+    response.headers.set("Cache-Control", "private, no-store");
+    response.headers.set("Vary", "Accept-Language, Cookie");
+  }
+  return response;
+}
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   if (shouldSkipLocale(pathname)) return NextResponse.next();
@@ -54,6 +67,15 @@ export function middleware(request: NextRequest) {
   const userAgent = request.headers.get("user-agent");
   const preferred = isLocale(cookie) ? cookie : localeFromAcceptLanguage(acceptLanguage);
   const bot = isSearchBot(userAgent);
+  const shopAlias = productsShopTarget(normalized, bot ? "en" : preferred);
+  if (shopAlias) return redirectExact(request, shopAlias, 301);
+
+  // Next's built-in slash redirect is disabled so /products/ can land on the
+  // shop in one hop. Other slashed paths still drop the slash in one hop.
+  if (pathname.length > 1 && pathname.endsWith("/")) {
+    return redirectExact(request, normalized, 308);
+  }
+
   const requested = localeFromPath(normalized);
 
   if (requested) {
