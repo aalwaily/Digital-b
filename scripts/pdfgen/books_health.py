@@ -25,15 +25,15 @@ RESET = {
         ),
         chapter(
             "What actually moves the scale",
-            P("Fat loss requires a calorie deficit over time. You can create one by eating a bit less, moving a bit more, or both. Extreme cuts produce dramatic weeks and then a rebound, because they are hard to repeat and they make training feel terrible. This guide uses a modest deficit you can describe on a Tuesday."),
-            P("The scale also moves because of salt, a late meal, a hard workout, or a menstrual cycle. A single morning is not a verdict. Weigh yourself under similar conditions, then look at the weekly average. Strength work helps you keep muscle while the deficit does its job. Steps help the deficit without asking you to live in a gym."),
+            P("Fat loss requires a calorie deficit over time. You can create one by eating a bit less, moving a bit more, or both. Extreme cuts are hard to repeat, and they make training feel worse. This guide uses a smaller plate you can describe on a Tuesday. It does not promise that a harsh week will be followed by a regain."),
+            P("The scale also moves because of salt, a late meal, a hard workout, or a menstrual cycle. A single morning is not a verdict. Weigh yourself under similar conditions, then look at the weekly average. Strength sessions keep the week from being only a smaller plate. They are not a promise that you will keep every pound of muscle. Steps add movement you can repeat without living in a gym."),
             T(
                 ["Lever", "What it does", "What we use"],
                 [
                     ["Deficit", "Lowers stored energy over weeks", "A slightly smaller plate, not a crash"],
                     ["Protein", "Keeps meals satisfying and protects muscle", "A target at each meal"],
                     ["Steps", "Adds movement you can repeat daily", "A floor, not a hero number"],
-                    ["Strength", "Tells your body to keep muscle", "2 or 3 short sessions"],
+                    ["Strength", "Keeps the week from being only food", "2 or 3 short sessions"],
                     ["Sleep", "Makes hunger and training easier", "A real bedtime"],
                 ],
             ),
@@ -110,7 +110,7 @@ RESET = {
                     ["Wired at midnight", "Screens and late caffeine", "A fixed lights-out"],
                 ],
             ),
-            TIP("Pick a bedtime you can keep five nights a week. Protect the hour before it from work email. Sleep is part of the fat-loss plan because hunger is harder when you are short on it."),
+            TIP("Pick a bedtime you can keep five nights a week. Protect the hour before it from work email. If hunger is louder after a short night, protect bedtime before you add another food rule. This guide does not set a required number of hours."),
         ),
         chapter(
             "Plateaus, travel, and social meals",
@@ -195,7 +195,7 @@ TABLE = {
         ),
         chapter(
             "Building blocks that recombine",
-            P("A block is cooked plain enough to accept a sauce later. Salt it. Do not bury it in a single flavor on Sunday or Wednesday will taste like a compromise. Chicken thighs roasted until a food thermometer in the thickest part reads 165°F (74°C). Color and clear juice are not a reliable test. Lentils simmered in salted water, tofu pressed and baked, and canned fish kept for the night you do not want to reheat anything all count as blocks."),
+            P("A block is cooked plain enough to accept a sauce later. Salt it. Do not bury it in a single flavor on Sunday or Wednesday will taste like a compromise. Chicken thighs are done when a food thermometer in the thickest part reads 165°F (74°C). USDA's leftovers page does not treat color as the test. Lentils simmered in salted water, tofu pressed and baked, and canned fish kept for the night you do not want to reheat anything all count as blocks."),
             P("Vegetables that hold their shape are better prep citizens than delicate salads. Cabbage, broccoli, peppers, carrots, and onions survive a reheating. Dress greens the day you eat them. A limp dressed salad is why people say prep does not work."),
             B(
                 "Salt early. Pale food will not be saved by a sauce you forget to make.",
@@ -251,7 +251,7 @@ TABLE = {
             P("Cold rice in a hot pan with oil. Scramble in two eggs. Add frozen peas or leftover vegetables. Soy sauce at the end. This is a use-it-up dinner, not a new prep. One or two servings."),
             H("Bean toast"),
             P("Warm white beans with olive oil, garlic, and chili. Pile on toast with a squeeze of lemon and a handful of greens. Ten minutes. One serving. The beans keep 3 to 4 days."),
-            N("Times assume a working oven. Poultry is done at 165°F (74°C) in the thickest part, measured with a food thermometer. Color is not the test. When you cannot measure, do not serve the chicken."),
+            N("Times assume a working oven. Poultry is done at 165°F (74°C) in the thickest part, measured with a food thermometer. USDA's leftovers page does not treat color as the test. When you cannot measure, do not serve the chicken."),
         ),
         chapter(
             "Shopping, storage, and safety",

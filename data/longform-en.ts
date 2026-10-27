@@ -125,16 +125,16 @@ export const englishLongform: Post[] = [
     blocks: [
       {
         type: "p",
-        text: "An ATS CV template is a structure a screener and a parser can both read. It is not a promise of an interview. Hiring in Saudi Arabia and the wider Gulf depends on the role, the employer, your record, and rules this PDF cannot change. A clear file only removes the ways a CV gets dropped before a person sees it.",
+        text: "An ATS CV template is a structure a person can read, and that one university career office says is safer for applicant software. It is not a promise of an interview. Hiring in Saudi Arabia and the wider Gulf depends on the role, the employer, your record, and rules this PDF cannot change. A clear file is easier to read. It does not remove every reason a file is set aside.",
       },
       {
         type: "p",
-        text: "Applicant systems often turn a file into plain text. Tables, text boxes, icons, and photos are frequent casualties. If your best evidence lives inside a graphic, assume it will not survive the trip. Build the CV as one column of ordinary sentences, then export a PDF or a document the posting asked for.",
+        text: "The University of Virginia career center, checked on 27 October 2026, says images, columns, tables, and graphics are difficult for applicant systems to read, that text inside a text box is often not read, and that most systems cannot read a phone number left only in a header or footer. That is one office, not a map of every Gulf portal. If your best evidence lives inside a graphic, do not count on the graphic. Build the CV as one column of ordinary sentences, then export the file type the posting asked for.",
       },
       { type: "h2", text: "Use headings a form already expects" },
       {
         type: "p",
-        text: "Stick to headings a stranger would use: name and contact, summary, experience, education, skills. Clever labels ('the path', 'my toolkit') read as design, not as sections. Put the job title you are applying for in the summary in plain words, and match the language of the posting. If the ad is in English, send English. If it asks for Arabic, send Arabic. Do not mix scripts in one file and hope the parser sorts them.",
+        text: "Stick to headings a stranger would use: name and contact, summary, experience, education, skills. The same career office prefers headings such as Skills, Work Experience, and Education over clever labels. Put the job title you are applying for in the summary in plain words, and match the language of the posting. If the ad is in English, send English. If it asks for Arabic, send Arabic. Paragraphs that mix the two scripts are hard to read. This page does not claim every parser fails on them.",
       },
       {
         type: "p",
@@ -143,7 +143,7 @@ export const englishLongform: Post[] = [
       { type: "h2", text: "Dates a form can read" },
       {
         type: "p",
-        text: "Use Gregorian dates in one format all the way down, such as March 2024 to June 2026, or 03/2024–06/2026. Hijri dates are meaningful in other documents. In a CV that will be parsed, a second calendar in the same line is a good way to produce a date the system cannot store. If a government form asks for Hijri in its own field, use that field. Do not also hide it in the CV header.",
+        text: "Use one calendar all the way down, month and year, such as March 2024 to June 2026, unless the form asks for Hijri. Mixing Hijri and Gregorian in one line is hard for a reader. This page does not claim every parser fails on a mixed date. If a government form asks for Hijri in its own field, use that field.",
       },
       {
         type: "p",
@@ -166,7 +166,7 @@ export const englishLongform: Post[] = [
       { type: "h2", text: "Photos, identity numbers, and the posting" },
       {
         type: "p",
-        text: "Follow the posting. Many portals drop images and anything sitting in a header or footer. A photo can also create bias you did not intend to invite. Do not put a national ID number, passport number, or iqama number on a CV you upload to a general portal. If a form asks for a number in its own field, use that field. The CV is a work history, not an identity document.",
+        text: "Follow the posting. The University of Virginia career center says images are difficult for many applicant systems to read, and that most of them do not read text that lives only in a header or footer. Leave a photo off unless the posting asks for one. Do not put a national ID number, passport number, or iqama number on a CV you upload to a general portal. If a form asks for a number in its own field, use that field. The CV is a work history, not an identity document.",
       },
       {
         type: "p",
@@ -233,7 +233,7 @@ export const englishLongform: Post[] = [
     blocks: [
       {
         type: "note",
-        text: "Not legal, tax, or accounting advice. Rules on the official screens can change. This article describes public pages of the Ministry of Human Resources and Social Development (HRSD) as they read on 26 October 2026. The portal decides eligibility, not this page.",
+        text: "Not legal, tax, or accounting advice. Rules on the official screens can change. This article describes public pages of the Ministry of Human Resources and Social Development (HRSD) as they read on 27 October 2026. The portal decides eligibility, not this page.",
       },
       {
         type: "p",
@@ -251,7 +251,7 @@ export const englishLongform: Post[] = [
       { type: "h2", text: "Open the official platform" },
       {
         type: "p",
-        text: "Go to freelance.sa yourself. Do not follow a look-alike domain from an ad. The HRSD service page explains login this way: if you already have an account, choose login and sign in through the National Single Sign-On (نفاذ). If you are new, choose the new-beneficiary path and verify with your ID number and date of birth, then finish the profile. The English user guide PDF hosted on hrsd.gov.sa (file path dated August 2026) says the same shape of login: open freelance.sa, choose Login, choose Nafath, enter your Nafath credentials, and complete the one-time code.",
+        text: "Go to freelance.sa yourself. Do not follow a look-alike domain from an ad. The HRSD service page explains login this way: if you already have an account, choose login and sign in through the National Single Sign-On (نفاذ). If you are new, choose the new-beneficiary path and verify with your ID number and date of birth, then finish the profile. The English user guide PDF hosted on hrsd.gov.sa (file path dated August 2026) does not repeat that new-beneficiary path. Its steps are: open freelance.sa, choose Login, choose Nafath, enter your Nafath credentials, and complete the OTP. If the guide and the screen disagree, believe the screen.",
       },
       {
         type: "p",
@@ -282,7 +282,7 @@ export const englishLongform: Post[] = [
       },
       {
         type: "p",
-        text: "Renewal is where the official texts do not tell one story. On 26 October 2026 the FAQ 'How is the document renewed?' answered that renewal is through the portal, and the link on that answer pointed to nvg.gov.sa, the National Volunteer Portal, not to freelance.sa. Do not follow that link for a freelance document. A line in the steps area of the same service page says the process is automatic and needs nothing from the beneficiary, without naming which step. The English user guide says document management can renew, cancel, or download a document. Open freelance.sa and read the control on your dashboard. If it is unclear, use 920002654, which the freelance contact block and the user guide both print, rather than a blog, including this one.",
+        text: "Renewal is where the official texts do not tell one story. On 27 October 2026 the FAQ 'How is the document renewed?' answered that renewal is through the portal, and the link on that answer pointed to nvg.gov.sa, the National Volunteer Portal, not to freelance.sa. Do not follow that link for a freelance document. A separate line in the FAQ section, with no question attached, says the process is automatic and needs nothing from the beneficiary, without naming which step. It is not one of the issuance steps. Those say the document is issued after the operations team reviews the attachments. The English user guide says document management can view a document as active, expired, or rejected, and can renew, cancel, or download it. Open freelance.sa and read the control on your dashboard. If it is unclear, use 920002654, which the freelance contact block and the user guide both print, rather than a blog, including this one.",
       },
       { type: "h2", text: "What this document is not" },
       {
@@ -394,7 +394,7 @@ export const englishLongform: Post[] = [
       },
       {
         type: "p",
-        text: "Sleep and a chaotic weekend will look like a stall even when the plates were fine. Note them in the weekly review instead of cutting another 200 calories out of spite. A crash week followed by a rebound week is not a plan. The twelve-week schedule exists so you have a place to return on Monday without inventing a new diet.",
+        text: "Sleep and a chaotic weekend will look like a stall even when the plates were fine. Note them in the weekly review instead of cutting another 200 calories out of spite. A harsh week followed by an unplanned week is not a plan. The twelve-week schedule exists so you have a place to return on Monday without inventing a new diet.",
       },
       {
         type: "p",
@@ -443,7 +443,7 @@ export const englishLongform: Post[] = [
       },
       {
         type: "p",
-        text: "This is education, not financial, tax, or investment advice. A planner does not know your interest rates and it will not fix a structural income problem. If the month cannot cover rent and minimums, a template is the wrong tool. Call the landlord or the lender and, if you need it, a nonprofit debt counselor where you live.",
+        text: "This is education, not financial, tax, or investment advice. A planner does not know your interest rates and it will not fix a structural income problem. If the month cannot cover rent and minimums, a template is the wrong tool. Call the landlord or the lender before you pay a third party to fix the debt.",
       },
       { type: "h2", text: "One real month" },
       {

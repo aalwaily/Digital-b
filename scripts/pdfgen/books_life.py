@@ -8,7 +8,7 @@ BUDGET = {
     "cover": cover("#1C2A44", "#F6F1E7", "#D4A574", "ledger", ["The Quiet", "Budget"], "Personal finance", "Spending, saving, and debt"),
     "intro": [
         "This is a one-evening snapshot and a monthly hour. It will not pick investments for you, and it will not fix an income that cannot cover rent.",
-        "If you cannot make minimum payments, stop and talk to the lenders and a nonprofit credit counselor. A worksheet is the wrong tool for that problem.",
+        "If you cannot make minimum payments, stop and talk to the lenders before you pay a third party. A worksheet is the wrong tool for that problem.",
     ],
     "chapters": [
         chapter(
@@ -55,7 +55,7 @@ BUDGET = {
                 ],
             ),
             P("Do not open a new card to feel organized. Do not move a balance you do not understand. If a consolidation offer has a fee and a teaser rate, write the total cost before you say yes. This is not a recommendation to take any particular loan."),
-            N("If minimums are already impossible, call the lender and ask what hardship options exist. Then look for a nonprofit counselor. Do not pay a company that promises deletion of accurate debt."),
+            N("If minimums are already impossible, call the lender and ask what hardship options exist before you pay a third party to fix the debt."),
         ),
         chapter(
             "Emergency fund and sinking funds",
@@ -99,7 +99,7 @@ BUDGET = {
             "What this guide will not do",
             P("It will not tell you which fund to buy, how to file your taxes, or whether to refinance a house. It will not make a low income into a high one. If the fixed pile is larger than money in, the problem is the gap, and the useful next step is income, housing help, or a counselor, not a stricter latte rule."),
             P("It will not shame you into a streak. Miss the monthly hour and schedule the next one. The system is the repetition, not a perfect month."),
-            N("This is general education. It is not financial, tax, or credit advice. Laws and products change. For a decision that could cost you a lot, hire a qualified person or use a nonprofit service in your area."),
+            N("This is general education. It is not financial, tax, or credit advice. Laws and products change. For a decision that could cost you a lot, hire a qualified person where you live."),
         ),
     ],
 }
@@ -180,7 +180,7 @@ HABIT = {
         chapter(
             "When you miss",
             P("Missing is the data. A habit that fails every Wednesday has a Wednesday problem: the cue does not exist that day, or the day is already full. Change the cue or shrink the habit. Do not start a new tracker to punish the miss."),
-            P("Do not treat day 21, or any fixed day, as the day a habit becomes automatic. A review in the British Journal of General Practice, checked for this edition, reports an average near 66 days in one study, a wide spread, and that an occasional miss did not erase progress. That average is not your target. Restart at the next cue. If the same day fails every week, the cue is the question. Answer it in one sentence on the ledger."),
+            P("Do not treat day 21, or any fixed day, as the day a habit becomes automatic. A review in the British Journal of General Practice, checked for this edition, reports an average near 66 days in one study, a wide spread, and that missing an occasional performance did not seriously impair the process in that study. That average is not your target. Restart at the next cue. If the same day fails every week, the cue is the question. Answer it in one sentence on the ledger."),
             B(
                 "Restart at the next cue, not next Monday.",
                 "Do the two-minute version if the full version feels ruined.",
@@ -364,7 +364,7 @@ EXAM = {
         ),
         chapter(
             "Retrieval and spacing",
-            P("Retrieval means producing the idea with the source closed. Spacing means you wait until the memory has started to fade, then you produce it again. The fade is useful. Easy recall every hour is not the same as recall after a week."),
+            P("Retrieval means producing the idea with the source closed. Spacing means you wait until the memory has started to fade, then you produce it again. A US What Works Clearinghouse practice guide, released in September 2007, recommends spacing learning over time and quizzing with active retrieval. It is not a score guarantee, and this PDF is not that program. Easy recall every hour is not the same as recall after a week."),
             T(
                 ["When", "What you do", "What you do not do"],
                 [

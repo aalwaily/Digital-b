@@ -174,7 +174,7 @@ export const products: Product[] = [
     description: [
       "Weeknight Table is a cooking system for people who want to eat well on a Tuesday and do not want a second full-time job. You prep a few building blocks, then assemble meals instead of starting from zero.",
       "The guide includes a four-week rotation, sauce formulas that make the same chicken taste different, and full recipes with servings, times, and storage notes. Shopping lists are grouped the way a store is actually walked.",
-      "Nutrition here is practical, not clinical. The recipes lean on vegetables, protein, and fiber. Cooked leftovers are written as 3 to 4 days in the fridge, and chicken is done at 165°F (74°C), not when the juice looks clear. They are not a medical meal plan.",
+      "Nutrition here is practical, not clinical. The recipes lean on vegetables, protein, and fiber. Cooked leftovers are written as 3 to 4 days in the fridge, and chicken is done when a thermometer reads 165°F (74°C). USDA's leftovers page does not treat color as the test. They are not a medical meal plan.",
     ],
     included: [
       "A 90-minute Sunday prep sequence",
@@ -763,7 +763,7 @@ export const products: Product[] = [
       {
         question: "Will this tell me which debt to pay off first?",
         answer:
-          "It explains avalanche and snowball and gives you a page to pick one. It does not know your rates, and it is not a recommendation to open a new loan. If you cannot pay minimums, contact the lender and a nonprofit counselor.",
+          "It explains avalanche and snowball and gives you a page to pick one. It does not know your rates, and it is not a recommendation to open a new loan. If you cannot pay minimums, contact the lender before you pay a third party.",
       },
     ],
   },
@@ -780,7 +780,7 @@ export const products: Product[] = [
       "Structure a CV a screener can read, with Gulf notes, a cover letter, and interview prep. It does not promise a job.",
     description: [
       "The Saudi & Gulf Job-Search and ATS CV Kit shows how to build a single-column CV with ordinary headings, dates a form can read, and bullets you can prove. It includes a cover-letter page, LinkedIn headline and About prompts, and a short interview worksheet.",
-      "Gulf notes cover language (send the language the posting asked for), Gregorian dates, and why a photo or a text box can be dropped by some screening software. Software differs. The PDF cannot change an employer's Nitaqat band or tell you whether a job matches an iqama profession.",
+      "Gulf notes cover language (send the language the posting asked for) and one calendar for dates. The University of Virginia career center says images, columns, and tables are difficult for many applicant systems to read, and that most of them miss a phone number that lives only in a header. That is one office's precaution. The PDF cannot change an employer's Nitaqat band or tell you whether a job matches an iqama profession.",
       "Nothing here promises an interview, a visa, or a job. If a posting says who may apply, believe the posting.",
     ],
     included: [
@@ -827,7 +827,7 @@ export const products: Product[] = [
       {
         question: "Should I put a photo and my iqama number on the CV?",
         answer:
-          "Follow the posting. Many applicant systems drop images and text in the header. Do not put an identity number or passport number on a file you upload to a general portal. If a form asks for a number in its own field, use that field.",
+          "Follow the posting. The University of Virginia career center says images are difficult for many applicant systems to read, and that most of them do not read text that lives only in a header or footer. Do not put an identity number or passport number on a file you upload to a general portal. If a form asks for a number in its own field, use that field.",
       },
       {
         question: "Is there an editable Word file?",

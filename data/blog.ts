@@ -173,7 +173,7 @@ export const posts: Post[] = [
       },
       {
         type: "p",
-        text: "If you cannot make minimums, a PDF is the wrong tool. Call the lenders, ask what hardship options exist, and look for a nonprofit credit counselor in your area. That is a different problem from overspending on delivery.",
+        text: "If you cannot make minimums, a PDF is the wrong tool. Call the lenders and ask what hardship options exist before you pay a third party. That is a different problem from overspending on delivery.",
       },
       {
         type: "h2",
