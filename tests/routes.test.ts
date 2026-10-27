@@ -5,7 +5,9 @@ import { categories, products } from "@/data/products";
 import { blogHreflang, blogIndex, blogLocalesForSlug } from "@/lib/blog-index";
 import { localePath, type Locale } from "@/lib/i18n/config";
 import { languageAlternate } from "@/lib/locale-path";
-import { articleHref, pageExists, unprefixedTarget } from "@/lib/routes";
+import { articleHref, pageExists, productsShopTarget, unprefixedTarget } from "@/lib/routes";
+import { middleware } from "@/middleware";
+import { NextRequest } from "next/server";
 import { CANONICAL_ORIGIN } from "@/lib/seo";
 import { describe, expect, it } from "vitest";
 
@@ -134,6 +136,59 @@ describe("public routes", () => {
     expect(pageExists("/en/product/not-a-guide/opengraph-image", "en")).toBe(false);
     expect(pageExists("/en/opengraph-image", "en")).toBe(true);
     expect(pageExists("/ar/opengraph-image", "ar")).toBe(true);
+  });
+
+  it("sends /products to the shop in one hop", () => {
+    expect(productsShopTarget("/products", "ar")).toBe("/ar/shop");
+    expect(productsShopTarget("/products/", "en")).toBe("/en/shop");
+    expect(productsShopTarget("/en/products", "ar")).toBe("/en/shop");
+    expect(productsShopTarget("/en/products/", "ar")).toBe("/en/shop");
+    expect(productsShopTarget("/ar/products", "en")).toBe("/ar/shop");
+    expect(productsShopTarget("/ar/products/", "en")).toBe("/ar/shop");
+    expect(productsShopTarget("/products/extra", "en")).toBeNull();
+    expect(productsShopTarget("/en/shop", "en")).toBeNull();
+    expect(pageExists("/en/products", "en")).toBe(false);
+    expect(pageExists("/ar/products", "ar")).toBe(false);
+    expect(unprefixedTarget("/products", "en")).toBeNull();
+
+    function respond(path: string, init?: { cookie?: string; accept?: string; ua?: string }) {
+      const headers = new Headers();
+      if (init?.cookie) headers.set("cookie", `vellum_locale=${init.cookie}`);
+      if (init?.accept) headers.set("accept-language", init.accept);
+      if (init?.ua) headers.set("user-agent", init.ua);
+      return middleware(new NextRequest(new URL(path, "http://127.0.0.1:43123"), { headers }));
+    }
+    function location(path: string, init?: { cookie?: string; accept?: string; ua?: string }) {
+      const response = respond(path, init);
+      expect(response.status).toBe(301);
+      return new URL(response.headers.get("location") || "http://127.0.0.1:43123/").pathname;
+    }
+
+    const human = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36";
+    const bot = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)";
+    expect(location("/products", { accept: "ar-SA,ar;q=0.9", ua: human })).toBe("/ar/shop");
+    expect(location("/products/", { accept: "en-US,en;q=0.8", ua: human })).toBe("/en/shop");
+    expect(location("/products", { cookie: "en", accept: "ar", ua: human })).toBe("/en/shop");
+    expect(location("/products", { cookie: "ar", accept: "en", ua: human })).toBe("/ar/shop");
+    expect(location("/products", { cookie: "ar", accept: "ar", ua: bot })).toBe("/en/shop");
+    expect(location("/products/", { accept: "ar", ua: bot })).toBe("/en/shop");
+    expect(location("/en/products", { cookie: "ar", accept: "ar", ua: human })).toBe("/en/shop");
+    expect(location("/en/products/", { cookie: "ar", ua: bot })).toBe("/en/shop");
+    expect(location("/ar/products", { cookie: "en", accept: "en", ua: human })).toBe("/ar/shop");
+    expect(location("/ar/products/", { accept: "en", ua: bot })).toBe("/ar/shop");
+    const withQuery = new URL(respond("/products/?q=1", { accept: "en", ua: human }).headers.get("location") || "http://127.0.0.1/");
+    expect(withQuery.pathname).toBe("/en/shop");
+    expect(withQuery.search).toBe("?q=1");
+
+    const slashedShop = respond("/en/shop/", { ua: human });
+    expect(slashedShop.status).toBe(308);
+    expect(new URL(slashedShop.headers.get("location") || "http://127.0.0.1:43123/").pathname).toBe("/en/shop");
+
+    const shop = respond("/en/shop", { ua: human });
+    expect(shop.status).not.toBe(301);
+    expect(shop.headers.get("location")).toBeNull();
+    expect(location("/shop", { accept: "en", ua: human })).toBe("/en/shop");
+    expect(respond("/shop", { accept: "ar", ua: bot }).status).not.toBe(301);
   });
 
   it("keeps a share image route for every indexable page, including home", () => {

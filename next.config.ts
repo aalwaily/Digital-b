@@ -3,6 +3,10 @@ import path from "path";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // The built-in "/:path+/" → "/:path+" redirect runs before middleware, so
+  // /products/ would bounce twice. Middleware removes the slash itself, and
+  // sends /products/ straight to the shop.
+  skipTrailingSlashRedirect: true,
   // Lighthouse 12's mobile UA is a normal Chrome string, so streamed metadata
   // lands in the body and the meta description audit fails. These pages
   // resolve metadata from local data, so every visitor can get it in <head>.

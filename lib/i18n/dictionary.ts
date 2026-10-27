@@ -371,6 +371,9 @@ export const dictionary = {
       text: "The link may be old, or the guide may have moved. The library is still where you left it.",
       home: "Home",
       shop: "Shop",
+      categories: "Categories",
+      contact: "Contact",
+      email: "Email",
     },
     error: {
       title: "Something went wrong",
@@ -758,6 +761,9 @@ export const dictionary = {
       text: "قد يكون الرابط قديمًا، أو يكون الدليل قد انتقل. المكتبة ما زالت حيث تركتها.",
       home: "الرئيسية",
       shop: "المتجر",
+      categories: "الأقسام",
+      contact: "تواصل",
+      email: "البريد",
     },
     error: {
       title: "حدث خطأ",
