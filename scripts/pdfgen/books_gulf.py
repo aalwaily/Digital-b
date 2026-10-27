@@ -43,9 +43,9 @@ FREELANCE = {
             "What the freelance document is",
             P("The Freelance Work Document is issued through the official freelance platform at https://freelance.sa. The site's own Arabic name is on that home page. This English PDF does not set Arabic type: the fonts in this file do not shape right-to-left text, so the Arabic name is left on the official site rather than drawn broken here. Check the address bar before you sign in or approve a login request."),
             P("The document, when the portal issues one, permits the activities printed on it. It is not a commercial registration from the Ministry of Commerce. It is not a work visa. It does not cancel an employment contract. It does not, by itself, make an online shop legal, and it does not register you for VAT."),
-            P("Checked 26 October 2026, then check again on the day you apply. HRSD's service page lists the fee as free, the languages as Arabic and English, and the duration as immediate. The same page says the document is issued after the operations team reviews the attachments. Read both. The dashboard status is the one that counts. Do not pay a stranger a processing fee."),
+            P("Checked 27 October 2026, then check again on the day you apply. HRSD's service page lists the fee as free, the languages as Arabic and English, and the duration as immediate. The same page says the document is issued after the operations team reviews the attachments. Read both. The dashboard status is the one that counts. Do not pay a stranger a processing fee."),
             P("Ministerial decision 99439, publication date shown as 2 March 2021, says the term is one year, renewable, and that citizens aged 18 to 60 may obtain the document after eligibility is checked on the approved platform. The service page's conditions are not the same list: age 18 or older, Saudi nationality, an active Absher account, and extra conditions for some categories. This PDF will not guess which line wins. If the screen you are logged into disagrees, believe the screen."),
-            P("Renewal is also unsettled. The FAQ 'How is the document renewed?' answered that renewal is through the portal, and the link pointed to nvg.gov.sa, the National Volunteer Portal, not to freelance.sa. Do not follow that link for this document. A line in the steps area says the process is automatic and needs nothing from the beneficiary, without naming the step. The English user guide on hrsd.gov.sa, file path dated August 2026, says document management can renew, cancel, or download. Open freelance.sa and read the control you actually have."),
+            P("Renewal is also unsettled. On 27 October 2026 the FAQ 'How is the document renewed?' answered that renewal is through the portal, and the link pointed to nvg.gov.sa, the National Volunteer Portal, not to freelance.sa. Do not follow that link for this document. A separate line in the FAQ section, with no question attached, says the process is automatic and names no step. It is not one of the issuance steps. The English user guide on hrsd.gov.sa, file path dated August 2026, says document management can view a document as active, expired, or rejected, and can renew, cancel, or download it. Its login steps are Nafath and an OTP. They do not repeat the service page's new-beneficiary path of an ID number and a date of birth. Open freelance.sa and read the control you actually have."),
             P("The freelance contact block and that user guide list 920002654. The service page header also shows 19911. Use a number printed on the official page."),
             T(
                 ["Paper", "What it is for", "What it is not"],
@@ -218,7 +218,7 @@ FREELANCE = {
             "VAT, zakat, and your accountant",
             P("Tax rules depend on what you are, what you sell, and the current ZATCA publications. This page is a list of things to verify. It is not a calculation of what you owe."),
             H("What was published, and what you must re-check"),
-            P("Checked October 2026. ZATCA's page on VAT registration for individuals says the service is for annual revenues that exceed SAR 375,000, and that registration is optional when revenues exceed SAR 187,500 and are less than SAR 375,000. The page says revenues. It is not a worksheet for you to decide you are under the line. The VAT law sets the standard rate at 15 percent, and ZATCA announced that rate took effect on 1 July 2020. Confirm the rate and whether you must register on zatca.gov.sa before you charge tax. Do not add 15 percent to a bill you are not registered to issue."),
+            P("Checked 27 October 2026. ZATCA's page on VAT registration for individuals says the service is for annual revenues that exceed SAR 375,000, and that registration is optional when revenues exceed SAR 187,500 and are less than SAR 375,000. The page says revenues. It is not a worksheet for you to decide you are under the line. ZATCA's guideline on the rate change says VAT began in 2018 at 5 percent, that the Ministry of Finance announced on 11 May 2020 a rise of the standard rate to 15 percent, and that the revised rate applies from 1 July 2020. Confirm the rate and whether you must register on zatca.gov.sa before you charge tax. Do not add 15 percent to a bill you are not registered to issue."),
             B(
                 "Am I required to register for VAT, or am I allowed to register voluntarily?",
                 "If I register, what must the invoice contain, and does e-invoicing (Fatoora) apply to me yet?",
@@ -367,7 +367,7 @@ BUDGET = {
                 ],
                 26,
             ),
-            N("If minimums are already impossible, contact the lender and look for a nonprofit counselor. Do not pay a company that promises to delete accurate debt. This is not a recommendation to take any particular loan."),
+            N("If minimums are already impossible, contact the lender before you pay a third party to fix the debt. This is not a recommendation to take any particular loan."),
         ),
         chapter(
             "The monthly hour",
@@ -433,7 +433,7 @@ BUDGET = {
             "When the numbers do not fit",
             P("If the fixed pile is larger than the baseline, no envelope system will invent the difference. The useful next steps are more income you can actually get, a lower fixed bill, or help from a qualified counselor. A stricter rule about small purchases will not close a housing gap."),
             P("If a high month tempts you to add a fixed payment, wait until the buffer holds the target you wrote. A new installment is how irregular income becomes a crisis with a due date."),
-            N("This guide will not tell you which fund to buy, how to file a return, or whether to refinance. Laws and products change. For a decision that could cost you a lot, hire a qualified person or use a nonprofit service where you live."),
+            N("This guide will not tell you which fund to buy, how to file a return, or whether to refinance. Laws and products change. For a decision that could cost you a lot, hire a qualified person where you live."),
         ),
         chapter(
             "A high month, written down",
@@ -513,14 +513,14 @@ CV = {
         ),
         chapter(
             "What a screener actually receives",
-            P("Many employers run an application through software before a person reads it. That software is often called an ATS. Career offices describe a safer file as one column, with ordinary headings, and without tables, images, or text that lives only in a header. Systems differ. You cannot see which one a given employer uses. Treat the plain file as a precaution, not as a map of every portal. The safe file is the one that still makes sense if only the plain text survives."),
+            P("Many employers run an application through software before a person reads it. That software is often called an ATS. The University of Virginia career center, checked on 27 October 2026, says images, columns, tables, and graphics are difficult for those systems to read. It says text inside a text box is often not read, and that most systems cannot read a phone number or email that lives only in the header or footer. That is one office. You cannot see which system a given employer uses. Treat the plain file as a precaution, not as a map of every Gulf portal. The safer file is the one that still makes sense if only the plain text survives."),
             T(
-                ["Often kept", "Often dropped or scrambled"],
+                ["UVA career center: safer", "What that page says many systems mishandle"],
                 [
-                    ["A single column of text", "Two or three columns"],
-                    ["Ordinary headings: Experience, Education, Skills", "Icons that replace the words"],
-                    ["Dates written as text", "A timeline graphic"],
-                    ["Your phone number in the body", "A phone number that exists only in the header or footer"],
+                    ["A single column of text", "Columns, including a template built on invisible tables"],
+                    ["Standard headings: Skills, Work Experience, Education", "A unique heading such as What I've Done"],
+                    ["Simple bullet points", "Intricate symbols in place of simple bullets"],
+                    ["Name, phone, and email in the body", "Those details left only in the header or footer"],
                 ],
             ),
             P("A human reader still has to understand the file in a minute. Plain structure helps that person too. You do not need a decorative CV to be taken seriously."),
@@ -536,13 +536,13 @@ CV = {
                 "Skills: tools and languages you can show, as words, not as a bar chart.",
                 "Optional, if it is short: a three-line summary. Skip it if it only says you are passionate.",
             ),
-            P("File type: if the portal says PDF, send PDF. If it says a Word file, send that. Do not send a picture of a CV. Do not put the important words inside a table. Tables are useful in this guide. They are a poor container for the CV itself, because some parsers read the cells out of order."),
+            P("File type: if the portal says PDF, send PDF. If it says a Word file, send that. Do not send a picture of a CV. Do not put the important words inside a table, and do not put them in a text box. The same career-center page says tables and text boxes are difficult for those systems to read, and that text inside a text box is often not read. Tables are useful in this guide. They are a poor container for the CV itself."),
             TIP("Open the file, select all, and paste into a plain text box. If the phone number or the last job disappears, fix the file before you submit it."),
         ),
         chapter(
             "Dates, language, and two files",
-            P("Write dates in the Gregorian calendar, month and year, unless the form asks for Hijri. Mixing Hijri and Gregorian in one date confuses both a parser and a person. If you keep Hijri for your own notes, convert before you type the field. Be consistent down the page."),
-            P("Send the language the posting used. A private-sector posting in English gets an English file. An Arabic posting gets an Arabic file. A file that mixes Arabic and English in the same paragraphs is hard for many screeners, because the scripts run in different directions. If the employer truly needs both, send two files and label them. Do not merge them to save a page."),
+            P("Write dates in one calendar, month and year, unless the form asks for Hijri. Mixing Hijri and Gregorian in one date is hard for a reader. If you keep Hijri for your own notes, convert before you type the field. Be consistent down the page. This file does not claim that every parser fails on a mixed date."),
+            P("Send the language the posting used. A private-sector posting in English gets an English file. An Arabic posting gets an Arabic file. Paragraphs that mix Arabic and English are hard to read because the scripts run in different directions. If the employer needs both, send two files and label them. Do not merge them to save a page."),
             P("This PDF is English, and it cannot draw Arabic text correctly. Build the Arabic file in a tool that handles Arabic. Use the same structure: one column, the same jobs, the same true dates."),
             N("Do not put a national ID, iqama number, or passport number on a CV you upload to a general portal. If a secure form has its own field for a number, use that field."),
         ),
@@ -568,8 +568,8 @@ CV = {
         chapter(
             "Gulf notes",
             P("These are limits, not tricks. HRSD's Nitaqat calculator is an employer service. It estimates a band from worker counts and the establishment's activity. A CV template does not make you eligible for a role, and it does not change that band. If a posting says Saudi nationals only, read that line and apply only if it is true of you. Do not adjust a nationality field to fit a template."),
-            P("Qiwa is where a worker reviews a pending employment contract. The help page checked in October 2026 gives 10 days to accept, reject, or request a change. Occupation management is a separate Qiwa service. This PDF cannot tell you whether a job title matches the profession on a residency. Ask the employer or a qualified adviser before you treat an offer as something you can accept."),
-            P("Elsewhere in the Gulf, private-sector applications are often in English, and public-sector applications often follow that country's own portal. Some employers ask for a photo. Some systems reject photos. Do what the posting says. A photo is a poor default, because many parsers ignore the image and a biased reader may not. Leave it off unless they asked."),
+            P("Qiwa's help article, read in October 2026, says a worker has 10 days to accept, reject, or request a modification of a pending employment contract. If there is no response, the article says the pending contract is canceled. It does not say that silence counts as acceptance. This PDF cannot tell you whether a job title matches the profession on a residency. Ask the employer or a qualified adviser before you treat an offer as something you can accept."),
+            P("Elsewhere in the Gulf, private-sector applications are often in English, and public-sector applications often follow that country's own portal. Some employers ask for a photo. Do what the posting says. The same career-center page says images are difficult for applicant systems to read. Leave a photo off unless they asked. This file does not claim that every system rejects a photo, and it does not claim what a reader will think of one."),
             B(
                 "Qatar, the UAE, Kuwait, Bahrain, and Oman do not share one CV law. Read the posting.",
                 "Salary history: give it if the form requires it. Do not invent a current salary.",

@@ -357,10 +357,10 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           <ul className="mt-4 space-y-3 text-sm leading-relaxed">
             {sources.map((source) => (
               <li key={source.href}>
-                <a href={source.href} className="inline-flex min-h-11 min-w-11 items-center underline underline-offset-4" rel="noopener noreferrer">
+                <a href={source.href} className="inline-block max-w-full min-h-11 break-words py-2 underline underline-offset-4" rel="noopener noreferrer">
                   {source.label}
                 </a>
-                <span className="mt-1 block text-muted-foreground">{source.note}</span>
+                <span className="mt-1 block break-words text-muted-foreground">{source.note}</span>
               </li>
             ))}
           </ul>

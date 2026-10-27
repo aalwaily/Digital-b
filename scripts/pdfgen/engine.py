@@ -45,7 +45,7 @@ DISCLAIMERS = {
     "finance": (
         "Money disclaimer. This guide is general education. It is not financial, tax, investment, "
         "or credit advice, and it is not a recommendation to buy or sell anything. Rules depend on "
-        "where you live and they change. A licensed adviser or nonprofit credit counselor is the "
+        "where you live and they change. A licensed adviser where you live is the "
         "right next step for decisions that affect your taxes, your housing, or debts you cannot pay."
     ),
     "career": (
