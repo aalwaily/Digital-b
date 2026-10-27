@@ -1,5 +1,5 @@
 import { legalPages } from "@/data/legal";
-import { products } from "@/data/products";
+import { categories, products } from "@/data/products";
 import { blogLocalesForSlug } from "@/lib/blog-index";
 import { localePath, stripLocale, type Locale } from "@/lib/i18n/config";
 
@@ -20,6 +20,7 @@ const SHARED = new Set([
 
 const productSlugs = new Set(products.map((product) => product.slug));
 const legalSlugs = new Set(legalPages.map((page) => page.slug));
+const categorySlugs = new Set(categories.map((category) => category.slug));
 
 export function normalizePathname(pathname: string) {
   if (pathname.length > 1 && pathname.endsWith("/")) return pathname.slice(0, -1);
@@ -38,6 +39,8 @@ export function isNotFoundProbe(pathname: string) {
 export function pageExists(pathname: string, locale: Locale) {
   const stripped = stripLocale(normalizePathname(pathname)).replace(/\/opengraph-image$/, "");
   if (SHARED.has(stripped)) return true;
+  const category = stripped.match(/^\/shop\/([^/]+)$/);
+  if (category) return categorySlugs.has(category[1]);
   const product = stripped.match(/^\/product\/([^/]+)$/);
   if (product) return productSlugs.has(product[1]);
   const legal = stripped.match(/^\/legal\/([^/]+)$/);
@@ -60,6 +63,11 @@ export function unprefixedTarget(pathname: string, preferred: Locale): Unprefixe
   const path = normalizePathname(pathname);
   if (SHARED.has(path)) {
     return { locale: preferred, pathname: path === "/" ? `/${preferred}` : `/${preferred}${path}` };
+  }
+  const category = path.match(/^\/shop\/([^/]+)$/);
+  if (category) {
+    if (!categorySlugs.has(category[1])) return null;
+    return { locale: preferred, pathname: `/${preferred}${path}` };
   }
   const product = path.match(/^\/product\/([^/]+)$/);
   if (product) {

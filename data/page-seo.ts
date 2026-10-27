@@ -104,6 +104,74 @@ export const staticSeo = {
       "مقالات قبل الشراء: قالب سيرة ATS، وثيقة العمل الحر، جدول ميزانية، وخطة نزول الوزن. الدليل باللغة الإنجليزية.",
     keyword: "مقالات شراء قوالب وخطط PDF",
   },
+  arabicShop: {
+    title: "تسوق أدلة وباقات PDF | من $6",
+    description:
+      "تسوق أدلة PDF وباقات من 6 دولارات. عيّنة مجانية لكل دليل. الدليل باللغة الإنجليزية. الدفع يفتح قريبًا. كل المبيعات نهائية.",
+    keyword: "تسوق أدلة PDF",
+  },
+  arabicAbout: {
+    title: "عن Vellum Press | أدلة PDF بالدمام",
+    description:
+      "تصدر Vellum Press في الدمام أدلة PDF عملية تنزّلها مرة وتحتفظ بها. الدليل باللغة الإنجليزية. كل المبيعات نهائية.",
+    keyword: "عن Vellum Press الدمام",
+  },
+  arabicContact: {
+    title: "تواصل مع Vellum Press | مساعدة الطلب",
+    description: "راسل Vellum Press عن طلب أو تنزيل لم ينجح. البريد glarz.com@gmail.com. كل المبيعات نهائية.",
+    keyword: "تواصل مساعدة طلب PDF",
+  },
+  arabicFaq: {
+    title: "أسئلة تنزيل PDF | المبيعات نهائية",
+    description:
+      "إجابات عن تنزيل PDF والترخيص الشخصي وأن كل المبيعات نهائية. الأدلة من 6 دولارات. الدليل باللغة الإنجليزية.",
+    keyword: "أسئلة تنزيل PDF",
+  },
+  arabicPrivacy: {
+    title: "سياسة الخصوصية | Vellum Press",
+    description: "سياسة الخصوصية لمشتريات PDF والبريد في Vellum Press. الناشر في الدمام. كل المبيعات نهائية.",
+    keyword: "سياسة الخصوصية",
+  },
+  arabicTerms: {
+    title: "شروط بيع أدلة PDF | Vellum",
+    description: "شروط شراء دليل PDF من Vellum Press. ترخيص شخصي، وكل المبيعات نهائية. الدليل باللغة الإنجليزية.",
+    keyword: "شروط بيع أدلة PDF",
+  },
+  arabicRefunds: {
+    title: "كل المبيعات نهائية | بلا استرداد",
+    description: "كل المبيعات نهائية. لا استرداد لتنزيلات PDF من Vellum Press. راسلنا إذا كان الملف تالفًا أو ناقصًا.",
+    keyword: "كل المبيعات نهائية",
+  },
+  arabicDelivery: {
+    title: "سياسة التنزيل الفوري لملفات PDF",
+    description: "كيف يعمل رابط الإيصال وتسليم ملف PDF في Vellum Press. كل المبيعات نهائية.",
+    keyword: "سياسة التنزيل الفوري",
+  },
+  arabicCart: {
+    title: "سلة أدلة PDF | Vellum Press",
+    description: "راجع أدلة PDF في سلتك. كل المبيعات نهائية. الدفع عبر الإنترنت يفتح قريبًا.",
+    keyword: "سلة أدلة PDF",
+  },
+  arabicCheckout: {
+    title: "إتمام شراء أدلة PDF",
+    description: "إتمام الطلب لأدلة Vellum Press. الدفع عبر الإنترنت يفتح قريبًا. كل المبيعات نهائية.",
+    keyword: "إتمام شراء أدلة PDF",
+  },
+  arabicSuccess: {
+    title: "تأكيد دفع أدلة PDF",
+    description: "جارٍ تأكيد دفع أدلة PDF. يبدأ التنزيل من صفحة الإيصال. كل المبيعات نهائية.",
+    keyword: "تأكيد دفع PDF",
+  },
+  arabicOrders: {
+    title: "تنزيل أدلة PDF | الإيصال",
+    description: "نزّل أدلة PDF من إيصال Vellum Press. احفظ الملفات. كل المبيعات نهائية.",
+    keyword: "تنزيل أدلة PDF إيصال",
+  },
+  arabicNotFound: {
+    title: "الصفحة غير موجودة | Vellum Press",
+    description: "هذه الصفحة غير موجودة. تصفّح المتجر، أو انتقل إلى الإنجليزية. العيّنات المجانية ما زالت متاحة.",
+    keyword: "صفحة غير موجودة",
+  },
 } as const satisfies Record<string, SeoEntry>;
 
 function productEntry(title: string, description: string, keyword: string): SeoEntry {
@@ -253,6 +321,115 @@ export const arabicProductSeo: Record<string, SeoEntry> = {
     "باقة عمل الخليج PDF | $18",
     `نزّل باقة العمل الحر والميزانية والسيرة PDF بـ $18 (حوالي ${formatSar(18)}). الدليل باللغة الإنجليزية.`,
     "باقة عمل الخليج PDF",
+  ),
+};
+
+export const categorySeo: Record<string, SeoEntry> = {
+  health: productEntry(
+    "Health & Nutrition PDF Guides | From $12",
+    "Health and nutrition PDF guides from $12. Fat-loss plan and weeknight meal prep. Free samples. Not medical advice.",
+    "health nutrition PDF guides",
+  ),
+  fitness: productEntry(
+    "Home Workout PDF Guides | $13.50",
+    "Home workout PDF guide for $13.50. Floor sessions and an eight-week progression. Free sample. Not medical advice.",
+    "home workout PDF guides",
+  ),
+  finance: productEntry(
+    "Personal Finance PDF Guides | From $7.50",
+    "Personal finance PDF guides from $7.50. Monthly budget and irregular income. Free samples. Not financial advice.",
+    "personal finance PDF guides",
+  ),
+  productivity: productEntry(
+    "Habit & Productivity PDF Guides | $9.50",
+    "Weekly habit planner PDF for $9.50. A one-page review and a thirty-day ledger. Free sample. All sales are final.",
+    "habit productivity PDF guide",
+  ),
+  career: productEntry(
+    "Freelance & Work PDF Guides | From $6",
+    "Freelance and work PDF guides from $6. Offers, a Saudi freelance checklist, and a Gulf ATS CV. Not legal advice.",
+    "freelance work PDF guides",
+  ),
+  learning: productEntry(
+    "Exam Study PDF Guides | $10.50",
+    "Exam study plan PDF for $10.50. Retrieval practice and a weekly plan. Free sample. No score promise.",
+    "exam study PDF guides",
+  ),
+  mindfulness: productEntry(
+    "Mindfulness PDF Guides | $9",
+    "Stress relief guide PDF for $9. Short practices and a four-week plan. Free sample. Not therapy or medical advice.",
+    "mindfulness PDF guides",
+  ),
+  bundles: productEntry(
+    "PDF Guide Bundles | From $18",
+    "PDF guide bundles from $18. Health, work, and Gulf kits cost less than the separate guides. All sales are final.",
+    "PDF guide bundles",
+  ),
+};
+
+export const arabicCategorySeo: Record<string, SeoEntry> = {
+  health: productEntry(
+    "أدلة صحة وتغذية PDF | من $12",
+    "أدلة صحة وتغذية PDF من $12. الدليل باللغة الإنجليزية. عيّنة مجانية. ليست نصيحة طبية. كل المبيعات نهائية.",
+    "أدلة صحة وتغذية PDF",
+  ),
+  fitness: productEntry(
+    "أدلة تمارين منزلية PDF | $13.50",
+    "دليل تمارين منزلية PDF بـ $13.50. الدليل باللغة الإنجليزية. عيّنة مجانية. ليست نصيحة طبية. كل المبيعات نهائية.",
+    "أدلة تمارين منزلية PDF",
+  ),
+  finance: productEntry(
+    "أدلة المال الشخصي PDF | من $7.50",
+    "أدلة ميزانية PDF من $7.50. الدليل باللغة الإنجليزية. عيّنة مجانية. ليست استشارة مالية. كل المبيعات نهائية.",
+    "أدلة المال الشخصي PDF",
+  ),
+  productivity: productEntry(
+    "دليل عادات وإنتاجية PDF | $9.50",
+    "مخطط عادات أسبوعي PDF بـ $9.50. الدليل باللغة الإنجليزية. عيّنة مجانية. كل المبيعات نهائية.",
+    "دليل عادات وإنتاجية PDF",
+  ),
+  career: productEntry(
+    "أدلة العمل الحر والوظيفة | من $6",
+    "أدلة عمل حر وسيرة ATS من $6. الدليل باللغة الإنجليزية. عيّنة مجانية. ليست استشارة قانونية. كل المبيعات نهائية.",
+    "أدلة العمل الحر PDF",
+  ),
+  learning: productEntry(
+    "أدلة مهارات الدراسة PDF | $10.50",
+    "خطة مذاكرة للاختبار PDF بـ $10.50. الدليل باللغة الإنجليزية. عيّنة مجانية. لا وعد بدرجة. كل المبيعات نهائية.",
+    "أدلة مهارات الدراسة PDF",
+  ),
+  mindfulness: productEntry(
+    "أدلة هدوء وانتباه PDF | $9",
+    "دليل تمارين هدوء PDF بـ $9. الدليل باللغة الإنجليزية. عيّنة مجانية. ليس علاجًا نفسيًا. كل المبيعات نهائية.",
+    "أدلة هدوء PDF",
+  ),
+  bundles: productEntry(
+    "باقات أدلة PDF | من $18",
+    "باقات أدلة PDF من $18. الدليل باللغة الإنجليزية. السعر أقل من شراء الأدلة منفصلة. كل المبيعات نهائية.",
+    "باقات أدلة PDF",
+  ),
+};
+
+export const arabicLegacyPostSeo: Record<string, SeoEntry> = {
+  "sunday-prep-that-holds": productEntry(
+    "خطة تحضير وجبات PDF حتى الخميس",
+    "خطة تحضير وجبات تصمد حتى الخميس. دليل التحضير الأسبوعي PDF بـ $12. الدليل باللغة الإنجليزية. ليس نظامًا طبيًا.",
+    "خطة تحضير وجبات PDF",
+  ),
+  "one-evening-budget-reset": productEntry(
+    "إعادة ضبط الميزانية في أمسية واحدة",
+    "أعد ضبط ميزانية شهرية في أمسية واحدة. جدول الميزانية PDF بـ $11. الدليل باللغة الإنجليزية. ليس استشارة مالية.",
+    "إعادة ضبط الميزانية",
+  ),
+  "stop-rereading-your-notes": productEntry(
+    "خطة مذاكرة PDF بلا إعادة قراءة",
+    "استبدل إعادة القراءة بخطة استرجاع. خطة المذاكرة PDF بـ $10.50. الدليل باللغة الإنجليزية. لا وعد بدرجة.",
+    "خطة مذاكرة PDF",
+  ),
+  "side-hustle-beside-a-job": productEntry(
+    "عمل جانبي PDF إلى جانب الوظيفة",
+    "ضيّق عرض العمل الحر وضع حدًا للسعر وأنت موظف. دليل أول عميل PDF بـ $16. الدليل باللغة الإنجليزية. لا وعد بدخل.",
+    "عمل جانبي PDF",
   ),
 };
 

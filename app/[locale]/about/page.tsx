@@ -3,21 +3,13 @@ import { localePath } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { requireLocale } from "@/lib/i18n/content";
 import { pageMetadata } from "@/lib/page-meta";
-import { staticSeo } from "@/data/page-seo";
+import { publicMetadata } from "@/lib/public-meta";
 import type { Metadata } from "next";
 import Link from "next/link";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const locale = requireLocale((await params).locale);
-  const t = getDictionary(locale);
-  const seo = staticSeo.about;
-  return pageMetadata({
-    title: locale === "ar" ? t.about.metaTitle : seo.title,
-    description: locale === "ar" ? t.about.metaDescription : seo.description,
-    path: "/about",
-    locale,
-    absoluteTitle: locale === "en",
-  });
+  return pageMetadata(publicMetadata(locale, "/about")!);
 }
 
 export default async function AboutPage({ params }: { params: Promise<{ locale: string }> }) {

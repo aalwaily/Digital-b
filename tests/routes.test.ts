@@ -1,7 +1,7 @@
 import sitemap from "@/app/sitemap";
 import { posts } from "@/data/blog";
 import { legalPages } from "@/data/legal";
-import { products } from "@/data/products";
+import { categories, products } from "@/data/products";
 import { blogHreflang, blogIndex, blogLocalesForSlug } from "@/lib/blog-index";
 import { localePath, type Locale } from "@/lib/i18n/config";
 import { languageAlternate } from "@/lib/locale-path";
@@ -14,6 +14,7 @@ function indexablePaths() {
   const staticPaths = ["/", "/shop", "/about", "/contact", "/faq", "/blog"];
   for (const locale of ["en", "ar"] as const) {
     for (const path of staticPaths) paths.push(localePath(locale, path));
+    for (const category of categories) paths.push(localePath(locale, `/shop/${category.slug}`));
     for (const product of products) paths.push(localePath(locale, `/product/${product.slug}`));
     for (const page of legalPages) paths.push(localePath(locale, `/legal/${page.slug}`));
   }
@@ -103,6 +104,9 @@ describe("public routes", () => {
 
   it("sends unprefixed urls to a real locale page and leaves unknown urls unmatched", () => {
     expect(unprefixedTarget("/shop", "ar")).toEqual({ locale: "ar", pathname: "/ar/shop" });
+    expect(unprefixedTarget("/shop/health", "ar")).toEqual({ locale: "ar", pathname: "/ar/shop/health" });
+    expect(unprefixedTarget("/shop/not-a-category", "en")).toBeNull();
+    expect(pageExists("/en/shop/finance", "en")).toBe(true);
     expect(unprefixedTarget("/product/steady-mind", "en")).toEqual({
       locale: "en",
       pathname: "/en/product/steady-mind",

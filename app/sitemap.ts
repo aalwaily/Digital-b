@@ -1,6 +1,6 @@
 import { getPost, postLang, postPath, posts, type Post } from "@/data/blog";
 import { legalPages } from "@/data/legal";
-import { products } from "@/data/products";
+import { categories, products } from "@/data/products";
 import { locales, localePath, type Locale } from "@/lib/i18n/config";
 import { CANONICAL_ORIGIN } from "@/lib/seo";
 import type { MetadataRoute } from "next";
@@ -67,8 +67,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = ["/", "/shop", "/about", "/contact", "/faq", "/blog"].flatMap((path) =>
     paired(path, "2026-10-19"),
   );
+  const categoryRoutes = categories.flatMap((category) => {
+    const published = products
+      .filter((product) => product.category === category.slug)
+      .map((product) => product.published)
+      .sort();
+    return paired(`/shop/${category.slug}`, published[published.length - 1] ?? "2026-10-19");
+  });
   const productRoutes = products.flatMap((product) => paired(`/product/${product.slug}`, product.published));
   const postRoutes = posts.flatMap((post) => postEntries(post));
   const legalRoutes = legalPages.flatMap((page) => paired(`/legal/${page.slug}`, page.updated));
-  return [...staticRoutes, ...productRoutes, ...postRoutes, ...legalRoutes];
+  return [...staticRoutes, ...categoryRoutes, ...productRoutes, ...postRoutes, ...legalRoutes];
 }

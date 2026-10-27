@@ -2,17 +2,14 @@ import { ClaimOrder } from "@/components/claim-order";
 import { localePath } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { requireLocale } from "@/lib/i18n/content";
+import { pageMetadata } from "@/lib/page-meta";
+import { publicMetadata } from "@/lib/public-meta";
 import type { Metadata } from "next";
 import Link from "next/link";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const locale = requireLocale((await params).locale);
-  const t = getDictionary(locale);
-  return {
-    title: t.success.metaTitle,
-    description: t.success.metaDescription,
-    robots: { index: false, follow: false },
-  };
+  return pageMetadata(publicMetadata(locale, "/checkout/success")!);
 }
 
 export default async function SuccessPage({

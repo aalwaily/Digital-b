@@ -62,6 +62,13 @@ export function localizeFaqs(locale: Locale): FaqItem[] {
   return arFaqs.map((faq) => ({ ...faq, question: isolateEmbeds(faq.question), answer: isolateEmbeds(faq.answer) }));
 }
 
+/** FAQs actually rendered on the homepage. FAQPage JSON-LD must use this same list. */
+export const HOME_FAQ_COUNT = 5;
+
+export function visibleHomeFaqs(locale: Locale) {
+  return localizeFaqs(locale).slice(0, HOME_FAQ_COUNT);
+}
+
 export function localizeLegal(page: LegalPage, locale: Locale): LegalPage {
   if (locale === "en") return page;
   const copy = arLegal[page.slug];
@@ -144,6 +151,7 @@ export function formatLongDate(iso: string, locale: Locale) {
 
 export function allPublicPaths() {
   const paths = ["/", "/shop", "/about", "/contact", "/faq", "/blog"];
+  for (const category of categories) paths.push(`/shop/${category.slug}`);
   for (const product of products) paths.push(`/product/${product.slug}`);
   for (const post of posts) paths.push(`/blog/${post.slug}`);
   for (const page of legalPages) paths.push(`/legal/${page.slug}`);

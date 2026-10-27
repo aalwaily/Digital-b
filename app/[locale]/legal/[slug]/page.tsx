@@ -2,7 +2,7 @@ import { legalPages } from "@/data/legal";
 import { formatLongDate, localizedLegal, requireLocale } from "@/lib/i18n/content";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { pageMetadata } from "@/lib/page-meta";
-import { staticSeo } from "@/data/page-seo";
+import { publicMetadata } from "@/lib/public-meta";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -18,16 +18,9 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const { slug, locale: raw } = await params;
   const locale = requireLocale(raw);
   const t = getDictionary(locale);
-  const page = localizedLegal(slug, locale);
-  if (!page) return { title: t.legal.metaFallback };
-  const seo = locale === "en" && page.slug in staticSeo ? staticSeo[page.slug as keyof typeof staticSeo] : undefined;
-  return pageMetadata({
-    title: seo?.title ?? page.title,
-    description: seo?.description ?? page.description,
-    path: `/legal/${page.slug}`,
-    locale,
-    absoluteTitle: Boolean(seo),
-  });
+  const meta = publicMetadata(locale, `/legal/${slug}`);
+  if (!meta) return { title: t.legal.metaFallback };
+  return pageMetadata(meta);
 }
 
 export default async function LegalPage({ params }: { params: Promise<Params> }) {

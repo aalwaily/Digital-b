@@ -1,11 +1,7 @@
 import { type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionary";
-import { formatMoney, formatSarAmount } from "@/lib/money";
+import { formatMoney, formatSarAmount, struckPrice } from "@/lib/money";
 import { cn } from "cn";
-
-function isExactHalf(price: number, previous: number) {
-  return Math.round(previous * 100) === Math.round(price * 200);
-}
 
 export function Price({
   price,
@@ -24,8 +20,8 @@ export function Price({
 }) {
   const t = getDictionary(locale);
   const sar = formatSarAmount(price);
-  const halfOff = previousPrice != null && previousPrice > price && isExactHalf(price, previousPrice);
-  const struck = halfOff ? previousPrice : compareAt && compareAt > price ? compareAt : null;
+  const struck = struckPrice(price, previousPrice, compareAt);
+  const halfOff = previousPrice != null && struck === previousPrice;
 
   return (
     <p className={cn("price flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-0.5", className)}>

@@ -1,6 +1,6 @@
 import { ContentsPlate, Cover, WorksheetPlate } from "@/components/cover";
 import { FaqList } from "@/components/faq-list";
-import { JsonLd } from "@/components/json-ld";
+import { JsonLdList } from "@/components/json-ld";
 import { Price } from "@/components/price";
 import { ProductCard } from "@/components/product-card";
 import { ProductGallery } from "@/components/product-gallery";
@@ -20,14 +20,13 @@ import { localePath, type Locale } from "@/lib/i18n/config";
 import { getDictionary, type Dictionary } from "@/lib/i18n/dictionary";
 import { localizeCategory, localizeProduct, localizedProduct, requireLocale } from "@/lib/i18n/content";
 import { pageMetadata } from "@/lib/page-meta";
-import { arabicProductSeo, productSeo } from "@/data/page-seo";
+import { publicMetadata } from "@/lib/public-meta";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { EnglishPdfNotice } from "@/components/english-pdf-notice";
-import { breadcrumbSchema, faqSchema, productSchema } from "@/lib/schema";
+import { pageJsonLd } from "@/lib/page-jsonld";
 import { limitFor } from "@/data/limits";
 import { sourcesFor } from "@/data/sources";
 import { checkoutOptions } from "@/lib/payments";
-import { CANONICAL_ORIGIN } from "@/lib/seo";
 import { getSiteUrl } from "@/lib/site-url";
 import { WHATSAPP_URL } from "@/components/whatsapp-button";
 import { Check, FileDown, Mail, MessageCircle, ShieldCheck } from "lucide-react";
@@ -48,16 +47,9 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { slug, locale: raw } = await params;
   const locale = requireLocale(raw);
-  const product = localizedProduct(slug, locale);
-  if (!product) return { title: "Guide" };
-  const seo = locale === "ar" ? arabicProductSeo[slug] : productSeo[slug];
-  return pageMetadata({
-    title: seo?.title ?? product.title,
-    description: seo?.description ?? product.shortDescription,
-    path: `/product/${product.slug}`,
-    locale,
-    absoluteTitle: Boolean(seo),
-  });
+  const meta = publicMetadata(locale, `/product/${slug}`);
+  if (!meta) return { title: "Guide" };
+  return pageMetadata(meta);
 }
 
 function relationNote(current: Product, related: Product, t: Dictionary) {
@@ -99,15 +91,16 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
 
   return (
     <div className="mx-auto min-w-0 max-w-6xl px-4 py-4 sm:px-5 sm:py-10">
-      <JsonLd data={productSchema(product, CANONICAL_ORIGIN, locale)} />
-      <JsonLd data={faqSchema(product.faqs)} />
-      <JsonLd data={breadcrumbSchema(CANONICAL_ORIGIN, product, locale)} />
+      <JsonLdList data={pageJsonLd(locale, `/product/${product.slug}`)} />
       <Breadcrumbs
         label={t.product.breadcrumb}
         locale={locale}
         items={[
           { href: localePath(locale, "/"), label: t.product.home },
           { href: localePath(locale, "/shop"), label: t.product.shop },
+          ...(category
+            ? [{ href: localePath(locale, `/shop/${category.slug}`), label: category.name }]
+            : []),
           { label: product.title },
         ]}
       />

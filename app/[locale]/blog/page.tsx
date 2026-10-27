@@ -3,21 +3,14 @@ import { localePath } from "@/lib/i18n/config";
 import { formatLongDate, postsForLocale, requireLocale } from "@/lib/i18n/content";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { pageMetadata } from "@/lib/page-meta";
-import { staticSeo } from "@/data/page-seo";
+import { publicMetadata } from "@/lib/public-meta";
 import { readingMinutes } from "@/lib/reading";
 import type { Metadata } from "next";
 import Link from "next/link";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const locale = requireLocale((await params).locale);
-  const seo = locale === "ar" ? staticSeo.arabicBlog : staticSeo.blog;
-  return pageMetadata({
-    title: seo.title,
-    description: seo.description,
-    path: "/blog",
-    locale,
-    absoluteTitle: true,
-  });
+  return pageMetadata(publicMetadata(locale, "/blog")!);
 }
 
 export default async function BlogPage({ params }: { params: Promise<{ locale: string }> }) {

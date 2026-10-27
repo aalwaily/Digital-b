@@ -1,6 +1,6 @@
 import { Cover } from "@/components/cover";
 import { FaqList } from "@/components/faq-list";
-import { JsonLd } from "@/components/json-ld";
+import { JsonLdList } from "@/components/json-ld";
 import { NewsletterForm } from "@/components/newsletter-form";
 import { Price } from "@/components/price";
 import { ProductCard } from "@/components/product-card";
@@ -10,11 +10,10 @@ import { pageCountFor } from "@/lib/catalog";
 import { textDir } from "@/lib/i18n/bidi";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { localePath } from "@/lib/i18n/config";
-import { localizeFaqs, localizedCategories, localizedProduct, postsForLocale, requireLocale } from "@/lib/i18n/content";
+import { localizedCategories, localizedProduct, postsForLocale, requireLocale, visibleHomeFaqs } from "@/lib/i18n/content";
+import { pageJsonLd } from "@/lib/page-jsonld";
 import { pageMetadata } from "@/lib/page-meta";
-import { staticSeo } from "@/data/page-seo";
-import { faqSchema, organizationSchema, websiteSchema } from "@/lib/schema";
-import { CANONICAL_ORIGIN } from "@/lib/seo";
+import { publicMetadata } from "@/lib/public-meta";
 import { formatMoney } from "@/lib/money";
 import type { Metadata } from "next";
 import { Download, LockKeyhole, Printer, ShieldCheck } from "lucide-react";
@@ -24,14 +23,7 @@ type Params = { locale: string };
 
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const locale = requireLocale((await params).locale);
-  const seo = locale === "ar" ? staticSeo.arabicHome : staticSeo.home;
-  return pageMetadata({
-    title: seo.title,
-    description: seo.description,
-    path: "/",
-    locale,
-    absoluteTitle: true,
-  });
+  return pageMetadata(publicMetadata(locale, "/")!);
 }
 
 export default async function HomePage({ params }: { params: Promise<Params> }) {
@@ -48,13 +40,11 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
     .filter((product) => product !== undefined);
   const icons = [Download, LockKeyhole, Printer, ShieldCheck];
   const savings = bundle?.compareAtPrice ? formatMoney(bundle.compareAtPrice - bundle.price) : "";
-  const homeFaqs = localizeFaqs(locale).slice(0, 5);
+  const homeFaqs = visibleHomeFaqs(locale);
 
   return (
     <div className="min-w-0">
-      <JsonLd data={websiteSchema(CANONICAL_ORIGIN, locale)} />
-      <JsonLd data={organizationSchema(CANONICAL_ORIGIN)} />
-      <JsonLd data={faqSchema(homeFaqs)} />
+      <JsonLdList data={pageJsonLd(locale, "/")} />
 
       <section className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-14 md:grid-cols-12 md:py-20">
         <div className="min-w-0 md:col-span-6">
@@ -178,7 +168,7 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
           {localizedCategories(locale).map((category) => (
             <Link
               key={category.slug}
-              href={localePath(locale, `/shop?category=${category.slug}`)}
+              href={localePath(locale, `/shop/${category.slug}`)}
               className="rounded-xl border bg-card p-4 transition hover:border-foreground/30"
             >
               <h3 className="font-serif text-xl">{category.name}</h3>

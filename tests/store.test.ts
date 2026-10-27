@@ -97,6 +97,7 @@ describe("schema and sample labels", () => {
       price: guide.price.toFixed(2),
       hasMerchantReturnPolicy: {
         "@type": "MerchantReturnPolicy",
+        applicableCountry: "SA",
         returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted",
         merchantReturnLink: "https://example.com/en/legal/refunds",
       },

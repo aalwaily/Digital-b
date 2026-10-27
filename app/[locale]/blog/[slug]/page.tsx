@@ -1,17 +1,17 @@
 import { ArticleBody } from "@/components/article-body";
 import { Breadcrumbs } from "@/components/breadcrumbs";
-import { JsonLd } from "@/components/json-ld";
+import { JsonLdList } from "@/components/json-ld";
 import { LinkButton } from "@/components/link-button";
-import { getPost, posts, resolvePostSeo } from "@/data/blog";
-import { blogHreflang, blogLocalesForSlug } from "@/lib/blog-index";
-import { stripBidiIsolates, textDir } from "@/lib/i18n/bidi";
+import { getPost, posts } from "@/data/blog";
+import { blogLocalesForSlug } from "@/lib/blog-index";
+import { textDir } from "@/lib/i18n/bidi";
 import { formatLongDate, localizePost, localizedProduct, requireLocale } from "@/lib/i18n/content";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { localePath, type Locale } from "@/lib/i18n/config";
+import { pageJsonLd } from "@/lib/page-jsonld";
 import { pageMetadata } from "@/lib/page-meta";
+import { publicMetadata } from "@/lib/public-meta";
 import { readingMinutes } from "@/lib/reading";
-import { articleSchema, breadcrumbList } from "@/lib/schema";
-import { CANONICAL_ORIGIN } from "@/lib/seo";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -34,20 +34,9 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const { slug, locale: raw } = await params;
   const locale = requireLocale(raw);
   const t = getDictionary(locale);
-  const source = getPost(slug);
-  if (!source || !visibleIn(locale, slug)) return { title: t.blog.metaTitle };
-  const post = localizePost(source, locale);
-  const seo = source.lang || locale === "en" ? resolvePostSeo(source) : undefined;
-  return pageMetadata({
-    title: seo?.title ?? post.title,
-    description: seo?.description ?? post.description,
-    path: `/blog/${post.slug}`,
-    locale,
-    absoluteTitle: Boolean(seo),
-    type: "article",
-    publishedTime: post.date,
-    languages: blogHreflang(slug) ?? undefined,
-  });
+  const meta = publicMetadata(locale, `/blog/${slug}`);
+  if (!meta) return { title: t.blog.metaTitle };
+  return pageMetadata(meta);
 }
 
 export default async function PostPage({ params }: { params: Promise<Params> }) {
@@ -62,17 +51,7 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
 
   return (
     <article className="mx-auto min-w-0 max-w-3xl px-5 py-12">
-      <JsonLd data={articleSchema(post, CANONICAL_ORIGIN, locale)} />
-      <JsonLd
-        data={breadcrumbList([
-          { name: t.crumbs.home, url: `${CANONICAL_ORIGIN}${localePath(locale, "/")}` },
-          { name: t.nav.journal, url: `${CANONICAL_ORIGIN}${localePath(locale, "/blog")}` },
-          {
-            name: stripBidiIsolates(post.title),
-            url: `${CANONICAL_ORIGIN}${localePath(locale, `/blog/${post.slug}`)}`,
-          },
-        ])}
-      />
+      <JsonLdList data={pageJsonLd(locale, `/blog/${post.slug}`)} />
       <Breadcrumbs
         label={t.product.breadcrumb}
         locale={locale}
