@@ -20,7 +20,7 @@ const SHARED = new Set([
 
 const productSlugs = new Set(products.map((product) => product.slug));
 const legalSlugs = new Set(legalPages.map((page) => page.slug));
-const categorySlugs = new Set(categories.map((category) => category.slug));
+const categorySlugs = new Set<string>(categories.map((category) => category.slug));
 
 export function normalizePathname(pathname: string) {
   if (pathname.length > 1 && pathname.endsWith("/")) return pathname.slice(0, -1);
@@ -37,7 +37,10 @@ export function isNotFoundProbe(pathname: string) {
 
 /** True when this locale-prefixed path is a page the app can render. */
 export function pageExists(pathname: string, locale: Locale) {
-  const stripped = stripLocale(normalizePathname(pathname)).replace(/\/opengraph-image$/, "");
+  // Home is `/en/opengraph-image`. Stripping the image suffix leaves an empty
+  // path, which is the homepage, not an unknown route.
+  const withoutImage = stripLocale(normalizePathname(pathname)).replace(/\/opengraph-image$/, "");
+  const stripped = withoutImage === "" ? "/" : withoutImage;
   if (SHARED.has(stripped)) return true;
   const category = stripped.match(/^\/shop\/([^/]+)$/);
   if (category) return categorySlugs.has(category[1]);

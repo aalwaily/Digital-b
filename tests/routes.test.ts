@@ -132,5 +132,14 @@ describe("public routes", () => {
     expect(pageExists("/ar/blog/qalb-sira-ats", "ar")).toBe(true);
     expect(pageExists("/en/product/steady-mind/opengraph-image", "en")).toBe(true);
     expect(pageExists("/en/product/not-a-guide/opengraph-image", "en")).toBe(false);
+    expect(pageExists("/en/opengraph-image", "en")).toBe(true);
+    expect(pageExists("/ar/opengraph-image", "ar")).toBe(true);
+  });
+
+  it("keeps a share image route for every indexable page, including home", () => {
+    for (const path of indexablePaths()) {
+      const locale = path.startsWith("/ar") ? "ar" : "en";
+      expect(pageExists(`${path}/opengraph-image`, locale), path).toBe(true);
+    }
   });
 });
