@@ -1,15 +1,17 @@
 import { WhatsAppButton } from "@/components/whatsapp-button";
-import { staticSeo } from "@/data/page-seo";
 import { getDictionary, type Dictionary } from "@/lib/i18n/dictionary";
-import type { Locale } from "@/lib/i18n/config";
+import { isLocale, LOCALE_HEADER, type Locale } from "@/lib/i18n/config";
+import { pageMetadata } from "@/lib/page-meta";
+import { publicMetadata } from "@/lib/public-meta";
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: { absolute: staticSeo.notFound.title },
-  description: staticSeo.notFound.description,
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const requested = (await headers()).get(LOCALE_HEADER);
+  const locale = isLocale(requested) ? requested : "en";
+  return pageMetadata(publicMetadata(locale, "/404")!);
+}
 
 function NotFoundBody({ locale, t }: { locale: Locale; t: Dictionary }) {
   const home = `/${locale}`;

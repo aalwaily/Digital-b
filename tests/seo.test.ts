@@ -1,6 +1,6 @@
 import { orderedPosts, postPath, posts, resolvePostSeo } from "@/data/blog";
 import { ENGLISH_PDF_NOTICE, arabicProducts } from "@/data/arabic-catalog";
-import { arabicProductSeo, legacyPostSeo, productSeo, staticSeo } from "@/data/page-seo";
+import { arabicCategorySeo, arabicLegacyPostSeo, arabicProductSeo, categorySeo, legacyPostSeo, productSeo, staticSeo } from "@/data/page-seo";
 import { products } from "@/data/products";
 import { languageAlternate } from "@/lib/locale-path";
 import { postWordCount } from "@/lib/reading";
@@ -15,7 +15,10 @@ describe("buyer-intent metadata", () => {
       ...Object.entries(staticSeo).map(([key, value]) => ({ key, ...value })),
       ...Object.entries(productSeo).map(([key, value]) => ({ key: `product:${key}`, ...value })),
       ...Object.entries(arabicProductSeo).map(([key, value]) => ({ key: `ar:${key}`, ...value })),
+      ...Object.entries(categorySeo).map(([key, value]) => ({ key: `category:${key}`, ...value })),
+      ...Object.entries(arabicCategorySeo).map(([key, value]) => ({ key: `ar-category:${key}`, ...value })),
       ...Object.entries(legacyPostSeo).map(([key, value]) => ({ key: `post:${key}`, ...value })),
+      ...Object.entries(arabicLegacyPostSeo).map(([key, value]) => ({ key: `ar-post:${key}`, ...value })),
       ...posts.filter((post) => post.longform).map((post) => ({ key: post.slug, ...resolvePostSeo(post) })),
     ];
     const titles = entries.map((entry) => entry.title);

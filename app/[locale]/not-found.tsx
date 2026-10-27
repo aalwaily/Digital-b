@@ -1,13 +1,23 @@
-"use client";
-
 import { getDictionary } from "@/lib/i18n/dictionary";
-import { localeFromPath } from "@/lib/i18n/config";
+import { isLocale, LOCALE_HEADER, type Locale } from "@/lib/i18n/config";
+import { pageMetadata } from "@/lib/page-meta";
+import { publicMetadata } from "@/lib/public-meta";
+import type { Metadata } from "next";
+import { headers } from "next/headers";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
-export default function LocaleNotFound() {
-  const pathname = usePathname() || "/en";
-  const locale = localeFromPath(pathname) ?? "en";
+async function requestLocale(): Promise<Locale> {
+  const requested = (await headers()).get(LOCALE_HEADER);
+  return isLocale(requested) ? requested : "en";
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await requestLocale();
+  return pageMetadata(publicMetadata(locale, "/404")!);
+}
+
+export default async function LocaleNotFound() {
+  const locale = await requestLocale();
   const t = getDictionary(locale);
   const home = locale === "ar" ? "/ar" : "/en";
   const shop = locale === "ar" ? "/ar/shop" : "/en/shop";
@@ -21,10 +31,7 @@ export default function LocaleNotFound() {
         <Link href={home} className="inline-flex h-11 items-center rounded-lg bg-primary px-5 text-sm font-medium text-primary-foreground">
           {t.notFound.home}
         </Link>
-        <Link
-          href={shop}
-          className="inline-flex h-11 items-center rounded-lg border px-5 text-sm font-medium"
-        >
+        <Link href={shop} className="inline-flex h-11 items-center rounded-lg border px-5 text-sm font-medium">
           {t.notFound.shop}
         </Link>
       </div>
