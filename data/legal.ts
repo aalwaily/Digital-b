@@ -60,14 +60,14 @@ export const legalPages: LegalPage[] = [
         heading: "Processors",
         paragraphs: [
           "No payment processor is contacted while online payment is closed. Stripe and Moyasar are not offered unless the owner explicitly enables them. Hala is not offered unless the payment provider flag is set to hala. If a provider is enabled, that company processes the payment under its own privacy policy.",
-          "If you deploy this store, your host (for example Vercel) will also process technical logs such as IP address and user agent as part of running the site. Review that host's policy.",
+          "The host that runs this site also processes technical logs, such as IP address and user agent. Review that host's policy for the detail.",
         ],
       },
       {
         heading: "How long we keep it",
         paragraphs: [
           "This store does not include a database of orders. A payment provider, once enabled, retains payments according to its own policy. Newsletter and free-sample addresses are sent to the configured webhook, or, when no webhook is set, written to the server log. Webhook forwards are retained by whatever service receives them.",
-          "Download tokens expire on their own. They are not a permanent archive of your library. Save the PDFs.",
+          "Download tokens expire on their own. They are not a permanent archive of your files. Save the PDFs.",
         ],
       },
       {
@@ -108,7 +108,7 @@ export const legalPages: LegalPage[] = [
         heading: "The products",
         paragraphs: [
           "Guides and bundles are digital PDFs delivered by download. A bundle is several PDFs sold together at a discount. Page counts on the site describe the current edition.",
-          "Health, fitness, nutrition, and stress guides are educational. They are not medical advice, diagnosis, or treatment, and they are not a substitute for a licensed clinician. Finance guides are not financial, tax, or investment advice. The freelancing guide is not legal or accounting advice. You are responsible for decisions you make after reading.",
+          "Health, fitness, nutrition, and stress guides are educational. They are not medical advice, diagnosis, or treatment, and they are not a substitute for a licensed clinician. Finance guides are not financial, tax, or investment advice. Freelance and career guides are not legal, tax, or accounting advice. You are responsible for decisions you make after reading.",
         ],
       },
       {
@@ -136,7 +136,7 @@ export const legalPages: LegalPage[] = [
       {
         heading: "Intellectual property",
         paragraphs: [
-          `The guides, cover art, and site copy are owned by ${site.legalName} or its licensors. Product names are used to identify the works. The Liberation fonts embedded in the PDFs are licensed under the SIL Open Font License; that license is included with the font files in the repository and does not expand your license to the guide text.`,
+          `The guides, cover art, and site copy are owned by ${site.legalName} or its licensors. Product names are used to identify the works. The Liberation fonts embedded in the PDFs are licensed under the SIL Open Font License. That license covers the fonts. It does not expand your license to the guide text.`,
         ],
       },
       {
@@ -196,7 +196,7 @@ export const legalPages: LegalPage[] = [
       {
         heading: "Your license stays",
         paragraphs: [
-          "Because the sale is final, the personal license described in the terms continues after delivery. You still may not resell, share, upload, or distribute the files. Re-sending a working copy does not add seats or a new license.",
+          "Because the sale is final, the personal license described in the terms continues after delivery. You still may not resell, share, upload, or distribute the files. Re-sending a working copy does not add extra users or a new license.",
         ],
       },
       {
@@ -231,8 +231,8 @@ export const legalPages: LegalPage[] = [
       {
         heading: "Save your copy",
         paragraphs: [
-          "Download the PDFs and store them somewhere you control. The receipt link is not a permanent library. When it expires, the page explains that, and the buttons stop working.",
-          `If the link expires or you lose the files, email ${site.supportEmail} from the address you used at checkout and include your order ID. We can sign a fresh link for a purchase we can verify. Please write to us yourself rather than posting the old link in public.`,
+          "Download the PDFs and store them somewhere you control. The receipt link is not a permanent copy of your files. When it expires, the page explains that, and the buttons stop working.",
+          `If the link expires or you lose the files, email ${site.supportEmail} from the address you used at checkout and include your order ID. We can send a fresh download link for a purchase we can verify. Please write to us yourself rather than posting the old link in public.`,
         ],
       },
       {

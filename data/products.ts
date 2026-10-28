@@ -2,42 +2,42 @@ export const categories = [
   {
     slug: "health",
     name: "Health & nutrition",
-    description: "A structure for fat loss, and weeknight cooking that fits a busy week.",
+    description: "The 12-Week Reset for fat loss, and Weeknight Table for cooking on a busy week.",
   },
   {
     slug: "fitness",
     name: "Home fitness",
-    description: "Strength sessions that use a floor, a wall, and time you actually have.",
+    description: "Floor & Form: strength sessions that use a floor, a wall, and time you actually have.",
   },
   {
     slug: "finance",
     name: "Personal finance",
-    description: "A calmer way to see spending, saving, debt, and months when income is uneven.",
+    description: "The Quiet Budget for a steady month, and Irregular-Income Budget + Invoice Sheets when pay is uneven.",
   },
   {
     slug: "productivity",
     name: "Productivity",
-    description: "Fewer habits, a weekly review, and a schedule that bends when life does.",
+    description: "The Habit Ledger: fewer habits, a weekly review, and a schedule that can bend.",
   },
   {
     slug: "career",
     name: "Freelance & work",
-    description: "Freelance offers, Saudi freelance-document basics, and CVs a screener can read.",
+    description: "First Client, the Saudi Freelancer Starter Kit, and a Gulf CV a screener can read.",
   },
   {
     slug: "learning",
     name: "Study skills",
-    description: "Study methods that hold up in the exam room, not just in a highlighted notebook.",
+    description: "The Exam Room Method: study that holds up in the exam room, not only in a highlighted notebook.",
   },
   {
     slug: "mindfulness",
     name: "Mindfulness",
-    description: "Short practices for stress, attention, and days that feel too loud.",
+    description: "Steady Mind: short practices for stress, attention, and days that feel too loud.",
   },
   {
     slug: "bundles",
     name: "Bundles",
-    description: "Full guides grouped at a lower price, delivered as separate PDFs.",
+    description: "Health & Fitness, Work & Money, and Gulf Work. Full guides, a lower price, separate PDFs.",
   },
 ] as const;
 
@@ -95,16 +95,16 @@ export const products: Product[] = [
     kind: "guide",
     slug: "12-week-reset",
     title: "The 12-Week Reset",
-    subtitle: "A steady plan for fat loss without a crash diet",
+    subtitle: "A steady fat-loss plan, without a crash diet",
     category: "health",
     price: 14.5,
     previousPrice: 29,
     priceSar: 54,
     shortDescription:
-      "Twelve weeks of protein, steps, strength, and weekends that still include your life.",
+      "Twelve weeks of protein, steps, and short strength sessions, with room for your real weekends.",
     description: [
-      "The 12-Week Reset is a field manual for losing fat without turning your kitchen into a second job. It uses a modest calorie deficit, a protein target you can hit with ordinary food, daily steps, and two or three short strength sessions.",
-      "The schedule is written in weeks, not moods. You will set a baseline, build a plate you can repeat (half plants, then protein and starch), and use a Sunday review when the scale sticks, travel shows up, or a social meal throws the plan off. The plate is a template. It is not a gram target and not a promised loss.",
+      "The 12-Week Reset is a practical plan for losing fat without turning the kitchen into a second job. It uses a modest calorie deficit, a protein target you can hit with ordinary food, daily steps, and two or three short strength sessions.",
+      "The schedule is written in weeks, not moods. You set a baseline, build a plate you can repeat (half plants, then protein and starch), and use a Sunday review when the scale stalls, travel shows up, or a social meal throws the week off. The plate is a template. It is not a gram target, and it is not a promised loss.",
       "This is education, not medical care. The guide tells you when a doctor, a registered dietitian, or a qualified coach is the right next step, and it does not promise a number on the scale.",
     ],
     included: [
@@ -173,8 +173,8 @@ export const products: Product[] = [
       "A 90-minute Sunday prep plus recipes that recombine into lunches and dinners.",
     description: [
       "Weeknight Table is a cooking system for people who want to eat well on a Tuesday and do not want a second full-time job. You prep a few building blocks, then assemble meals instead of starting from zero.",
-      "The guide includes a four-week rotation, sauce formulas that make the same chicken taste different, and full recipes with servings, times, and storage notes. Shopping lists are grouped the way a store is actually walked.",
-      "Nutrition here is practical, not clinical. The recipes lean on vegetables, protein, and fiber. Cooked leftovers are written as 3 to 4 days in the fridge, and chicken is done when a thermometer reads 165°F (74°C). USDA's leftovers page does not treat color as the test. They are not a medical meal plan.",
+      "The guide includes a four-week rotation, sauce formulas that make the same chicken taste different, and full recipes with servings, times, and storage notes. Shopping lists follow the order of a typical grocery store.",
+      "Nutrition here is practical, not clinical. The recipes lean on vegetables, protein, and fiber. Cooked leftovers are written as 3 to 4 days in the fridge, and chicken is done at 165°F (74°C). USDA leftovers guidance does not use color as the doneness test. These recipes are not a medical meal plan.",
     ],
     included: [
       "A 90-minute Sunday prep sequence",
@@ -217,7 +217,7 @@ export const products: Product[] = [
       {
         question: "How much cooking experience do I need?",
         answer:
-          "If you can boil pasta and roast a sheet pan, you can cook these. Each recipe lists time, heat, and what 'done' looks like.",
+          "If you can boil pasta and roast a sheet pan, you can cook these. Each recipe lists the time, the heat, and how to tell when the food is done.",
       },
       {
         question: "Can I prep for one person?",
@@ -230,7 +230,7 @@ export const products: Product[] = [
     kind: "guide",
     slug: "floor-and-form",
     title: "Floor & Form",
-    subtitle: "A no-equipment workout program",
+    subtitle: "A no-equipment workout plan for a living room",
     category: "fitness",
     price: 13.5,
     previousPrice: 27,
@@ -238,7 +238,7 @@ export const products: Product[] = [
     shortDescription:
       "Three full-body sessions, an eight-week progression, and form cues for a living room.",
     description: [
-      "Floor & Form is strength training for a room with a floor and a doorframe. There are no bands to buy and no machines to book. Sessions A, B, and C cover squat, hinge, push, pull, and carry patterns using your body and gravity.",
+      "Floor & Form is strength training for a room with a floor and a doorframe. There are no bands to buy and no machines to book. Sessions A, B, and C cover squat, hinge, push, pull, and carry patterns, using your body and gravity.",
       "The eight-week progression tells you when to add reps, slow the lowering, or move to a harder variation. Form cues are written for someone training alone, including what to feel and when to stop a set.",
       "Exercise is not medical treatment. The guide includes joint flags, a warm-up, and a clear note to get in-person coaching or clinical care if pain is sharp, swelling, or unexplained.",
     ],
@@ -296,7 +296,7 @@ export const products: Product[] = [
     kind: "guide",
     slug: "the-quiet-budget",
     title: "The Quiet Budget",
-    subtitle: "A personal finance guide to spending, saving, and debt",
+    subtitle: "A guide to spending, saving, and debt",
     category: "finance",
     price: 11,
     previousPrice: 22,
@@ -304,8 +304,8 @@ export const products: Product[] = [
     shortDescription:
       "One evening to see your money clearly, then a monthly hour that does not rely on shame.",
     description: [
-      "The Quiet Budget is a personal system for people who are tired of apps that scold them and spreadsheets they abandon. You will list what comes in, give every dollar a job, and separate true bills from leaks.",
-      "Debt gets an order: minimums first, then extra money either to the highest interest rate or to the smallest balance. Both are described by the US Consumer Financial Protection Bureau. Neither is a rule. Sinking funds cover expenses that are not monthly but are not surprises either, like car registration and gifts.",
+      "The Quiet Budget is a personal system for people who are tired of apps that scold them and spreadsheets they abandon. You list what comes in, give every dollar a job, and separate real bills from leaks.",
+      "You put debt in an order: minimums first, then extra money either toward the highest interest rate or toward the smallest balance. The US Consumer Financial Protection Bureau describes both. Neither is a rule. Sinking funds cover costs that are not monthly but are not surprises, such as car registration and gifts.",
       "Nothing here is investment advice, tax advice, or a promise that a budget will fix a structural income problem. The last chapter is explicit about what a PDF cannot do.",
     ],
     included: [
@@ -355,7 +355,7 @@ export const products: Product[] = [
       {
         question: "What if my income changes every month?",
         answer:
-          "There is a variable-income version of the monthly plan that budgets off a low month and parks the surplus, instead of pretending every month looks like the average.",
+          "Use Irregular-Income Budget + Invoice Sheets when pay changes every month. It budgets from a low month and parks the surplus, instead of pretending every month matches the average.",
       },
     ],
   },
@@ -443,7 +443,7 @@ export const products: Product[] = [
       "It does not promise income. It gives you a sequence that has a stopping point, so a side hustle does not quietly become an unpaid second shift.",
     ],
     included: [
-      "An offer worksheet that forces a specific buyer and outcome",
+      "An offer worksheet that names a specific buyer and a specific result",
       "A pricing table with floor, target, and walk-away numbers",
       "Five outreach paths that do not require an audience",
       "A one-page proposal outline and a deposit rule",
@@ -505,9 +505,9 @@ export const products: Product[] = [
     shortDescription:
       "Retrieval practice, spacing, and a weekly plan you can apply to any subject.",
     description: [
-      "The Exam Room Method is a study system for courses and licensing exams. It replaces rereading with retrieval, spaces reviews before you feel ready, and turns a vague 'I'll study this weekend' into a weekly plan.",
-      "You will build a small set of notes worth keeping, write questions as you learn, and use practice tests as information rather than as a verdict on your character.",
-      "The guide does not know your syllabus. It gives you methods and blank plans you fill with the course in front of you. Sleep is part of the plan only in this sense: an all-nighter is a poor trade for a short session you can remember. The guide does not set a required number of hours, and it does not promise a score.",
+      "The Exam Room Method is a study system for courses and licensing exams. It replaces rereading with retrieval, spaces your reviews before you feel ready, and turns a vague plan to study this weekend into a weekly plan.",
+      "You build a small set of notes worth keeping, write questions as you learn, and use practice tests as information rather than as a verdict on your character.",
+      "The guide does not include your syllabus. It gives you methods and blank plans you fill with the course in front of you. An all-nighter is a poor trade for a short session you can remember. The guide does not set a required number of hours, and it does not promise a score.",
     ],
     included: [
       "A retrieval and spacing schedule",
@@ -780,11 +780,11 @@ export const products: Product[] = [
       "Structure a CV a screener can read, with Gulf notes, a cover letter, and interview prep. It does not promise a job.",
     description: [
       "The Saudi & Gulf Job-Search and ATS CV Kit shows how to build a single-column CV with ordinary headings, dates a form can read, and bullets you can prove. It includes a cover-letter page, LinkedIn headline and About prompts, and a short interview worksheet.",
-      "Gulf notes cover language (send the language the posting asked for) and one calendar for dates. The University of Virginia career center says images, columns, and tables are difficult for many applicant systems to read, and that most of them miss a phone number that lives only in a header. That is one office's precaution. The PDF cannot change an employer's Nitaqat band or tell you whether a job matches an iqama profession.",
+      "Gulf notes cover which language to send (the language the posting asked for) and how to keep dates on one calendar. The University of Virginia career center says images, columns, and tables are difficult for many applicant systems to read, and that most of them miss a phone number that lives only in a header. That is one office's precaution. The PDF cannot change an employer's Nitaqat band, or tell you whether a job matches an iqama profession.",
       "Nothing here promises an interview, a visa, or a job. If a posting says who may apply, believe the posting.",
     ],
     included: [
-      "A cautious CV structure: one column, standard headings, no tables or icons in the CV itself. Not a guarantee about every portal",
+      "A single-column CV structure, with standard headings and no tables or icons in the CV itself. Not a promise about every portal",
       "A bilingual note: two files when the employer needs Arabic and English, not mixed scripts in one parser",
       "A cover-letter page and LinkedIn headline and About prompts",
       "An achievement worksheet that does not ask you to invent a percentage",
@@ -840,7 +840,7 @@ export const products: Product[] = [
     kind: "bundle",
     slug: "health-fitness-bundle",
     title: "Health & Fitness Bundle",
-    subtitle: "Reset, Weeknight Table, and Floor & Form",
+    subtitle: "The 12-Week Reset, Weeknight Table, and Floor & Form",
     category: "bundles",
     price: 29.5,
     previousPrice: 59,
@@ -850,7 +850,7 @@ export const products: Product[] = [
     shortDescription:
       "The fat-loss guide, the meal-prep guide, and the no-equipment program, together.",
     description: [
-      "This bundle is the practical health shelf: how to structure twelve weeks, how to cook food you will actually eat, and how to train in the room you have.",
+      "Health & Fitness Bundle is the practical health set: how to structure twelve weeks, how to cook food you will actually eat, and how to train in the room you have.",
       "You receive three separate PDFs, not a single merged file, so you can print the workout log without printing the recipes. The price is lower than buying the three guides one by one.",
       "Read the health disclaimers in each guide. Buying them together does not turn the set into medical advice or a supervised program.",
     ],
@@ -894,7 +894,7 @@ export const products: Product[] = [
       {
         question: "Is the training program included, or only the nutrition guides?",
         answer:
-          "All three: the 12-week reset, the recipe and prep guide, and the no-equipment workouts.",
+          "All three: The 12-Week Reset, Weeknight Table, and Floor & Form.",
       },
     ],
   },
@@ -902,7 +902,7 @@ export const products: Product[] = [
     kind: "bundle",
     slug: "work-money-bundle",
     title: "Work & Money Bundle",
-    subtitle: "Budget, habits, and a first freelance offer",
+    subtitle: "The Quiet Budget, The Habit Ledger, and First Client",
     category: "bundles",
     price: 29,
     previousPrice: 58,
@@ -912,7 +912,7 @@ export const products: Product[] = [
     shortDescription:
       "A budget, a habit planner, and the side-hustle guide for people building something beside a job.",
     description: [
-      "Work & Money puts the practical business of a side project in one checkout: see your cash clearly, protect time on the calendar, and make an offer someone can pay for.",
+      "Work & Money Bundle puts a side project in one checkout: see your cash clearly, protect time on the calendar, and make an offer someone can pay for.",
       "The three guides stay separate PDFs. Read the budget before you price a freelance offer. Use the ledger to keep the thirty-day plan from eating your evenings whole.",
       "These guides are education. They are not financial, legal, or tax advice, and they do not promise clients or income.",
     ],
@@ -964,7 +964,7 @@ export const products: Product[] = [
     kind: "bundle",
     slug: "gulf-work-bundle",
     title: "Gulf Work Bundle",
-    subtitle: "Freelance starter kit, irregular-income sheets, and the Gulf CV kit",
+    subtitle: "Saudi Freelancer Starter Kit, Irregular-Income Budget, and the Gulf CV kit",
     category: "bundles",
     price: 18,
     previousPrice: 36,
@@ -1013,7 +1013,7 @@ export const products: Product[] = [
       {
         question: "Does this include The Quiet Budget or First Client?",
         answer:
-          "No. Those stay in the Work & Money Bundle. This bundle is the Saudi freelance kit, the irregular-income sheets, and the Gulf CV kit.",
+          "No. Those stay in the Work & Money Bundle. This bundle is the Saudi Freelancer Starter Kit, Irregular-Income Budget + Invoice Sheets, and the Saudi & Gulf Job-Search and ATS CV Kit.",
       },
       {
         question: "How much do I save?",

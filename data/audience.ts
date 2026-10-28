@@ -28,7 +28,7 @@ export const audience: Record<string, { en: string[]; ar: string[] }> = {
   },
   "floor-and-form": {
     en: [
-      "Someone training alone in a room with a floor and a doorframe. No bands to buy and no machines to book.",
+      "People training alone in a room with a floor and a doorframe. No bands to buy, and no machines to book.",
       "Every push and pull has an easier variation, including wall and incline versions. Not a replacement for physical therapy.",
     ],
     ar: [
@@ -58,7 +58,7 @@ export const audience: Record<string, { en: string[]; ar: string[] }> = {
   },
   "first-client": {
     en: [
-      "A service you can sell beside a job: design, writing, bookkeeping, tutoring, consulting, and similar work.",
+      "People selling a service beside a job: design, writing, bookkeeping, tutoring, consulting, and similar work.",
       "Not for a physical product that needs inventory and shipping. It does not promise income.",
     ],
     ar: [
@@ -68,7 +68,7 @@ export const audience: Record<string, { en: string[]; ar: string[] }> = {
   },
   "exam-room-method": {
     en: [
-      "Courses and licensing exams. You get methods and blank plans to fill with your own syllabus.",
+      "People preparing for a course or a licensing exam. You fill the blank plans with your own syllabus.",
       "A high school student can use it with a teacher or parent if under 18. It does not promise a score.",
     ],
     ar: [
@@ -108,7 +108,7 @@ export const audience: Record<string, { en: string[]; ar: string[] }> = {
   },
   "gulf-ats-cv-kit": {
     en: [
-      "People applying in Saudi Arabia and elsewhere in the Gulf who want a single-column CV a screener can read.",
+      "People applying for work in Saudi Arabia and the wider Gulf who want a single-column CV a screener can read.",
       "It does not promise an interview, a visa, or a job. Follow the posting on who may apply.",
     ],
     ar: [
@@ -118,7 +118,7 @@ export const audience: Record<string, { en: string[]; ar: string[] }> = {
   },
   "health-fitness-bundle": {
     en: [
-      "A practical set: twelve weeks of structure, food you will cook, and training in the room you have.",
+      "The 12-Week Reset, Weeknight Table, and Floor & Form: twelve weeks of structure, food you will cook, and training in the room you have.",
       "Three separate PDFs. Buying them together does not make the set medical advice or a supervised program.",
     ],
     ar: [
