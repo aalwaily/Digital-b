@@ -82,7 +82,7 @@ export const dictionary = {
         "Practical PDF guides for food, training, money, work, study, and stress. Read a free sample of any guide before you buy.",
     },
     shop: {
-      eyebrow: "Library",
+      eyebrow: "PDF guides",
       title: "Shop the guides",
       lede: (guides: number, bundles: number) =>
         `${guides} PDF guides and ${bundles} bundles. Every guide has a free sample, a table of contents, and one price.`,
