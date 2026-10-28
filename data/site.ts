@@ -10,7 +10,7 @@ export const site = {
   legalName: "Vellum Press",
   tagline: "Practical PDF guides you can finish and keep.",
   description:
-    "Practical PDF guides on health, training, money, work, study, and calm. Free samples are available now. Online payment opens very soon.",
+    "Practical PDF guides from $6, with a free sample of each. Online payment opens very soon. All sales are final.",
   email: "glarz.com@gmail.com",
   supportEmail: "glarz.com@gmail.com",
   location: "Dammam, Saudi Arabia",

@@ -31,7 +31,7 @@ export const posts: Post[] = [
     slug: "sunday-prep-that-holds",
     title: "The Sunday prep that still works on Thursday",
     description:
-      "A smaller meal-prep routine: a few building blocks, sauces that change the meal, and an honest clock.",
+      "A smaller meal-prep routine: building blocks, sauces, and an honest clock. The full system is Weeknight Table, $12.",
     date: "2026-03-24",
     readingMinutes: 8,
     category: "Health & nutrition",
@@ -80,11 +80,11 @@ export const posts: Post[] = [
       },
       {
         type: "p",
-        text: "Cool food before you lid it. Put the sauce in a jar you can see, not buried under the grain. Label the day you cooked it. Most cooked grains and poultry are at their best within four days in the refrigerator. If you will not eat it by then, freeze a portion on Sunday night while it is still good, not on Thursday when you are negotiating with yourself.",
+        text: "Cool food before you lid it. Put the sauce in a jar you can see, not buried under the grain. Label the day you cooked it. Most cooked grains and poultry should be eaten or frozen within 3 to 4 days. If you will not eat it by then, freeze a portion on Sunday night while it is still good, not on Thursday when you are negotiating with yourself.",
       },
       {
         type: "p",
-        text: "Food safety is not a personality. Keep the fridge at or below 40°F (4°C). Do not leave a pot on the stove to 'cool' for three hours. Reheat leftovers until they are steaming. When something smells wrong, it is wrong.",
+        text: "Food safety is not a personality. Keep the fridge at or below 40°F (4°C). Do not leave a pot on the stove to cool for three hours. Reheat leftovers to 165°F (74°C). When something smells wrong, it is wrong.",
       },
       {
         type: "h2",
@@ -108,7 +108,7 @@ export const posts: Post[] = [
       },
       {
         type: "p",
-        text: "If you want the sequence written out, with recipes and a four-week rotation, that is what Weeknight Table is for. The point of this article is smaller: four components, ninety minutes, and a sauce that makes Wednesday worth opening the fridge.",
+        text: "If you want the sequence written out, with recipes and a four-week rotation, that is what Weeknight Table ($12) is for. The point of this article is smaller: four components, ninety minutes, and a sauce that makes Wednesday worth opening the fridge.",
       },
     ],
   },
@@ -116,7 +116,7 @@ export const posts: Post[] = [
     slug: "one-evening-budget-reset",
     title: "A budget reset you can finish in one evening",
     description:
-      "Skip the perfect spreadsheet. See one month clearly, name the leaks, and give the next paycheck a job.",
+      "See one month clearly, name the leaks, and give the next paycheck a job. The worksheets are in The Quiet Budget, $11.",
     date: "2026-05-06",
     readingMinutes: 8,
     category: "Personal finance",
@@ -181,7 +181,7 @@ export const posts: Post[] = [
       },
       {
         type: "p",
-        text: "Car registration, gifts, annual software, dental work you already expect. These are not emergencies. Divide the yearly cost by twelve and move that amount into a separate sink each month. The emergency fund is for the unplanned. Mixing the two is why a 'fully funded' emergency account disappears in December.",
+        text: "Car registration, gifts, annual software, dental work you already expect. These are not emergencies. Divide the yearly cost by twelve and move that amount into a sinking fund each month. The emergency fund is for the unplanned. Mixing the two is why a fully funded emergency account disappears in December.",
       },
       {
         type: "h2",
@@ -193,7 +193,7 @@ export const posts: Post[] = [
       },
       {
         type: "p",
-        text: "None of this is tax, legal, or investment advice. It will not fix an income that cannot cover rent. It will show you, in one evening, whether the problem is a leak you can close or a gap that needs more money coming in. The Quiet Budget is the longer version, with worksheets for the snapshot, the sinking funds, and that monthly hour.",
+        text: "None of this is tax, legal, or investment advice. It will not fix an income that cannot cover rent. It will show you, in one evening, whether the problem is a leak you can close or a gap that needs more money coming in. The Quiet Budget ($11) is the longer version, with worksheets for the snapshot, the sinking funds, and that monthly hour.",
       },
     ],
   },
@@ -201,7 +201,7 @@ export const posts: Post[] = [
     slug: "stop-rereading-your-notes",
     title: "Stop rereading your notes",
     description:
-      "Recognition feels like learning. Retrieval is slower, and it is closer to what an exam asks you to do.",
+      "Recognition feels like learning. Retrieval is slower, and closer to the exam. The printable plan is The Exam Room Method, $10.50.",
     date: "2026-07-15",
     readingMinutes: 9,
     category: "Study skills",
@@ -278,7 +278,7 @@ export const posts: Post[] = [
       },
       {
         type: "p",
-        text: "None of this guarantees a score. It makes it more likely that the hours you spend become memories you can use. The Exam Room Method turns the sequence above into a weekly table, a note format, and a morning-of checklist you can print.",
+        text: "None of this promises a score. It makes it more likely that the hours you spend become memories you can use. The Exam Room Method ($10.50) turns the sequence above into a weekly table, a note format, and a morning-of checklist you can print.",
       },
     ],
   },
@@ -286,7 +286,7 @@ export const posts: Post[] = [
     slug: "side-hustle-beside-a-job",
     title: "A side hustle that fits beside a job",
     description:
-      "Narrow the offer, put a floor under the price, and protect the evenings you did not mean to give away.",
+      "Narrow the offer, set a price floor, and protect the evenings you did not mean to give away. The worksheets are in First Client, $16.",
     date: "2026-09-09",
     readingMinutes: 8,
     category: "Freelance & work",
@@ -367,7 +367,7 @@ export const posts: Post[] = [
       },
       {
         type: "p",
-        text: "First Client is the worksheet version of this argument: the offer, the floor price, the outreach paths, and a thirty-day calendar that assumes you still have a job. It will not find the clients for you. It will stop you from spending a year preparing to begin.",
+        text: "First Client ($16) is the worksheet version of this argument: the offer, the floor price, the outreach paths, and a thirty-day calendar that assumes you still have a job. It will not find the clients for you. It will stop you from spending a year preparing to begin.",
       },
     ],
   },

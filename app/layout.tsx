@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   applicationName: site.name,
   keywords: [
     "digital guides",
-    "PDF ebooks",
+    "PDF guides",
     "meal prep",
     "budgeting",
     "home workouts",

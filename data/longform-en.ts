@@ -6,12 +6,12 @@ const notMedical =
 export const englishLongform: Post[] = [
   {
     slug: "freelance-budget-template-irregular-income",
-    title: "Freelance Budget Template for Variable Pay",
+    title: "Irregular-Income Budget for Variable Pay",
     description:
-      "A freelance budget template for irregular income: plan from a low month, park surplus, and track invoices. PDF download, $7.50.",
-    seoTitle: "Freelance Budget Template for Variable Pay",
+      "Plan a freelance month from a low month, park the surplus, and track invoices. Irregular-Income Budget + Invoice Sheets is $7.50.",
+    seoTitle: "Irregular-Income Budget for Variable Pay",
     seoDescription:
-      "A freelance budget template for irregular income: plan from a low month, park surplus, and track invoices. PDF download, $7.50.",
+      "Plan a freelance month from a low month, park the surplus, and track invoices. Irregular-Income Budget + Invoice Sheets is $7.50.",
     targetKeyword: "freelance budget template for irregular income",
     date: "2026-10-02",
     readingMinutes: 8,
@@ -98,9 +98,9 @@ export const englishLongform: Post[] = [
       {
         type: "links",
         items: [
-          { href: "/product/irregular-income-budget", label: "Freelance budget template PDF, $7.50" },
-          { href: "/product/the-quiet-budget", label: "Monthly budget planner PDF, $11" },
-          { href: "/blog/monthly-budget-planner-pdf", label: "How to use a monthly budget planner PDF" },
+          { href: "/product/irregular-income-budget", label: "Irregular-Income Budget + Invoice Sheets, $7.50" },
+          { href: "/product/the-quiet-budget", label: "The Quiet Budget, $11" },
+          { href: "/blog/monthly-budget-planner-pdf", label: "The Quiet Budget in one sitting" },
           { href: "/ar/blog/jadwal-mizaniya-shahriya", label: "جدول ميزانية شهرية (Arabic)" },
         ],
       },
@@ -108,12 +108,12 @@ export const englishLongform: Post[] = [
   },
   {
     slug: "ats-cv-template-saudi-jobs",
-    title: "ATS CV Template for Saudi Jobs PDF",
+    title: "Saudi & Gulf ATS CV Kit, Explained",
     description:
-      "An ATS CV template for Saudi and Gulf job posts: one column, plain headings, and a PDF guide for $6. No job promise.",
-    seoTitle: "ATS CV Template for Saudi Jobs PDF",
+      "A single-column CV for Saudi and Gulf job posts. The Saudi & Gulf Job-Search and ATS CV Kit is $6. No job promise.",
+    seoTitle: "Saudi & Gulf ATS CV Kit, Explained",
     seoDescription:
-      "An ATS CV template for Saudi and Gulf job posts: one column, plain headings, and a PDF guide for $6. No job promise.",
+      "A single-column CV for Saudi and Gulf job posts. The Saudi & Gulf Job-Search and ATS CV Kit is $6. No job promise.",
     targetKeyword: "ATS CV template for Saudi jobs",
     date: "2026-10-04",
     readingMinutes: 8,
@@ -206,22 +206,22 @@ export const englishLongform: Post[] = [
       {
         type: "links",
         items: [
-          { href: "/product/gulf-ats-cv-kit", label: "ATS CV template PDF, $6" },
+          { href: "/product/gulf-ats-cv-kit", label: "Saudi & Gulf Job-Search and ATS CV Kit, $6" },
           { href: "/ar/blog/qalb-sira-ats", label: "قالب سيرة ذاتية ATS (Arabic)" },
           { href: "/ar/product/gulf-ats-cv-kit", label: "Arabic page for this PDF" },
-          { href: "/product/gulf-work-bundle", label: "Gulf work PDF bundle, $18" },
+          { href: "/product/gulf-work-bundle", label: "Gulf Work Bundle, $18" },
         ],
       },
     ],
   },
   {
     slug: "freelance-document-saudi-arabia",
-    title: "How to Get a Saudi Freelance Document",
+    title: "Saudi Freelancer Starter Kit: The Document",
     description:
-      "How to get a freelance document in Saudi Arabia on freelance.sa, from the HRSD service page. English PDF guide, $8.50. Not legal advice.",
-    seoTitle: "How to Get a Saudi Freelance Document",
+      "How the freelance document works on freelance.sa, from the HRSD pages. The Saudi Freelancer Starter Kit is $8.50. Not legal advice.",
+    seoTitle: "Saudi Freelancer Starter Kit: The Document",
     seoDescription:
-      "How to get a freelance document in Saudi Arabia via freelance.sa, citing the HRSD pages. English PDF kit, $8.50. Not legal advice.",
+      "How the freelance document works on freelance.sa, from the HRSD pages. The Saudi Freelancer Starter Kit is $8.50. Not legal advice.",
     targetKeyword: "how to get a freelance document in Saudi Arabia",
     date: "2026-10-06",
     readingMinutes: 9,
@@ -314,7 +314,7 @@ export const englishLongform: Post[] = [
             href: "https://www.hrsd.gov.sa/knowledge-centre/decisions-and-regulations/ministerial-decisions/808083",
             label: "HRSD page for ministerial decision 99439",
           },
-          { href: "/product/saudi-freelancer-starter-kit", label: "Saudi freelance kit PDF, $8.50" },
+          { href: "/product/saudi-freelancer-starter-kit", label: "Saudi Freelancer Starter Kit, $8.50" },
           { href: "/ar/blog/wathiqat-al-amal-al-hur", label: "وثيقة العمل الحر (Arabic article)" },
         ],
       },
@@ -322,12 +322,12 @@ export const englishLongform: Post[] = [
   },
   {
     slug: "fat-loss-meal-plan-pdf",
-    title: "Fat Loss Meal Plan PDF, No Crash Diet",
+    title: "The 12-Week Reset Without a Crash Diet",
     description:
-      "A fat loss meal plan PDF built from plates and protein, not a crash diet. Download The 12-Week Reset for $14.50. Not medical advice.",
-    seoTitle: "Fat Loss Meal Plan PDF, No Crash Diet",
+      "A fat-loss plan built from plates and protein, not a crash diet. The 12-Week Reset PDF is $14.50. Not medical advice.",
+    seoTitle: "The 12-Week Reset Without a Crash Diet",
     seoDescription:
-      "A fat loss meal plan PDF built from plates and protein, not a crash diet. The 12-Week Reset download is $14.50. Not medical advice.",
+      "A fat-loss plan built from plates and protein, not a crash diet. The 12-Week Reset PDF is $14.50. Not medical advice.",
     targetKeyword: "fat loss meal plan pdf",
     date: "2026-10-08",
     readingMinutes: 8,
@@ -412,9 +412,9 @@ export const englishLongform: Post[] = [
       {
         type: "links",
         items: [
-          { href: "/product/12-week-reset", label: "12-week fat loss plan PDF, $14.50" },
-          { href: "/product/weeknight-table", label: "Meal prep recipes PDF, $12" },
-          { href: "/product/health-fitness-bundle", label: "Health and fitness PDF bundle, $29.50" },
+          { href: "/product/12-week-reset", label: "The 12-Week Reset, $14.50" },
+          { href: "/product/weeknight-table", label: "Weeknight Table, $12" },
+          { href: "/product/health-fitness-bundle", label: "Health & Fitness Bundle, $29.50" },
           { href: "/ar/blog/khitat-nuzul-al-wazn", label: "خطة نزول الوزن (Arabic)" },
         ],
       },
@@ -422,12 +422,12 @@ export const englishLongform: Post[] = [
   },
   {
     slug: "monthly-budget-planner-pdf",
-    title: "Monthly Budget Planner PDF, One Sitting",
+    title: "The Quiet Budget in One Sitting",
     description:
-      "Use a monthly budget planner PDF in one sitting: four piles, payday transfers, and a debt order. The Quiet Budget is $11.",
-    seoTitle: "Monthly Budget Planner PDF, One Sitting",
+      "See one month, sort the bills, and pick a debt order. The Quiet Budget PDF is $11. Not financial advice.",
+    seoTitle: "The Quiet Budget in One Sitting",
     seoDescription:
-      "Use a monthly budget planner PDF in one sitting: four piles, payday transfers, and a debt order. The Quiet Budget PDF is $11.",
+      "See one month, sort the bills, and pick a debt order. The Quiet Budget PDF is $11. Not financial advice.",
     targetKeyword: "monthly budget planner pdf",
     date: "2026-10-10",
     readingMinutes: 8,
@@ -511,11 +511,11 @@ export const englishLongform: Post[] = [
       {
         type: "links",
         items: [
-          { href: "/product/the-quiet-budget", label: "Monthly budget planner PDF, $11" },
-          { href: "/product/irregular-income-budget", label: "Freelance budget template PDF, $7.50" },
-          { href: "/blog/freelance-budget-template-irregular-income", label: "Budget template for irregular income" },
+          { href: "/product/the-quiet-budget", label: "The Quiet Budget, $11" },
+          { href: "/product/irregular-income-budget", label: "Irregular-Income Budget + Invoice Sheets, $7.50" },
+          { href: "/blog/freelance-budget-template-irregular-income", label: "Irregular-Income Budget for variable pay" },
           { href: "/ar/blog/jadwal-mizaniya-shahriya", label: "جدول ميزانية شهرية (Arabic)" },
-          { href: "/product/work-money-bundle", label: "Work and money PDF bundle, $29" },
+          { href: "/product/work-money-bundle", label: "Work & Money Bundle, $29" },
         ],
       },
     ],

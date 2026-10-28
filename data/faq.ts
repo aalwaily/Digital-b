@@ -6,7 +6,7 @@ export const faqs: FaqItem[] = [
   {
     question: "How do I receive a guide after I pay?",
     answer:
-      "After you pay, you land on a receipt page with a download button for each PDF. The link is signed and expires after 14 days by default. Save the files to your own device. There is no shipping.",
+      "After you pay, you land on a receipt page with a download button for each PDF. The link is private to your receipt and expires after 14 days. Save the files to your own device. There is no shipping.",
   },
   {
     question: "Can I print the guides?",
@@ -21,7 +21,7 @@ export const faqs: FaqItem[] = [
   {
     question: "Can I get a refund?",
     answer:
-      `No. All sales are final. Digital PDF guides and bundles are not refundable. If a file is corrupted, missing, or the download link fails, email ${site.email} with your order ID and the email you used at checkout, and we will re-send a working copy. That replaces the file. It does not return the price you paid. Read the all-sales-final policy for the full terms.`,
+      `No. All sales are final. Digital PDF guides and bundles are not refundable. If a file is corrupted, missing, or the download link fails, email ${site.email} with your order ID and the email you used at checkout, and we will re-send a working copy. That replaces the file. It does not return the price you paid. The full terms are on the all-sales-final page.`,
   },
   {
     question: "Which devices open the PDFs?",
