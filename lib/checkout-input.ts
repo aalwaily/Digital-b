@@ -11,6 +11,7 @@ export function parseCheckoutInput(
   body: unknown,
 ): { ok: true; value: CheckoutInput } | { ok: false; error: string } {
   if (!body || typeof body !== "object") return { ok: false, error: "Invalid request." };
+  // `price`, `amount`, and `unit_amount` are ignored. The catalog prices the order.
   const record = body as { slugs?: unknown; email?: unknown; confirmDemo?: unknown };
   if (!Array.isArray(record.slugs) || record.slugs.some((slug) => typeof slug !== "string")) {
     return { ok: false, error: "Choose at least one guide." };

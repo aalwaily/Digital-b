@@ -1,3 +1,4 @@
+import { PAYMENT_UNAVAILABLE_ERROR } from "@/lib/checkout-provider";
 import { parseCheckoutInput } from "@/lib/checkout-input";
 import { signDownloadToken, newOrderId } from "@/lib/download-token";
 import { demoCheckoutAllowed, getStripe, isStripeEnabled } from "@/lib/payments";
@@ -21,7 +22,7 @@ export async function POST(request: Request) {
 
   if (!isStripeEnabled()) {
     if (!demoCheckoutAllowed()) {
-      return NextResponse.json({ error: "Card checkout is not available." }, { status: 400 });
+      return NextResponse.json({ error: PAYMENT_UNAVAILABLE_ERROR }, { status: 503 });
     }
     if (!confirmDemo) {
       return NextResponse.json(

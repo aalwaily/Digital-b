@@ -1,4 +1,5 @@
 import { Cover } from "@/components/cover";
+import { PaymentsClosed } from "@/components/payments-closed";
 import { Price } from "@/components/price";
 import { PurchaseActions } from "@/components/purchase-actions";
 import { Badge } from "@/components/ui/badge";
@@ -8,6 +9,7 @@ import { textDir } from "@/lib/i18n/bidi";
 import { localePath, type Locale } from "@/lib/i18n/config";
 import { localizeCategory } from "@/lib/i18n/content";
 import { getDictionary } from "@/lib/i18n/dictionary";
+import { checkoutOptions } from "@/lib/payments";
 import Link from "next/link";
 
 export function ProductCard({
@@ -21,6 +23,7 @@ export function ProductCard({
 }) {
   const t = getDictionary(locale);
   const href = (path: string) => localePath(locale, path);
+  const paymentsOpen = checkoutOptions().open;
   const category = localizeCategory(product.category, locale);
   const pages = pageCountFor(product);
 
@@ -49,7 +52,14 @@ export function ProductCard({
           <span className="text-xs text-muted-foreground">{t.product.pages(pages)}</span>
         </div>
         <div className="mt-3">
-          <PurchaseActions slug={product.slug} hint />
+          <PurchaseActions slug={product.slug} />
+          {paymentsOpen ? (
+            <Link href={href("/legal/refunds")} className="mt-2 inline-flex min-h-11 items-center text-xs underline underline-offset-4">
+              {t.product.salesFinal}
+            </Link>
+          ) : (
+            <PaymentsClosed slugs={[product.slug]} compact className="mt-2" />
+          )}
         </div>
       </div>
     </article>

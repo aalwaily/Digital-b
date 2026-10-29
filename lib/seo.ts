@@ -41,8 +41,8 @@ export function rootMetadata(locale: "en" | "ar" = "en"): Metadata {
   const title = locale === "ar" ? "أدلة PDF عملية | من 6 دولارات" : "Practical PDF Guides | From $6";
   const description =
     locale === "ar"
-      ? "أدلة PDF عملية من 6 دولارات، مع عيّنة مجانية لكل دليل. الدفع عبر الإنترنت يفتح قريبًا. المبيعات نهائية."
-      : "Practical PDF guides from $6, with a free sample of each. Online payment opens very soon. All sales are final.";
+      ? "أدلة PDF عملية من 6 دولارات، مع عيّنة مجانية لكل دليل. الدفع عبر الإنترنت غير متاح حاليًا. المبيعات نهائية."
+      : "Practical PDF guides from $6, with a free sample of each. Online payment is not available yet. All sales are final.";
   return {
     metadataBase: new URL(CANONICAL_ORIGIN),
     title: { default: title, template: "%s" },

@@ -93,7 +93,7 @@ export const englishLongform: Post[] = [
       },
       {
         type: "p",
-        text: "The Quiet Budget is the companion if you want the one-evening snapshot without the invoice pages. The Irregular-Income Budget + Invoice Sheets PDF is the template this article describes: a six-month log, a bill calendar, sinking funds, a debt order, a blank invoice, and a payment tracker. There is no spreadsheet file. You print the pages or fill the PDF. It is $7.50. All sales are final. Online payment opens very soon. Email glarz.com@gmail.com and we will let you know when it opens, or help you request the file.",
+        text: "The Quiet Budget is the companion if you want the one-evening snapshot without the invoice pages. The Irregular-Income Budget + Invoice Sheets PDF is the template this article describes: a six-month log, a bill calendar, sinking funds, a debt order, a blank invoice, and a payment tracker. There is no spreadsheet file. You print the pages or fill the PDF. It is $7.50. All sales are final. Online payment is not available yet. Email glarz.com@gmail.com to request the file. You can also message us on WhatsApp.",
       },
       {
         type: "links",
@@ -197,7 +197,7 @@ export const englishLongform: Post[] = [
       { type: "h2", text: "What the PDF is" },
       {
         type: "p",
-        text: "The Saudi & Gulf Job-Search and ATS CV Kit is a PDF guide, not a locked Word theme and not a guarantee that every portal parses every file the same way. It shows a single-column structure, a cover-letter page, LinkedIn headline and About prompts, an achievement worksheet that does not ask you to invent a percentage, interview prompts, and an application tracker. It is $6. All sales are final. Online payment opens very soon. Email glarz.com@gmail.com and we will let you know when it opens, or help you request the file. The file is in English.",
+        text: "The Saudi & Gulf Job-Search and ATS CV Kit is a PDF guide, not a locked Word theme and not a guarantee that every portal parses every file the same way. It shows a single-column structure, a cover-letter page, LinkedIn headline and About prompts, an achievement worksheet that does not ask you to invent a percentage, interview prompts, and an application tracker. It is $6. All sales are final. Online payment is not available yet. Email glarz.com@gmail.com to request the file. You can also message us on WhatsApp. The file is in English.",
       },
       {
         type: "p",
@@ -407,7 +407,7 @@ export const englishLongform: Post[] = [
       },
       {
         type: "p",
-        text: "The 12-Week Reset is $14.50, a one-time PDF in US dollars. All sales are final. Online payment opens very soon. Email glarz.com@gmail.com and we will let you know when it opens, or help you request the file. It includes the schedule, plate templates, the no-gym sessions, travel and social-meal notes, and a tracker. It is education. It is not medical advice.",
+        text: "The 12-Week Reset is $14.50, a one-time PDF in US dollars. All sales are final. Online payment is not available yet. Email glarz.com@gmail.com to request the file. You can also message us on WhatsApp. It includes the schedule, plate templates, the no-gym sessions, travel and social-meal notes, and a tracker. It is education. It is not medical advice.",
       },
       {
         type: "links",
@@ -506,7 +506,7 @@ export const englishLongform: Post[] = [
       { type: "h2", text: "The download" },
       {
         type: "p",
-        text: "The Quiet Budget is the monthly budget planner PDF: a one-evening snapshot, a pay-yourself-first plan, avalanche and snowball tables, sinking-fund worksheets, and a one-hour review. It is $11, one-time, in US dollars. All sales are final. Online payment opens very soon. Email glarz.com@gmail.com and we will let you know when it opens, or help you request the file. It is not an investment product. The Arabic article walks through the same evening for readers who want Arabic first. The file you download is English.",
+        text: "The Quiet Budget is the monthly budget planner PDF: a one-evening snapshot, a pay-yourself-first plan, avalanche and snowball tables, sinking-fund worksheets, and a one-hour review. It is $11, one-time, in US dollars. All sales are final. Online payment is not available yet. Email glarz.com@gmail.com to request the file. You can also message us on WhatsApp. It is not an investment product. The Arabic article walks through the same evening for readers who want Arabic first. The file you download is English.",
       },
       {
         type: "links",

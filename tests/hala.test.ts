@@ -114,7 +114,11 @@ describe("Hala routes", () => {
           body: JSON.stringify({ email: "reader@example.com", slugs: ["steady-mind"] }),
         }),
       );
-      expect(checkout.status).toBe(404);
+      expect(checkout.status).toBe(503);
+      const closed = (await checkout.json()) as { error?: string; url?: string; token?: string };
+      expect(closed.error).toBe("Online payment is not available.");
+      expect(closed.url).toBeUndefined();
+      expect(closed.token).toBeUndefined();
       const webhook = await halaWebhook(
         new Request("https://guides.example.com/api/hala/webhook", {
           method: "POST",

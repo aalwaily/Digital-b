@@ -10,13 +10,13 @@ export const staticSeo = {
   home: {
     title: "Practical PDF Guides | From $6",
     description:
-      "Practical PDF guides from $6, with a free sample of each. Online payment opens very soon. All sales are final.",
+      "Practical PDF guides from $6, with a free sample of each. Online payment is not available yet. All sales are final.",
     keyword: "practical PDF guides instant download",
   },
   shop: {
     title: "Shop PDF Guides and Bundles | From $6",
     description:
-      "Shop Vellum Press PDF guides and bundles from $6. Read a free sample first. Online payment opens very soon. All sales are final.",
+      "Shop Vellum Press PDF guides and bundles from $6. Read a free sample first. Online payment is not available yet. All sales are final.",
     keyword: "shop PDF guides and bundles",
   },
   about: {
@@ -69,12 +69,12 @@ export const staticSeo = {
   },
   cart: {
     title: "Your Cart | Vellum Press PDFs",
-    description: "Review the PDF guides in your cart. All sales are final. Online payment opens very soon.",
+    description: "Review the PDF guides in your cart. All sales are final. Online payment is not available yet.",
     keyword: "Vellum Press PDF cart",
   },
   checkout: {
     title: "Checkout | Vellum Press PDF Guides",
-    description: "Checkout for Vellum Press PDF guides. Online payment opens very soon. All sales are final.",
+    description: "Checkout for Vellum Press PDF guides. Online payment is not available yet. All sales are final.",
     keyword: "Vellum Press PDF checkout",
   },
   success: {
@@ -95,7 +95,7 @@ export const staticSeo = {
   arabicHome: {
     title: "أدلة PDF عملية | من 6 دولارات",
     description:
-      "أدلة PDF عملية من 6 دولارات، مع عيّنة مجانية لكل دليل. الدفع عبر الإنترنت يفتح قريبًا. كل المبيعات نهائية.",
+      "أدلة PDF عملية من 6 دولارات، مع عيّنة مجانية لكل دليل. الدفع عبر الإنترنت غير متاح حاليًا. كل المبيعات نهائية.",
     keyword: "شراء أدلة PDF تنزيل فوري",
   },
   arabicBlog: {
@@ -107,7 +107,7 @@ export const staticSeo = {
   arabicShop: {
     title: "تسوق أدلة وباقات PDF | من $6",
     description:
-      "تسوق أدلة PDF وباقات من 6 دولارات. عيّنة مجانية لكل دليل. الدليل باللغة الإنجليزية. الدفع يفتح قريبًا. كل المبيعات نهائية.",
+      "تسوق أدلة PDF وباقات من 6 دولارات. عيّنة مجانية لكل دليل. الدليل باللغة الإنجليزية. الدفع غير متاح حاليًا. كل المبيعات نهائية.",
     keyword: "تسوق أدلة PDF",
   },
   arabicAbout: {
@@ -149,12 +149,12 @@ export const staticSeo = {
   },
   arabicCart: {
     title: "سلة أدلة PDF | Vellum Press",
-    description: "راجع أدلة PDF في سلتك. كل المبيعات نهائية. الدفع عبر الإنترنت يفتح قريبًا.",
+    description: "راجع أدلة PDF في سلتك. كل المبيعات نهائية. الدفع عبر الإنترنت غير متاح حاليًا.",
     keyword: "سلة أدلة PDF",
   },
   arabicCheckout: {
     title: "إتمام شراء أدلة PDF",
-    description: "إتمام الطلب لأدلة Vellum Press. الدفع عبر الإنترنت يفتح قريبًا. كل المبيعات نهائية.",
+    description: "إتمام الطلب لأدلة Vellum Press. الدفع عبر الإنترنت غير متاح حاليًا. كل المبيعات نهائية.",
     keyword: "إتمام شراء أدلة PDF",
   },
   arabicSuccess: {

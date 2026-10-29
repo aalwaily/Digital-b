@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-import { paymentProvider } from "@/lib/checkout-provider";
+import { halaCustomerCheckoutReady } from "@/lib/checkout-provider";
 import { isMoyasarConfigured } from "@/lib/moyasar";
 
 export function isStripeConfigured() {
@@ -22,8 +22,9 @@ export function isMoyasarEnabled() {
   return process.env.ENABLE_MOYASAR === "true" && isMoyasarConfigured();
 }
 
+/** Storefront Hala button. Off until hosted checkout can return a payment URL. */
 export function isHalaEnabled() {
-  return paymentProvider() === "hala";
+  return halaCustomerCheckoutReady();
 }
 
 export type CheckoutOptions = {

@@ -1,6 +1,7 @@
 import { CatalogError, quote } from "@/lib/catalog";
+import { PAYMENT_UNAVAILABLE_ERROR } from "@/lib/checkout-provider";
 import { downloadLinkDays, signDownloadToken } from "@/lib/download-token";
-import { getStripe } from "@/lib/payments";
+import { getStripe, isStripeEnabled } from "@/lib/payments";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
@@ -8,8 +9,8 @@ export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   const stripe = getStripe();
-  if (!stripe) {
-    return NextResponse.json({ error: "Stripe is not configured." }, { status: 501 });
+  if (!isStripeEnabled() || !stripe) {
+    return NextResponse.json({ error: PAYMENT_UNAVAILABLE_ERROR }, { status: 503 });
   }
 
   let sessionId = "";

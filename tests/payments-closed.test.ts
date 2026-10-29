@@ -1,17 +1,19 @@
 import { limitFor } from "@/data/limits";
 import { products } from "@/data/products";
 import { sourcesFor } from "@/data/sources";
+import { halaCustomerCheckoutReady } from "@/lib/checkout-provider";
 import { checkoutOptions, demoCheckoutAllowed, isHalaEnabled } from "@/lib/payments";
 import { describe, expect, it } from "vitest";
 
 describe("closed checkout", () => {
-  it("stays closed until Hala, Stripe, or Moyasar is explicitly enabled", () => {
+  it("stays closed until a provider can take a payment", () => {
     const saved = {
       PAYMENT_PROVIDER: process.env.PAYMENT_PROVIDER,
       ENABLE_STRIPE: process.env.ENABLE_STRIPE,
       ENABLE_MOYASAR: process.env.ENABLE_MOYASAR,
       STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
       ALLOW_DEMO_CHECKOUT: process.env.ALLOW_DEMO_CHECKOUT,
+      HALA_API_KEY: process.env.HALA_API_KEY,
     };
     delete process.env.PAYMENT_PROVIDER;
     delete process.env.ENABLE_STRIPE;
@@ -23,8 +25,16 @@ describe("closed checkout", () => {
       expect(checkoutOptions()).toEqual({ stripe: false, moyasar: false, hala: false, open: false });
       expect(demoCheckoutAllowed()).toBe(false);
       process.env.PAYMENT_PROVIDER = "hala";
-      expect(checkoutOptions().hala).toBe(true);
-      expect(checkoutOptions().open).toBe(true);
+      process.env.HALA_API_KEY = "test-hala-key";
+      expect(halaCustomerCheckoutReady()).toBe(false);
+      expect(checkoutOptions().hala).toBe(false);
+      expect(checkoutOptions().open).toBe(false);
+      expect(
+        halaCustomerCheckoutReady({ implemented: true, provider: "hala", apiKey: "test-hala-key" }),
+      ).toBe(true);
+      expect(halaCustomerCheckoutReady({ implemented: true, provider: "paypal", apiKey: "test-hala-key" })).toBe(
+        false,
+      );
     } finally {
       for (const [key, value] of Object.entries(saved)) {
         if (value === undefined) delete process.env[key];

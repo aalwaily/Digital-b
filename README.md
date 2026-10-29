@@ -2,11 +2,11 @@
 
 Vellum Press is a small storefront for practical PDF guides: health, home training, money, habits, freelance work, study, and stress. Customers pay once, download the files, and keep them. There is no membership and no account.
 
-Online payment is closed until a provider is turned on. Product, cart, and checkout pages say that payment opens very soon and give `glarz.com@gmail.com` for a notification or a file request. They do not show a pay button that errors, and they do not give away the full PDF. The free sample still downloads.
+Online payment is closed until a provider can take a charge. Product, cart, and checkout pages say that payment is not available yet and give `glarz.com@gmail.com`, plus the WhatsApp button, as the way to request a file. They do not show a pay button that errors, and they do not give away the full PDF. The free sample still downloads. All sales are final.
 
 Stripe and Moyasar stay in the repository and stay off the checkout page unless you set `ENABLE_STRIPE=true` or `ENABLE_MOYASAR=true` and add that provider's keys. `ALLOW_DEMO_CHECKOUT=true` only lets a direct `POST /api/checkout` sign a test receipt. The storefront never shows that path.
 
-Hala Payments (هلا للمدفوعات, [hala.com](https://hala.com)) is prepared and not enabled. Leave `PAYMENT_PROVIDER` unset. `PAYMENT_PROVIDER=hala` shows the Hala button and selects the placeholder routes `/api/hala/checkout` and `/api/hala/webhook`. Those routes do not call Hala, because Hala has not published API docs. The checkout route stays a 501. `HALA_API_KEY` and `HALA_WEBHOOK_SECRET` are ignored until the flag is `hala`. Each product has a `priceSar` for that future charge: the USD price times 3.75, rounded to the nearest whole riyal.
+Hala Payments (هلا للمدفوعات, [hala.com](https://hala.com)) is the hosted provider this store is ready to plug in. `lib/checkout-provider.ts` is the switch: only `PAYMENT_PROVIDER=hala` selects it. The pay button stays hidden until `HALA_HOSTED_CHECKOUT_IMPLEMENTED` in `lib/hala.ts` is true, because Hala has not published API docs and the route cannot return a payment URL. With the flag set and that constant still false, `POST /api/hala/checkout` returns 501 and the page keeps the email request. `POST /api/hala/webhook` checks `HALA_WEBHOOK_SECRET` and signs a download only after a paid event matches the catalog SAR total. Each product has a `priceSar` for that future charge: the USD price times 3.75, rounded to the nearest whole riyal.
 
 ![Vellum Press home page](docs/screenshots/home.png)
 
@@ -81,7 +81,7 @@ Copy `.env.example` to `.env.local` when you want to override the defaults. The 
 | `MOYASAR_WEBHOOK_SECRET` | No | Shared secret you choose in the Moyasar webhook settings. `POST /api/moyasar/webhook` checks it. Downloads are issued on the callback, not by the webhook. |
 | `USD_TO_SAR_RATE` | No | USD to SAR rate for Moyasar charges. Default `3.75` (the official peg). Amounts are converted to halalas on the server. |
 | `MOYASAR_APPLE_PAY_DOMAIN_ASSOCIATION` | For Moyasar Apple Pay | Body of the domain association file from the Moyasar dashboard. |
-| `PAYMENT_PROVIDER` | No | Set to exactly `hala` to show the Hala button. Any other value leaves hosted checkout off. |
+| `PAYMENT_PROVIDER` | No | Set to exactly `hala` to select Hala. The pay button stays hidden until `HALA_HOSTED_CHECKOUT_IMPLEMENTED` is true. Any other value leaves Hala off. |
 | `HALA_API_KEY` | For a future Hala charge | Ignored until `PAYMENT_PROVIDER=hala`. The route still returns 501. |
 | `HALA_WEBHOOK_SECRET` | For the Hala webhook stub | HMAC secret for `POST /api/hala/webhook`. Ignored until the flag is `hala`. |
 | `ALLOW_DEMO_CHECKOUT` | No | Set to exactly `true` only to let `POST /api/checkout` sign a test receipt. Hidden from the storefront. Leave unset on a live store. |
@@ -96,11 +96,11 @@ Copy `.env.example` to `.env.local` when you want to override the defaults. The 
 
 Prices are read from `data/products.ts` on the server. The browser cannot set the amount.
 
-**What customers see.** With no provider enabled, checkout, the cart, and the product page say online payment opens very soon and link to `glarz.com@gmail.com`. There is no pay button. The free sample still works. The Hala button appears only when `PAYMENT_PROVIDER=hala`. Stripe and Moyasar buttons render only when their `ENABLE_` flag is exactly `true` and their keys are valid.
+**What customers see.** With no provider able to charge, checkout, the cart, shop cards, and the product page say online payment is not available yet, link to `glarz.com@gmail.com`, and link to WhatsApp. All sales are final is on that note. There is no pay button. The free sample still works. The Hala button appears only when `PAYMENT_PROVIDER=hala`, `HALA_API_KEY` is set, and `HALA_HOSTED_CHECKOUT_IMPLEMENTED` is true. Stripe and Moyasar buttons render only when their `ENABLE_` flag is exactly `true` and their keys are valid.
 
 **Closed checkout** does not sign a download token. `ALLOW_DEMO_CHECKOUT=true` is the only way `POST /api/checkout` will sign a test receipt, and the page never offers that button.
 
-**Hala** (`PAYMENT_PROVIDER=hala`): the button posts to `POST /api/hala/checkout`, which returns 501 until Hala publishes an API. `POST /api/hala/webhook` checks `HALA_WEBHOOK_SECRET` and signs a download only after a paid event matches the catalog SAR total.
+**Hala** (`PAYMENT_PROVIDER=hala`): the button posts to `POST /api/hala/checkout` only after hosted checkout is implemented. Until then that route returns 501 and the page does not show the button. `POST /api/hala/webhook` checks `HALA_WEBHOOK_SECRET` and signs a download only after a paid event matches the catalog SAR total. A client-sent price is ignored.
 
 **Stripe mode** (only when `ENABLE_STRIPE=true` and `STRIPE_SECRET_KEY` is set): `POST /api/checkout` creates a Checkout Session with `price_data` in USD and redirects the buyer to Stripe. You do not have to pre-create Products in the dashboard. Success returns to `/checkout/success?session_id=...`. The server retrieves the session, checks `payment_status === "paid"`, recomputes the files from the catalog, and signs the same kind of token. Cancel returns to `/checkout?canceled=1`. The cart in the browser is unchanged until payment is confirmed. With the flag unset, that route will not open a Stripe session.
 
@@ -162,7 +162,7 @@ The script uses ReportLab and the SIL Open Font License Liberation fonts in `scr
 
 1. Import the repository.
 2. Set `NEXT_PUBLIC_SITE_URL` to the production origin, and set `DOWNLOAD_SECRET`.
-3. Leave `PAYMENT_PROVIDER` unset until Hala is ready. Set it to `hala` only when you want the Hala button. Add `HALA_API_KEY` and `HALA_WEBHOOK_SECRET` then. The checkout route still returns 501.
+3. Leave `PAYMENT_PROVIDER` unset until Hala can charge. Set it to `hala`, add `HALA_API_KEY` and `HALA_WEBHOOK_SECRET`, and set `HALA_HOSTED_CHECKOUT_IMPLEMENTED` to true in the same change that returns Hala's hosted URL. Until that constant is true, the storefront keeps the email request and the checkout route returns 501.
 4. Leave `ENABLE_STRIPE` and `ENABLE_MOYASAR` unset. Set `ENABLE_STRIPE=true` plus `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET` only if you also want Stripe. Set `ENABLE_MOYASAR=true` plus the Moyasar keys only if you also want mada, cards, Apple Pay, or STC Pay through Moyasar.
 5. Optional: set `NEXT_PUBLIC_GA_ID`, `NEXT_PUBLIC_META_PIXEL_ID`, or `NEXT_PUBLIC_TIKTOK_PIXEL_ID`. Blank values add no script.
 6. For Moyasar Apple Pay, set `MOYASAR_APPLE_PAY_DOMAIN_ASSOCIATION` to that provider's domain file.
@@ -192,7 +192,7 @@ Location is Dammam, Saudi Arabia. Governing law is the Kingdom of Saudi Arabia. 
 Then:
 
 - set `NEXT_PUBLIC_SITE_URL` and `DOWNLOAD_SECRET`
-- set `PAYMENT_PROVIDER=hala` only when the Hala API exists, and keep the storefront honest until then
+- set `PAYMENT_PROVIDER=hala` and `HALA_HOSTED_CHECKOUT_IMPLEMENTED` only when Hala's hosted checkout returns a URL, and keep the storefront honest until then
 - leave `ENABLE_STRIPE` and `ENABLE_MOYASAR` unset unless you intend to show those processors too
 - for Moyasar Apple Pay, register the domain and set `MOYASAR_APPLE_PAY_DOMAIN_ASSOCIATION`
 - leave `ALLOW_DEMO_CHECKOUT` unset

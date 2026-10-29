@@ -122,7 +122,7 @@ export const legalPages: LegalPage[] = [
         heading: "Prices and checkout",
         paragraphs: [
           "Prices in the catalog are in US dollars and are shown before you pay. We may change the price of a future purchase at any time. A confirmed order keeps the price you paid.",
-          `Online payment is not open yet, so checkout does not charge a card and does not release the full file. Email ${site.email} and we will let you know when it opens, or help you request a file. When a provider is enabled, that provider processes the payment and we do not see your full card number.`,
+          `Online payment is not available yet, so checkout does not charge a card and does not release the full file. Email ${site.email} to request a file. You can also message us on WhatsApp. If a provider is enabled later, that provider processes the payment and we do not see your full card number.`,
           "You must provide an email address you can access. The download link is tied to that address and to the products in the order.",
           "All sales are final. A completed purchase of a digital PDF is not refundable. See the all-sales-final policy for the replacement we offer when a file is corrupted, missing, or the download link fails.",
         ],
