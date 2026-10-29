@@ -4,7 +4,7 @@ import { useCart } from "@/components/cart-provider";
 import { useCheckoutOptions } from "@/components/checkout-options";
 import { Cover } from "@/components/cover";
 import { useI18n } from "@/components/locale-provider";
-import { PaymentSoon } from "@/components/payment-soon";
+import { PaymentsClosed } from "@/components/payments-closed";
 import { Price } from "@/components/price";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { quote } from "@/lib/catalog";
@@ -115,7 +115,7 @@ export function CartView() {
             </Link>
           ) : (
             <div className="mt-4">
-              <PaymentSoon slugs={items.map((item) => item.slug)} />
+              <PaymentsClosed slugs={items.map((item) => item.slug)} />
             </div>
           )}
           <Button variant="ghost" className="mt-2 h-11 w-full" onClick={() => cart.clear()}>

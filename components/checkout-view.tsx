@@ -4,7 +4,7 @@ import { useCart } from "@/components/cart-provider";
 import { useCheckoutOptions } from "@/components/checkout-options";
 import { useI18n } from "@/components/locale-provider";
 import { MoyasarForm } from "@/components/moyasar-form";
-import { PaymentSoon } from "@/components/payment-soon";
+import { PaymentsClosed } from "@/components/payments-closed";
 import { Price } from "@/components/price";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -119,6 +119,9 @@ export function CheckoutView({ usdToSarRate = null }: { usdToSarRate?: string | 
       <div className="rounded-2xl border border-dashed p-8">
         <h2 className="font-serif text-3xl">{t.checkout.emptyTitle}</h2>
         <p className="mt-2 text-muted-foreground">{catalogError || t.checkout.emptyFallback}</p>
+        <div className="mt-4">
+          <PaymentsClosed />
+        </div>
         <Link href={href("/shop")} className="mt-4 inline-flex min-h-11 items-center text-sm underline underline-offset-4">
           {t.checkout.returnShop}
         </Link>
@@ -148,7 +151,7 @@ export function CheckoutView({ usdToSarRate = null }: { usdToSarRate?: string | 
             {checkoutNotice(t, locale, stripeEnabled, moyasarEnabled, halaEnabled)}
           </div>
         ) : (
-          <PaymentSoon slugs={summary.lines.map((line) => line.slug)} />
+          <PaymentsClosed slugs={summary.lines.map((line) => line.slug)} />
         )}
         {warnings.map((warning) => (
           <p key={`${warning.bundle}-${warning.guide}`} role="status" className="rounded-xl border border-copper/40 px-4 py-3 text-sm">
@@ -184,7 +187,7 @@ export function CheckoutView({ usdToSarRate = null }: { usdToSarRate?: string | 
             {status}
           </p>
         ) : null}
-        <p className="rounded-xl border bg-card px-4 py-3 text-sm leading-relaxed">{t.checkout.final}</p>
+        {open ? <p className="rounded-xl border bg-card px-4 py-3 text-sm leading-relaxed">{t.checkout.final}</p> : null}
         {open ? (
           <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
             {halaEnabled ? (

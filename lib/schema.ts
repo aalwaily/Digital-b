@@ -48,7 +48,7 @@ export function merchantReturnPolicy(siteUrl: string, locale: Locale) {
  * Checkout is closed until a provider is switched on. PreOrder would claim a
  * buyer can place an order now and receive the file later. OutOfStock is the
  * honest ItemAvailability: the guide and its price are real, and it cannot
- * be purchased until payment opens. InStock is only used once checkout is open,
+ * be purchased until a provider can take payment. InStock is only used once checkout is open,
  * because a PDF has no inventory limit.
  */
 export function offerAvailability(open = checkoutOptions().open) {

@@ -5,7 +5,7 @@ import { Price } from "@/components/price";
 import { ProductCard } from "@/components/product-card";
 import { ProductGallery } from "@/components/product-gallery";
 import { ProductStickyBar } from "@/components/product-sticky-bar";
-import { PaymentSoon } from "@/components/payment-soon";
+import { PaymentsClosed } from "@/components/payments-closed";
 import { PurchaseActions } from "@/components/purchase-actions";
 import { SamplePreview } from "@/components/sample-preview";
 import { SampleRequest } from "@/components/sample-request";
@@ -117,8 +117,19 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           <div id="product-purchase">
             <Price price={product.price} compareAt={product.compareAtPrice} previousPrice={product.previousPrice} locale={locale} size="lg" className="mt-3" />
             <div className="mt-3">
-              <PurchaseActions slug={product.slug} hint={!paymentsOpen} />
+              <PurchaseActions slug={product.slug} />
             </div>
+            {paymentsOpen ? (
+              <p className="mt-3 text-sm leading-relaxed">
+                <Link href={localePath(locale, "/legal/refunds")} className="inline-flex min-h-11 items-center underline underline-offset-4">
+                  {t.checkout.final}
+                </Link>
+              </p>
+            ) : (
+              <div className="mt-3">
+                <PaymentsClosed slugs={[product.slug]} />
+              </div>
+            )}
           </div>
           {locale === "ar" ? (
             <div className="mt-3">
@@ -254,11 +265,6 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
             </a>
           </li>
         </ul>
-        {paymentsOpen ? null : (
-          <div className="mt-4">
-            <PaymentSoon slugs={[product.slug]} />
-          </div>
-        )}
       </section>
 
       <section className="mt-10" aria-labelledby="questions-heading">

@@ -11,6 +11,7 @@ const messages: Record<string, string> = {
   "Unknown product.": "منتج غير معروف.",
   "Download links are not configured.": "روابط التنزيل غير مُعدة.",
   "Card checkout is not available.": "الدفع بالبطاقة غير متاح.",
+  "Online payment is not available.": "الدفع عبر الإنترنت غير متاح.",
   "Demo checkout has to be confirmed on the checkout page.": "يجب تأكيد الدفع التجريبي في صفحة الدفع.",
   "Stripe did not return a checkout URL.": "لم يُرجع Stripe رابط الدفع.",
   "Payment could not be started. Check the Stripe configuration.": "تعذر بدء الدفع. راجع إعداد Stripe.",

@@ -39,9 +39,9 @@ export const dictionary = {
       company: "Company",
       notes: "Notes",
       rights: (year: number, name: string) => `© ${year} ${name}. All rights reserved.`,
-      prices: "Prices are in US dollars. Riyal amounts are approximate, at 3.75 SAR per dollar. Online payment opens very soon.",
+      prices: "Prices are in US dollars. Riyal amounts are approximate, at 3.75 SAR per dollar. Online payment is not available yet.",
       paymentsNote:
-        "Online payment opens very soon. Email glarz.com@gmail.com and we will let you know when it opens, or help you request a file.",
+        "Online payment is not available yet. Email glarz.com@gmail.com to request a file. You can also message us on WhatsApp.",
     },
     price: { approx: "about", sar: "SAR", halfOff: "50% off" },
     home: {
@@ -58,7 +58,7 @@ export const dictionary = {
         { title: "Instant download", text: "Each PDF is on your receipt page." },
         { title: "Private downloads", text: "Full files stay on your receipt. They are not public links." },
         { title: "Ready to print", text: "US Letter pages, with checklists and tables." },
-        { title: "One-time price", text: "Each guide has a single price. Online payment opens very soon." },
+        { title: "One-time price", text: "Each guide has a single price. Online payment is not available yet." },
       ],
       bundleEyebrow: (savings: string) => `Bundle · save ${savings}`,
       pagesAcross: (pages: number) => `${pages} pages across three PDFs.`,
@@ -68,7 +68,7 @@ export const dictionary = {
       categories: "Categories",
       steps: [
         { step: "01", title: "Choose a guide", text: "Read the contents, the page count, and a free sample before you pay." },
-        { step: "02", title: "Payment opens soon", text: "Online payment opens very soon. Email glarz.com@gmail.com and we will let you know when it opens, or help you request a file. The free sample is available now." },
+        { step: "02", title: "Request a file", text: "Online payment is not available yet. Email glarz.com@gmail.com to request a file. You can also message us on WhatsApp. The free sample is available now. All sales are final." },
         { step: "03", title: "Download and keep it", text: "Your receipt includes a private download link. Save the PDF. The license is personal." },
       ],
       journal: "From the journal",
@@ -126,7 +126,7 @@ export const dictionary = {
       add: "Add to cart",
       inCart: "In cart",
       buyNow: "Buy now",
-      paymentSoon: "Online payment opens very soon.",
+      paymentUnavailable: "Online payment is not available yet.",
       limit: "A limit on this guide",
       sources: "Sources / references",
       sourcesNote:
@@ -153,7 +153,7 @@ export const dictionary = {
       trustSecureTitle: "Secure checkout",
       trustSecureOpen: "Card details go to the payment provider. Vellum Press never sees your card number.",
       trustSecureClosed:
-        "Online payment is not open yet, so this page does not charge a card. When it opens, card details go to the payment provider.",
+        "Online payment is not open yet, so this page does not charge a card.",
       trustCopyTitle: "A working copy",
       trustWhatsappTitle: "WhatsApp",
       specs: "File details",
@@ -190,7 +190,7 @@ export const dictionary = {
       title: "Cart",
       lede: "Guides stay in this browser until you check out or remove them.",
       metaTitle: "Your PDF cart",
-      metaDescription: "Review the PDF guides in your cart. All sales are final. Online payment opens very soon.",
+      metaDescription: "Review the PDF guides in your cart. All sales are final. Online payment is not available yet.",
       loading: "Loading your cart…",
       emptyTitle: "Your cart is empty",
       emptyText: "Browse the shop. Each guide is a one-time purchase, delivered as a PDF.",
@@ -209,7 +209,7 @@ export const dictionary = {
     checkout: {
       title: "Checkout",
       metaTitle: "Checkout for PDF guides",
-      metaDescription: "Checkout for Vellum Press PDF guides. Online payment opens very soon. All sales are final.",
+      metaDescription: "Checkout for Vellum Press PDF guides. Online payment is not available yet. All sales are final.",
       loading: "Loading checkout…",
       emptyTitle: "Nothing to check out",
       emptyFallback: "Add a guide to your cart before checkout.",
@@ -235,7 +235,7 @@ export const dictionary = {
       moyasarHelp:
         "mada, Visa, and Mastercard use the card form. Apple Pay and STC Pay appear when this browser and your Moyasar account support them. Card details go to Moyasar, not to Vellum Press.",
       buyOnly: "Buying this guide only. Your saved cart is unchanged until the order completes.",
-      closed: "Online payment opens very soon. Email glarz.com@gmail.com and we will let you know when it opens, or help you request a file.",
+      closed: "Online payment is not available yet. Email glarz.com@gmail.com to request a file. You can also message us on WhatsApp.",
       introClosed: "Digital guides only. Online payment is not open yet, so nothing on this page charges a card.",
       introHala:
         "Digital goods only. Pay with Hala. You will get a receipt page with the PDFs as soon as the payment is confirmed.",
@@ -281,6 +281,8 @@ export const dictionary = {
     },
     success: {
       title: "Payment received",
+      missingTitle: "No payment to confirm",
+      confirmingTitle: "Confirming your payment",
       metaTitle: "Confirming your payment",
       metaDescription: "Confirming your Vellum Press payment. Downloads start on the receipt page.",
       missing: "This page is missing a checkout session. If you already have a receipt, open that link.",
@@ -296,7 +298,7 @@ export const dictionary = {
       eyebrow: "The press",
       title: "Guides worth keeping.",
       metaTitle: "About",
-      metaDescription: "Vellum Press publishes practical PDF guides you buy once and keep. Online payment opens very soon.",
+      metaDescription: "Vellum Press publishes practical PDF guides you buy once and keep. Online payment is not available yet.",
       paragraphs: [
         "Vellum Press is a small digital press in Dammam. We publish practical guides on food, training, money, work, study, and stress. Each one is a PDF with a beginning, a middle, and worksheets you can print. There is no membership, and no lesson that unlocks next week.",
         "The writing is specific on purpose. A budget guide that will not name a debt order is not finished. A workout guide that skips easier versions is not finished. We would rather be narrow and usable than broad and inspiring.",
@@ -305,7 +307,7 @@ export const dictionary = {
       how: "How a purchase works",
       steps: [
         "1. You read the contents and a free sample.",
-        "2. Online payment opens very soon. Until then, email glarz.com@gmail.com and we will let you know when it opens, or help you request a file. The free sample does not require payment.",
+        "2. Online payment is not available yet. Email glarz.com@gmail.com to request a file, or message us on WhatsApp. The free sample does not require payment. All sales are final.",
         "3. A private receipt link lets you download the files. Save them. The link expires.",
       ],
       details: "Publisher details",
@@ -422,8 +424,8 @@ export const dictionary = {
       company: "الناشر",
       notes: "ملاحظات",
       rights: (year: number, name: string) => `© ${year} ${name}. جميع الحقوق محفوظة.`,
-      prices: "الأسعار بالدولار الأمريكي، مع ما يعادلها تقريبًا بالريال السعودي بسعر 3.75. الدفع عبر الإنترنت يفتح قريبًا جدًا.",
-      paymentsNote: "الدفع عبر الإنترنت يفتح قريبًا جدًا. راسل glarz.com@gmail.com ليصلك تنبيه عند الفتح، أو لتطلب الملف.",
+      prices: "الأسعار بالدولار الأمريكي، مع ما يعادلها تقريبًا بالريال السعودي بسعر 3.75. الدفع عبر الإنترنت غير متاح حاليًا.",
+      paymentsNote: "الدفع عبر الإنترنت غير متاح حاليًا. لطلب الملف، راسل glarz.com@gmail.com. يمكنك أيضًا مراسلتنا على واتساب.",
     },
     price: { approx: "حوالي", sar: "ر.س", halfOff: "خصم 50%" },
     home: {
@@ -440,7 +442,7 @@ export const dictionary = {
         { title: "تنزيل فوري", text: "تجد ملفات PDF في صفحة الإيصال." },
         { title: "روابط موقّعة", text: "الملفات الكاملة ليست روابط عامة." },
         { title: "اطبع ما تستخدمه", text: "صفحات بمقاس Letter جاهزة للطباعة، وفيها قوائم وجداول." },
-        { title: "سعر واحد", text: "لكل دليل سعر واحد. الدفع عبر الإنترنت يفتح قريبًا جدًا." },
+        { title: "سعر واحد", text: "لكل دليل سعر واحد. الدفع عبر الإنترنت غير متاح حاليًا." },
       ],
       bundleEyebrow: (savings: string) => `باقة · وفّر ${savings}`,
       pagesAcross: (pages: number) => `${arabicPages(pages)} في ثلاثة ملفات PDF.`,
@@ -450,7 +452,7 @@ export const dictionary = {
       categories: "التصنيفات",
       steps: [
         { step: "01", title: "اختر دليلًا", text: "اقرأ المحتويات وعدد الصفحات والعيّنة المجانية قبل أن تدفع شيئًا." },
-        { step: "02", title: "الدفع يفتح قريبًا", text: "الدفع عبر الإنترنت يفتح قريبًا جدًا. راسل glarz.com@gmail.com ليصلك تنبيه عند الفتح، أو لتطلب الملف. العيّنة المجانية متاحة الآن." },
+        { step: "02", title: "اطلب الملف", text: "الدفع عبر الإنترنت غير متاح حاليًا. لطلب الملف، راسل glarz.com@gmail.com. يمكنك أيضًا مراسلتنا على واتساب. العيّنة المجانية متاحة الآن. كل المبيعات نهائية." },
         { step: "03", title: "نزّل الملف واحتفظ به", text: "رابط الإيصال موقّع. احفظ ملف PDF. الترخيص شخصي، والملف لك." },
       ],
       journal: "من المدوّنة",
@@ -461,7 +463,7 @@ export const dictionary = {
       noteText: "قصيرة، وعلى فترات، ولا تصلك إلا إذا طلبتها. بلا مؤقت للعدّ.",
       metaTitle: "Vellum Press · أدلة PDF عملية",
       metaDescription:
-        "أدلة PDF عملية في الصحة والتمرين والمال والعمل والدراسة والهدوء. العيّنة المجانية متاحة الآن. الدفع عبر الإنترنت يفتح قريبًا.",
+        "أدلة PDF عملية في الصحة والتمرين والمال والعمل والدراسة والهدوء. العيّنة المجانية متاحة الآن. الدفع عبر الإنترنت غير متاح حاليًا.",
     },
     shop: {
       eyebrow: "المكتبة",
@@ -510,7 +512,7 @@ export const dictionary = {
       add: "أضف إلى السلة",
       inCart: "في السلة",
       buyNow: "اشترِ الآن",
-      paymentSoon: "الدفع عبر الإنترنت يفتح قريبًا جدًا.",
+      paymentUnavailable: "الدفع عبر الإنترنت غير متاح حاليًا.",
       limit: "حدّ هذا الدليل",
       sources: "المصادر والمراجع",
       sourcesNote: "صفحات رُاجعت لهذه النسخة. هي خلفية، وليست مراجعة لهذا الملف، وليست وعدًا بنتيجة.",
@@ -535,7 +537,7 @@ export const dictionary = {
       trustSecureTitle: "دفع آمن",
       trustSecureOpen: "بيانات البطاقة تذهب إلى بوابة الدفع، ولا تصل إلى Vellum Press.",
       trustSecureClosed:
-        "الدفع عبر الإنترنت غير مفتوح بعد، وهذه الصفحة لا تخصم من البطاقة. حين يفتح الدفع، تذهب بيانات البطاقة إلى بوابة الدفع.",
+        "الدفع عبر الإنترنت غير مفتوح بعد، وهذه الصفحة لا تخصم من البطاقة.",
       trustCopyTitle: "نسخة تعمل",
       trustWhatsappTitle: "واتساب",
       specs: "تفاصيل الملف",
@@ -582,7 +584,7 @@ export const dictionary = {
       title: "السلة",
       lede: "تبقى الأدلة في هذا المتصفح إلى أن تُتمّ الطلب أو تحذفها.",
       metaTitle: "السلة",
-      metaDescription: "راجع أدلة Vellum Press في سلتك. كل المبيعات نهائية. الدفع عبر الإنترنت يفتح قريبًا جدًا.",
+      metaDescription: "راجع أدلة Vellum Press في سلتك. كل المبيعات نهائية. الدفع عبر الإنترنت غير متاح حاليًا.",
       loading: "جارٍ تحميل السلة…",
       emptyTitle: "سلتك فارغة",
       emptyText: "تصفّح المكتبة من هنا. كل دليل شراء لمرة واحدة، ويصلك ملف PDF.",
@@ -601,7 +603,7 @@ export const dictionary = {
     checkout: {
       title: "إتمام الطلب",
       metaTitle: "إتمام الطلب",
-      metaDescription: "أتمم طلب أدلة Vellum Press بصيغة PDF حين يفتح الدفع. كل المبيعات نهائية.",
+      metaDescription: "أتمم طلب أدلة Vellum Press بصيغة PDF. الدفع غير متاح حاليًا. كل المبيعات نهائية.",
       loading: "جارٍ تحميل صفحة الطلب…",
       emptyTitle: "لا يوجد طلب لإتمامه",
       emptyFallback: "أضف دليلًا قبل إتمام الطلب.",
@@ -628,7 +630,7 @@ export const dictionary = {
       moyasarHelp:
         "مدى وVisa وMastercard تستخدم نموذج البطاقة. يظهر Apple Pay وSTC Pay حين يدعمهما هذا المتصفح وحساب Moyasar. بيانات البطاقة تذهب إلى Moyasar لا إلى Vellum Press.",
       buyOnly: "شراء هذا الدليل فقط. سلتك المحفوظة لا تتغير إلى أن يكتمل الطلب.",
-      closed: "الدفع عبر الإنترنت يفتح قريبًا جدًا. راسل glarz.com@gmail.com ليصلك تنبيه عند الفتح، أو لتطلب الملف.",
+      closed: "الدفع عبر الإنترنت غير متاح حاليًا. لطلب الملف، راسل glarz.com@gmail.com. يمكنك أيضًا مراسلتنا على واتساب.",
       introClosed: "سلع رقمية فقط. الدفع عبر الإنترنت غير مفتوح بعد. لا شيء في هذه الصفحة يخصم من بطاقة.",
       introHala: "سلع رقمية فقط. ادفع عبر هلا. تصلك صفحة إيصال بملفات PDF فور تأكيد الدفع.",
       introMixed: "سلع رقمية فقط. استخدم إحدى وسائل الدفع أدناه. تصلك صفحة إيصال بملفات PDF فور تأكيد الدفع.",
@@ -671,6 +673,8 @@ export const dictionary = {
     },
     success: {
       title: "تم استلام الدفع",
+      missingTitle: "لا توجد دفعة لتأكيدها",
+      confirmingTitle: "جارٍ تأكيد الدفع",
       metaTitle: "تأكيد الدفع",
       metaDescription: "جارٍ تأكيد دفعة Vellum Press. يبدأ التنزيل من صفحة الإيصال.",
       missing: "هذه الصفحة بلا جلسة دفع. إذا كان لديك إيصال، افتح ذلك الرابط.",
@@ -686,7 +690,7 @@ export const dictionary = {
       eyebrow: "الناشر",
       title: "أدلة تستحق أن تُحفظ.",
       metaTitle: "من نحن",
-      metaDescription: "تصدر Vellum Press أدلة PDF عملية تشتريها مرة وتحتفظ بها. الدفع عبر الإنترنت يفتح قريبًا جدًا.",
+      metaDescription: "تصدر Vellum Press أدلة PDF عملية تشتريها مرة وتحتفظ بها. الدفع عبر الإنترنت غير متاح حاليًا.",
       paragraphs: [
         "Vellum Press دار نشر رقمية صغيرة. ننشر أدلة عملية في الأكل والتمرين والمال والعمل والدراسة والتوتر. كل دليل ملف PDF له بداية ووسط وأوراق عمل تطبعها. بلا اشتراك، وبلا درس يُفتح الأسبوع القادم.",
         "الكتابة محددة عن قصد. دليل ميزانية لا يرتّب سداد الديون لم يكتمل. دليل تمرين يتخطى البدائل الأسهل لم يكتمل. نفضّل دليلًا محددًا يمكن استخدامه على دليل عام يكتفي بالإلهام.",
@@ -695,7 +699,7 @@ export const dictionary = {
       how: "كيف يتم الشراء",
       steps: [
         "1. تقرأ المحتويات والعيّنة المجانية.",
-        "2. الدفع عبر الإنترنت يفتح قريبًا جدًا. إلى ذلك الحين، راسل glarz.com@gmail.com ليصلك تنبيه، أو لتطلب الملف. العيّنة المجانية لا تحتاج إلى دفع.",
+        "2. الدفع عبر الإنترنت غير متاح حاليًا. لطلب الملف، راسل glarz.com@gmail.com أو راسلنا على واتساب. العيّنة المجانية لا تحتاج إلى دفع. كل المبيعات نهائية.",
         "3. يتيح لك رابط إيصال موقّع تنزيل الملفات. احفظها. الرابط تنتهي صلاحيته.",
       ],
       details: "بيانات الناشر",

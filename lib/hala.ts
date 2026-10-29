@@ -15,6 +15,14 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 export const HALA_CURRENCY = "SAR" as const;
 export const USD_TO_SAR = 3.75;
 
+/**
+ * The one line to flip when Hala's hosted checkout can return a payment URL.
+ * Set this to true in the same edit that POSTs `buildHalaCheckoutPayload` to
+ * Hala and returns `{ ok: true, url }`. Until then, PAYMENT_PROVIDER=hala does
+ * not show a pay button and does not mark products as in stock.
+ */
+export const HALA_HOSTED_CHECKOUT_IMPLEMENTED: boolean = false;
+
 /** TODO: Confirm the header name with Hala. Assumed until their docs exist. */
 export const HALA_SIGNATURE_HEADER = "x-hala-signature";
 
@@ -74,9 +82,13 @@ export function startHalaHostedCheckout(input: { email: string; priced: Quote })
   if (!apiKey) {
     return { ok: false, status: 501, error: "Hala is not configured." };
   }
-  // TODO: POST `payload` to Hala's hosted-checkout endpoint with HALA_API_KEY
-  // and return the hosted URL. There is no public API to call yet, so this
-  // stays a placeholder and never charges the customer.
+  if (!HALA_HOSTED_CHECKOUT_IMPLEMENTED) {
+    // TODO: POST `payload` to Hala with HALA_API_KEY and return `{ ok: true, url }`.
+    // Set HALA_HOSTED_CHECKOUT_IMPLEMENTED in the same edit. There is no public API yet.
+    void apiKey;
+    void payload;
+    return { ok: false, status: 501, error: "Hala hosted checkout is not available yet." };
+  }
   void apiKey;
   void payload;
   return { ok: false, status: 501, error: "Hala hosted checkout is not available yet." };

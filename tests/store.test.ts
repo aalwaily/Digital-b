@@ -117,6 +117,7 @@ describe("schema and sample labels", () => {
       ENABLE_STRIPE: process.env.ENABLE_STRIPE,
       ENABLE_MOYASAR: process.env.ENABLE_MOYASAR,
       STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+      HALA_API_KEY: process.env.HALA_API_KEY,
     };
     delete process.env.PAYMENT_PROVIDER;
     delete process.env.ENABLE_STRIPE;
@@ -130,7 +131,10 @@ describe("schema and sample labels", () => {
       expect(closed.offers.price).toBe(guide.price.toFixed(2));
       expect(closed.offers.priceCurrency).toBe("USD");
       process.env.PAYMENT_PROVIDER = "hala";
-      expect(productSchema(guide, "https://getvellumpress.com").offers.availability).toBe("https://schema.org/InStock");
+      process.env.HALA_API_KEY = "test-hala-key";
+      expect(productSchema(guide, "https://getvellumpress.com").offers.availability).toBe(
+        "https://schema.org/OutOfStock",
+      );
       const arabic = websiteSchema("https://getvellumpress.com", "ar");
       expect(arabic.description).toBe(staticSeo.arabicHome.description);
       expect(arabic.potentialAction.target).toMatchObject({

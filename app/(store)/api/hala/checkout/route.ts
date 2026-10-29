@@ -1,5 +1,5 @@
 import { parseCheckoutInput } from "@/lib/checkout-input";
-import { paymentProvider } from "@/lib/checkout-provider";
+import { PAYMENT_UNAVAILABLE_ERROR, paymentProvider } from "@/lib/checkout-provider";
 import { startHalaHostedCheckout } from "@/lib/hala";
 import { NextResponse } from "next/server";
 
@@ -13,7 +13,7 @@ export const dynamic = "force-dynamic";
  */
 export async function POST(request: Request) {
   if (paymentProvider() !== "hala") {
-    return NextResponse.json({ error: "Hala is not the active payment provider." }, { status: 404 });
+    return NextResponse.json({ error: PAYMENT_UNAVAILABLE_ERROR }, { status: 503 });
   }
 
   let body: unknown;

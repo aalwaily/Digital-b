@@ -58,7 +58,7 @@ export function PurchaseActions({
           </Button>
         ) : null}
       </div>
-      {!open && hint ? <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{t.product.paymentSoon}</p> : null}
+      {!open && hint ? <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{t.product.paymentUnavailable}</p> : null}
     </div>
   );
 }

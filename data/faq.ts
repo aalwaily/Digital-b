@@ -35,11 +35,11 @@ export const faqs: FaqItem[] = [
   },
   {
     question: "How can I pay?",
-    answer: `Online payment opens very soon. Email ${site.email} and we will let you know when it opens, or help you request a file. Until a payment provider is turned on, checkout does not show a card form and nothing is charged. The free sample still downloads.`,
+    answer: `Online payment is not available yet. Email ${site.email} to request a file. You can also message us on WhatsApp. Until a payment provider is turned on, checkout does not show a card form and nothing is charged. The free sample still downloads. All sales are final.`,
   },
   {
     question: "Can I pay with Apple Pay?",
-    answer: `Not on this store today. Apple Pay is not offered. Email ${site.email} if you would like a note when online payment opens.`,
+    answer: `Not on this store today. Apple Pay is not offered. Email ${site.email} to request a file, or message us on WhatsApp.`,
   },
   {
     question: "Why is there no pay button?",
