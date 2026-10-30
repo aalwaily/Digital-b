@@ -14,10 +14,10 @@ export default async function CartPage({ params }: { params: Promise<{ locale: s
   const locale = requireLocale((await params).locale);
   const t = getDictionary(locale);
   return (
-    <div className="mx-auto min-w-0 max-w-6xl px-5 py-12">
-      <h1 className="font-serif text-4xl">{t.cartPage.title}</h1>
+    <div className="mx-auto min-w-0 max-w-6xl px-4 py-4 sm:px-5 sm:py-12">
+      <h1 className="font-serif text-3xl sm:text-4xl">{t.cartPage.title}</h1>
       <p className="mt-2 text-muted-foreground">{t.cartPage.lede}</p>
-      <div className="mt-8 min-w-0">
+      <div className="mt-4 min-w-0 sm:mt-8">
         <CartView />
       </div>
     </div>

@@ -126,18 +126,18 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
                 </Link>
               </p>
             ) : (
-              <div className="mt-3">
+              <div className="short-copy mt-3">
                 <PaymentsClosed slugs={[product.slug]} />
               </div>
             )}
           </div>
           {locale === "ar" ? (
-            <div className="mt-3">
+            <div className="short-copy mt-3">
               <EnglishPdfNotice />
             </div>
           ) : null}
           {audience.length ? (
-            <section aria-labelledby="for-whom" className="mt-3">
+            <section aria-labelledby="for-whom" className="short-copy mt-3">
               <h2 id="for-whom" className="text-sm font-medium text-copper">
                 {t.product.forWhom}
               </h2>
@@ -150,7 +150,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
               </ul>
             </section>
           ) : null}
-          <section aria-labelledby="outcome" className="mt-2">
+          <section aria-labelledby="outcome" className="short-copy mt-2">
             <h2 id="outcome" className="text-sm font-medium text-copper">
               {t.product.outcome}
             </h2>
@@ -162,7 +162,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
             <h2 id="you-get" className="text-sm font-medium text-copper">
               {t.product.youGet}
             </h2>
-            <ul aria-label={t.product.specs} className="mt-2 flex flex-wrap gap-1.5">
+            <ul aria-label={t.product.specs} className="short-copy mt-2 flex flex-wrap gap-1.5">
               {primaryPills.map((pill) => (
                 <li key={pill} className="rounded-full bg-card px-2.5 py-1 text-sm leading-5 ring-1 ring-border">
                   {pill}

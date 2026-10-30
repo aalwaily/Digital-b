@@ -26,11 +26,11 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-40 border-b bg-background/85 pt-[env(safe-area-inset-top)] backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-6xl items-center gap-1 px-3 sm:gap-3 sm:px-5">
+      <div className="mx-auto flex h-16 max-w-6xl items-center gap-0.5 px-2 sm:gap-3 sm:px-5">
         <Link
           href={href("/")}
           dir="ltr"
-          className="me-1 inline-flex h-11 min-w-0 items-center truncate font-serif text-lg tracking-tight sm:text-xl"
+          className="me-0.5 inline-flex h-11 shrink-0 items-center font-serif text-[1.05rem] tracking-tight whitespace-nowrap sm:me-1 sm:text-xl"
         >
           <span>
             Vellum <span className="text-copper">Press</span>
@@ -38,7 +38,7 @@ export function SiteHeader() {
         </Link>
         <nav className="hidden items-center gap-6 text-sm md:flex" aria-label={t.navPrimary}>
           {items.map((item) => (
-            <Link key={item.href} href={href(item.href)} className="inline-flex h-11 items-center hover:text-copper">
+            <Link key={item.href} href={href(item.href)} className="inline-flex h-11 min-w-11 items-center px-2 hover:text-copper">
               {item.label}
             </Link>
           ))}
@@ -48,7 +48,7 @@ export function SiteHeader() {
             href={alternateHref}
             hrefLang={other}
             lang={other}
-            className="inline-flex h-11 min-w-11 items-center justify-center rounded-lg px-2 text-sm font-medium hover:bg-muted"
+            className="inline-flex h-11 min-w-11 shrink-0 items-center justify-center rounded-lg px-1.5 text-sm font-medium whitespace-nowrap hover:bg-muted sm:px-2"
             aria-label={`${t.switchTo}, ${t.switchToLabel}`}
             onClick={(event) => {
               event.preventDefault();

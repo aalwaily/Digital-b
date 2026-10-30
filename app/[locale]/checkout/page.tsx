@@ -22,8 +22,8 @@ export default async function CheckoutPage({ params }: { params: Promise<{ local
   const intro = options.open ? (options.hala && !options.stripe && !options.moyasar ? t.checkout.introHala : t.checkout.introMixed) : t.checkout.introClosed;
 
   return (
-    <div className="mx-auto min-w-0 max-w-6xl px-4 pt-12 pb-8 sm:px-5">
-      <h1 className="font-serif text-4xl">{t.checkout.title}</h1>
+    <div className="mx-auto min-w-0 max-w-6xl px-4 pt-8 pb-8 sm:px-5 sm:pt-12">
+      <h1 className="font-serif text-3xl sm:text-4xl">{t.checkout.title}</h1>
       <p className="mt-2 max-w-xl text-muted-foreground">{intro}</p>
       <div className="mt-8 min-w-0">
         <Suspense fallback={<p className="text-sm text-muted-foreground">{t.checkout.loading}</p>}>

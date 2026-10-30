@@ -36,7 +36,7 @@ export default async function CategoryPage({ params }: { params: Promise<Params>
   const list = productsInCategory(slug).map((product) => localizeProduct(product, locale));
 
   return (
-    <div className="mx-auto w-full min-w-0 max-w-6xl px-5 py-12">
+    <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-5 sm:px-5 sm:py-12">
       <JsonLdList data={pageJsonLd(locale, `/shop/${slug}`)} />
       <Breadcrumbs
         label={t.product.breadcrumb}
@@ -47,12 +47,12 @@ export default async function CategoryPage({ params }: { params: Promise<Params>
           { label: category.name },
         ]}
       />
-      <p className="mt-6 text-xs tracking-[0.16em] text-copper uppercase sm:tracking-[0.18em]">{t.shop.eyebrow}</p>
-      <h1 className="mt-2 font-serif text-4xl md:text-5xl">{category.name}</h1>
+      <p className="mt-3 text-xs tracking-[0.16em] text-copper uppercase sm:mt-6 sm:tracking-[0.18em]">{t.shop.eyebrow}</p>
+      <h1 className="mt-2 font-serif text-3xl sm:text-4xl md:text-5xl">{category.name}</h1>
       <p className="mt-3 max-w-2xl text-muted-foreground">{category.description}</p>
-      <div className="mt-8 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-4 grid gap-8 sm:grid-cols-2 sm:gap-10 lg:grid-cols-3">
         {list.map((product) => (
-          <ProductCard key={product.slug} product={product} locale={locale} />
+          <ProductCard key={product.slug} product={product} locale={locale} layout="responsive" />
         ))}
       </div>
     </div>

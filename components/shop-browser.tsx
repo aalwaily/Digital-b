@@ -61,11 +61,11 @@ function ShopControls({
         key={`${query.query}|${query.category}|${query.sort}`}
         action={href("/shop")}
         method="get"
-        className="flex flex-col gap-3 md:flex-row md:items-end"
+        className="flex flex-col gap-2 md:flex-row md:items-end md:gap-3"
       >
         {query.category !== "all" ? <input type="hidden" name="category" value={query.category} /> : null}
         <div className="min-w-0 flex-1">
-          <label htmlFor="shop-search" className="text-sm font-medium">
+          <label htmlFor="shop-search" className="text-sm font-medium max-sm:sr-only">
             {t.shop.search}
           </label>
           <Input
@@ -77,29 +77,31 @@ function ShopControls({
             className="mt-1 h-11"
           />
         </div>
-        <div className="min-w-0">
-          <label htmlFor="shop-sort" className="text-sm font-medium">
-            {t.shop.sort}
-          </label>
-          <select
-            id="shop-sort"
-            name="sort"
-            defaultValue={query.sort}
-            className="mt-1 h-11 w-full max-w-full rounded-lg border border-input bg-transparent px-3 text-start text-base md:w-56"
-          >
-            {sorts.map((option) => (
-              <option key={option.id} value={option.id}>
-                {option.label}
-              </option>
-            ))}
-          </select>
+        <div className="flex min-w-0 items-end gap-2">
+          <div className="min-w-0 flex-1 md:w-56 md:flex-none">
+            <label htmlFor="shop-sort" className="text-sm font-medium max-sm:sr-only">
+              {t.shop.sort}
+            </label>
+            <select
+              id="shop-sort"
+              name="sort"
+              defaultValue={query.sort}
+              className="mt-1 h-11 w-full max-w-full rounded-lg border border-input bg-transparent px-3 text-start text-base"
+            >
+              {sorts.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <button type="submit" className="h-11 min-w-11 shrink-0 rounded-lg bg-foreground px-4 text-sm text-background">
+            {t.shop.apply}
+          </button>
         </div>
-        <button type="submit" className="h-11 rounded-lg bg-foreground px-4 text-sm text-background">
-          {t.shop.apply}
-        </button>
       </form>
 
-      <div className="mt-5 flex min-w-0 flex-wrap gap-2" role="toolbar" aria-label={t.shop.categories}>
+      <div className="mt-3 flex min-w-0 gap-2 overflow-x-auto pb-1 md:mt-5 md:flex-wrap md:overflow-visible" role="toolbar" aria-label={t.shop.categories}>
         <FilterLink href={shopHref(href, { q: query.query, category: "all", sort: query.sort })} pressed={query.category === "all"}>
           {t.shop.all}
         </FilterLink>
@@ -114,7 +116,7 @@ function ShopControls({
         ))}
       </div>
 
-      {activeCategory ? <p className="mt-4 max-w-2xl text-sm text-muted-foreground">{activeCategory.description}</p> : null}
+      {activeCategory ? <p className="shop-lede mt-4 max-w-2xl text-sm text-muted-foreground">{activeCategory.description}</p> : null}
 
       <h2 className="sr-only">{t.shop.results}</h2>
       {results.length === 0 ? (
@@ -126,9 +128,11 @@ function ShopControls({
           </Link>
         </div>
       ) : (
-        <div className="mt-8 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-4 grid min-w-0 gap-8 sm:grid-cols-2 sm:gap-10 lg:grid-cols-3">
           {results.map((product) => (
-            <div key={product.slug}>{cards[product.slug]}</div>
+            <div key={product.slug} className="min-w-0">
+              {cards[product.slug]}
+            </div>
           ))}
         </div>
       )}

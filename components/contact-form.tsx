@@ -97,7 +97,7 @@ export function ContactForm() {
           {message}
         </p>
       ) : null}
-      <Button type="submit" disabled={status === "loading"} className="h-11 px-5">
+      <Button type="submit" data-primary-cta="" disabled={status === "loading"} className="h-11 min-w-11 px-5">
         {status === "loading" ? t.contact.sending : t.contact.send}
       </Button>
     </form>

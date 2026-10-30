@@ -46,23 +46,23 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
     <div className="min-w-0">
       <JsonLdList data={pageJsonLd(locale, "/")} />
 
-      <section className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-14 md:grid-cols-12 md:py-20">
-        <div className="min-w-0 md:col-span-6">
+      <section className="hero-section mx-auto grid max-w-6xl items-center gap-12 px-5 py-14 md:grid-cols-12 md:py-20">
+        <div className="hero-copy min-w-0 md:col-span-6">
           <p className="text-xs tracking-[0.16em] text-copper uppercase sm:tracking-[0.22em]">{t.home.eyebrow}</p>
           <h1 className="mt-4 max-w-xl font-serif text-4xl leading-[1.12] sm:text-5xl md:text-6xl md:leading-[1.05]">
             {t.home.title}
           </h1>
           <div className="rise">
-            <p className="mt-6 max-w-md text-lg leading-relaxed text-muted-foreground">{t.home.lede}</p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <LinkButton href="/shop" className="h-11 px-5">
+            <p className="hero-lede mt-6 max-w-md text-lg leading-relaxed text-muted-foreground">{t.home.lede}</p>
+            <div className="hero-actions mt-8 flex flex-col gap-3 sm:flex-row">
+              <LinkButton href="/shop" primary className="h-11 px-5">
                 {t.home.shop}
               </LinkButton>
               <LinkButton href="/product/12-week-reset" variant="outline" className="h-11 px-5">
                 {t.home.preview}
               </LinkButton>
             </div>
-            <dl className="mt-10 grid grid-cols-3 gap-3 text-sm">
+            <dl className="hero-stats mt-10 grid grid-cols-3 gap-3 text-sm">
               <div>
                 <dt className="text-muted-foreground">{t.home.guides}</dt>
                 <dd dir="ltr" className="font-serif text-2xl">{products.filter((product) => product.kind === "guide").length}</dd>
@@ -157,7 +157,7 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
         </div>
         <div className="mt-8 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {featured.map((product) => (
-            <ProductCard key={product.slug} product={product} locale={locale} />
+            <ProductCard key={product.slug} product={product} locale={locale} layout="responsive" />
           ))}
         </div>
       </section>

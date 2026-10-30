@@ -27,26 +27,28 @@ export default async function NotFound() {
     <div className="overflow-x-clip">
       <SkipLink label={t.skip} />
       <header className="border-b bg-background pt-[env(safe-area-inset-top)]">
-        <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center gap-x-1 gap-y-1 px-3 py-1">
+        <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center gap-x-1 gap-y-1 px-2 py-1 sm:px-3">
           <Link
             href={`/${locale}`}
             dir="ltr"
-            className="inline-flex h-11 min-w-0 max-w-full items-center font-serif text-lg whitespace-nowrap"
+            className="inline-flex h-11 min-w-0 max-w-full items-center font-serif text-[1.05rem] whitespace-nowrap sm:text-lg"
           >
-            Vellum <span className="text-copper"> Press</span>
+            <span>
+              Vellum <span className="text-copper">Press</span>
+            </span>
           </Link>
           <a
             href={`/${other}`}
             hrefLang={other}
             lang={other}
             aria-label={`${t.switchTo}, ${t.switchToLabel}`}
-            className="ms-auto inline-flex h-11 shrink-0 items-center justify-center rounded-lg px-2 text-sm font-medium whitespace-nowrap hover:bg-muted"
+            className="ms-auto inline-flex h-11 min-w-11 shrink-0 items-center justify-center rounded-lg px-1.5 text-sm font-medium whitespace-nowrap hover:bg-muted sm:px-2"
           >
             {t.switchTo}
           </a>
           <Link
             href={`/${locale}/shop`}
-            className="inline-flex h-11 shrink-0 items-center justify-center rounded-lg px-3 text-sm font-medium whitespace-nowrap hover:bg-muted"
+            className="inline-flex h-11 min-w-11 shrink-0 items-center justify-center rounded-lg px-3 text-sm font-medium whitespace-nowrap hover:bg-muted"
           >
             {t.notFound.shop}
           </Link>
