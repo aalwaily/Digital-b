@@ -23,7 +23,7 @@ export function Breadcrumbs({
           <span key={`${index}-${item.href ?? item.label}`} className={`inline-flex min-w-0 items-center gap-1 ${current ? "flex-1" : "shrink-0"}`}>
             {index > 0 ? <Separator aria-hidden className="size-3.5 shrink-0 opacity-60" /> : null}
             {item.href ? (
-              <Link href={item.href} dir={dir} className="inline-flex h-11 shrink-0 items-center hover:underline">
+              <Link href={item.href} dir={dir} className="inline-flex h-11 min-w-11 shrink-0 items-center px-0.5 hover:underline">
                 {item.label}
               </Link>
             ) : (

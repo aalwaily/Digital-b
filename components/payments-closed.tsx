@@ -28,7 +28,7 @@ export function PaymentsClosed({
     return (
       <div data-payments-closed="" className={`text-xs leading-relaxed ${className}`}>
         <p>{t.product.paymentUnavailable}</p>
-        <a href={mailto} className="mt-1 inline-flex min-h-11 items-center font-medium underline underline-offset-4">
+        <a href={mailto} className="mt-1 inline-flex min-h-11 min-w-11 items-center font-medium underline underline-offset-4">
           <bdi dir="ltr">{site.email}</bdi>
         </a>
         <Link href={href("/legal/refunds")} className="flex min-h-11 items-center underline underline-offset-4">
@@ -50,7 +50,7 @@ export function PaymentsClosed({
           {t.checkout.final}
         </Link>
       </p>
-      <a href={mailto} className="inline-flex min-h-11 items-center font-medium underline underline-offset-4">
+      <a href={mailto} data-primary-cta="" className="inline-flex min-h-11 min-w-11 items-center font-medium underline underline-offset-4">
         <bdi dir="ltr">{site.email}</bdi>
       </a>
     </div>

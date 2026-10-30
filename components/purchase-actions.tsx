@@ -36,6 +36,7 @@ export function PurchaseActions({
       <div className={`flex w-full min-w-0 gap-2 ${mode === "full" && row && open ? "flex-row" : "flex-col sm:flex-row"}`}>
         {showBuy ? (
           <Button
+            data-primary-cta=""
             className="wrap-button h-auto min-h-11 w-full flex-1 px-4 py-2"
             onClick={() => {
               router.push(href(`/checkout?buy=${slug}`));
@@ -46,6 +47,7 @@ export function PurchaseActions({
         ) : null}
         {showCart ? (
           <Button
+            data-primary-cta={showBuy ? undefined : ""}
             variant={showBuy ? "outline" : "default"}
             className="wrap-button h-auto min-h-11 w-full flex-1 px-4 py-2"
             onClick={() => {

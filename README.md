@@ -60,6 +60,8 @@ npm run lint
 npm run build
 ```
 
+`npm run mobile` checks the storefront in Arabic and English at 320, 360, 375, 390, 412, 430, a 667×375 landscape phone, and 768. It fails on horizontal overflow, a clipped wordmark, inputs under 16px, and a missing or covered primary action. Start the app first (`npm run dev` or `npm start`), with Chrome installed. It stays out of `npm test` so a machine without a browser can still run the unit tests.
+
 Copy `.env.example` to `.env.local` when you want to override the defaults. The app runs with no env file.
 
 ## Environment variables

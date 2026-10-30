@@ -17,7 +17,7 @@ export function NotFoundView({ locale }: { locale: Locale }) {
       <h1 className="mt-3 text-balance font-serif text-3xl leading-tight sm:text-5xl">{t.notFound.title}</h1>
       <p className="mt-4 text-pretty text-muted-foreground">{t.notFound.text}</p>
       <div className="mt-8 flex flex-wrap justify-center gap-3">
-        <Link href={home} className="inline-flex h-11 max-w-full items-center rounded-lg bg-primary px-5 text-sm font-medium text-primary-foreground">
+        <Link href={home} data-primary-cta="" className="inline-flex h-11 max-w-full items-center rounded-lg bg-primary px-5 text-sm font-medium text-primary-foreground">
           {t.notFound.home}
         </Link>
         <Link href={shop} className="inline-flex h-11 max-w-full items-center rounded-lg border px-5 text-sm font-medium">
@@ -29,7 +29,7 @@ export function NotFoundView({ locale }: { locale: Locale }) {
         <h2 id="not-found-categories" className="font-serif text-xl">
           {t.notFound.categories}
         </h2>
-        <ul className="mt-3 overflow-hidden rounded-xl border">
+        <ul className="fab-clear mt-3 overflow-hidden rounded-xl border">
           <li className="border-b">
             <Link href={shop} className="block min-h-11 break-words px-3 py-2.5 text-sm hover:bg-muted">
               {t.footer.allGuides}
@@ -52,7 +52,7 @@ export function NotFoundView({ locale }: { locale: Locale }) {
         <h2 id="not-found-contact" className="font-serif text-xl">
           {t.notFound.contact}
         </h2>
-        <ul className="mt-3 overflow-hidden rounded-xl border">
+        <ul className="fab-clear mt-3 overflow-hidden rounded-xl border">
           <li className="border-b">
             <Link href={contact} className="block min-h-11 break-words px-3 py-2.5 text-sm hover:bg-muted">
               {t.nav.contact}

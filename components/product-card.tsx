@@ -36,22 +36,25 @@ export function ProductCard({
         <Cover product={product} locale={locale} decorative />
         <span className="sr-only">{product.title}</span>
       </Link>
-      <div className={`flex min-w-0 flex-1 flex-col ${layout === "responsive" ? "mt-0 lg:mt-4" : "mt-4"}`}>
+      <div className={`flex min-w-0 flex-1 flex-col ${layout === "responsive" ? "rtl-fab-clear mt-0 lg:mt-4" : "mt-4"}`}>
         <p className="text-xs tracking-[0.16em] text-copper uppercase">{category?.name}</p>
-        <h3 dir={textDir(product.title)} className="mt-1 font-serif text-2xl leading-tight">
+        <h3
+          dir={textDir(product.title)}
+          className={`mt-1 font-serif leading-tight ${layout === "responsive" ? "text-xl lg:text-2xl" : "text-2xl"}`}
+        >
           <Link href={href(`/product/${product.slug}`)} className="inline-flex min-h-11 items-center hover:underline">
             {product.title}
           </Link>
         </h3>
-        <p className={`mt-2 flex-1 text-sm leading-relaxed text-muted-foreground ${layout === "responsive" ? "line-clamp-3 lg:line-clamp-none" : ""}`}>
+        <p className={`order-4 mt-2 flex-1 text-sm leading-relaxed text-muted-foreground sm:order-none ${layout === "responsive" ? "line-clamp-2 sm:line-clamp-3 lg:line-clamp-none" : ""}`}>
           {product.shortDescription}
         </p>
-        <div className="mt-3 flex min-w-0 flex-wrap items-center gap-2">
+        <div className="order-3 mt-3 flex min-w-0 flex-wrap items-center gap-2 sm:order-none">
           <Price price={product.price} compareAt={product.compareAtPrice} previousPrice={product.previousPrice} locale={locale} />
           {product.compareAtPrice ? <Badge variant="secondary">{t.product.bundleBadge}</Badge> : null}
           <span className="text-xs text-muted-foreground">{t.product.pages(pages)}</span>
         </div>
-        <div className="mt-3">
+        <div className="order-2 mt-3 flex flex-col items-start sm:order-none sm:items-stretch">
           <PurchaseActions slug={product.slug} />
           {paymentsOpen ? (
             <Link href={href("/legal/refunds")} className="mt-2 inline-flex min-h-11 items-center text-xs underline underline-offset-4">

@@ -400,8 +400,99 @@ html[lang="ar"] :where([class*="tracking-"]):not([dir="ltr"]),
 /* The WhatsApp button is fixed to the physical left. Logical padding would
    indent the wrong side in Arabic and leave the lines under the button. */
 @media (max-width: 1023px) {
-  .hero-points {
-    padding-left: 3.5rem;
+  .hero-points,
+  .fab-clear {
+    padding-left: 4.25rem;
+  }
+  html[dir="rtl"] .rtl-fab-clear {
+    padding-left: 4.25rem;
+  }
+}
+
+/* The Arabic catalog text sits on the physical left. Keep its button beside
+   the cover so a wrapped label does not run under the WhatsApp button. */
+@media (max-width: 639px) {
+  html[dir="rtl"] .rtl-fab-clear button {
+    width: auto;
+    max-width: 100%;
+    align-self: flex-start;
+  }
+}
+
+/* Short phones: the paragraphs under the buy box sit in the same band as the
+   button. Taller phones keep those paragraphs full width; the checklist below
+   still uses .hero-points. */
+@media (max-width: 1023px) and (max-height: 780px) {
+  .short-copy {
+    padding-left: 4.25rem;
+  }
+}
+
+/* 320×568-class phones: the home actions land in the same band as the button.
+   Inset them, and keep the title a step smaller so both actions stay above it. */
+@media (max-width: 480px) and (max-height: 700px) and (orientation: portrait) {
+  .hero-section {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+  .hero-section h1 {
+    margin-top: 0.5rem;
+    font-size: 1.85rem;
+    line-height: 1.15;
+  }
+  .hero-lede {
+    margin-top: 0.75rem;
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+  .hero-actions {
+    margin-top: 0.75rem;
+    padding-left: 4.25rem;
+  }
+  .hero-stats {
+    margin-top: 0.75rem;
+  }
+  .shop-crumb {
+    display: none;
+  }
+  .shop-lede {
+    display: none;
+  }
+  [data-payments-closed] {
+    display: flex;
+    flex-direction: column;
+  }
+  [data-payments-closed] a[href^="mailto"] {
+    order: -1;
+    margin-top: 0;
+  }
+}
+
+/* Landscape phones are short. Keep the home title, lede, and shop button in
+   the first screen, and keep that copy off the WhatsApp button. */
+@media (orientation: landscape) and (max-height: 500px) and (max-width: 1023px) {
+  .hero-section {
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+  }
+  .hero-copy {
+    padding-left: 4.25rem;
+  }
+  .hero-section h1 {
+    margin-top: 0.35rem;
+    font-size: 1.65rem;
+    line-height: 1.15;
+  }
+  .hero-lede {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    line-height: 1.35;
+  }
+  .hero-actions {
+    margin-top: 0.75rem;
+  }
+  .hero-stats {
+    margin-top: 0.75rem;
   }
 }
 

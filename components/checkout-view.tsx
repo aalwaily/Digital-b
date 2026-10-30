@@ -134,7 +134,7 @@ export function CheckoutView({ usdToSarRate = null }: { usdToSarRate?: string | 
       <form
         id="checkout-form"
         onSubmit={placeOrder}
-        className={`order-2 min-w-0 space-y-6 lg:order-1 ${open ? "pb-[calc(6.5rem+env(safe-area-inset-bottom))] lg:pb-0" : ""}`}
+        className={`order-1 min-w-0 space-y-6 lg:order-1 ${open ? "pb-[calc(6.5rem+env(safe-area-inset-bottom))] lg:pb-0" : ""}`}
       >
         {canceled ? (
           <p role="status" className="rounded-xl border border-copper/40 bg-card px-4 py-3 text-sm">
@@ -248,7 +248,7 @@ export function CheckoutView({ usdToSarRate = null }: { usdToSarRate?: string | 
         ) : null}
         {moyasarConfig ? <MoyasarForm config={moyasarConfig} /> : null}
       </form>
-      <aside className="order-1 h-fit rounded-2xl border bg-card p-5 lg:order-2 lg:sticky lg:top-28">
+      <aside className="fab-clear order-2 h-fit rounded-2xl border bg-card p-5 lg:order-2 lg:sticky lg:top-28">
         <h2 className="font-serif text-xl">{t.checkout.order}</h2>
         <ul className="mt-4 space-y-3 text-sm">
           {summary.lines.map((line) => {
@@ -269,7 +269,7 @@ export function CheckoutView({ usdToSarRate = null }: { usdToSarRate?: string | 
             );
           })}
         </ul>
-        <div className="mt-4 flex justify-between gap-3 border-t pt-3 font-medium">
+        <div className="fab-clear mt-4 flex justify-between gap-3 border-t pt-3 font-medium">
           <span>{t.checkout.total}</span>
           <span className="price text-end">
             <span dir="ltr" className="whitespace-nowrap">{formatMoney(summary.subtotal)}</span>

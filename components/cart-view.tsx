@@ -49,14 +49,14 @@ export function CartView() {
     <div className="min-w-0">
       {canceledNote}
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_300px]">
-        <ul className="min-w-0 divide-y">
+        <ul className="order-2 min-w-0 divide-y lg:order-1">
           {items.map((item) => (
             <li key={item.slug} className="grid grid-cols-[5rem_minmax(0,1fr)] items-start gap-x-4 gap-y-2 py-5">
               <Link href={href(`/product/${item.slug}`)} className="col-start-1 row-span-2 w-20 overflow-hidden rounded-md ring-1 ring-black/10">
                 <Cover product={item} locale={locale} decorative />
                 <span className="sr-only">{item.title}</span>
               </Link>
-              <div className="min-w-0">
+              <div className="min-w-0 rtl-fab-clear">
                 <h2 dir={textDir(item.title)} className="font-serif text-xl">
                   <Link href={href(`/product/${item.slug}`)} className="inline-flex min-h-11 items-center hover:underline">
                     {item.title}
@@ -65,7 +65,7 @@ export function CartView() {
                 <p dir={textDir(item.subtitle)} className="text-sm text-muted-foreground">{item.subtitle}</p>
                 <button
                   type="button"
-                  className="mt-1 inline-flex min-h-11 items-center text-sm underline underline-offset-4"
+                  className="mt-1 inline-flex min-h-11 min-w-11 items-center text-sm underline underline-offset-4"
                   onClick={() => cart.remove(item.slug)}
                 >
                   {t.cartPage.remove}
@@ -76,12 +76,12 @@ export function CartView() {
                 compareAt={item.compareAtPrice}
                 previousPrice={item.previousPrice}
                 locale={locale}
-                className="col-start-2"
+                className="col-start-2 rtl-fab-clear"
               />
             </li>
           ))}
         </ul>
-        <aside data-cart-summary="" className="h-fit rounded-2xl border bg-card p-5 lg:sticky lg:top-28">
+        <aside data-cart-summary="" className="fab-clear order-1 h-fit rounded-2xl border bg-card p-4 sm:p-5 lg:order-2 lg:sticky lg:top-28">
           <h2 className="font-serif text-xl">{t.cartPage.summary}</h2>
           <dl className="mt-4 space-y-2 text-sm">
             <div className="flex justify-between gap-3">
@@ -108,13 +108,13 @@ export function CartView() {
               </dd>
             </div>
           </dl>
-          <p className="mt-3 text-xs text-muted-foreground">{open ? t.cartPage.note : t.cartPage.noteClosed}</p>
+          {open ? <p className="mt-3 text-xs text-muted-foreground">{t.cartPage.note}</p> : null}
           {open ? (
-            <Link href={href("/checkout")} className={buttonVariants({ className: "mt-4 flex h-11 w-full" })}>
+            <Link href={href("/checkout")} className={buttonVariants({ className: "mt-4 flex h-11 w-full" })} data-primary-cta="">
               {t.cartPage.checkout}
             </Link>
           ) : (
-            <div className="mt-4">
+            <div className="mt-3">
               <PaymentsClosed slugs={items.map((item) => item.slug)} />
             </div>
           )}

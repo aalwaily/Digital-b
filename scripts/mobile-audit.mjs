@@ -5,12 +5,19 @@
  * Expects `next start` (or `next dev`) already running.
  *
  * Fails when a key page, in English or Arabic, grows wider than the viewport
- * at 320, 360, 375, 390, 414, or 430px, or in a 667×375 landscape check.
- * Also fails when the product buy bar covers the on-screen purchase button
- * or the footer, when the mobile menu cannot scroll or will not close, and
- * when the WhatsApp button is missing, not in the bottom-left of the viewport,
- * or covering the buy bar, price, or add-to-cart control, and when the button
- * moves in viewport coordinates while the page scrolls.
+ * at 320, 360, 375, 390, 412, or 430px, in a 667×375 landscape check, or at a
+ * 768px tablet width. Also fails when the primary CTA is missing, clipped,
+ * covered, or (on home, shop, product, and 404) off the first screen, when an
+ * input is under 16px, when the wordmark is truncated, when the product buy
+ * bar covers the on-screen purchase button or the footer, when the mobile menu
+ * cannot scroll or will not close, and when the WhatsApp button is missing,
+ * not in the bottom-left of the viewport, or covering the buy bar, price, or
+ * add-to-cart control, and when the button moves in viewport coordinates while
+ * the page scrolls.
+ *
+ * Chrome has to be installed (`CHROME_PATH` overrides the binary). Start the
+ * app first (`npm run dev` or `npm run start`). This script is not part of
+ * `npm test`: a browser is not assumed in CI. Run `npm run mobile` locally.
  */
 import { mkdirSync } from "node:fs";
 import { chromium } from "playwright-core";
@@ -24,21 +31,37 @@ const viewports = [
   { width: 360, height: 800, name: "360" },
   { width: 375, height: 667, name: "375" },
   { width: 390, height: 844, name: "390" },
-  { width: 414, height: 896, name: "414" },
+  { width: 412, height: 915, name: "412" },
   { width: 430, height: 932, name: "430" },
   { width: 667, height: 375, name: "667x375" },
+  { width: 768, height: 1024, name: "768" },
 ];
 
 function pathsFor(locale) {
   return [
     "/",
     "/shop",
+    "/shop/health",
+    "/shop/career",
+    "/shop/bundles",
     "/shop?category=health",
-    "/shop?category=career",
+    "/product/12-week-reset",
+    "/product/weeknight-table",
+    "/product/floor-and-form",
+    "/product/the-quiet-budget",
+    "/product/habit-ledger",
     "/product/first-client",
-    "/product/health-fitness-bundle",
+    "/product/exam-room-method",
+    "/product/steady-mind",
+    "/product/saudi-freelancer-starter-kit",
+    "/product/irregular-income-budget",
     "/product/gulf-ats-cv-kit",
+    "/product/health-fitness-bundle",
+    "/product/work-money-bundle",
+    "/product/gulf-work-bundle",
     "/cart",
+    "/checkout",
+    "/about",
     "/faq",
     "/contact",
     "/blog",
@@ -73,6 +96,19 @@ function probeOverflow() {
     const overRight = rect.right - vw;
     const overLeft = -rect.left;
     if (overRight <= 1 && overLeft <= 1) continue;
+    const scrolledAway = (() => {
+      let parent = node.parentElement;
+      while (parent && parent !== document.body) {
+        const parentStyle = getComputedStyle(parent);
+        const box = parent.getBoundingClientRect();
+        if (/(auto|scroll)/.test(parentStyle.overflowX) && parent.scrollWidth > parent.clientWidth + 1) {
+          return box.left >= -1 && box.right <= vw + 1;
+        }
+        parent = parent.parentElement;
+      }
+      return false;
+    })();
+    if (scrolledAway) continue;
     const childAlso = [...node.children].some((child) => {
       const childStyle = getComputedStyle(child);
       if (childStyle.display === "none" || childStyle.visibility === "hidden") return false;
@@ -88,6 +124,82 @@ function probeOverflow() {
     outside.push(`${overRight > 1 ? "right" : "left"} ${Math.round(Math.max(overRight, overLeft))}px ${node.tagName.toLowerCase()} "${text}"`);
   }
   return { docOverflow, outside: outside.slice(0, 8) };
+}
+
+function probeBrand() {
+  const brand = document.querySelector("header a[dir='ltr']");
+  if (!brand) return [];
+  const box = brand.getBoundingClientRect();
+  const issues = [];
+  if (box.width < 8 || box.height < 8) issues.push("wordmark has no box");
+  if (brand.scrollWidth > brand.clientWidth + 1) {
+    issues.push(`wordmark truncated ${brand.clientWidth}px of ${brand.scrollWidth}px`);
+  }
+  const text = (brand.textContent || "").replace(/\s+/g, " ").trim();
+  if (!text.includes("Vellum") || !text.includes("Press")) issues.push(`wordmark text "${text}"`);
+  return issues;
+}
+
+function probeInputs() {
+  const issues = [];
+  for (const node of document.querySelectorAll("input, textarea, select")) {
+    const style = getComputedStyle(node);
+    if (style.display === "none" || style.visibility === "hidden") continue;
+    if (node.closest(".sr-only, [hidden]")) continue;
+    const box = node.getBoundingClientRect();
+    if (box.width < 2 || box.height < 2) continue;
+    const size = Number.parseFloat(style.fontSize);
+    if (size < 16) {
+      issues.push(`input font ${size}px ${node.tagName.toLowerCase()}#${node.id || node.getAttribute("name") || ""}`);
+    }
+  }
+  return issues;
+}
+
+function probePrimaryCta() {
+  const shown = (el) => {
+    if (!el) return false;
+    const style = getComputedStyle(el);
+    if (style.display === "none" || style.visibility === "hidden" || Number(style.opacity) === 0) return false;
+    const box = el.getBoundingClientRect();
+    return box.width > 8 && box.height > 8;
+  };
+  const hits = (a, b) => a.left < b.right - 1 && a.right > b.left + 1 && a.top < b.bottom - 1 && a.bottom > b.top + 1;
+  const nodes = [...document.querySelectorAll("[data-primary-cta]")].filter(shown);
+  const path = location.pathname;
+  const expectsCta = /\/(shop|product|cart|checkout|contact)(\/|$)/.test(path) || /\/missing-page$/.test(path) || /\/(en|ar)$/.test(path);
+  if (!expectsCta) return [];
+  if (!nodes.length) return ["primary CTA missing"];
+  const issues = [];
+  const vw = document.documentElement.clientWidth;
+  const fab = [...document.querySelectorAll("[data-whatsapp]")].find(shown);
+  const fabBox = fab ? fab.getBoundingClientRect() : null;
+  const inView = [];
+  for (const node of nodes) {
+    const box = node.getBoundingClientRect();
+    if (box.left < -1 || box.right > vw + 1) issues.push("primary CTA clipped horizontally");
+    const visible = box.top >= -1 && box.bottom <= window.innerHeight + 1;
+    if (!visible) continue;
+    inView.push(node);
+    if (box.height < 43 || box.width < 43) issues.push(`primary CTA ${Math.round(box.width)}x${Math.round(box.height)}`);
+    if (fabBox && hits(box, fabBox)) issues.push("whatsapp covers primary CTA");
+  }
+  const home = /\/(en|ar)$/.test(path);
+  const shop = /\/shop(\/|$)/.test(path);
+  const notFound = /\/missing-page$/.test(path);
+  const shortLandscape = window.innerHeight <= 500 && window.innerWidth > window.innerHeight;
+  if ((home || notFound || (shop && !shortLandscape)) && !inView.length) {
+    issues.push("primary CTA is not in the first screen");
+  }
+  if (/\/product\//.test(path)) {
+    const purchase = document.querySelector("#product-purchase [data-primary-cta]");
+    const bar = document.querySelector("[data-sticky-buy]");
+    const purchaseBox = purchase && shown(purchase) ? purchase.getBoundingClientRect() : null;
+    const purchaseInView = purchaseBox && purchaseBox.top < window.innerHeight - 4 && purchaseBox.bottom > 4;
+    const barShown = bar && shown(bar);
+    if (!purchaseInView && !barShown) issues.push("purchase CTA not visible and buy bar hidden");
+  }
+  return issues;
 }
 
 function probeBuyBar() {
@@ -241,6 +353,31 @@ for (const locale of ["en", "ar"]) {
       const metrics = await page.evaluate(probeOverflow);
       if (metrics.docOverflow > 1) problems.push(`${label} document overflow ${metrics.docOverflow}px`);
       for (const item of metrics.outside) problems.push(`${label} ${item}`);
+      if (path !== "/missing-page") {
+        await page.waitForFunction(() => {
+          const brand = document.querySelector("header a[dir='ltr']");
+          return brand && (brand.textContent || "").includes("Vellum");
+        });
+      }
+      for (const item of await page.evaluate(probeBrand)) problems.push(`${label} ${item}`);
+      for (const item of await page.evaluate(probeInputs)) problems.push(`${label} ${item}`);
+      if (path.startsWith("/shop") || path.startsWith("/product/") || path === "/checkout" || path === "/cart" || path === "/contact" || path === "/" || path === "/missing-page") {
+        await page.waitForFunction(() => document.querySelector("[data-primary-cta]"), { timeout: 8000 }).catch(() => {});
+      }
+      if (path.startsWith("/product/")) {
+        await page.waitForFunction(() => document.querySelector("[data-sticky-buy]")?.dataset.ready === "true");
+      }
+      for (const item of await page.evaluate(probePrimaryCta)) problems.push(`${label} ${item}`);
+      if (path === "/cart" || path === "/checkout" || path === "/contact") {
+        await page.evaluate(() => {
+          document.querySelector("[data-primary-cta]")?.scrollIntoView({ block: "center", inline: "nearest" });
+        });
+        await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+        for (const item of await page.evaluate(probePrimaryCta)) {
+          if (item === "primary CTA is not in the first screen") continue;
+          problems.push(`${label} scrolled ${item}`);
+        }
+      }
       const whatsappIssues = await page.evaluate(probeWhatsApp);
       for (const item of whatsappIssues) problems.push(`${label} ${item}`);
       if (path.startsWith("/product/")) {

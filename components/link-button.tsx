@@ -10,16 +10,23 @@ export function LinkButton({
   children,
   variant = "default",
   className,
+  primary = false,
 }: {
   href: string;
   children: React.ReactNode;
   variant?: "default" | "outline" | "ghost" | "secondary";
   className?: string;
+  /** Marks the page's main action for the mobile layout check. */
+  primary?: boolean;
 }) {
   const { href: localize } = useI18n();
   const next = href.startsWith("/") ? localize(href) : href;
   return (
-    <Link href={next} className={cn(buttonVariants({ variant }), "inline-flex min-h-11", className)}>
+    <Link
+      href={next}
+      data-primary-cta={primary ? "" : undefined}
+      className={cn(buttonVariants({ variant }), "inline-flex min-h-11", className)}
+    >
       {children}
     </Link>
   );
