@@ -58,7 +58,18 @@ The PDF files stay in English. Arabic product and receipt pages say so. Prices a
 npm test
 npm run lint
 npm run build
+npm run links
 ```
+
+`npm test` runs the unit tests, then the same link check as `npm run links`. That check builds the app (unless `LINK_CHECK_SKIP_BUILD=1` and `.next` already exists) and starts a local production server. To point it at a server you already started:
+
+```bash
+npm run build
+npm start
+npm run links -- http://127.0.0.1:43123
+```
+
+It opens every URL in `/sitemap.xml` in Arabic and English. An internal link must answer 200, or one 301 or 308 that lands on 200. Links to the old `/products` address fail until they point at the shop. Images, fonts, scripts, stylesheets, Open Graph images, favicons, manifests, sample PDFs, and preview images referenced on the page must answer 200. The canonical URL must be that page's own language on `https://getvellumpress.com`. hreflang alternates must match the sitemap, point back at one another, and answer 200. An article that exists in only one language publishes that language and `x-default`, not the missing translation. External links are checked only as well-formed `https` URLs. Mailto addresses must be `glarz.com@gmail.com`. WhatsApp links must be well-formed `https` URLs.
 
 `npm run mobile` checks the storefront in Arabic and English at 320, 360, 375, 390, 412, 430, a 667×375 landscape phone, and 768. It fails on horizontal overflow, a clipped wordmark, inputs under 16px, and a missing or covered primary action. Start the app first (`npm run dev` or `npm start`), with Chrome installed. It stays out of `npm test` so a machine without a browser can still run the unit tests.
 
